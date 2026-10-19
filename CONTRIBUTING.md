@@ -37,7 +37,10 @@ Both the model change and the regenerated schema go in the **same** commit.
 
 ## 2. Branches and PRs
 
-- `main` is protected. **Nobody pushes to `main`.**
+- `main` is protected. **Nobody pushes to `main`.** Enforcement is client-side: a
+  tracked `pre-push` hook refuses it. Run `make hooks` on your clone or the guard
+  is not there. (Server-side protection needs GitHub Pro on a private repo - free
+  via the Student Developer Pack, see `docs/decisions.md` D-13.)
 - Branch names are `a/<slug>`, `b/<slug>`, `c/<slug>` — `a/bm25-index`,
   `b/verifier-rules`, `c/conditions-runner`. The letter is your track.
 - Everything goes through a PR with **one review**.

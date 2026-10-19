@@ -1,0 +1,46 @@
+#!/bin/sh
+# Refuse direct pushes to main.
+#
+# `main` is PR-only (CONTRIBUTING.md section 2). Server-side branch protection
+# needs GitHub Pro on a private repository, so until the repo is on Pro (free
+# via the GitHub Student Developer Pack) this hook is the stand-in. It is not
+# security: it catches the accident, which is what actually happens at 2am.
+#
+# Install on every clone with:  make hooks
+# Deliberate override:          PUSH_TO_MAIN=1 git push origin main
+
+protected="main"
+zero="0000000000000000000000000000000000000000"
+
+while read -r _local_ref local_sha remote_ref _remote_sha; do
+	[ "$remote_ref" = "refs/heads/$protected" ] || continue
+
+	if [ "${PUSH_TO_MAIN:-0}" = "1" ]; then
+		echo "pre-push: PUSH_TO_MAIN=1 set - allowing push to '$protected'." >&2
+		continue
+	fi
+
+	if [ "$local_sha" = "$zero" ]; then
+		echo "pre-push: refusing to DELETE '$protected'." >&2
+	else
+		echo "pre-push: refusing to push directly to '$protected'." >&2
+	fi
+
+	cat >&2 <<'MSG'
+
+  main is PR-only. Move your work onto a track branch instead:
+
+      git switch -c c/my-change        # a/ b/ c/ = your track
+      git push -u origin c/my-change
+      gh pr create --fill
+
+  If you already committed on main, keep the commits and reset main:
+
+      git switch -c c/my-change
+      git switch main && git reset --hard origin/main
+
+MSG
+	exit 1
+done
+
+exit 0
