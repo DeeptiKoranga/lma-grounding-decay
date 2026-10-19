@@ -1,0 +1,290 @@
+{
+  "query_id": "q-dev-001",
+  "anchor": {
+    "var": "BRENT",
+    "direction": "up",
+    "event": "Brent crossed $100 a barrel on 12 March 2026",
+    "event_date": "2026-03-12",
+    "confirmed_by_series": true,
+    "series_id": "brent_usd_bbl"
+  },
+  "as_of": "2026-03-20",
+  "nodes": [
+    {
+      "var": "BRENT",
+      "direction": "up",
+      "label": "anchor, confirmed against the PPAC series",
+      "is_anchor": true,
+      "confirmed_by_series": true,
+      "series_id": "brent_usd_bbl"
+    },
+    {
+      "var": "INDIAN_BASKET",
+      "direction": "up",
+      "label": "PPAC series",
+      "is_anchor": false,
+      "confirmed_by_series": true,
+      "series_id": "indian_basket_usd_bbl"
+    },
+    {
+      "var": "IMPORT_BILL",
+      "direction": "up",
+      "label": "crude imports",
+      "is_anchor": false,
+      "confirmed_by_series": false,
+      "series_id": null
+    },
+    {
+      "var": "INR_USD",
+      "direction": "up",
+      "label": "weaker rupee",
+      "is_anchor": false,
+      "confirmed_by_series": true,
+      "series_id": "inr_usd"
+    },
+    {
+      "var": "IMPORTED_INFLATION",
+      "direction": "up",
+      "label": null,
+      "is_anchor": false,
+      "confirmed_by_series": false,
+      "series_id": null
+    },
+    {
+      "var": "ATF_PRICE",
+      "direction": "up",
+      "label": null,
+      "is_anchor": false,
+      "confirmed_by_series": false,
+      "series_id": null
+    },
+    {
+      "var": "AIRLINE_COSTS",
+      "direction": "up",
+      "label": null,
+      "is_anchor": false,
+      "confirmed_by_series": false,
+      "series_id": null
+    },
+    {
+      "var": "AIRLINE_SHARES",
+      "direction": "down",
+      "label": null,
+      "is_anchor": false,
+      "confirmed_by_series": false,
+      "series_id": null
+    },
+    {
+      "var": "CPI_HEADLINE",
+      "direction": "up",
+      "label": "inflation risk",
+      "is_anchor": false,
+      "confirmed_by_series": false,
+      "series_id": null
+    },
+    {
+      "var": "RATE_HIKE_EXPECTATIONS",
+      "direction": "up",
+      "label": null,
+      "is_anchor": false,
+      "confirmed_by_series": false,
+      "series_id": null
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "e1",
+      "src_var": "BRENT",
+      "dst_var": "INDIAN_BASKET",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 1,
+      "evidence_span": "The Indian basket of crude rose to $98.4 a barrel due to the surge in Brent",
+      "evidence_doc_id": "bl-2026-03-12-brent100",
+      "evidence_passage_id": "bl-2026-03-12-brent100#p1",
+      "evidence_published_at": "2026-03-12T18:40:00+05:30",
+      "candidate_evidence": [],
+      "verified_by": "rules+llm",
+      "verdict": "supported",
+      "note": null
+    },
+    {
+      "edge_id": "e2",
+      "src_var": "INDIAN_BASKET",
+      "dst_var": "IMPORT_BILL",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 2,
+      "evidence_span": "India's monthly import bill is expected to widen by about $2.5 billion because of the higher Indian basket price",
+      "evidence_doc_id": "bs-2026-03-13-importbill",
+      "evidence_passage_id": "bs-2026-03-13-importbill#p0",
+      "evidence_published_at": "2026-03-13T09:05:00+05:30",
+      "candidate_evidence": [],
+      "verified_by": "rules+llm",
+      "verdict": "supported",
+      "note": null
+    },
+    {
+      "edge_id": "e3",
+      "src_var": "IMPORT_BILL",
+      "dst_var": "INR_USD",
+      "direction": "up",
+      "provenance": "model_inferred",
+      "strength": "conditional",
+      "hop": 3,
+      "evidence_span": null,
+      "evidence_doc_id": null,
+      "evidence_passage_id": null,
+      "evidence_published_at": null,
+      "candidate_evidence": [],
+      "verified_by": null,
+      "verdict": "unsupported",
+      "note": "no passage in corpus states this relation by the as-of date"
+    },
+    {
+      "edge_id": "e4",
+      "src_var": "INR_USD",
+      "dst_var": "IMPORTED_INFLATION",
+      "direction": "up",
+      "provenance": "model_inferred",
+      "strength": "conditional",
+      "hop": 4,
+      "evidence_span": null,
+      "evidence_doc_id": null,
+      "evidence_passage_id": null,
+      "evidence_published_at": null,
+      "candidate_evidence": [],
+      "verified_by": null,
+      "verdict": "unsupported",
+      "note": "no passage in corpus states this relation by the as-of date"
+    },
+    {
+      "edge_id": "e5",
+      "src_var": "BRENT",
+      "dst_var": "ATF_PRICE",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 1,
+      "evidence_span": "raised aviation turbine fuel prices by 6.2 per cent this fortnight due to the rise in Brent crude",
+      "evidence_doc_id": "mint-2026-03-16-atf",
+      "evidence_passage_id": "mint-2026-03-16-atf#p0",
+      "evidence_published_at": "2026-03-16T11:20:00+05:30",
+      "candidate_evidence": [],
+      "verified_by": "rules+llm",
+      "verdict": "supported",
+      "note": null
+    },
+    {
+      "edge_id": "e6",
+      "src_var": "ATF_PRICE",
+      "dst_var": "AIRLINE_COSTS",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 2,
+      "evidence_span": "Fuel accounts for about 40 per cent of an Indian carrier's operating cost, so the increase feeds straight through to airline operating costs",
+      "evidence_doc_id": "mint-2026-03-16-atf",
+      "evidence_passage_id": "mint-2026-03-16-atf#p1",
+      "evidence_published_at": "2026-03-16T11:20:00+05:30",
+      "candidate_evidence": [],
+      "verified_by": "rules+llm",
+      "verdict": "supported",
+      "note": null
+    },
+    {
+      "edge_id": "e7",
+      "src_var": "AIRLINE_COSTS",
+      "dst_var": "AIRLINE_SHARES",
+      "direction": "down",
+      "provenance": "source_asserted",
+      "strength": "correlational",
+      "hop": 3,
+      "evidence_span": "Shares of listed Indian carriers fell between 3 and 5 per cent on Tuesday amid rising airline operating costs",
+      "evidence_doc_id": "et-2026-03-17-aviation",
+      "evidence_passage_id": "et-2026-03-17-aviation#p0",
+      "evidence_published_at": "2026-03-17T16:05:00+05:30",
+      "candidate_evidence": [],
+      "verified_by": "rules+llm",
+      "verdict": "supported",
+      "note": null
+    },
+    {
+      "edge_id": "e8",
+      "src_var": "BRENT",
+      "dst_var": "CPI_HEADLINE",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "conditional",
+      "hop": 1,
+      "evidence_span": "the recent increase in international crude prices poses an upside risk to headline inflation",
+      "evidence_doc_id": "rbi-2026-03-18-mpc-minutes",
+      "evidence_passage_id": "rbi-2026-03-18-mpc-minutes#p0",
+      "evidence_published_at": "2026-03-18T17:00:00+05:30",
+      "candidate_evidence": [],
+      "verified_by": "rules+llm",
+      "verdict": "supported",
+      "note": null
+    },
+    {
+      "edge_id": "e9",
+      "src_var": "CPI_HEADLINE",
+      "dst_var": "RATE_HIKE_EXPECTATIONS",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "conditional",
+      "hop": 2,
+      "evidence_span": "Should headline inflation stay above the upper tolerance band, the Committee may have to consider further tightening",
+      "evidence_doc_id": "rbi-2026-03-18-mpc-minutes",
+      "evidence_passage_id": "rbi-2026-03-18-mpc-minutes#p1",
+      "evidence_published_at": "2026-03-18T17:00:00+05:30",
+      "candidate_evidence": [],
+      "verified_by": "rules+llm",
+      "verdict": "supported",
+      "note": null
+    }
+  ],
+  "paths": [
+    {
+      "path_id": "p-rupee",
+      "edge_ids": [
+        "e1",
+        "e2",
+        "e3",
+        "e4"
+      ],
+      "weakest_strength": "conditional",
+      "fully_sourced": false,
+      "depth": 4
+    },
+    {
+      "path_id": "p-airline",
+      "edge_ids": [
+        "e5",
+        "e6",
+        "e7"
+      ],
+      "weakest_strength": "correlational",
+      "fully_sourced": true,
+      "depth": 3
+    },
+    {
+      "path_id": "p-cpi",
+      "edge_ids": [
+        "e8",
+        "e9"
+      ],
+      "weakest_strength": "conditional",
+      "fully_sourced": true,
+      "depth": 2
+    }
+  ],
+  "condition": "M",
+  "run_id": "run-fixture-0001",
+  "model": "qwen3-8b-4bit",
+  "created_at": "2026-03-20T10:00:00+05:30",
+  "schema_version": "1.0.0",
+  "notes": "Synthetic fixture mirroring Figure 1 of the proposal. The rupee chain runs four hops and its last two hops are model-inferred; the airline chain is fully sourced."
+}

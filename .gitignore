@@ -1,0 +1,91 @@
+# ---------------------------------------------------------------------------
+# Section 5 of PLAN_MIDSUB.md is the authority for this file.
+#
+# IN git:      all code, configs/, docs/, reports/, data/eval/ (queries, gold
+#              graphs, challenge set, agent states, safety prompts),
+#              data/processed/MANIFEST.md, data/aliases.yaml, data/series/*.csv
+# NOT in git:  data/raw/, data/interim/, data/processed/*.jsonl, FAISS indexes,
+#              runs/, model weights, .venv/
+#
+# The frozen corpus is shared as a zip with its sha256 recorded in MANIFEST.md.
+# ---------------------------------------------------------------------------
+
+# --- corpus: raw and interim are never tracked ---
+data/raw/**
+!data/raw/.gitkeep
+data/interim/**
+!data/interim/.gitkeep
+
+# --- processed corpus: the manifest is tracked, the payload is not ---
+data/processed/*.jsonl
+data/processed/*.jsonl.gz
+data/processed/*.zip
+data/processed/*.parquet
+!data/processed/MANIFEST.md
+!data/processed/.gitkeep
+
+# --- indexes and embeddings ---
+*.faiss
+*.index
+*.ann
+*.npy
+*.npz
+index/
+indexes/
+data/index/
+
+# --- run logs ---
+runs/**
+!runs/.gitkeep
+
+# --- model weights ---
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+models/
+checkpoints/
+.cache/
+.hf_cache/
+
+# --- python ---
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+uv.lock.bak
+
+# --- notebooks ---
+.ipynb_checkpoints/
+
+# --- editors / OS ---
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# --- secrets ---
+.env
+.env.*
+!.env.example
+*.key
+
+# ---------------------------------------------------------------------------
+# Explicit keeps: small and precious, always tracked even if a rule above
+# would otherwise sweep them up.
+# ---------------------------------------------------------------------------
+!data/eval/
+!data/eval/**
+!data/aliases.yaml
+!data/series/*.csv
+!tests/fixtures/**

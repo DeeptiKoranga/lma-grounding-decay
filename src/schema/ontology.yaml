@@ -1,0 +1,322 @@
+# =============================================================================
+# Closed variable ontology  ·  LMA major project  ·  frozen Phase 0 (19 Oct 2026)
+# =============================================================================
+# Every node in every event-impact graph must be one of these ids. The extractor
+# is JSON-constrained to this list (B5) and the Edge model rejects anything else,
+# so a model cannot invent a variable to make a chain look complete.
+#
+# Fields
+#   gloss               one line a non-expert reader can understand
+#   group               for grouping in figures and for the annotation guide
+#   unit                what a move is measured in
+#   allowed_directions  which Direction values an edge may assign to this variable
+#                       as its destination. `stable` is allowed only where a source
+#                       can plausibly assert no-change: published levels, policy
+#                       decisions and official series. Latent constructs that press
+#                       reports only ever describe as rising or easing take up/down
+#                       only. See docs/decisions.md row D-08.
+#   series_id           matching column in data/series/*.csv when one exists.
+#                       Series only CONFIRM that a move happened — they are never
+#                       evidence for an edge (proposal §10).
+#
+# Adding or renaming a variable is a shared-file change: announce it first and
+# regenerate docs/schemas/ with `make schemas`.
+# =============================================================================
+
+version: "1.0.0"
+frozen_on: "2026-10-19"
+
+variables:
+  # --- energy and commodities --------------------------------------------
+  BRENT:
+    gloss: Front-month Brent crude benchmark price.
+    group: energy
+    unit: USD per barrel
+    allowed_directions: [up, down, stable]
+    series_id: brent_usd_bbl
+  INDIAN_BASKET:
+    gloss: PPAC's Indian crude basket, the import-weighted price India actually pays.
+    group: energy
+    unit: USD per barrel
+    allowed_directions: [up, down, stable]
+    series_id: indian_basket_usd_bbl
+  ATF_PRICE:
+    gloss: Aviation turbine fuel price set by the oil marketing companies.
+    group: energy
+    unit: INR per kilolitre
+    allowed_directions: [up, down, stable]
+    series_id: atf_price_inr_kl
+  LPG_IMPORTS:
+    gloss: Cost and volume of India's liquefied petroleum gas imports, most of which transit Hormuz.
+    group: energy
+    unit: USD million per month
+    allowed_directions: [up, down, stable]
+    series_id: lpg_imports_usd_mn
+  FUEL_PRICES:
+    gloss: Domestic retail pump prices for petrol and diesel.
+    group: energy
+    unit: INR per litre
+    allowed_directions: [up, down, stable]
+    series_id: retail_fuel_inr_l
+  NATURAL_GAS_PRICE:
+    gloss: Imported LNG and administered domestic natural gas price.
+    group: energy
+    unit: USD per mmBtu
+    allowed_directions: [up, down, stable]
+    series_id: null
+  GOLD_IMPORTS:
+    gloss: Value of gold imports, a recurring swing factor in India's trade deficit.
+    group: energy
+    unit: USD billion per month
+    allowed_directions: [up, down, stable]
+    series_id: null
+
+  # --- currency and external sector --------------------------------------
+  INR_USD:
+    gloss: Rupees per US dollar. Up means a weaker rupee.
+    group: external
+    unit: INR per USD
+    allowed_directions: [up, down, stable]
+    series_id: inr_usd
+  DXY:
+    gloss: US dollar index against a basket of major currencies.
+    group: external
+    unit: index
+    allowed_directions: [up, down, stable]
+    series_id: null
+  FOREX_RESERVES:
+    gloss: RBI's headline foreign exchange reserves.
+    group: external
+    unit: USD billion
+    allowed_directions: [up, down, stable]
+    series_id: forex_reserves_usd_bn
+  RBI_FX_INTERVENTION:
+    gloss: Scale of RBI dollar sales or purchases in the spot and forward market.
+    group: external
+    unit: USD billion
+    allowed_directions: [up, down]
+    series_id: null
+  IMPORT_BILL:
+    gloss: India's merchandise import bill, dominated by crude and gold.
+    group: external
+    unit: USD billion per month
+    allowed_directions: [up, down, stable]
+    series_id: import_bill_usd_bn
+  EXPORTS:
+    gloss: Merchandise exports.
+    group: external
+    unit: USD billion per month
+    allowed_directions: [up, down, stable]
+    series_id: null
+  TRADE_DEFICIT:
+    gloss: Merchandise trade deficit, imports less exports.
+    group: external
+    unit: USD billion per month
+    allowed_directions: [up, down, stable]
+    series_id: trade_deficit_usd_bn
+  CURRENT_ACCOUNT_DEFICIT:
+    gloss: Current account deficit as a share of GDP.
+    group: external
+    unit: percent of GDP
+    allowed_directions: [up, down, stable]
+    series_id: null
+  IMPORTED_INFLATION:
+    gloss: Inflationary pressure arriving through import prices rather than domestic demand.
+    group: external
+    unit: qualitative pressure
+    allowed_directions: [up, down]
+    series_id: null
+
+  # --- prices -------------------------------------------------------------
+  CPI_HEADLINE:
+    gloss: MOSPI headline consumer price inflation, year on year.
+    group: prices
+    unit: percent year on year
+    allowed_directions: [up, down, stable]
+    series_id: cpi_headline_yoy
+  CPI_CORE:
+    gloss: Consumer price inflation excluding food and fuel.
+    group: prices
+    unit: percent year on year
+    allowed_directions: [up, down, stable]
+    series_id: cpi_core_yoy
+  CPI_FOOD:
+    gloss: Consumer food price inflation, the largest weight in India's CPI basket.
+    group: prices
+    unit: percent year on year
+    allowed_directions: [up, down, stable]
+    series_id: cpi_food_yoy
+  CPI_FUEL_LIGHT:
+    gloss: The fuel and light sub-index of CPI.
+    group: prices
+    unit: percent year on year
+    allowed_directions: [up, down, stable]
+    series_id: null
+  WPI:
+    gloss: Wholesale price index inflation, which turns on fuel and metals faster than CPI.
+    group: prices
+    unit: percent year on year
+    allowed_directions: [up, down, stable]
+    series_id: null
+  INFLATION_EXPECTATIONS:
+    gloss: Household and market expectations of future inflation.
+    group: prices
+    unit: percent
+    allowed_directions: [up, down]
+    series_id: null
+
+  # --- monetary policy and rates ------------------------------------------
+  REPO_RATE:
+    gloss: RBI's policy repo rate.
+    group: policy
+    unit: percent
+    allowed_directions: [up, down, stable]
+    series_id: repo_rate_pct
+  RBI_STANCE:
+    gloss: The stated monetary policy stance. Up means more hawkish.
+    group: policy
+    unit: stance
+    allowed_directions: [up, down, stable]
+    series_id: null
+  RATE_HIKE_EXPECTATIONS:
+    gloss: Market expectation that the RBI will raise rates at upcoming meetings.
+    group: policy
+    unit: qualitative expectation
+    allowed_directions: [up, down]
+    series_id: null
+  CRR:
+    gloss: Cash reserve ratio banks must hold with the RBI.
+    group: policy
+    unit: percent
+    allowed_directions: [up, down, stable]
+    series_id: null
+  GSEC_10Y:
+    gloss: Yield on the 10-year benchmark government security.
+    group: rates
+    unit: percent
+    allowed_directions: [up, down, stable]
+    series_id: gsec_10y_pct
+  CORPORATE_BOND_SPREAD:
+    gloss: Spread of AAA corporate bonds over the matching government security.
+    group: rates
+    unit: basis points
+    allowed_directions: [up, down, stable]
+    series_id: null
+  LENDING_RATES:
+    gloss: Bank lending rates to borrowers, via MCLR and external benchmarks.
+    group: rates
+    unit: percent
+    allowed_directions: [up, down, stable]
+    series_id: null
+
+  # --- banking and liquidity ----------------------------------------------
+  BANKING_LIQUIDITY:
+    gloss: Surplus or deficit of system liquidity under the RBI's liquidity facility.
+    group: banking
+    unit: INR lakh crore
+    allowed_directions: [up, down, stable]
+    series_id: null
+  CALL_MONEY_RATE:
+    gloss: Weighted average call rate, the operating target of monetary policy.
+    group: banking
+    unit: percent
+    allowed_directions: [up, down, stable]
+    series_id: null
+  CREDIT_GROWTH:
+    gloss: Growth in outstanding bank credit.
+    group: banking
+    unit: percent year on year
+    allowed_directions: [up, down, stable]
+    series_id: null
+
+  # --- fiscal --------------------------------------------------------------
+  FISCAL_DEFICIT:
+    gloss: Union government fiscal deficit against its budget target.
+    group: fiscal
+    unit: percent of GDP
+    allowed_directions: [up, down, stable]
+    series_id: null
+  FUEL_EXCISE_DUTY:
+    gloss: Central excise duty on petrol and diesel, the usual lever against pump-price spikes.
+    group: fiscal
+    unit: INR per litre
+    allowed_directions: [up, down, stable]
+    series_id: null
+  FUEL_SUBSIDY:
+    gloss: Budgetary subsidy burden on cooking fuel, mainly LPG.
+    group: fiscal
+    unit: INR crore
+    allowed_directions: [up, down]
+    series_id: null
+  GST_COLLECTIONS:
+    gloss: Monthly goods and services tax collections.
+    group: fiscal
+    unit: INR lakh crore per month
+    allowed_directions: [up, down, stable]
+    series_id: null
+  GOVT_BORROWING:
+    gloss: The size of the government's dated-securities borrowing programme.
+    group: fiscal
+    unit: INR lakh crore
+    allowed_directions: [up, down, stable]
+    series_id: null
+
+  # --- markets and flows ---------------------------------------------------
+  NIFTY50:
+    gloss: Nifty 50 benchmark equity index.
+    group: markets
+    unit: index
+    allowed_directions: [up, down, stable]
+    series_id: nifty50
+  BANK_NIFTY:
+    gloss: Bank Nifty index, the banking sector benchmark.
+    group: markets
+    unit: index
+    allowed_directions: [up, down, stable]
+    series_id: null
+  FPI_FLOWS:
+    gloss: Net foreign portfolio investor flows into Indian equity and debt.
+    group: markets
+    unit: USD million, net
+    allowed_directions: [up, down, stable]
+    series_id: fpi_flows_usd_mn
+  OMC_MARGINS:
+    gloss: Marketing margins of the state oil marketing companies on retail fuel.
+    group: markets
+    unit: INR per litre
+    allowed_directions: [up, down]
+    series_id: null
+
+  # --- sectors -------------------------------------------------------------
+  AIRLINE_COSTS:
+    gloss: Airline operating costs, of which ATF is the largest single component.
+    group: sectors
+    unit: qualitative cost pressure
+    allowed_directions: [up, down]
+    series_id: null
+  AIRLINE_SHARES:
+    gloss: Share prices of listed Indian carriers.
+    group: sectors
+    unit: index
+    allowed_directions: [up, down, stable]
+    series_id: null
+  AIRFARES:
+    gloss: Domestic air ticket prices.
+    group: sectors
+    unit: INR per ticket
+    allowed_directions: [up, down, stable]
+    series_id: null
+
+  # --- real economy --------------------------------------------------------
+  GDP_GROWTH:
+    gloss: Real gross domestic product growth.
+    group: real
+    unit: percent year on year
+    allowed_directions: [up, down, stable]
+    series_id: null
+  IIP:
+    gloss: Index of industrial production.
+    group: real
+    unit: percent year on year
+    allowed_directions: [up, down, stable]
+    series_id: null

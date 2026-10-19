@@ -1,0 +1,127 @@
+{
+  "$defs": {
+    "SourceKind": {
+      "description": "News copy and official documents are retrieved together but weighted differently.",
+      "enum": [
+        "news",
+        "official"
+      ],
+      "title": "SourceKind",
+      "type": "string"
+    }
+  },
+  "$id": "https://github.com/lma-major/schemas/passage.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One paragraph of one document, with offsets back into the document text.\n\nChunking happens at paragraph level (A5). `char_start` / `char_end` index into\nthe *normalised document text* stored alongside the corpus, so a verifier can\nre-read the exact bytes an edge quotes.",
+  "properties": {
+    "char_end": {
+      "description": "Exclusive end offset of `text`.",
+      "exclusiveMinimum": 0,
+      "title": "Char End",
+      "type": "integer"
+    },
+    "char_start": {
+      "description": "Offset of `text` in the document text.",
+      "minimum": 0,
+      "title": "Char Start",
+      "type": "integer"
+    },
+    "doc_id": {
+      "description": "Stable id of the parent document.",
+      "minLength": 1,
+      "title": "Doc Id",
+      "type": "string"
+    },
+    "licence_note": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Licence Note"
+    },
+    "para_idx": {
+      "description": "0-based paragraph index within the document.",
+      "minimum": 0,
+      "title": "Para Idx",
+      "type": "integer"
+    },
+    "passage_id": {
+      "description": "Stable id, conventionally '<doc_id>#p<para_idx>'.",
+      "minLength": 1,
+      "title": "Passage Id",
+      "type": "string"
+    },
+    "published_at": {
+      "description": "Publication timestamp. The as-of filter compares its date component.",
+      "format": "date-time",
+      "title": "Published At",
+      "type": "string"
+    },
+    "section": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "e.g. 'lede', 'body', 'minutes-para-14'.",
+      "title": "Section"
+    },
+    "source": {
+      "description": "Publication or issuing body, e.g. 'businessline', 'rbi', 'ppac'.",
+      "minLength": 1,
+      "title": "Source",
+      "type": "string"
+    },
+    "source_kind": {
+      "$ref": "#/$defs/SourceKind",
+      "default": "news"
+    },
+    "text": {
+      "description": "The paragraph itself, normalised whitespace.",
+      "minLength": 1,
+      "title": "Text",
+      "type": "string"
+    },
+    "title": {
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Canonical URL, null for offline PDFs.",
+      "title": "Url"
+    }
+  },
+  "required": [
+    "passage_id",
+    "doc_id",
+    "source",
+    "published_at",
+    "title",
+    "text",
+    "para_idx",
+    "char_start",
+    "char_end"
+  ],
+  "title": "Passage",
+  "type": "object"
+}

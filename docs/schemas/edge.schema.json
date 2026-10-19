@@ -1,0 +1,237 @@
+{
+  "$defs": {
+    "CandidateEvidence": {
+      "additionalProperties": false,
+      "description": "A passage the verifier considered and did not accept.\n\nKept for failure analysis. It never counts as support, which is why it lives\noutside `evidence_span`.",
+      "properties": {
+        "doc_id": {
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "passage_id": {
+          "title": "Passage Id",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "span": {
+          "minLength": 1,
+          "title": "Span",
+          "type": "string"
+        },
+        "verdict": {
+          "$ref": "#/$defs/VerifyVerdict"
+        }
+      },
+      "required": [
+        "passage_id",
+        "doc_id",
+        "span",
+        "verdict"
+      ],
+      "title": "CandidateEvidence",
+      "type": "object"
+    },
+    "Direction": {
+      "description": "Which way the destination variable moves on this edge.",
+      "enum": [
+        "up",
+        "down",
+        "stable"
+      ],
+      "title": "Direction",
+      "type": "string"
+    },
+    "Provenance": {
+      "description": "Where an edge's support comes from. Set only by the verifier in M / A-NoLoop.",
+      "enum": [
+        "source_asserted",
+        "model_inferred"
+      ],
+      "title": "Provenance",
+      "type": "string"
+    },
+    "Strength": {
+      "description": "Causal-strength label, adapted from Yu et al. (2019) and the Causal News Corpus.",
+      "enum": [
+        "direct",
+        "conditional",
+        "correlational"
+      ],
+      "title": "Strength",
+      "type": "string"
+    },
+    "VerifyVerdict": {
+      "description": "Outcome of one verify_edge call.",
+      "enum": [
+        "supported",
+        "unsupported",
+        "contradicted",
+        "out_of_corpus",
+        "after_as_of"
+      ],
+      "title": "VerifyVerdict",
+      "type": "string"
+    }
+  },
+  "$id": "https://github.com/lma-major/schemas/edge.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "One causal link in an event-impact graph.\n\n`hop` is the distance of this edge's destination from the anchor event: an\nedge leaving the anchor is hop 1. Every headline metric is sliced on it.",
+  "properties": {
+    "candidate_evidence": {
+      "description": "Passages the verifier rejected. Never counts as support.",
+      "items": {
+        "$ref": "#/$defs/CandidateEvidence"
+      },
+      "title": "Candidate Evidence",
+      "type": "array"
+    },
+    "direction": {
+      "$ref": "#/$defs/Direction",
+      "description": "Which way `dst_var` moves."
+    },
+    "dst_var": {
+      "maxLength": 40,
+      "minLength": 2,
+      "pattern": "^[A-Z][A-Z0-9_]*$",
+      "title": "Dst Var",
+      "type": "string"
+    },
+    "edge_id": {
+      "minLength": 1,
+      "title": "Edge Id",
+      "type": "string"
+    },
+    "evidence_doc_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Document the span was quoted from.",
+      "title": "Evidence Doc Id"
+    },
+    "evidence_passage_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Passage the span was quoted from, when known.",
+      "title": "Evidence Passage Id"
+    },
+    "evidence_published_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Publication timestamp of the evidence, for the as-of check.",
+      "title": "Evidence Published At"
+    },
+    "evidence_span": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Verbatim quote from the evidence passage. Required when source_asserted.",
+      "title": "Evidence Span"
+    },
+    "hop": {
+      "description": "1 for an edge leaving the anchor event.",
+      "exclusiveMinimum": 0,
+      "title": "Hop",
+      "type": "integer"
+    },
+    "note": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Note"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "src_var": {
+      "maxLength": 40,
+      "minLength": 2,
+      "pattern": "^[A-Z][A-Z0-9_]*$",
+      "title": "Src Var",
+      "type": "string"
+    },
+    "strength": {
+      "$ref": "#/$defs/Strength"
+    },
+    "verdict": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/VerifyVerdict"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "verified_by": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "'rules', 'llm', 'rules+llm', 'self-label' (B2) or None.",
+      "title": "Verified By"
+    }
+  },
+  "required": [
+    "edge_id",
+    "src_var",
+    "dst_var",
+    "direction",
+    "provenance",
+    "strength",
+    "hop"
+  ],
+  "title": "Edge",
+  "type": "object"
+}

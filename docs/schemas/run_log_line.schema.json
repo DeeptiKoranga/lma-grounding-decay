@@ -1,0 +1,2152 @@
+{
+  "$defs": {
+    "CandidateEvidence": {
+      "additionalProperties": false,
+      "description": "A passage the verifier considered and did not accept.\n\nKept for failure analysis. It never counts as support, which is why it lives\noutside `evidence_span`.",
+      "properties": {
+        "doc_id": {
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "passage_id": {
+          "title": "Passage Id",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "span": {
+          "minLength": 1,
+          "title": "Span",
+          "type": "string"
+        },
+        "verdict": {
+          "$ref": "#/$defs/VerifyVerdict"
+        }
+      },
+      "required": [
+        "passage_id",
+        "doc_id",
+        "span",
+        "verdict"
+      ],
+      "title": "CandidateEvidence",
+      "type": "object"
+    },
+    "Condition": {
+      "description": "The seven experimental conditions. One code path, seven configs (C5).",
+      "enum": [
+        "B0",
+        "B1",
+        "B1-R",
+        "B2",
+        "A-NoVerify",
+        "A-NoLoop",
+        "M"
+      ],
+      "title": "Condition",
+      "type": "string"
+    },
+    "CounterSearchArgs": {
+      "additionalProperties": false,
+      "description": "Look for a competing cause of the same move, used on 'why' questions.",
+      "properties": {
+        "as_of": {
+          "format": "date",
+          "title": "As Of",
+          "type": "string"
+        },
+        "direction": {
+          "$ref": "#/$defs/Direction"
+        },
+        "dst_var": {
+          "minLength": 1,
+          "title": "Dst Var",
+          "type": "string"
+        },
+        "exclude_src_vars": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Exclude Src Vars",
+          "type": "array"
+        },
+        "k": {
+          "default": 10,
+          "maximum": 50,
+          "minimum": 1,
+          "title": "K",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "dst_var",
+        "direction",
+        "as_of"
+      ],
+      "title": "CounterSearchArgs",
+      "type": "object"
+    },
+    "CounterSearchCall": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "$ref": "#/$defs/CounterSearchArgs"
+        },
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "query_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Query Id"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "step": {
+          "description": "0-based position in the agent loop.",
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "tool": {
+          "const": "counter_search",
+          "default": "counter_search",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "step",
+        "args"
+      ],
+      "title": "CounterSearchCall",
+      "type": "object"
+    },
+    "CounterSearchResult": {
+      "additionalProperties": false,
+      "properties": {
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "competing_src_vars": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Competing Src Vars",
+          "type": "array"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ToolError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latency Ms"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "passages": {
+          "items": {
+            "$ref": "#/$defs/Passage"
+          },
+          "title": "Passages",
+          "type": "array"
+        },
+        "tool": {
+          "const": "counter_search",
+          "default": "counter_search",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id"
+      ],
+      "title": "CounterSearchResult",
+      "type": "object"
+    },
+    "Direction": {
+      "description": "Which way the destination variable moves on this edge.",
+      "enum": [
+        "up",
+        "down",
+        "stable"
+      ],
+      "title": "Direction",
+      "type": "string"
+    },
+    "Edge": {
+      "additionalProperties": false,
+      "description": "One causal link in an event-impact graph.\n\n`hop` is the distance of this edge's destination from the anchor event: an\nedge leaving the anchor is hop 1. Every headline metric is sliced on it.",
+      "properties": {
+        "candidate_evidence": {
+          "description": "Passages the verifier rejected. Never counts as support.",
+          "items": {
+            "$ref": "#/$defs/CandidateEvidence"
+          },
+          "title": "Candidate Evidence",
+          "type": "array"
+        },
+        "direction": {
+          "$ref": "#/$defs/Direction",
+          "description": "Which way `dst_var` moves."
+        },
+        "dst_var": {
+          "maxLength": 40,
+          "minLength": 2,
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "title": "Dst Var",
+          "type": "string"
+        },
+        "edge_id": {
+          "minLength": 1,
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "evidence_doc_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Document the span was quoted from.",
+          "title": "Evidence Doc Id"
+        },
+        "evidence_passage_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Passage the span was quoted from, when known.",
+          "title": "Evidence Passage Id"
+        },
+        "evidence_published_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Publication timestamp of the evidence, for the as-of check.",
+          "title": "Evidence Published At"
+        },
+        "evidence_span": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Verbatim quote from the evidence passage. Required when source_asserted.",
+          "title": "Evidence Span"
+        },
+        "hop": {
+          "description": "1 for an edge leaving the anchor event.",
+          "exclusiveMinimum": 0,
+          "title": "Hop",
+          "type": "integer"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "src_var": {
+          "maxLength": 40,
+          "minLength": 2,
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "title": "Src Var",
+          "type": "string"
+        },
+        "strength": {
+          "$ref": "#/$defs/Strength"
+        },
+        "verdict": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VerifyVerdict"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "verified_by": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "'rules', 'llm', 'rules+llm', 'self-label' (B2) or None.",
+          "title": "Verified By"
+        }
+      },
+      "required": [
+        "edge_id",
+        "src_var",
+        "dst_var",
+        "direction",
+        "provenance",
+        "strength",
+        "hop"
+      ],
+      "title": "Edge",
+      "type": "object"
+    },
+    "ErrorLine": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "$ref": "#/$defs/Condition"
+        },
+        "event": {
+          "const": "error",
+          "default": "error",
+          "title": "Event",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "query_id": {
+          "minLength": 1,
+          "title": "Query Id",
+          "type": "string"
+        },
+        "recoverable": {
+          "default": true,
+          "title": "Recoverable",
+          "type": "boolean"
+        },
+        "run_id": {
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "step": {
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "title": "Ts",
+          "type": "string"
+        },
+        "where": {
+          "minLength": 1,
+          "title": "Where",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "query_id",
+        "condition",
+        "step",
+        "ts",
+        "where",
+        "message"
+      ],
+      "title": "ErrorLine",
+      "type": "object"
+    },
+    "GetSeriesArgs": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "format": "date",
+          "title": "As Of",
+          "type": "string"
+        },
+        "end": {
+          "format": "date",
+          "title": "End",
+          "type": "string"
+        },
+        "series_id": {
+          "minLength": 1,
+          "title": "Series Id",
+          "type": "string"
+        },
+        "start": {
+          "format": "date",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "series_id",
+        "start",
+        "end",
+        "as_of"
+      ],
+      "title": "GetSeriesArgs",
+      "type": "object"
+    },
+    "GetSeriesCall": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "$ref": "#/$defs/GetSeriesArgs"
+        },
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "query_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Query Id"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "step": {
+          "description": "0-based position in the agent loop.",
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "tool": {
+          "const": "get_series",
+          "default": "get_series",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "step",
+        "args"
+      ],
+      "title": "GetSeriesCall",
+      "type": "object"
+    },
+    "GetSeriesResult": {
+      "additionalProperties": false,
+      "properties": {
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ToolError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latency Ms"
+        },
+        "move": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Direction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Confirms a move happened. Never evidence for an edge."
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "points": {
+          "items": {
+            "$ref": "#/$defs/SeriesPoint"
+          },
+          "title": "Points",
+          "type": "array"
+        },
+        "series_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Series Id"
+        },
+        "tool": {
+          "const": "get_series",
+          "default": "get_series",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id"
+      ],
+      "title": "GetSeriesResult",
+      "type": "object"
+    },
+    "GraphNode": {
+      "additionalProperties": false,
+      "description": "A variable as it appears in one graph, with the move attributed to it.",
+      "properties": {
+        "confirmed_by_series": {
+          "default": false,
+          "description": "A macro series confirms the move happened. Never evidence for an edge.",
+          "title": "Confirmed By Series",
+          "type": "boolean"
+        },
+        "direction": {
+          "$ref": "#/$defs/Direction"
+        },
+        "is_anchor": {
+          "default": false,
+          "title": "Is Anchor",
+          "type": "boolean"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Display label, e.g. 'crude imports'.",
+          "title": "Label"
+        },
+        "series_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Series Id"
+        },
+        "var": {
+          "maxLength": 40,
+          "minLength": 2,
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "title": "Var",
+          "type": "string"
+        }
+      },
+      "required": [
+        "var",
+        "direction"
+      ],
+      "title": "GraphNode",
+      "type": "object"
+    },
+    "ModelCallLine": {
+      "additionalProperties": false,
+      "description": "One generation. Prompts are stored in full; a hash is kept for dedup.",
+      "properties": {
+        "backend": {
+          "enum": [
+            "mlx",
+            "llama.cpp",
+            "vllm",
+            "api"
+          ],
+          "title": "Backend",
+          "type": "string"
+        },
+        "completion": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Completion"
+        },
+        "completion_tokens": {
+          "minimum": 0,
+          "title": "Completion Tokens",
+          "type": "integer"
+        },
+        "condition": {
+          "$ref": "#/$defs/Condition"
+        },
+        "event": {
+          "const": "model_call",
+          "default": "model_call",
+          "title": "Event",
+          "type": "string"
+        },
+        "json_valid": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Did the output parse under the expected schema?",
+          "title": "Json Valid"
+        },
+        "latency_ms": {
+          "minimum": 0,
+          "title": "Latency Ms",
+          "type": "number"
+        },
+        "model": {
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "prompt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Full prompt text when kept inline.",
+          "title": "Prompt"
+        },
+        "prompt_sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Prompt Sha256",
+          "type": "string"
+        },
+        "prompt_tokens": {
+          "minimum": 0,
+          "title": "Prompt Tokens",
+          "type": "integer"
+        },
+        "purpose": {
+          "enum": [
+            "parse_query",
+            "extract",
+            "bridge",
+            "verify",
+            "answer",
+            "control"
+          ],
+          "title": "Purpose",
+          "type": "string"
+        },
+        "query_id": {
+          "minLength": 1,
+          "title": "Query Id",
+          "type": "string"
+        },
+        "run_id": {
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "step": {
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "temperature": {
+          "maximum": 2.0,
+          "minimum": 0.0,
+          "title": "Temperature",
+          "type": "number"
+        },
+        "ts": {
+          "format": "date-time",
+          "title": "Ts",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "query_id",
+        "condition",
+        "step",
+        "ts",
+        "purpose",
+        "model",
+        "backend",
+        "temperature",
+        "prompt_sha256",
+        "prompt_tokens",
+        "completion_tokens",
+        "latency_ms"
+      ],
+      "title": "ModelCallLine",
+      "type": "object"
+    },
+    "Passage": {
+      "additionalProperties": false,
+      "description": "One paragraph of one document, with offsets back into the document text.\n\nChunking happens at paragraph level (A5). `char_start` / `char_end` index into\nthe *normalised document text* stored alongside the corpus, so a verifier can\nre-read the exact bytes an edge quotes.",
+      "properties": {
+        "char_end": {
+          "description": "Exclusive end offset of `text`.",
+          "exclusiveMinimum": 0,
+          "title": "Char End",
+          "type": "integer"
+        },
+        "char_start": {
+          "description": "Offset of `text` in the document text.",
+          "minimum": 0,
+          "title": "Char Start",
+          "type": "integer"
+        },
+        "doc_id": {
+          "description": "Stable id of the parent document.",
+          "minLength": 1,
+          "title": "Doc Id",
+          "type": "string"
+        },
+        "licence_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Licence Note"
+        },
+        "para_idx": {
+          "description": "0-based paragraph index within the document.",
+          "minimum": 0,
+          "title": "Para Idx",
+          "type": "integer"
+        },
+        "passage_id": {
+          "description": "Stable id, conventionally '<doc_id>#p<para_idx>'.",
+          "minLength": 1,
+          "title": "Passage Id",
+          "type": "string"
+        },
+        "published_at": {
+          "description": "Publication timestamp. The as-of filter compares its date component.",
+          "format": "date-time",
+          "title": "Published At",
+          "type": "string"
+        },
+        "section": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "e.g. 'lede', 'body', 'minutes-para-14'.",
+          "title": "Section"
+        },
+        "source": {
+          "description": "Publication or issuing body, e.g. 'businessline', 'rbi', 'ppac'.",
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "source_kind": {
+          "$ref": "#/$defs/SourceKind",
+          "default": "news"
+        },
+        "text": {
+          "description": "The paragraph itself, normalised whitespace.",
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Canonical URL, null for offline PDFs.",
+          "title": "Url"
+        }
+      },
+      "required": [
+        "passage_id",
+        "doc_id",
+        "source",
+        "published_at",
+        "title",
+        "text",
+        "para_idx",
+        "char_start",
+        "char_end"
+      ],
+      "title": "Passage",
+      "type": "object"
+    },
+    "Provenance": {
+      "description": "Where an edge's support comes from. Set only by the verifier in M / A-NoLoop.",
+      "enum": [
+        "source_asserted",
+        "model_inferred"
+      ],
+      "title": "Provenance",
+      "type": "string"
+    },
+    "SearchCorpusArgs": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "description": "Enforced in code; the model cannot widen it.",
+          "format": "date",
+          "title": "As Of",
+          "type": "string"
+        },
+        "k": {
+          "default": 10,
+          "maximum": 50,
+          "minimum": 1,
+          "title": "K",
+          "type": "integer"
+        },
+        "must_mention": {
+          "description": "Variable ids both of which an evidence passage should mention.",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4,
+          "title": "Must Mention",
+          "type": "array"
+        },
+        "query": {
+          "minLength": 1,
+          "title": "Query",
+          "type": "string"
+        },
+        "source_kind": {
+          "default": "any",
+          "enum": [
+            "news",
+            "official",
+            "any"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "query",
+        "as_of"
+      ],
+      "title": "SearchCorpusArgs",
+      "type": "object"
+    },
+    "SearchCorpusCall": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "$ref": "#/$defs/SearchCorpusArgs"
+        },
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "query_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Query Id"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "step": {
+          "description": "0-based position in the agent loop.",
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "tool": {
+          "const": "search_corpus",
+          "default": "search_corpus",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "step",
+        "args"
+      ],
+      "title": "SearchCorpusCall",
+      "type": "object"
+    },
+    "SearchCorpusResult": {
+      "additionalProperties": false,
+      "properties": {
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ToolError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latency Ms"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "passages": {
+          "items": {
+            "$ref": "#/$defs/Passage"
+          },
+          "title": "Passages",
+          "type": "array"
+        },
+        "scores": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Scores",
+          "type": "array"
+        },
+        "tool": {
+          "const": "search_corpus",
+          "default": "search_corpus",
+          "title": "Tool",
+          "type": "string"
+        },
+        "truncated": {
+          "default": false,
+          "title": "Truncated",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "call_id"
+      ],
+      "title": "SearchCorpusResult",
+      "type": "object"
+    },
+    "SeriesPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "on": {
+          "format": "date",
+          "title": "On",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "on",
+        "value"
+      ],
+      "title": "SeriesPoint",
+      "type": "object"
+    },
+    "SourceKind": {
+      "description": "News copy and official documents are retrieved together but weighted differently.",
+      "enum": [
+        "news",
+        "official"
+      ],
+      "title": "SourceKind",
+      "type": "string"
+    },
+    "StateLine": {
+      "additionalProperties": false,
+      "description": "Controller state after a step. Drives the redundant-search metric.",
+      "properties": {
+        "budget_remaining": {
+          "minimum": 0,
+          "title": "Budget Remaining",
+          "type": "integer"
+        },
+        "condition": {
+          "$ref": "#/$defs/Condition"
+        },
+        "event": {
+          "const": "state",
+          "default": "state",
+          "title": "Event",
+          "type": "string"
+        },
+        "next_action": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Action"
+        },
+        "open_edges": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Open Edges",
+          "type": "array"
+        },
+        "query_id": {
+          "minLength": 1,
+          "title": "Query Id",
+          "type": "string"
+        },
+        "run_id": {
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "searches_done": {
+          "minimum": 0,
+          "title": "Searches Done",
+          "type": "integer"
+        },
+        "step": {
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "title": "Ts",
+          "type": "string"
+        },
+        "verified_edges": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Verified Edges",
+          "type": "array"
+        }
+      },
+      "required": [
+        "run_id",
+        "query_id",
+        "condition",
+        "step",
+        "ts",
+        "searches_done",
+        "budget_remaining"
+      ],
+      "title": "StateLine",
+      "type": "object"
+    },
+    "StopArgs": {
+      "additionalProperties": false,
+      "properties": {
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        },
+        "reason": {
+          "enum": [
+            "important_edges_resolved",
+            "two_searches_added_nothing",
+            "budget_exhausted"
+          ],
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "title": "StopArgs",
+      "type": "object"
+    },
+    "StopCall": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "$ref": "#/$defs/StopArgs"
+        },
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "query_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Query Id"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "step": {
+          "description": "0-based position in the agent loop.",
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "tool": {
+          "const": "stop",
+          "default": "stop",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "step",
+        "args"
+      ],
+      "title": "StopCall",
+      "type": "object"
+    },
+    "StopLine": {
+      "additionalProperties": false,
+      "properties": {
+        "calls_used": {
+          "minimum": 0,
+          "title": "Calls Used",
+          "type": "integer"
+        },
+        "condition": {
+          "$ref": "#/$defs/Condition"
+        },
+        "event": {
+          "const": "stop",
+          "default": "stop",
+          "title": "Event",
+          "type": "string"
+        },
+        "open_edges_remaining": {
+          "minimum": 0,
+          "title": "Open Edges Remaining",
+          "type": "integer"
+        },
+        "query_id": {
+          "minLength": 1,
+          "title": "Query Id",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "important_edges_resolved",
+            "two_searches_added_nothing",
+            "budget_exhausted",
+            "error"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "run_id": {
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "step": {
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "title": "Ts",
+          "type": "string"
+        },
+        "wall_clock_s": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Wall Clock S"
+        }
+      },
+      "required": [
+        "run_id",
+        "query_id",
+        "condition",
+        "step",
+        "ts",
+        "reason",
+        "calls_used",
+        "open_edges_remaining"
+      ],
+      "title": "StopLine",
+      "type": "object"
+    },
+    "StopResult": {
+      "additionalProperties": false,
+      "properties": {
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "calls_used": {
+          "anyOf": [
+            {
+              "maximum": 12,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Calls Used"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ToolError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latency Ms"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "open_edges_remaining": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Open Edges Remaining"
+        },
+        "tool": {
+          "const": "stop",
+          "default": "stop",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id"
+      ],
+      "title": "StopResult",
+      "type": "object"
+    },
+    "Strength": {
+      "description": "Causal-strength label, adapted from Yu et al. (2019) and the Causal News Corpus.",
+      "enum": [
+        "direct",
+        "conditional",
+        "correlational"
+      ],
+      "title": "Strength",
+      "type": "string"
+    },
+    "ToolCallLine": {
+      "additionalProperties": false,
+      "properties": {
+        "budget_remaining": {
+          "minimum": 0,
+          "title": "Budget Remaining",
+          "type": "integer"
+        },
+        "call": {
+          "discriminator": {
+            "mapping": {
+              "counter_search": "#/$defs/CounterSearchCall",
+              "get_series": "#/$defs/GetSeriesCall",
+              "search_corpus": "#/$defs/SearchCorpusCall",
+              "stop": "#/$defs/StopCall",
+              "update_graph": "#/$defs/UpdateGraphCall",
+              "verify_edge": "#/$defs/VerifyEdgeCall"
+            },
+            "propertyName": "tool"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/SearchCorpusCall"
+            },
+            {
+              "$ref": "#/$defs/GetSeriesCall"
+            },
+            {
+              "$ref": "#/$defs/VerifyEdgeCall"
+            },
+            {
+              "$ref": "#/$defs/CounterSearchCall"
+            },
+            {
+              "$ref": "#/$defs/UpdateGraphCall"
+            },
+            {
+              "$ref": "#/$defs/StopCall"
+            }
+          ],
+          "title": "Call"
+        },
+        "condition": {
+          "$ref": "#/$defs/Condition"
+        },
+        "event": {
+          "const": "tool_call",
+          "default": "tool_call",
+          "title": "Event",
+          "type": "string"
+        },
+        "query_id": {
+          "minLength": 1,
+          "title": "Query Id",
+          "type": "string"
+        },
+        "run_id": {
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "step": {
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "title": "Ts",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "query_id",
+        "condition",
+        "step",
+        "ts",
+        "budget_remaining",
+        "call"
+      ],
+      "title": "ToolCallLine",
+      "type": "object"
+    },
+    "ToolError": {
+      "additionalProperties": false,
+      "description": "A scripted or real tool fault (C9 uses 20 of these).",
+      "properties": {
+        "kind": {
+          "enum": [
+            "empty_result",
+            "bad_arguments",
+            "unknown_series",
+            "unknown_edge",
+            "after_as_of",
+            "budget_exhausted",
+            "backend_error"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "message": {
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "message"
+      ],
+      "title": "ToolError",
+      "type": "object"
+    },
+    "ToolResultLine": {
+      "additionalProperties": false,
+      "properties": {
+        "condition": {
+          "$ref": "#/$defs/Condition"
+        },
+        "event": {
+          "const": "tool_result",
+          "default": "tool_result",
+          "title": "Event",
+          "type": "string"
+        },
+        "new_passages": {
+          "default": 0,
+          "description": "Passages not seen earlier this run.",
+          "minimum": 0,
+          "title": "New Passages",
+          "type": "integer"
+        },
+        "query_id": {
+          "minLength": 1,
+          "title": "Query Id",
+          "type": "string"
+        },
+        "result": {
+          "discriminator": {
+            "mapping": {
+              "counter_search": "#/$defs/CounterSearchResult",
+              "get_series": "#/$defs/GetSeriesResult",
+              "search_corpus": "#/$defs/SearchCorpusResult",
+              "stop": "#/$defs/StopResult",
+              "update_graph": "#/$defs/UpdateGraphResult",
+              "verify_edge": "#/$defs/VerifyEdgeResult"
+            },
+            "propertyName": "tool"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/SearchCorpusResult"
+            },
+            {
+              "$ref": "#/$defs/GetSeriesResult"
+            },
+            {
+              "$ref": "#/$defs/VerifyEdgeResult"
+            },
+            {
+              "$ref": "#/$defs/CounterSearchResult"
+            },
+            {
+              "$ref": "#/$defs/UpdateGraphResult"
+            },
+            {
+              "$ref": "#/$defs/StopResult"
+            }
+          ],
+          "title": "Result"
+        },
+        "run_id": {
+          "minLength": 1,
+          "title": "Run Id",
+          "type": "string"
+        },
+        "step": {
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "ts": {
+          "format": "date-time",
+          "title": "Ts",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "query_id",
+        "condition",
+        "step",
+        "ts",
+        "result"
+      ],
+      "title": "ToolResultLine",
+      "type": "object"
+    },
+    "UpdateGraphArgs": {
+      "additionalProperties": false,
+      "properties": {
+        "edge": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Edge"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "edge_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Edge Id"
+        },
+        "node": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/GraphNode"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "op": {
+          "enum": [
+            "add_node",
+            "add_edge",
+            "relabel_edge",
+            "drop_edge"
+          ],
+          "title": "Op",
+          "type": "string"
+        },
+        "provenance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Provenance"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "strength": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Strength"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "op"
+      ],
+      "title": "UpdateGraphArgs",
+      "type": "object"
+    },
+    "UpdateGraphCall": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "$ref": "#/$defs/UpdateGraphArgs"
+        },
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "query_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Query Id"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "step": {
+          "description": "0-based position in the agent loop.",
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "tool": {
+          "const": "update_graph",
+          "default": "update_graph",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "step",
+        "args"
+      ],
+      "title": "UpdateGraphCall",
+      "type": "object"
+    },
+    "UpdateGraphResult": {
+      "additionalProperties": false,
+      "properties": {
+        "applied": {
+          "default": false,
+          "title": "Applied",
+          "type": "boolean"
+        },
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ToolError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "graph_version": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Graph Version"
+        },
+        "latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latency Ms"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "tool": {
+          "const": "update_graph",
+          "default": "update_graph",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id"
+      ],
+      "title": "UpdateGraphResult",
+      "type": "object"
+    },
+    "VerifyEdgeArgs": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "format": "date",
+          "title": "As Of",
+          "type": "string"
+        },
+        "edge_id": {
+          "minLength": 1,
+          "title": "Edge Id",
+          "type": "string"
+        },
+        "passage_ids": {
+          "description": "Candidate passages to judge against.",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Passage Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "edge_id",
+        "as_of"
+      ],
+      "title": "VerifyEdgeArgs",
+      "type": "object"
+    },
+    "VerifyEdgeCall": {
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "$ref": "#/$defs/VerifyEdgeArgs"
+        },
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "query_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Query Id"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "step": {
+          "description": "0-based position in the agent loop.",
+          "minimum": 0,
+          "title": "Step",
+          "type": "integer"
+        },
+        "tool": {
+          "const": "verify_edge",
+          "default": "verify_edge",
+          "title": "Tool",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "step",
+        "args"
+      ],
+      "title": "VerifyEdgeCall",
+      "type": "object"
+    },
+    "VerifyEdgeResult": {
+      "additionalProperties": false,
+      "properties": {
+        "call_id": {
+          "minLength": 1,
+          "title": "Call Id",
+          "type": "string"
+        },
+        "direction": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Direction"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "edge_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Edge Id"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ToolError"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "evidence_passage_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Passage Id"
+        },
+        "evidence_span": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Evidence Span"
+        },
+        "latency_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Latency Ms"
+        },
+        "ok": {
+          "default": true,
+          "title": "Ok",
+          "type": "boolean"
+        },
+        "provenance": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Provenance"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "rule_failures": {
+          "description": "Which of the rule-layer checks (B6) failed.",
+          "items": {
+            "type": "string"
+          },
+          "title": "Rule Failures",
+          "type": "array"
+        },
+        "strength": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Strength"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "tool": {
+          "const": "verify_edge",
+          "default": "verify_edge",
+          "title": "Tool",
+          "type": "string"
+        },
+        "verdict": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/VerifyVerdict"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "call_id"
+      ],
+      "title": "VerifyEdgeResult",
+      "type": "object"
+    },
+    "VerifyVerdict": {
+      "description": "Outcome of one verify_edge call.",
+      "enum": [
+        "supported",
+        "unsupported",
+        "contradicted",
+        "out_of_corpus",
+        "after_as_of"
+      ],
+      "title": "VerifyVerdict",
+      "type": "string"
+    }
+  },
+  "$id": "https://github.com/lma-major/schemas/run_log_line.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "discriminator": {
+    "mapping": {
+      "error": "#/$defs/ErrorLine",
+      "model_call": "#/$defs/ModelCallLine",
+      "state": "#/$defs/StateLine",
+      "stop": "#/$defs/StopLine",
+      "tool_call": "#/$defs/ToolCallLine",
+      "tool_result": "#/$defs/ToolResultLine"
+    },
+    "propertyName": "event"
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/ModelCallLine"
+    },
+    {
+      "$ref": "#/$defs/ToolCallLine"
+    },
+    {
+      "$ref": "#/$defs/ToolResultLine"
+    },
+    {
+      "$ref": "#/$defs/StateLine"
+    },
+    {
+      "$ref": "#/$defs/StopLine"
+    },
+    {
+      "$ref": "#/$defs/ErrorLine"
+    }
+  ]
+}
