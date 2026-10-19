@@ -1,0 +1,388 @@
+# =============================================================================
+# Surface-form aliases for the closed variable ontology
+# =============================================================================
+# OWNERSHIP: Track A owns this file from task A6 onward (PLAN_MIDSUB.md §1).
+# Track B created this starter set so that the verifier rule layer (B6) could be
+# built and tested against tests/fixtures/ before the real corpus existed.
+# Extend it freely — the loader in src/verify/aliases.py is written to tolerate
+# new variables, new surface forms and new top-level keys without a code change.
+#
+# WHAT THIS FILE IS FOR
+#   Two consumers, one table:
+#     * B6 rule layer — "does this passage mention both variables of the edge?"
+#     * A6 BM25 alias expansion — widening a query to the words journalists use.
+#
+# HOW MATCHING WORKS (src/verify/aliases.py)
+#   * Case-insensitive. "The rupee" at the start of a sentence and "the Rupee"
+#     mid-sentence both match the INR_USD form `rupee`. Case-insensitivity here
+#     is deliberate and is NOT the same relaxation as span matching, which keeps
+#     casing significant (docs/decisions.md D-13).
+#   * Whole words only, so `ATF` does not match inside `ATFX`.
+#   * An optional plural or possessive suffix is tolerated: the form `carrier`
+#     matches `carriers` and `carrier's`.
+#   * Whitespace inside a form matches any run of whitespace, so a form may span
+#     a line break in a PDF-extracted passage.
+#   * Presentation characters are unified before matching (curly quotes, en and
+#     em dashes, non-breaking spaces), so `carrier's` matches `carrier’s`.
+#
+# HOW TO ADD A FORM
+#   Err towards recall, not precision. These forms gate *whether the verifier
+#   looks at a passage at all*; the LLM verifier (B7) is what decides whether the
+#   passage actually asserts the relation. A form that occasionally over-matches
+#   costs one wasted verifier call. A missing form silently loses real evidence
+#   and inflates the unsupported-edge rate.
+#   The one thing not to do is add a form that belongs to a *different* ontology
+#   variable. Bare `fuel` is left off ATF_PRICE on purpose: it reads equally as
+#   FUEL_PRICES or CPI_FUEL_LIGHT, and letting it match all three would make the
+#   "mentions both variables" rule meaningless for the whole energy group.
+#
+# ACCEPTED SHAPES — both of these load:
+#   INR_USD: [rupee, the local unit]            # plain list of surface forms
+#   INR_USD:                                    # mapping, for Track A's own keys
+#     surface_forms: [rupee, the local unit]
+#     expand_for_bm25: false
+# Unknown top-level keys and unknown per-variable keys are ignored, so A6 can
+# carry retrieval-only metadata here without breaking B6.
+# =============================================================================
+
+version: "0.1.0"
+updated_on: "2026-10-19"
+owner: "Track A (A6). Starter set written by Track B for B6."
+
+# Coverage is deliberately partial: every variable that appears in the text of
+# tests/fixtures/ is covered, plus the near neighbours an annotator would reach
+# for. `AliasTable.missing_variables()` lists the rest, and
+# tests/unit/test_verify_aliases.py asserts the fixture graph stays covered.
+aliases:
+
+  # --- energy and commodities ---------------------------------------------
+  BRENT:
+    - Brent
+    - Brent crude
+    - Brent crude oil
+    - crude
+    - crude oil
+    - crude price
+    - crude prices
+    - international crude price
+    - international crude prices
+    - global crude price
+    - global crude prices
+    - oil price
+    - oil prices
+    - crude shock
+  INDIAN_BASKET:
+    - Indian basket
+    - Indian crude basket
+    - Indian basket of crude
+    - Indian basket price
+    - import-weighted crude price
+    - PPAC basket
+  ATF_PRICE:
+    - ATF
+    - ATF price
+    - ATF prices
+    - aviation turbine fuel
+    - aviation turbine fuel price
+    - aviation turbine fuel prices
+    - jet fuel
+    - jet fuel price
+    - turbine fuel
+  LPG_IMPORTS:
+    - LPG
+    - LPG import
+    - LPG imports
+    - liquefied petroleum gas
+    - cooking gas import
+    - cooking gas imports
+  FUEL_PRICES:
+    - pump price
+    - pump prices
+    - retail fuel price
+    - retail fuel prices
+    - petrol and diesel price
+    - petrol and diesel prices
+    - retail petrol and diesel price
+    - retail petrol and diesel prices
+    - petrol price
+    - petrol prices
+    - diesel price
+    - diesel prices
+    - fuel price
+    - fuel prices
+  NATURAL_GAS_PRICE:
+    - natural gas price
+    - natural gas prices
+    - LNG price
+    - LNG prices
+    - gas price
+    - gas prices
+  GOLD_IMPORTS:
+    - gold import
+    - gold imports
+    - gold import bill
+
+  # --- currency and external sector ---------------------------------------
+  INR_USD:
+    - rupee
+    - the rupee
+    - Indian rupee
+    - local unit
+    - the local unit
+    - domestic currency
+    - INR
+    - USD/INR
+    - rupee-dollar
+    - rupee against the dollar
+    - rupee depreciation
+    - rupee weakness
+  DXY:
+    - dollar index
+    - DXY
+    - US dollar index
+    - greenback
+  FOREX_RESERVES:
+    - forex reserves
+    - foreign exchange reserves
+    - FX reserves
+    - reserves cover
+  RBI_FX_INTERVENTION:
+    - dollar sale
+    - dollar sales
+    - selling dollars
+    - sold dollars
+    - dollar selling
+    - RBI intervention
+    - central bank intervention
+    - intervention in the spot market
+  IMPORT_BILL:
+    - import bill
+    - oil import bill
+    - crude import bill
+    - monthly import bill
+    - merchandise import
+    - merchandise imports
+    - import cost
+    - import costs
+  EXPORTS:
+    - merchandise export
+    - merchandise exports
+    - export earnings
+    - outbound shipment
+    - outbound shipments
+  TRADE_DEFICIT:
+    - trade deficit
+    - merchandise trade deficit
+    - trade gap
+  CURRENT_ACCOUNT_DEFICIT:
+    - current account deficit
+    - CAD
+    - current account gap
+  IMPORTED_INFLATION:
+    - imported inflation
+    - imported price pressure
+    - imported price pressures
+    - landed cost of imports
+    - pass-through from the rupee
+    - currency pass-through
+
+  # --- prices --------------------------------------------------------------
+  CPI_HEADLINE:
+    - headline inflation
+    - headline CPI
+    - headline consumer price inflation
+    - CPI
+    - CPI inflation
+    - consumer price inflation
+    - retail inflation
+    - all-India CPI inflation
+  CPI_CORE:
+    - core inflation
+    - core CPI
+    - CPI excluding food and fuel
+    - underlying inflation
+  CPI_FOOD:
+    - food inflation
+    - consumer food price inflation
+    - CFPI
+    - food price inflation
+  CPI_FUEL_LIGHT:
+    - fuel and light
+    - fuel and light group
+    - fuel and light index
+    - fuel and light sub-index
+  WPI:
+    - WPI
+    - wholesale price index
+    - wholesale inflation
+    - wholesale price inflation
+  INFLATION_EXPECTATIONS:
+    - inflation expectation
+    - inflation expectations
+    - household inflation expectations
+    - expectations of inflation
+
+  # --- monetary policy and rates -------------------------------------------
+  REPO_RATE:
+    - repo rate
+    - policy repo rate
+    - policy rate
+    - benchmark lending rate of the RBI
+  RBI_STANCE:
+    - policy stance
+    - monetary policy stance
+    - the stance
+    - stance of monetary policy
+  RATE_HIKE_EXPECTATIONS:
+    - rate hike expectation
+    - rate hike expectations
+    - expectation of a rate hike
+    - expectations of a rate hike
+    - further tightening
+    - more tightening
+    - additional tightening
+    - prospect of a rate increase
+    - prospect of higher rates
+  CRR:
+    - CRR
+    - cash reserve ratio
+  GSEC_10Y:
+    - 10-year yield
+    - 10-year government security yield
+    - 10-year benchmark yield
+    - benchmark 10-year
+    - G-sec yield
+    - government security yield
+    - bond yield
+    - bond yields
+  CORPORATE_BOND_SPREAD:
+    - corporate bond spread
+    - corporate bond spreads
+    - AAA spread
+    - AAA spreads
+    - credit spread
+    - credit spreads
+  LENDING_RATES:
+    - lending rate
+    - lending rates
+    - MCLR
+    - bank lending rate
+    - bank lending rates
+    - borrowing cost for companies
+    - borrowing costs for companies
+
+  # --- banking and liquidity ------------------------------------------------
+  BANKING_LIQUIDITY:
+    - banking system liquidity
+    - system liquidity
+    - liquidity deficit
+    - liquidity surplus
+    - durable liquidity
+  CALL_MONEY_RATE:
+    - call money rate
+    - call rate
+    - weighted average call rate
+    - WACR
+    - overnight rate
+  CREDIT_GROWTH:
+    - credit growth
+    - bank credit growth
+    - loan growth
+    - credit offtake
+
+  # --- fiscal ---------------------------------------------------------------
+  FISCAL_DEFICIT:
+    - fiscal deficit
+    - deficit target
+    - fiscal gap
+  FUEL_EXCISE_DUTY:
+    - excise duty
+    - excise duty cut
+    - central excise duty
+    - excise on petrol and diesel
+    - duty cut
+  FUEL_SUBSIDY:
+    - fuel subsidy
+    - LPG subsidy
+    - cooking fuel subsidy
+    - subsidy burden
+  GST_COLLECTIONS:
+    - GST collection
+    - GST collections
+    - goods and services tax collections
+  GOVT_BORROWING:
+    - borrowing calendar
+    - borrowing programme
+    - borrowing program
+    - government borrowing
+    - dated securities borrowing
+    - market borrowing
+    - second-half borrowing calendar
+
+  # --- markets and flows ----------------------------------------------------
+  NIFTY50:
+    - Nifty
+    - Nifty 50
+    - benchmark index
+    - benchmark indices
+  BANK_NIFTY:
+    - Bank Nifty
+    - banking index
+    - bank stocks
+  FPI_FLOWS:
+    - FPI flow
+    - FPI flows
+    - foreign portfolio investor flows
+    - foreign portfolio flows
+    - foreign outflow
+    - foreign outflows
+    - FII flows
+  OMC_MARGINS:
+    - marketing margin
+    - marketing margins
+    - OMC margin
+    - OMC margins
+    - refining and marketing margin
+    - refining and marketing margins
+
+  # --- sectors --------------------------------------------------------------
+  AIRLINE_COSTS:
+    - airline operating cost
+    - airline operating costs
+    - airline cost
+    - airline costs
+    - carrier's operating cost
+    - carriers' operating costs
+    - operating cost of airlines
+    - operating costs of airlines
+    - cost base of carriers
+  AIRLINE_SHARES:
+    - airline share
+    - airline shares
+    - aviation stock
+    - aviation stocks
+    - aviation index
+    - shares of listed Indian carriers
+    - carrier share
+    - carrier shares
+  AIRFARES:
+    - airfare
+    - airfares
+    - air fare
+    - air fares
+    - ticket price
+    - ticket prices
+    - air ticket price
+    - air ticket prices
+
+  # --- real economy ---------------------------------------------------------
+  GDP_GROWTH:
+    - GDP growth
+    - real GDP growth
+    - economic growth
+    - growth outlook
+  IIP:
+    - IIP
+    - index of industrial production
+    - industrial production
+    - factory output
