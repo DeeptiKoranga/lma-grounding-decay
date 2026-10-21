@@ -273,7 +273,8 @@ development comparison. Two paragraph ordinals changed after navigation removal,
 and the CPI passage now identifies the identical retained MoSPI source instead
 of its PIB mirror. See `reports/pilot_pair_id_migration.json` and the current
 corpus hash in `reports/corpus_validation.json`. The corrected full-corpus run
-report `reports/pilot_retriever.md` is pending at this checkpoint. The initial comparison is superseded
+report `reports/pilot_retriever.md` is complete and explicitly labelled as a
+software/development comparison; independent evidence review remains pending. The initial comparison is superseded
 after query 10's temporal correction; it must not inform a research decision.
 
 The original BAAI BGE-M3 and bge-reranker-v2-m3 models were downloaded at pinned

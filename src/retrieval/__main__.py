@@ -12,7 +12,7 @@ from .pilot import CONFIG_ORDER
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("query")
-    parser.add_argument("--corpus", type=Path, default=Path("data/interim/articles.jsonl"))
+    parser.add_argument("--corpus", type=Path, default=Path("data/processed/articles.jsonl"))
     parser.add_argument("--aliases", type=Path, default=Path("data/aliases.yaml"))
     parser.add_argument("--as-of", type=date.fromisoformat, required=True)
     parser.add_argument("--k", type=int, default=10)

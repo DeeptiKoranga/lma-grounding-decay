@@ -30,9 +30,9 @@ accepted on all team machines.
 | [A4 / #4](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/4) | Deterministic exact/MinHash deduplication, duplicate audit, source-by-month manifest and reproducible zip. Distinct monthly official reports are preserved despite identical covers. | Final source/extraction/licence review. Count targets alone do not establish a final research freeze. |
 | [A5 / #5](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/5) | **Software complete:** paragraph offsets address the exact archived parent text, including repeated paragraphs. | Preserve alignment through later corpus changes. |
 | [A6 / #6](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/6) | **Software complete:** BM25 and merged aliases for all 46 ontology variables. | Research configuration selection awaits A8 review. Some inherited aliases are broad. |
-| [A7 / #7](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/7) | Real pinned BGE-M3 on the local MPS GPU, FAISS and hybrid RRF; model/input-checked resumable embeddings and corpus-checked indexes. Initial 664-passage backend checks passed. | Full 27,286-passage encoding is in progress at this checkpoint. Keep reviewed corpus/model/input settings fixed for comparisons. |
-| [A8 / #8](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/8) | Four-configuration runner, Recall@5/@10, MRR@50, hashes and simplest-within-0.03 rule; 20 source-backed development pairs prepared. | **Incomplete:** independent review and broader temporal coverage. Development results cannot freeze D-02. |
-| [A9 / #9](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/9) | Real pinned cross-encoder and top-50 reranking implemented and exercised. | **Incomplete research evaluation:** uses the same unreviewed convenience pairs; D-03 remains open. |
+| [A7 / #7](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/7) | Real pinned BGE-M3 on the local MPS GPU, FAISS and hybrid RRF; model/input-checked resumable embeddings and corpus-checked indexes. **Full 27,286-passage snapshot encoded; real saved-index reload passed.** Initial FAISS/exact backend agreement also passed. | Keep reviewed corpus/model/input settings fixed for comparisons. |
+| [A8 / #8](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/8) | Four-configuration runner and corrected full-corpus development run completed on 20 source-backed pairs; Recall@5/@10, MRR@50 and hashes recorded. | **Incomplete:** independent review and broader temporal coverage. Development results cannot freeze D-02. |
+| [A9 / #9](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/9) | Real pinned cross-encoder completed top-50 reranking on all 20 corrected development pairs. | **Incomplete research evaluation:** uses the same unreviewed convenience pairs; D-03 remains open. |
 | [A10 / #10](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/10) | Read/import layer plus **2/6 actual series**: 7 original provisional CPI observations and 141 daily FBIL USD/INR reference rates. Historical availability/vintages are enforced. | **Missing:** front-month Brent, Indian basket, benchmark 10-year GSEC yield and net equity-plus-debt FPI flows in USD million. |
 | [A11 / #11](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/11) | **Software complete:** as-of filtering before ranking/cutoff across BM25, dense, hybrid and reranking. Future documents cannot alter BM25 statistics. Known later-version source copies are excluded. | Track C integration must preserve the interface guarantees. |
 
@@ -72,9 +72,19 @@ Keep all model/retriever choices hidden during independent review. Research
 selection and shared decision-log edits remain pending. This is retrieval work,
 not Deepti's event/edge annotations or anchor-episode confirmation.
 
-At this commit, full-corpus model encoding and the corrected development pilot
-are still running/pending locally. No corrected full-corpus metric table is
-claimed here; it belongs in a follow-up checkpoint after validation completes.
+The corrected full-corpus comparison is complete in `reports/pilot_retriever.md`,
+labelled **SMOKE CHECK ONLY; no research decision**. On the incomplete,
+unreviewed labels, BM25 Recall@10 is 0.900; hybrid RRF is 0.925; BM25 plus
+reranking is 0.975. BM25 is the simplest configuration within 0.03 of the best
+first stage on these labels. This does not freeze D-02/D-03. The larger corpus
+and corrected source audit make the superseded sample's scores incomparable.
+
+All 27,286 passages were embedded with pinned BGE-M3; the saved full-corpus
+artifact was reopened for a real FAISS search and its returned dates checked.
+`reports/retrieval_run_provenance.json` records the model/runtime settings,
+vector artifact checksum, cache reuse, the 977.67-second preliminary precompute,
+and the 327.29-second corrected comparison. These are phase wall times, not
+GPU-active time; the comparison time excludes earlier precomputation.
 
 ## Reproduce
 
@@ -101,6 +111,26 @@ Review publication provenance before adding official seeds. PDF metadata may
 flag a later file version but cannot date publication. Do not replace missing
 series with a different financial definition or invent availability dates.
 See the acquisition and series reports for raw-cache provenance.
+
+The search CLI now defaults to the frozen `data/processed/articles.jsonl`.
+For the development comparison on this machine, with the downloaded model cache:
+
+```sh
+HF_HOME="$PWD/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src \
+  .venv/bin/python -m retrieval.pilot_runner \
+  --pairs reports/retriever_pilot_pairs.jsonl --corpus data/processed/articles.jsonl \
+  --smoke --device mps --max-length 1024 \
+  --embedding-batch-size 8 --reranker-batch-size 1 \
+  --embedding-checkpoint data/interim/retrieval/bge_m3_checkpoint.json \
+  --checkpoint-every 400 --dense-index data/interim/retrieval/bge_m3_v1_vectors.json \
+  --dense-backend faiss --embedding-revision 5617a9f61b028005a4858fdac845db406aefb181 \
+  --rerank --reranker-revision 953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e \
+  --local-files-only --output reports/pilot_retriever_recheck.md
+```
+
+A new machine must download those pinned models first or omit offline/local-only
+options to permit their normal public download. The 1024-token cap can truncate
+long paragraphs; it is part of the recorded configuration.
 
 The text corpus, zip, raw publisher files, model weights and embedding caches
 remain local and ignored. Share the zip separately with its manifest checksum

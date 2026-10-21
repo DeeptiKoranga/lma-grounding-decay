@@ -27,3 +27,5 @@ Simplest configuration within 0.03 Recall@10 of the best: `bm25`.
 Smoke checks do not resolve D-02/D-03. Review the evidence and corpus quality before recording a research decision.
 
 Limitations: March-only convenience sample; 35 initial documents and incomplete known-positive labels. These are functional development results, not a frozen retriever decision. The pair review is in `reports/pilot_pair_review.md`.
+
+Corrected full-corpus development report: `reports/pilot_retriever.md`.

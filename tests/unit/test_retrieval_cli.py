@@ -72,7 +72,17 @@ def test_pilot_rejects_incomplete_pairs_before_loading_models(tmp_path, monkeypa
     pairs = tmp_path / "pairs.jsonl"
     pairs.write_text("")
     monkeypatch.setattr(
-        sys, "argv", ["pilot", "--pairs", str(pairs), "--embedding-revision", "test"]
+        sys,
+        "argv",
+        [
+            "pilot",
+            "--pairs",
+            str(pairs),
+            "--output",
+            str(tmp_path / "pilot.md"),
+            "--embedding-revision",
+            "test",
+        ],
     )
     with pytest.raises(SystemExit) as error:
         pilot_main()
