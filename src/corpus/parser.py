@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import json
+import re
+import unicodedata
 from datetime import datetime
 from email.utils import parsedate_to_datetime
+from html import unescape
 from html.parser import HTMLParser
 from zoneinfo import ZoneInfo
 
@@ -18,6 +21,14 @@ ARTICLE_TYPES = {"NewsArticle", "Article", "ReportageNewsArticle", "AnalysisNews
 
 class ParseError(ValueError):
     """The payload cannot safely become evidence."""
+
+
+def _body_key(value: str) -> str:
+    # ET removes quotation marks in JSON-LD while retaining them in its visible
+    # article. This is a comparison key only; archived evidence stays verbatim.
+    return re.sub(
+        r"""[\s"'\u201c\u201d\u2018\u2019]""", "", unicodedata.normalize("NFC", unescape(value))
+    )
 
 
 def publication_time(value: str) -> datetime:
@@ -128,6 +139,17 @@ def parse_html(
         published = next((a["datePublished"] for a in articles if a.get("datePublished")), None)
     if not isinstance(published, str):
         raise ParseError("missing publication date; lastmod/dateModified is not publication")
+    published_stamp = publication_time(published)
+    modified = page.meta.get("article:modified_time") or page.meta.get("og:updated_time")
+    if not modified:
+        modified = next(
+            (
+                a.get("dateModified")
+                for a in articles
+                if a.get("datePublished") == published and a.get("dateModified")
+            ),
+            None,
+        )
     title = page.meta.get("og:title") or next(
         (a["headline"] for a in articles if isinstance(a.get("headline"), str)), ""
     )
@@ -144,7 +166,44 @@ def parse_html(
             html, include_comments=False, include_tables=False, favor_precision=True
         )
     paragraphs = extracted.splitlines() if extracted else page.paragraphs
-    paragraphs = [p for p in paragraphs if not p.strip().startswith("Catch all the Business News")]
+    # Some publisher pages place today's recommended-story summaries inside
+    # <article>. When the publisher declares this story's body, use it to screen
+    # extraction without replacing the source paragraph boundaries with one blob.
+    bodies = {
+        _body_key(a["articleBody"])
+        for a in articles
+        if isinstance(a.get("articleBody"), str)
+        and len(a["articleBody"]) >= min_chars
+        and isinstance(a.get("headline"), str)
+        and " ".join(a["headline"].split()) == " ".join(title.split())
+        and a.get("datePublished")
+        and publication_time(a["datePublished"]).date() == published_stamp.date()
+    }
+    if len(bodies) > 1:
+        raise ParseError("conflicting declared bodies for the same article")
+    if bodies:
+        body = next(iter(bodies))
+        paragraphs = [p for p in paragraphs if _body_key(p) in body]
+    paragraphs = [
+        p
+        for p in paragraphs
+        if not p.strip()
+        .lstrip("(")
+        .startswith(
+            (
+                "Catch all the Business News",
+                "Subscribe to The Economic Times Prime",
+                "Join our ETWealth WhatsApp channel",
+                "What's moving Sensex and Nifty",
+                "Subscribe to ET Prime and read",
+                "Top Trending Stocks:",
+                "Listen to this article in summarized format",
+                "Catch all the US News, UK News",
+                "Download The Economic Times News App",
+            )
+        )
+        and not (source == "businessline" and p.strip().startswith("Published on "))
+    ]
     text = normalise_paragraphs(paragraphs)
     if len(text) < min_chars:
         raise ParseError("missing/short article body; possible paywall or extraction failure")
@@ -153,7 +212,8 @@ def parse_html(
         source=source,
         source_kind=source_kind,
         url=url,
-        published_at=publication_time(published),
+        published_at=published_stamp,
+        modified_at=publication_time(modified) if modified else None,
         title=" ".join(title.split()),
         text=text,
         licence_note="Copyright retained by publisher; research use, no redistribution licence assumed.",

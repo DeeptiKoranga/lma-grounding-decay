@@ -1,0 +1,12 @@
+{
+  "model": "BAAI/bge-reranker-v2-m3",
+  "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+  "device": "mps",
+  "max_length": 512,
+  "scores": [
+    0.998817503452301,
+    1.6140566003741696e-05
+  ],
+  "elapsed_seconds": 9.494925624981988,
+  "purpose": "software smoke test only; synthetic examples, not research metrics"
+}

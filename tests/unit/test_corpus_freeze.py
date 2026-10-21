@@ -70,6 +70,24 @@ def test_duplicate_ids_and_invalid_thresholds_are_rejected():
             deduplicate([document()], threshold=threshold)
 
 
+def test_official_monthly_reports_with_identical_covers_are_not_near_duplicates():
+    first = document("ppac-march", source="ppac", source_kind=SourceKind.OFFICIAL)
+    second = document(
+        "ppac-april",
+        source="ppac",
+        source_kind=SourceKind.OFFICIAL,
+        published_at=datetime.fromisoformat("2026-04-15T10:00:00+05:30"),
+        text=LEDE + "\n\nDifferent observation period and updated petroleum tables.",
+    )
+    exact_copy = second.model_copy(
+        update={"doc_id": "ppac-april-copy", "title": "A copied release"}
+    )
+    result = deduplicate([exact_copy, second, first])
+    assert {d.doc_id for d in result.documents} == {first.doc_id, second.doc_id}
+    assert len(result.duplicates) == 1
+    assert result.duplicates[0].method == "exact-text"
+
+
 def test_minhash_collision_cannot_remove_unrelated_copy(monkeypatch):
     monkeypatch.setattr("corpus.dedup.minhash", lambda _: (0,) * 128)
     original = document()

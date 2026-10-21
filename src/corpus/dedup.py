@@ -16,6 +16,8 @@ from dataclasses import dataclass
 from datetime import UTC
 from zoneinfo import ZoneInfo
 
+from schema import SourceKind
+
 from .documents import Document
 
 NUM_PERM = 128
@@ -70,6 +72,8 @@ def deduplicate(documents: Iterable[Document], *, threshold: float = 0.85) -> De
     verified using exact shingle Jaccard, so hash collisions cannot remove an
     unrelated document. As with other LSH schemes, candidate recall is approximate.
     Identical full text is always checked, independently of the headline.
+    Official statistical releases use full-text equality only: a repeated title
+    and cover page can accompany different monthly observations or vintages.
     """
     if not 0 < threshold <= 1:
         raise ValueError("deduplication threshold must be in (0, 1]")
@@ -93,10 +97,10 @@ def deduplicate(documents: Iterable[Document], *, threshold: float = 0.85) -> De
     for document in rows:
         text_hash = hashlib.sha256(document.text.encode("utf-8")).hexdigest()
         shingles = title_lede_shingles(document)
-        signature = minhash(shingles)
+        signature = minhash(shingles) if document.source_kind is SourceKind.NEWS else ()
         keys = [
             (start, signature[start : start + ROWS_PER_BAND])
-            for start in range(0, NUM_PERM, ROWS_PER_BAND)
+            for start in range(0, len(signature), ROWS_PER_BAND)
         ]
         exact = text_hashes.get(text_hash)
         if exact is not None:

@@ -6,6 +6,7 @@ import math
 from typing import Protocol
 
 from .bm25 import Hit
+from .dense import release_accelerator_memory
 from .filters import Retriever, checked_hits, validate_query
 
 
@@ -22,13 +23,15 @@ class BGEReranker:
         *,
         device="cpu",
         batch_size=8,
+        max_length=1024,
         revision=None,
         local_files_only=False,
     ):
-        if batch_size < 1:
-            raise ValueError("batch_size must be positive")
+        if batch_size < 1 or not 1 <= max_length <= 8192:
+            raise ValueError("batch_size must be positive and max_length within 1..8192")
         self.model_name, self.device, self.batch_size = model, device, batch_size
         self.revision, self.local_files_only = revision, local_files_only
+        self.max_length = max_length
         self._model = None
 
     def score(self, query, texts):
@@ -43,12 +46,17 @@ class BGEReranker:
                 revision=self.revision,
                 local_files_only=self.local_files_only,
                 trust_remote_code=False,
+                max_length=self.max_length,
             )
         return self._model.predict(
             [(query, text) for text in texts],
             batch_size=self.batch_size,
             show_progress_bar=False,
         ).tolist()
+
+    def unload(self) -> None:
+        self._model = None
+        release_accelerator_memory()
 
 
 class RerankingRetriever:

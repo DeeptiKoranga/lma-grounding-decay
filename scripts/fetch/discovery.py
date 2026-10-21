@@ -41,6 +41,7 @@ ARCHIVE_MONTH = re.compile(
     rf"(?P<month>0?[1-9]|1[0-2]|{MONTH_PATTERN})(?![a-z0-9])",
     re.IGNORECASE,
 )
+COMPACT_ARCHIVE_DAY = re.compile(r"(?<!\d)((?:19|20)\d{2})(0[1-9]|1[0-2])([0-3]\d)(?!\d)")
 
 
 def archive_month(url: str) -> date | None:
@@ -57,6 +58,12 @@ def archive_month(url: str) -> date | None:
         months.add(
             date(int(match["year"]), int(month) if month.isdigit() else MONTH_NAMES[month], 1)
         )
+    for match in COMPACT_ARCHIVE_DAY.finditer(unquote(parts.path)):
+        try:
+            stamp = date(int(match[1]), int(match[2]), int(match[3]))
+        except ValueError:
+            continue
+        months.add(stamp.replace(day=1))
     query = dict(parse_qsl(parts.query))
     year, month = query.get("year", ""), query.get("month", "").casefold()
     if re.fullmatch(r"(?:19|20)\d{2}", year):
@@ -99,7 +106,12 @@ def parse_feed(response: Response) -> tuple[list[str], list[str]]:
         for entry in root:
             location = entry.find("{*}loc")
             if location is not None and location.text:
-                (feeds if kind == "sitemapindex" else urls).append(location.text.strip())
+                location_url = location.text.strip()
+                path = urlsplit(location_url).path.lower()
+                # BusinessLine's archive index is a urlset of daily sitemap URLs.
+                # Treat only explicit sitemap XML paths as nested discovery feeds.
+                nested_sitemap = "sitemap" in path and path.endswith((".xml", ".xml.gz"))
+                (feeds if kind == "sitemapindex" or nested_sitemap else urls).append(location_url)
     elif kind == "rss":
         urls = [e.text.strip() for e in root.findall("./channel/item/link") if e.text]
     elif kind == "feed":

@@ -26,6 +26,9 @@ from .client import Client
 from .sources import Source
 
 OFFICIAL_SOURCES = {
+    "eaindustry": Source(
+        "eaindustry", "https://eaindustry.nic.in", ("eaindustry.nic.in", "www.eaindustry.nic.in")
+    ),
     "rbi": Source(
         "rbi",
         "https://www.rbi.org.in",
@@ -113,10 +116,20 @@ def collect_releases(
                 attempted += 1
                 if release.source not in clients:
                     clients[release.source] = client_factory(
-                        OFFICIAL_SOURCES[release.source], delay=delay, max_requests=max_requests
+                        OFFICIAL_SOURCES[release.source],
+                        delay=delay,
+                        max_requests=max_requests,
+                        max_bytes=64_000_000,
                     )
                 response = clients[release.source].get(release.url)
-                if response.content_type not in {
+                content_type = response.content_type
+                # PPAC serves PDFs as a generic download. Validate the signature
+                # before normalising that MIME; never accept arbitrary binaries.
+                if content_type == "application/octet-stream" and response.body.startswith(
+                    b"%PDF-"
+                ):
+                    content_type = "application/pdf"
+                if content_type not in {
                     "application/pdf",
                     "text/html",
                     "application/xhtml+xml",
@@ -127,12 +140,12 @@ def collect_releases(
                     **release.model_dump(),
                     "fetched_url": response.url,
                     "fetched_at": event["at"],
-                    "content_type": response.content_type,
+                    "content_type": content_type,
                     "charset": response.charset,
                     "sha256": hashlib.sha256(raw).hexdigest(),
                     "source_kind": "official",
                 }
-                extension = ".pdf" if response.content_type == "application/pdf" else ".html"
+                extension = ".pdf" if content_type == "application/pdf" else ".html"
                 (directory / f"{key}{extension}").write_bytes(raw)
                 sidecar.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
                 counts["downloaded"] += 1

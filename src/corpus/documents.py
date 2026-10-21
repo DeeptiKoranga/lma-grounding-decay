@@ -32,6 +32,7 @@ class Document(BaseModel):
     source_kind: SourceKind = SourceKind.NEWS
     url: str
     published_at: datetime
+    modified_at: datetime | None = None
     title: str = Field(min_length=1)
     text: str = Field(min_length=1)
     licence_note: str

@@ -9,12 +9,18 @@ from pathlib import Path
 
 from . import chunk_document, parse_html
 from .official import parse_official
+from .quality import rejection_reason
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--raw", type=Path, default=Path("data/raw"))
     parser.add_argument("--output", type=Path, default=Path("data/interim"))
+    parser.add_argument(
+        "--macro-only",
+        action="store_true",
+        help="Apply the documented research-topic screen to news",
+    )
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     docs = {}
@@ -47,6 +53,8 @@ def main():
                     source=meta["source"],
                     url=meta["url"],
                 )
+            if args.macro_only and (reason := rejection_reason(doc)):
+                raise ValueError(reason)
             if doc.doc_id in docs and docs[doc.doc_id] != doc:
                 raise ValueError("conflicting cached versions of a document")
             docs[doc.doc_id] = doc

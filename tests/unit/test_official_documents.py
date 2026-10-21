@@ -10,8 +10,9 @@ from types import SimpleNamespace
 import pytest
 
 from corpus.documents import chunk_document
-from corpus.official import parse_official, pdf_paragraphs
+from corpus.official import parse_official, pdf_file_day, pdf_paragraphs
 from corpus.parser import ParseError
+from corpus.quality import rejection_reason
 from schema import SourceKind
 
 BODY = (
@@ -72,6 +73,35 @@ def fake_factory(payload=None):
             )
 
     return FakeClient, clients
+
+
+@pytest.mark.parametrize(
+    "payload,accepted", [(b"%PDF-1.4 test", True), (b"arbitrary binary", False)]
+)
+def test_generic_download_mime_requires_a_real_pdf_signature(
+    official, tmp_path, monkeypatch, payload, accepted
+):
+    class Client:
+        def __init__(self, source, **kwargs):
+            self.requests = 0
+
+        def get(self, url):
+            self.requests += 1
+            return SimpleNamespace(
+                url=url, body=payload, content_type="application/octet-stream", charset="utf-8"
+            )
+
+    monkeypatch.setattr(
+        official, "parse_official", lambda *args, **kwargs: SimpleNamespace(doc_id="checked")
+    )
+    counts = official.collect_releases([release(official)], tmp_path, client_factory=Client)[
+        "counts"
+    ]
+    assert counts["accepted" if accepted else "rejected"] == 1
+    if accepted:
+        meta = json.loads(next(tmp_path.glob("*/*.meta.json")).read_text())
+        assert meta["content_type"] == "application/pdf"
+        assert next(tmp_path.glob("*/*.pdf")).read_bytes() == payload
 
 
 def test_official_html_has_official_kind_and_exact_offsets():
@@ -137,6 +167,33 @@ def test_real_small_pdf_if_optional_backend_is_installed():
     assert len(document.text) >= 200
     for passage in chunk_document(document):
         assert document.text[passage.char_start : passage.char_end] == passage.text
+
+
+def test_official_pdf_cannot_backdate_a_later_file_version():
+    pymupdf = pytest.importorskip("pymupdf")
+    with pymupdf.open() as pdf:
+        page = pdf.new_page()
+        page.insert_textbox(pymupdf.Rect(40, 40, 550, 750), BODY)
+        pdf.set_metadata(
+            {"creationDate": "D:20260408120000+05'30'", "modDate": "D:20261021120000Z"}
+        )
+        payload = pdf.tobytes()
+    document = parse_official(
+        payload,
+        source="mospi",
+        url="https://mospi.gov.in/release.pdf",
+        title="Official release",
+        published_at="2026-04-08",
+        content_type="application/pdf",
+    )
+    assert document.published_at.date().isoformat() == "2026-04-08"
+    assert document.modified_at.date().isoformat() == "2026-10-21"
+    assert "version screen" in rejection_reason(document)
+
+
+@pytest.mark.parametrize("stamp", ["", "D:2026", "D:20260231000000Z", "unknown"])
+def test_unknown_pdf_file_day_never_becomes_a_publication_date(stamp):
+    assert pdf_file_day(stamp) is None
 
 
 @pytest.mark.parametrize("date", ["2026-02-28", "2026-10-01"])

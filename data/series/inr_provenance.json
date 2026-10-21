@@ -1,0 +1,75 @@
+{
+  "series_id": "inr_usd",
+  "observations": 141,
+  "complete": true,
+  "sources": [
+    {
+      "url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-3-1&toDate=2026-3-31&authenticated=false",
+      "sha256": "83219df56c73cee821983aa164326f6ea575e1f89862a44662c8854d25abeafe",
+      "fetched_at": "2026-10-21T21:47:32.127808+00:00",
+      "bytes": 14833,
+      "observations": 18,
+      "start": "2026-03-02",
+      "end": "2026-03-30"
+    },
+    {
+      "url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-4-1&toDate=2026-4-30&authenticated=false",
+      "sha256": "bf82a746ed170356b74bcdc2259d71d2d49d9958ecee1761e2a623cf8ed83c09",
+      "fetched_at": "2026-10-21T21:47:34.445238+00:00",
+      "bytes": 15657,
+      "observations": 19,
+      "start": "2026-04-02",
+      "end": "2026-04-30"
+    },
+    {
+      "url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+      "sha256": "611c8c701800a824b297d4c8206cb73a9629fbaa78710b4b19f948ef522bf2e5",
+      "fetched_at": "2026-10-21T21:47:36.650231+00:00",
+      "bytes": 15657,
+      "observations": 19,
+      "start": "2026-05-04",
+      "end": "2026-05-29"
+    },
+    {
+      "url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-6-1&toDate=2026-6-30&authenticated=false",
+      "sha256": "22301b3438c46c45c398f5962f25ee5b87b179be00f88c78534c34a1dbc99a51",
+      "fetched_at": "2026-10-21T21:47:38.847606+00:00",
+      "bytes": 17305,
+      "observations": 21,
+      "start": "2026-06-01",
+      "end": "2026-06-30"
+    },
+    {
+      "url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-7-1&toDate=2026-7-31&authenticated=false",
+      "sha256": "0c0ea40448d9489fa28dd90a16faa689c105e788a8933d0fa7f13fb3c68a7f1d",
+      "fetched_at": "2026-10-21T21:47:41.043056+00:00",
+      "bytes": 18953,
+      "observations": 23,
+      "start": "2026-07-01",
+      "end": "2026-07-31"
+    },
+    {
+      "url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-8-1&toDate=2026-8-31&authenticated=false",
+      "sha256": "8ae23ac4310ba13b283313180fcc091427665208c8d732e9057614a99a0f94bb",
+      "fetched_at": "2026-10-21T21:47:43.282610+00:00",
+      "bytes": 16481,
+      "observations": 20,
+      "start": "2026-08-03",
+      "end": "2026-08-31"
+    },
+    {
+      "url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-9-1&toDate=2026-9-30&authenticated=false",
+      "sha256": "dd63fff434fdc804e876425091d8c0c0914c38d772befaff8cbf873bb8a2f77d",
+      "fetched_at": "2026-10-21T21:47:45.482101+00:00",
+      "bytes": 18925,
+      "observations": 21,
+      "start": "2026-09-01",
+      "end": "2026-09-30"
+    }
+  ],
+  "failures": [],
+  "definition": "FBIL daily INR per 1 USD reference rate, not market close",
+  "availability": "displayTime date provided by FBIL API; observation uses processRunDate",
+  "missing_days": "omitted; no holiday filling or interpolation",
+  "use": "move_confirmation_only"
+}

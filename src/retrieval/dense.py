@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import math
+from collections import OrderedDict
 from collections.abc import Sequence
 from pathlib import Path
 from typing import Protocol
@@ -38,17 +39,25 @@ class BGEEmbedder:
         *,
         device: str = "cpu",
         batch_size: int = 8,
+        max_length: int = 1024,
         revision: str | None = None,
         local_files_only: bool = False,
     ):
-        if batch_size < 1:
-            raise ValueError("batch_size must be positive")
+        if batch_size < 1 or not 1 <= max_length <= 8192:
+            raise ValueError("batch_size must be positive and max_length within 1..8192")
         self.model_name, self.device = model, device
         self.batch_size, self.revision = batch_size, revision
+        self.max_length = max_length
         self.local_files_only = local_files_only
         self._model = None
+        self._query_cache: OrderedDict[str, tuple[float, ...]] = OrderedDict()
 
     def encode(self, texts: list[str]):
+        if not texts:
+            return []
+        if len(texts) == 1 and texts[0] in self._query_cache:
+            self._query_cache.move_to_end(texts[0])
+            return [self._query_cache[texts[0]]]
         if self._model is None:
             try:
                 from sentence_transformers import SentenceTransformer
@@ -61,13 +70,26 @@ class BGEEmbedder:
                 local_files_only=self.local_files_only,
                 trust_remote_code=False,
             )
-        return self._model.encode(
+            self._model.max_seq_length = self.max_length
+        rows = self._model.encode(
             texts,
             batch_size=self.batch_size,
             normalize_embeddings=True,
             convert_to_numpy=True,
             show_progress_bar=False,
         )
+        if len(texts) == 1:
+            vector = normalise_vectors(rows, count=1)[0]
+            self._query_cache[texts[0]] = vector
+            if len(self._query_cache) > 128:
+                self._query_cache.popitem(last=False)
+            return [vector]
+        return rows
+
+    def unload(self) -> None:
+        """Release model memory while keeping at most 128 reusable query vectors."""
+        self._model = None
+        release_accelerator_memory()
 
 
 def normalise_vectors(rows, *, count: int, dimension: int | None = None) -> list[tuple[float, ...]]:
@@ -164,7 +186,7 @@ class DenseRetriever:
         Path(path).write_text(
             json.dumps(
                 {
-                    "version": 1,
+                    "version": 2,
                     "embedding_id": self.embedding_id,
                     "passages": [p.model_dump(mode="json") for p in self.passages],
                     "vectors": self.vectors,
@@ -187,7 +209,7 @@ class DenseRetriever:
         embedding_id: str | None = None,
     ):
         raw = json.loads(Path(path).read_text(encoding="utf-8"))
-        if raw.get("version") != 1:
+        if raw.get("version") != 2:
             raise ValueError("unsupported dense index version")
         expected_id = embedding_id or _embedding_identity(embedder)
         if raw.get("embedding_id") != expected_id:
@@ -214,6 +236,22 @@ def _embedding_identity(embedder: Embedder) -> str:
             kind,
             getattr(embedder, "model_id", getattr(embedder, "model_name", None)),
             getattr(embedder, "revision", None),
+            getattr(embedder, "max_length", None),
+            "title-newline-paragraph;unit-cosine;v2",
         ],
         separators=(",", ":"),
     )
+
+
+def release_accelerator_memory() -> None:
+    """Avoid importing Torch solely for cleanup of a never-loaded adapter."""
+    import gc
+    import sys
+
+    gc.collect()
+    torch = sys.modules.get("torch")
+    if torch is not None:
+        if torch.backends.mps.is_available():
+            torch.mps.empty_cache()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()

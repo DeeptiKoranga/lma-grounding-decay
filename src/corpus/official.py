@@ -7,6 +7,7 @@ curated release-list entry must supply the publication date and its source URL.
 from __future__ import annotations
 
 import json
+import re
 from collections.abc import Callable
 from datetime import datetime
 
@@ -29,8 +30,19 @@ def _publication_dates(value):
                 yield from _publication_dates(value[key])
 
 
-def pdf_paragraphs(payload: bytes) -> list[str]:
-    """Extract blocks in reading order; scanned PDFs need a separate OCR review."""
+def pdf_file_day(value: str) -> datetime | None:
+    """Read a file timestamp only to flag a later copy, never to date publication."""
+    match = re.match(r"(?:D:)?(\d{4})(\d{2})(\d{2})", value or "")
+    if not match:
+        return None
+    try:
+        return publication_time("-".join(match.groups()))
+    except ValueError:
+        return None
+
+
+def _pdf_content(payload: bytes) -> tuple[list[str], datetime | None]:
+    """Extract blocks and a conservative file-version day in one PDF read."""
     if not payload.startswith(b"%PDF-"):
         raise ParseError("payload is not a PDF")
     try:
@@ -43,16 +55,27 @@ def pdf_paragraphs(payload: bytes) -> list[str]:
                 raise ParseError("encrypted PDF; extraction unavailable")
             if pdf.page_count > 500:
                 raise ParseError("PDF exceeds the 500-page extraction limit")
-            return [
+            paragraphs = [
                 block[4]
                 for page in pdf
                 for block in page.get_text("blocks", sort=True)
                 if block[6] == 0 and block[4].strip()
             ]
+            days = [
+                stamp
+                for field in ("creationDate", "modDate")
+                if (stamp := pdf_file_day((pdf.metadata or {}).get(field, "")))
+            ]
+            return paragraphs, max(days, default=None)
     except ParseError:
         raise
     except (RuntimeError, ValueError) as exc:
         raise ParseError(f"PDF extraction failed: {exc}") from exc
+
+
+def pdf_paragraphs(payload: bytes) -> list[str]:
+    """Extract blocks in reading order; scanned PDFs need a separate OCR review."""
+    return _pdf_content(payload)[0]
 
 
 def parse_official(
@@ -71,8 +94,12 @@ def parse_official(
     stamp = publication_time(str(published_at))
     if not CORPUS_START <= stamp.date() <= CORPUS_END:
         raise ParseError("release date is outside the frozen corpus window")
+    modified = None
     if content_type == "application/pdf":
-        paragraphs = extract_pdf(payload)
+        if extract_pdf is pdf_paragraphs:
+            paragraphs, modified = _pdf_content(payload)
+        else:
+            paragraphs = extract_pdf(payload)
     elif content_type in {"text/html", "application/xhtml+xml"}:
         html = payload.decode(charset, errors="replace")
         page = ArticleHTML()
@@ -90,6 +117,8 @@ def parse_official(
                 continue
         if any(publication_time(value).date() != stamp.date() for value in declared):
             raise ParseError("page publication date disagrees with official release listing")
+        updated = page.meta.get("article:modified_time") or page.meta.get("og:updated_time")
+        modified = publication_time(updated) if updated else None
         try:
             import trafilatura
         except ImportError:
@@ -110,6 +139,7 @@ def parse_official(
         source_kind=SourceKind.OFFICIAL,
         url=url,
         published_at=stamp,
+        modified_at=modified,
         title=" ".join(title.split()),
         text=text,
         licence_note=(

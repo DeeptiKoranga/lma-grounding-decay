@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ssl
+import threading
 import time
 from dataclasses import dataclass
 from urllib.error import HTTPError
@@ -34,13 +35,23 @@ class NoRedirect(HTTPRedirectHandler):
 
 
 class Client:
-    def __init__(self, source: Source, *, delay: float = 2, max_requests: int = 80):
-        if delay < 0 or max_requests < 1:
-            raise ValueError("delay must be nonnegative and max_requests positive")
+    def __init__(
+        self,
+        source: Source,
+        *,
+        delay: float = 2,
+        max_requests: int = 80,
+        max_bytes: int = 12_000_000,
+    ):
+        if delay < 0 or max_requests < 1 or max_bytes < 1:
+            raise ValueError("delay must be nonnegative and request/byte budgets positive")
         self.source = source
         self.delay = delay
         self.max_requests = max_requests
+        self.max_bytes = max_bytes
         self.requests = 0
+        self._request_lock = threading.Lock()
+        self._policy_lock = threading.Lock()
         context = ssl.create_default_context()
         # Python.org macOS installs may lack system CAs. The extraction extra
         # supplies certifi; add its CA bundle without disabling TLS verification.
@@ -58,31 +69,34 @@ class Client:
     def _request(self, url: str) -> Response:
         if not self.source.accepts(url):
             raise FetchError("URL is outside this source's allowed hosts")
-        if self.requests >= self.max_requests:
-            raise FetchError("request budget exhausted")
         origin = self._origin(url)
-        policy = self.robots.get(origin)
-        crawl_delay = policy.crawl_delay(ROBOT_AGENT) if policy else None
-        interval = max(self.delay, crawl_delay or 0)
-        rate = policy.request_rate(ROBOT_AGENT) if policy else None
-        if rate:
-            interval = max(interval, rate.seconds / rate.requests)
-        remaining = (
-            max(
-                self.last_request.get(origin, 0) + interval,
-                self.backoff.get(origin, 0),
+        # Reserve a request start atomically. Slow response reads may overlap,
+        # while pacing and the global request budget remain structural.
+        with self._request_lock:
+            if self.requests >= self.max_requests:
+                raise FetchError("request budget exhausted")
+            policy = self.robots.get(origin)
+            crawl_delay = policy.crawl_delay(ROBOT_AGENT) if policy else None
+            interval = max(self.delay, crawl_delay or 0)
+            rate = policy.request_rate(ROBOT_AGENT) if policy else None
+            if rate:
+                interval = max(interval, rate.seconds / rate.requests)
+            remaining = (
+                max(
+                    self.last_request.get(origin, 0) + interval,
+                    self.backoff.get(origin, 0),
+                )
+                - time.monotonic()
             )
-            - time.monotonic()
-        )
-        if remaining > 0:
-            time.sleep(remaining)
-        self.requests += 1
-        self.last_request[origin] = time.monotonic()
+            if remaining > 0:
+                time.sleep(remaining)
+            self.requests += 1
+            self.last_request[origin] = time.monotonic()
         req = Request(url, headers={"User-Agent": USER_AGENT, "Accept-Encoding": "identity"})
         with self.opener.open(req, timeout=25) as response:
-            body = response.read(12_000_001)
-            if len(body) > 12_000_000:
-                raise FetchError("response exceeds 12 MB limit")
+            body = response.read(self.max_bytes + 1)
+            if len(body) > self.max_bytes:
+                raise FetchError(f"response exceeds {self.max_bytes} byte limit")
             return Response(
                 url=url,
                 body=body,
@@ -97,18 +111,21 @@ class Client:
 
     def policy(self, url: str) -> RobotFileParser:
         origin = self._origin(url)
-        if origin not in self.robots:
-            policy = RobotFileParser(origin + "/robots.txt")
-            try:
-                response = self._request(policy.url)
-                policy.parse(response.body.decode(response.charset, errors="replace").splitlines())
-            except HTTPError as exc:
-                if exc.code != 404:
-                    raise FetchError(
-                        f"robots.txt unavailable (HTTP {exc.code}); collection stopped"
-                    ) from exc
-                policy.parse([])
-            self.robots[origin] = policy
+        with self._policy_lock:
+            if origin not in self.robots:
+                policy = RobotFileParser(origin + "/robots.txt")
+                try:
+                    response = self._request(policy.url)
+                    policy.parse(
+                        response.body.decode(response.charset, errors="replace").splitlines()
+                    )
+                except HTTPError as exc:
+                    if exc.code != 404:
+                        raise FetchError(
+                            f"robots.txt unavailable (HTTP {exc.code}); collection stopped"
+                        ) from exc
+                    policy.parse([])
+                self.robots[origin] = policy
         return self.robots[origin]
 
     def get(self, url: str) -> Response:

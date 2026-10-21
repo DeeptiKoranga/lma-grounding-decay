@@ -28,6 +28,8 @@ def discovery(monkeypatch):
         ("https://example.com/archive.xml?year=2026&month=June", date(2026, 6, 1)),
         ("https://example.com/sitemap-2026.xml", None),
         ("https://example.com/sitemap202603.xml", None),
+        ("https://example.com/sitemap/archive/all/20260312_1.xml", date(2026, 3, 1)),
+        ("https://example.com/sitemap/archive/all/20260230_1.xml", None),
         ("https://example.com/sitemap-2026-13.xml", None),
         ("https://example.com/sitemap-2026-035.xml", None),
         ("https://example.com/sitemap-2026-Marchandise.xml", None),
@@ -166,3 +168,19 @@ def test_zero_budget_and_only_out_of_window_feeds_make_no_requests(discovery):
     assert calls == []
     with pytest.raises(ValueError, match="nonnegative"):
         discovery.discover(client, [], max_feeds=-1, on_error=pytest.fail)
+
+
+def test_businessline_urlset_of_daily_sitemaps_is_followed(discovery):
+    root = "https://example.com/sitemap/archive.xml"
+    old = "https://example.com/sitemap/archive/all/20101202_1.xml"
+    march = "https://example.com/sitemap/archive/all/20260312_1.xml"
+    article = "https://example.com/economy/oil/article123.ece"
+    client, calls = fake_client(
+        discovery,
+        {
+            root: f"<urlset><url><loc>{old}</loc></url><url><loc>{march}</loc></url></urlset>",
+            march: f"<urlset><url><loc>{article}</loc></url></urlset>",
+        },
+    )
+    assert discovery.discover(client, [root], max_feeds=3, on_error=pytest.fail) == [article]
+    assert calls == [root, march]

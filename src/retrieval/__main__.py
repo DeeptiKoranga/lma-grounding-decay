@@ -24,6 +24,11 @@ def main():
         "--rerank", action="store_true", help="Rescore the top 50 eligible passages"
     )
     parser.add_argument("--device", default="cpu")
+    parser.add_argument("--max-length", type=int, default=1024)
+    parser.add_argument("--embedding-batch-size", type=int, default=2)
+    parser.add_argument("--reranker-batch-size", type=int, default=1)
+    parser.add_argument("--embedding-checkpoint", type=Path)
+    parser.add_argument("--checkpoint-every", type=int, default=100)
     parser.add_argument("--local-files-only", action="store_true")
     parser.add_argument("--embedding-model", default="BAAI/bge-m3")
     parser.add_argument("--embedding-revision")
@@ -51,6 +56,11 @@ def main():
             reranker_revision=args.reranker_revision,
             dense_backend=args.dense_backend,
             dense_index=args.dense_index,
+            embedding_checkpoint=args.embedding_checkpoint,
+            checkpoint_every=args.checkpoint_every,
+            embedding_batch_size=args.embedding_batch_size,
+            reranker_batch_size=args.reranker_batch_size,
+            max_length=args.max_length,
         )
         hits = retriever.search(
             args.query,

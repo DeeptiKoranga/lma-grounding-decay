@@ -163,7 +163,7 @@ def freeze_corpus(
             "",
             "## Deduplication and offsets",
             "",
-            f"Exact full-text hashes plus MinHash on case-folded title + first-paragraph word trigrams; {NUM_PERM} deterministic permutations, {NUM_PERM // ROWS_PER_BAND} bands x {ROWS_PER_BAND} rows, exact Jaccard >= {threshold:g} required for near matches.",
+            f"Exact full-text hashes for all sources; news additionally uses MinHash on case-folded title + first-paragraph word trigrams with {NUM_PERM} deterministic permutations, {NUM_PERM // ROWS_PER_BAND} bands x {ROWS_PER_BAND} rows, exact Jaccard >= {threshold:g} required for near matches. Official releases use full-text equality only: identical cover pages can accompany distinct monthly data or vintages.",
             "MinHash candidate recall is approximate. Earliest publication timestamp, then source/id, chooses the retained representative. Each removal is recorded in `duplicates.jsonl`.",
             "Parent text is preserved in `documents.jsonl`; `articles.jsonl` contains paragraph passages whose character offsets address that exact normalised parent text. Raw publisher payloads and collection logs remain in `data/raw/`.",
             "The zip uses sorted entries, fixed timestamps and permissions, and stored bytes so identical inputs and settings yield identical archive hashes.",
