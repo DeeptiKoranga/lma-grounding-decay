@@ -1,7 +1,7 @@
 # Macro series store (Track A, A10)
 
-The importer and date-aware read layer are implemented. **Two of the six series
-have real observations; A10 is incomplete.** No demonstration values, interpolation,
+The importer and date-aware read layer are implemented. **Three of the six series
+have real observations, including partial Indian basket coverage; A10 is incomplete.** No demonstration values, interpolation,
 or substitutes for the frozen definitions are stored as project data.
 
 ## Acquired observations
@@ -16,17 +16,33 @@ or substitutes for the frozen definitions are stored as project data.
   `processRunDate` dates observations and `displayTime` dates availability.
   `inr_provenance.json` records the seven monthly response URLs and checksums.
   Holidays and other missing dates are omitted.
+- `indian_basket_usd_bbl.csv`: two PPAC monthly averages for April and May 2026,
+  both available from the May snapshot published **17 June 2026**. April's
+  comparison value retains that June availability date. Summary text on PDF
+  page 5 and the price table on page 38 agree on May's value.
+  `indian_basket_provenance.json` binds the release/archive URLs, checksums,
+  extraction pages and four excluded later-version snapshots. Coverage remains
+  missing for March and June–September. Monthly averages cannot establish a
+  daily threshold crossing or the date of an anchor episode.
 
-Raw release PDFs and API responses are retained under `data/raw/series/` locally.
+Raw CPI/FX responses are retained under `data/raw/series/`; PPAC originals remain
+under `data/raw/ppac/` locally.
 The CSVs and provenance records are tracked. These observations only confirm
 measured moves; they do not confirm the project's anchor episodes automatically.
 
-Reproduce the two acquisitions with the existing optional PDF dependency:
+Reproduce these acquisitions with the existing optional PDF dependency:
 
 ```sh
 PYTHONPATH=src .venv/bin/python -m scripts.fetch.cpi_series
 PYTHONPATH=src .venv/bin/python -m scripts.fetch.fbil_series
+PYTHONPATH=src .venv/bin/python -m scripts.fetch.ppac_series
 ```
+
+The PPAC importer reuses the official collector's checksummed PDFs and saved
+archive at `data/raw/ppac/acquisition_archive.html`; it does not download them.
+On another machine, collect the seed releases with `scripts.fetch.official`
+and save the PPAC archive before running it. The archive must link each exact
+PDF URL to the publication date recorded in `scripts/fetch/official_seeds.jsonl`.
 
 ## Files and units
 
@@ -42,19 +58,50 @@ explicitly and preserve the conversion audit before importing.
 | `gsec_10y_pct.csv` | `GSEC_10Y` | `percent` | RBI/FBIL benchmark 10-year government-security series |
 | `fpi_flows_usd_mn.csv` | `FPI_FLOWS` | `USD million, net` | NSDL/CDSL net FPI equity-and-debt flow releases |
 
-Brent, Indian basket, benchmark 10-year yield and FPI flows are still missing.
-The remaining source entries above are acquisition guidance, not downloaded data.
+Brent, benchmark 10-year yield and accepted FPI flows are still missing.
+Indian basket coverage is partial.
+The Brent and GSEC source entries above are acquisition guidance, not downloaded data.
 Do not substitute spot Brent for front-month futures, CPI index levels for annual
 inflation, or INR-crore FPI values for USD million. Upward `inr_usd` means a weaker
 rupee. Keep the benchmark/security definition consistent for bond yields.
 
 Acquisition checks found that PPAC's current monthly price table was modified in
 October; it cannot be backdated into March–September. Its news archive did not
-provide the required in-window daily basket records. FBIL's GSEC listing returns
+provide the required in-window daily basket records. The accepted May PDF
+provides the two monthly observations above; four other cached snapshot PDFs
+have later file versions and remain excluded. FBIL's GSEC listing returns
 dated download links, not a verified benchmark-yield series. The NSDL production
 report pages were inaccessible in this session; pilot/test-domain values were
 not imported. A licensed front-month Brent history, benchmark identification,
 and source publication dates still need verification for the remaining files.
+
+## FPI acquisition candidates, pending vintage review
+
+The public CDSL archive is now accessible through its date-selection form.
+`scripts.fetch.cdsl_series` extracts native USD monthly subtotals for Equity,
+Debt, Debt-VRR and Debt FAR, excluding Hybrid, MF, AIF and derivatives. Monthly
+totals are cross-checked against daily reporting rows with explicit rounding
+tolerance. Five candidate observations cover April, June, July, August and
+September. March and May are excluded because their selected month-end date
+has no actual reporting row; an arbitrary date selection cannot prove publication.
+
+**These are not in the canonical series store.** CDSL dynamically generates its
+historical archive and provides no revision timestamps, so historical value
+vintages remain unverified. The candidate CSV stays under the ignored
+`data/interim/series/`, and the tracked audit is
+`reports/fpi_acquisition_review.json`. Dates in that candidate file are
+source-declared reporting dates, pending acceptance as availability dates for
+the particular values. The CLI refuses output under canonical `data/series/`.
+These are custodian reporting-month totals, not trading-month totals.
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.fetch.cdsl_series --download
+# Subsequent runs can use the checksummed caches without --download.
+```
+
+The public archive depends on session state. The audit retains the form URL,
+selected date, returned archive URL and raw checksum so the selection can be
+replayed; opening the archive URL alone defaults to a current report.
 
 ## CSV contract
 

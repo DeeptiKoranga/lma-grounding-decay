@@ -1,0 +1,71 @@
+{
+  "series_id": "indian_basket_usd_bbl",
+  "definition": "PPAC Indian crude basket, monthly average, USD per barrel",
+  "frequency": "monthly; cannot confirm an intramonth or daily threshold crossing",
+  "availability": "archive publication date of the specific accepted PDF, including comparison months",
+  "observations": 2,
+  "vintages": 2,
+  "coverage_complete": false,
+  "missing_observation_months": [
+    "2026-03",
+    "2026-06",
+    "2026-07",
+    "2026-08",
+    "2026-09"
+  ],
+  "archive": {
+    "url": "https://ppac.gov.in/archives/reports",
+    "raw_path": "data/raw/ppac/acquisition_archive.html",
+    "sha256": "7997ad5277228f50a8fa3022b6d8600846bb65c43efc84ba442bcc6a479b06a8"
+  },
+  "sources": [
+    {
+      "source": "ppac",
+      "url": "https://ppac.gov.in/download.php?file=rep_studies/1784292107_Snapshot_of_India_Oil_and_Gas_May2026_V1_A5.pdf",
+      "title": "Snapshot of India's Oil and Gas Data, May 2026",
+      "published_at": "2026-06-17",
+      "publication_date_source": "https://ppac.gov.in/archives/reports",
+      "raw_path": "data/raw/ppac/e4369693bbde6e6ce02c.pdf",
+      "sha256": "37d68131ebbafd4df5641c88a8659fddbd6e8ac0b09e49bc7061f1c252e62d79",
+      "highlights_pdf_page": 5,
+      "prices_table_pdf_page": 38,
+      "pdf_file_version_day": "2026-06-17",
+      "observations": [
+        {
+          "on": "2026-05-31",
+          "value": 106.23,
+          "available_on": "2026-06-17",
+          "source_url": "https://ppac.gov.in/download.php?file=rep_studies/1784292107_Snapshot_of_India_Oil_and_Gas_May2026_V1_A5.pdf",
+          "unit": "USD per barrel"
+        },
+        {
+          "on": "2026-04-30",
+          "value": 114.48,
+          "available_on": "2026-06-17",
+          "source_url": "https://ppac.gov.in/download.php?file=rep_studies/1784292107_Snapshot_of_India_Oil_and_Gas_May2026_V1_A5.pdf",
+          "unit": "USD per barrel"
+        }
+      ]
+    }
+  ],
+  "excluded_sources": [
+    {
+      "url": "https://ppac.gov.in/download.php?file=rep_studies/1792151355_Final_Snapshot_of_Indias_Oil_Gas_data_augpages.pdf",
+      "reason": "PDF file version is later than its listed release; original required"
+    },
+    {
+      "url": "https://ppac.gov.in/download.php?file=rep_studies/1789642325_Snapshot_of_India_Oil_and_Gas_Data_July_26_V2.pdf",
+      "reason": "PDF file version is later than its listed release; original required"
+    },
+    {
+      "url": "https://ppac.gov.in/download.php?file=rep_studies/1787060700_1786353946_Snapshot_of_India_Oil_and_Gas-June.pdf",
+      "reason": "PDF file version is later than its listed release; original required"
+    },
+    {
+      "url": "https://ppac.gov.in/download.php?file=rep_studies/1784291909_Snapshot_of_Indias_Oil_Gas_data_April_2026_Final_A5.pdf",
+      "reason": "PDF file version is later than its listed release; original required"
+    }
+  ],
+  "limitation": "File metadata detects known later copies; it cannot prove an unchanged historical body.",
+  "use": "move_confirmation_only"
+}

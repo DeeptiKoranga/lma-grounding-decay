@@ -1,9 +1,15 @@
 # Varun Patil: Track A status
 
-Updated **22 October 2026** in the local project folder, branch
+Updated **23 October 2026** in the local project folder, branch
 `varun` (continued from `a/corpus-retrieval-foundation`). **Varun's work is not all complete.** The
 corpus/retrieval foundation is implemented and tested; research acceptance and
 four macro series remain outstanding.
+
+The 23 October series continuation added two Indian basket monthly observations,
+bringing canonical populated series to three of six, with partial basket coverage.
+Five CDSL FPI monthly candidates remain outside the series store pending historical
+vintage verification. See `reports/series_continuation.md` for the source audits,
+reproduction commands in `data/series/README.md`, and the 412-test validation gate.
 
 The project studies how textual support changes with hop distance through a
 causal explanation graph. Every condition must share the corpus, date boundary,
@@ -33,7 +39,7 @@ accepted on all team machines.
 | [A7 / #7](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/7) | Real pinned BGE-M3 on the local MPS GPU, FAISS and hybrid RRF; model/input-checked resumable embeddings and corpus-checked indexes. **Full 27,286-passage snapshot encoded; real saved-index reload passed.** Initial FAISS/exact backend agreement also passed. | Keep reviewed corpus/model/input settings fixed for comparisons. |
 | [A8 / #8](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/8) | Four-configuration runner and corrected full-corpus development run completed on 20 source-backed pairs; Recall@5/@10, MRR@50 and hashes recorded. | **Incomplete:** independent review and broader temporal coverage. Development results cannot freeze D-02. |
 | [A9 / #9](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/9) | Real pinned cross-encoder completed top-50 reranking on all 20 corrected development pairs. | **Incomplete research evaluation:** uses the same unreviewed convenience pairs; D-03 remains open. |
-| [A10 / #10](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/10) | Read/import layer plus **2/6 actual series**: 7 original provisional CPI observations and 141 daily FBIL USD/INR reference rates. Historical availability/vintages are enforced. | **Missing:** front-month Brent, Indian basket, benchmark 10-year GSEC yield and net equity-plus-debt FPI flows in USD million. |
+| [A10 / #10](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/10) | Read/import layer plus **3/6 populated series**: 7 original provisional CPI observations, 141 daily FBIL USD/INR reference rates and 2 Indian basket monthly averages available from 17 June. Five native-USD CDSL FPI monthly candidates are staged separately for review. | **Incomplete:** Indian basket coverage; front-month Brent; benchmark 10-year GSEC yield; accepted net equity-plus-debt FPI data. CDSL historical vintages are unverified and excluded from SeriesStore. |
 | [A11 / #11](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/11) | **Software complete:** as-of filtering before ranking/cutoff across BM25, dense, hybrid and reranking. Future documents cannot alter BM25 statistics. Known later-version source copies are excluded. | Track C integration must preserve the interface guarantees. |
 
 ## Data and review records
