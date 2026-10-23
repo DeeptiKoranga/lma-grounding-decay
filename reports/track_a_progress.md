@@ -54,7 +54,8 @@ relevance acceptance. See `reports/retrieval_v3_review_readiness.json`.
 
 Latest local checks: **600 tests passed**, Ruff and Black passed. The earlier clean clone at `57c0480` passed **584 tests with two optional PDF
 skips**; current review-workflow validation is recorded in
-`reports/track_a_review_validation.json`. The real saved-index
+`reports/track_a_review_validation.json` (598 passed and two optional PDF skips
+at source `80a6d7a`). The real saved-index
 reload passed; all 24 fresh graphs match. Fifteen quotation failures in the
 original seven-condition baseline/ablation outputs remain visible for independent
 correction; exact reproduction does not validate their support. No UER, human

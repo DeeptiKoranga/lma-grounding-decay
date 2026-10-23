@@ -26,5 +26,18 @@
     "reports/corpus_review_gate_validation.json",
     "reports/track_a_review_browser_validation.json",
     "reports/track_a_remaining_source_gaps.json"
-  ]
+  ],
+  "source_commit": "80a6d7a",
+  "clean_clone": {
+    "path": "/private/tmp/lma-grounding-fresh-20261023",
+    "source_commit": "80a6d7a",
+    "tests_passed": 598,
+    "tests_skipped": 2,
+    "skip_reason": "optional PyMuPDF checks in the core-only environment",
+    "ruff": "passed",
+    "black": "passed",
+    "log": "/private/tmp/lma-track-a-review-fresh-checks-20261023.log",
+    "method": "refreshed existing clean clone from local repository; reused its core environment"
+  },
+  "browser_scope": "Actual local HTTP browser workflow verified. Direct file-protocol preview was not allowed by the in-app browser policy; no alternate file access was attempted."
 }
