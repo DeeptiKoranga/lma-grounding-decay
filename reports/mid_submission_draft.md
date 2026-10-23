@@ -22,9 +22,20 @@ verifier and repair loop. The local model is Qwen3-8B at 4-bit, immutable revisi
 `545dc4251c05440727734bcd94334791f6ab0192`. Its use establishes integration,
 not the still-open two-model selection decision.
 
-The six typed tools enforce the query cutoff, trusted passage identity and a
-12-call budget. A fresh-context semantic verifier follows deterministic source,
-date, variable and quotation checks. Graph updates recompute shortest BFS hops
+Generation is greedy at temperature zero with thinking disabled, a 12,000-token
+input limit, up to 700 tokens for baseline prose and 1,800 for extraction.
+Retrieved conditions initially request eight passages and pack whole passages
+within 16,000 characters. B1-R reranks the same first-stage top-50 candidates.
+The prompt requests at most six links; the extraction schema permits twelve,
+so extra model links are retained for review rather than silently discarded.
+Graphs are bounded to four hops. The 12-call tool budget includes retrieval,
+verification, graph updates and the stop tool; model calls are logged separately.
+
+The executed controller uses deterministic shallow-edge priority; separate
+synthetic probes test model tool selection. The six typed tools enforce the
+query cutoff, trusted passage identity and a 12-call budget. A fresh-context
+semantic verifier follows deterministic source, date, variable and quotation
+checks. Graph updates recompute shortest BFS hops
 and weakest-link paths. Actual model tokens, prompts, completions, tool outcomes,
 latencies and stop states are logged. Baseline source errors remain visible for
 review rather than being silently repaired before comparison.
@@ -38,10 +49,14 @@ reviewer has not been selected.
 ## Evidence available now
 
 - Current checkout: 547 tests pass; Ruff and Black pass. The core-only fresh
-  clone passes 537 tests with two optional-library skips on Python 3.12.13.
+  clone passes 545 tests with two optional-library skips on Python 3.12.13.
 - Retrieval smoke comparison on 20 unreviewed March-only convenience pairs:
   Recall@10 is 0.900 for plain BM25, 0.925 for hybrid and 0.975 for BM25 plus
   reranking. These incomplete labels cannot settle D-02/D-03.
+- The model chose the expected next tool on 5/40 scripted states (12.5%);
+  34/40 calls (85%) passed schema/cutoff checks. This weak synthetic result
+  keeps model/prompt selection open; it does not evaluate the executed
+  deterministic controller or human-reviewed real-run states.
 - Twenty executed synthetic tool faults preserve the graph and cutoff, count
   attempted calls and produce the expected typed boundary outcome. Model-led
   fault recovery has not been established by this test.
@@ -50,9 +65,16 @@ reviewer has not been selected.
   available from 17 June. Five FPI candidates are staged outside the canonical
   store because historical vintages are unverified.
 
-The seven-condition run, synthetic model diagnostics and compute totals have
-separate machine-readable audits. None supplies human UER, strength inflation,
-recall or a hypothesis result. The qualitative graph is explicitly marked as
+The seven-condition run completed all 42 graphs and 227 edges. It logged 87
+model calls and 188 tool calls; graph and recorded-trace checks pass. Fifteen
+asserted spans in the unverified baselines/ablation fail exact quotation
+matching. M retains eight model-verified assertions, with 18 inferred edges
+without a verifier verdict. These are structural/model counts, not support
+accuracy. The 25-prompt safety screen found no regex advice/own-forecast flags;
+all responses await human adjudication. A fresh-clone one-query probe completed
+B0/B1/B2/M with matching canonical graphs, reusing the local heavy runtime and
+corpus. Compute and diagnostic audits are separate artifacts. None supplies
+human UER, strength inflation, recall or a hypothesis result. The qualitative graph is explicitly marked as
 awaiting independent review.
 
 ## Deviations and current limits

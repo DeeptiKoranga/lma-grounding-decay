@@ -162,6 +162,8 @@ The conditions runner now connects the real corpus and model across all seven
 conditions. Development logs and a structural audit are recorded separately in
 `reports/integration_status.md`; independently reviewed development gold is
 still absent. The retrieval table is an unreviewed smoke comparison, and the
-qualitative graph carries pending-review labels. A fresh clone passes 537 core
-tests with two optional-library skips. These local checks do not replace
+qualitative graph carries pending-review labels. A fresh clone passes 545 core
+tests with two optional-library skips. Its four-condition, one-query model probe
+produces matching canonical graphs while reusing the heavy runtime and corpus.
+These local checks do not replace
 all-laptop, Kaggle, annotation or research acceptance gates.

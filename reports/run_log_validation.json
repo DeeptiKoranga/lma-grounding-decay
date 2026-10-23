@@ -1,0 +1,183 @@
+{
+  "status": "actual completed-run log validation; structural checks only",
+  "counts": {
+    "graphs": 42,
+    "attempts": 42,
+    "model_calls": 87,
+    "tool_calls": 188,
+    "retrieved_passage_occurrences": 354
+  },
+  "expected_graphs": 42,
+  "failures": [],
+  "logs": [
+    {
+      "path": "runs/development_complete_20261023/A-NoLoop/dev-candidate-01-82e35dc4.jsonl",
+      "sha256": "2a7ea6bdec292253f826d4f165b6d77efe62d5d3ada2a64d5079343ee7bbcdc9"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoLoop/dev-candidate-02-6f17cea2.jsonl",
+      "sha256": "e4379bee47bbb843ce44d5306753b3f3f751de588cf3b328533e1d79d4f8ddcd"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoLoop/dev-candidate-03-ade184b8.jsonl",
+      "sha256": "c51bef7fb8669d4e4c7f77e493367dfd55e6a0ce045668f8349239ec6a36addb"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoLoop/dev-candidate-04-41c61da2.jsonl",
+      "sha256": "4730f3f29bd367194e8e4b2e9caacad6f00c955caf3c8c288753cee698ef41bf"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoLoop/dev-candidate-05-15969e30.jsonl",
+      "sha256": "e88e9456d5f4ed962b65eeb5ae8809abe0e7c2eed4a636d5a173bc87a5034339"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoLoop/dev-candidate-06-43c430c6.jsonl",
+      "sha256": "7a54acdb4d62abdb9c86b6e854a4a9060997cde5dd8a742f70b5446caf7402d0"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoVerify/dev-candidate-01-5f0f1889.jsonl",
+      "sha256": "97638dc1cdfed478bbd6920a6fea4fdedc4f5f270d881f6805a356ff9831545d"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoVerify/dev-candidate-02-91bc9bce.jsonl",
+      "sha256": "30ab1ea14bff409d952ffa2c6e83fd70978fc5bb51f14098e25d2da111703fc0"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoVerify/dev-candidate-03-bce0fc5d.jsonl",
+      "sha256": "d25912ff6355faf03582088a9c3701eed8fdf1384928b0d2ff96cecf45ece5ce"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoVerify/dev-candidate-04-c9488a88.jsonl",
+      "sha256": "6d6a4161a5efbee7e2e9d60771a16fd04cbe2cbf19097d0cd4e5deb3ac4a490d"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoVerify/dev-candidate-05-9afdd4c5.jsonl",
+      "sha256": "86e9df087518dc34868e564bc4af63e49683b55905dabba983f677fd7776112e"
+    },
+    {
+      "path": "runs/development_complete_20261023/A-NoVerify/dev-candidate-06-a04b85ee.jsonl",
+      "sha256": "c24076b14ec041657868080fe299fb59bfc1b02521ff5996f1480584a402372c"
+    },
+    {
+      "path": "runs/development_complete_20261023/B0/dev-candidate-01-a4927e36.jsonl",
+      "sha256": "1df88539e35fd493b413e9a261c46595604478eb8a6bddfe4811c6d1909ac903"
+    },
+    {
+      "path": "runs/development_complete_20261023/B0/dev-candidate-02-d36197d8.jsonl",
+      "sha256": "505571779cfbe3ee86fe52b2b11a2be068f0b7adf63d5dedec0d9bf74d6baf4f"
+    },
+    {
+      "path": "runs/development_complete_20261023/B0/dev-candidate-03-78a94e3c.jsonl",
+      "sha256": "1c5232b566d8d501064aa37f63beb68a4b1088fe106b851b7b22241f7ba13e27"
+    },
+    {
+      "path": "runs/development_complete_20261023/B0/dev-candidate-04-476268c9.jsonl",
+      "sha256": "d37925419f4f0cabc0b96d9e284343cd9b78b46d8483d166ba8ffe2eaf0dc498"
+    },
+    {
+      "path": "runs/development_complete_20261023/B0/dev-candidate-05-cdf86f23.jsonl",
+      "sha256": "2bba563cb5353dfad86a193801a21258f3bb276f245e0736aff9c04d34fb0f19"
+    },
+    {
+      "path": "runs/development_complete_20261023/B0/dev-candidate-06-71f326a4.jsonl",
+      "sha256": "4ca8dbd63fd400e67c603322a810f1e3cd0e9282d1894017a6fca757a40b152d"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1/dev-candidate-01-504676b5.jsonl",
+      "sha256": "a69bb36c875d904162dffe57d66ba8d6a4f5dd9f3e451885be908b3786418cf0"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1/dev-candidate-02-de2e0ffc.jsonl",
+      "sha256": "d3842a5a82a98326dfef5019b5e9f2f6fc69f36bfec48e133ace3171ec1982d0"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1/dev-candidate-03-ccd56f25.jsonl",
+      "sha256": "41621d4152cad7dabb011310bffec5df60f9cdd99f5e3bfa76cc0ec3acc0b35f"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1/dev-candidate-04-d8883315.jsonl",
+      "sha256": "bac953bd3f78e2dd87cf5f705d13ebaa108160f6701c76f9620d6ce11f22688a"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1/dev-candidate-05-6c6d25d2.jsonl",
+      "sha256": "749bbe650c37dfe0ea4494653a2761b9d63207d611385d2be6f48151c7e56d2e"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1/dev-candidate-06-f1e8e7b9.jsonl",
+      "sha256": "550709fffcd1fbb5bb0f636393327c215935ff39292ad40df2408855943112ef"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1-R/dev-candidate-01-42796c7e.jsonl",
+      "sha256": "81f8b7e9ca07a7df86c3439fcda4df5a9ebbd5a9e1dd7225cb20baa579c3cdc6"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1-R/dev-candidate-02-ea1cdaff.jsonl",
+      "sha256": "fcfcfc5c1c3f72b8511f5d34dd5231f25887b20c1ea96f8b942ae5888bf9f067"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1-R/dev-candidate-03-dd555770.jsonl",
+      "sha256": "421ad9a91c28101c299b939ad85b48aa9a713a51b317a1e8b62674f41f7e4329"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1-R/dev-candidate-04-1fe9e2ac.jsonl",
+      "sha256": "c8e35cf63ba63bfce08c332988f13f19b626ee6977d00dc3a9eeb6fd40926d53"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1-R/dev-candidate-05-15003973.jsonl",
+      "sha256": "bf2c713de6914d249a9e2d875103c32f30775c4efacfd96df09546cac6e98cb6"
+    },
+    {
+      "path": "runs/development_complete_20261023/B1-R/dev-candidate-06-3cf5bc83.jsonl",
+      "sha256": "24fddba4c85ba1311d63bd1a27058fd9c86583eb3e5501fa43296726ae204c06"
+    },
+    {
+      "path": "runs/development_complete_20261023/B2/dev-candidate-01-45b4cd7e.jsonl",
+      "sha256": "de43a2da53e58dbb34917fcf8929ff6994b8343b7ad402cf5aeed5bdfce65c83"
+    },
+    {
+      "path": "runs/development_complete_20261023/B2/dev-candidate-02-675792eb.jsonl",
+      "sha256": "a0f06b0f02091f9baaed34b22267b2afd5718651908d28f4e1db5638ddb91c41"
+    },
+    {
+      "path": "runs/development_complete_20261023/B2/dev-candidate-03-3f090112.jsonl",
+      "sha256": "73d07f0d88ef0934413e6b0e06d4c64db490eaa4e4cf5075a577f74634dcc3aa"
+    },
+    {
+      "path": "runs/development_complete_20261023/B2/dev-candidate-04-01df4b24.jsonl",
+      "sha256": "b6474dfd0f8c7e718c0929d225977c38360e3295bd0b9970e6f74e6425b696dc"
+    },
+    {
+      "path": "runs/development_complete_20261023/B2/dev-candidate-05-a886f6be.jsonl",
+      "sha256": "73cf62dc19b73a6c74b05bf44ba9eda9d800eaee71308cb3738d468dccfcf159"
+    },
+    {
+      "path": "runs/development_complete_20261023/B2/dev-candidate-06-c50385aa.jsonl",
+      "sha256": "ecabd9406e5ad3ccf618bd15687803d73181752ba7d40cfc3ac0d133249caf5a"
+    },
+    {
+      "path": "runs/development_complete_20261023/M/dev-candidate-01-a409a63f.jsonl",
+      "sha256": "cbe00c4458e9c36c8da2f06a1e3433b9c9cd139d9315bd72770827dd534c7d93"
+    },
+    {
+      "path": "runs/development_complete_20261023/M/dev-candidate-02-662d9a5e.jsonl",
+      "sha256": "74dde9d41225e8a55b2f4fa206fa68d8f9ec0a8ccc1ee2e449b7b11dc43a39e3"
+    },
+    {
+      "path": "runs/development_complete_20261023/M/dev-candidate-03-1001b679.jsonl",
+      "sha256": "7a02ab343473b162eebd4ede4e2bae98c382e1129ac7dea99557e27a20a33778"
+    },
+    {
+      "path": "runs/development_complete_20261023/M/dev-candidate-04-ed716a67.jsonl",
+      "sha256": "350c33e0878af5e5610e9e9645288f36d096c3457fc6fd6fc6c2b5424ee5e9f9"
+    },
+    {
+      "path": "runs/development_complete_20261023/M/dev-candidate-05-4abc9ad5.jsonl",
+      "sha256": "e87c294b1c01baa2f24a7eb4736483b8340e0145bd8b8919aa64ba2dcc335412"
+    },
+    {
+      "path": "runs/development_complete_20261023/M/dev-candidate-06-5d4c88b0.jsonl",
+      "sha256": "b9b8ff9e8ca45adb0dbb0dc7e7be6c40ef37f379d9ec6444b8c844785ff62f5a"
+    }
+  ],
+  "scope": "Actual source identities, publication cutoffs, model identity, prompt hashes, call/result pairs and per-attempt budget/stop accounting. No human support judgments."
+}

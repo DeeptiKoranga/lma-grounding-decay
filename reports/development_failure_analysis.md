@@ -23,3 +23,8 @@ several uncited prose answers (B1 candidates 05/06 and B1-R candidates 01/06).
 These identifiers must not be converted into valid citations to improve the
 baseline. Faithful correction removes extractor-added citations when the actual
 answer supplied none.
+
+The separate frozen synthetic action probe later measured only 5/40 expected
+tool choices (12.5%), despite 34/40 schema/cutoff-valid calls. This diagnoses
+model/prompt selection work still needed; it is not an additional human-ranked
+dev failure case or a score for the deterministic executed controller.

@@ -1,0 +1,45 @@
+{
+  "status": "synthetic frozen-state capability diagnostic; not human-annotated project states",
+  "states": 40,
+  "tool_selection_accuracy": 0.125,
+  "argument_validity": 0.85,
+  "safety": {
+    "status": "synthetic safety screening diagnostic; human adjudication pending",
+    "prompts": 25,
+    "advice_flags": 0,
+    "own_forecast_flags": 0
+  },
+  "joint_correct_and_schema_cutoff_valid": 5,
+  "notes": [
+    "Forty scripted synthetic states, five closely repeated variants of eight scenarios; not human-reviewed real-run states.",
+    "Argument validity checks schema and unchanged cutoff; it does not certify identifier correctness, executability or successful task completion.",
+    "The main executed controller uses deterministic priority; these standalone model choices are not its executed tool calls.",
+    "Safety regex flags require human adjudication and do not establish leakage rates."
+  ],
+  "usage": {
+    "model_calls": 65,
+    "prompt_tokens": 160470,
+    "completion_tokens": 4234,
+    "model_call_wall_s": 1765.6141614181688,
+    "tool_calls": 0,
+    "log_files": 65
+  },
+  "inputs": {
+    "model": "mlx-community/Qwen3-8B-4bit",
+    "revision": "545dc4251c05440727734bcd94334791f6ab0192",
+    "backend": "mlx",
+    "status": "synthetic diagnostics; no human labels or research acceptance",
+    "input_sha256": {
+      "/Users/varunpatil/Desktop/LMA grounding decay/scripts/run_capability_diagnostics.py": "cbd1f33cefdfa89316a04b5640f195466081b1991a896591a11fc2c54a566d0e",
+      "src/eval/capabilities.py": "dd239447298b63f58b2d7581b38df7aa49d1bef6547dc83704389e7dda0964e2",
+      "src/eval/safety.py": "f90721c0bb9867c75459467f787cd580a3288abfa5b0018d52fc2b0c69417c54",
+      "src/llm/generate.py": "6bff43d4de0f6ed1ff701194fd939a196a4a330bdde3a5b7dd592e5a4e53b699",
+      "data/eval/synthetic/agent_states.jsonl": "cc3ae11003e66b67dd76937727f03243e78bff210732d479686325a275a91d65",
+      "data/eval/synthetic/safety_prompts.jsonl": "0c8b691a2ecd6205a8ae97572c7afe43dc8dce1a4b5e46a032e19f2cbbf981d3"
+    }
+  },
+  "result_sha256": {
+    "action_results.json": "b2f7757dc51b43b2abea54dfefcac4ccb015bd896e0929c5aff6b5c8b485ba31",
+    "safety_results.json": "d5c8130c5e1d31c8739baf1dd36b5c83bfee8ace7a1d1966bc42d9d4fa1a902b"
+  }
+}

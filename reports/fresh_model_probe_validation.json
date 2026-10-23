@@ -1,0 +1,120 @@
+{
+  "status": "development integration audit; no human support scores",
+  "completed_graphs": 4,
+  "conditions": {
+    "B0": 1,
+    "B1": 1,
+    "B2": 1,
+    "M": 1
+  },
+  "failures": [],
+  "graphs": [
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "B0",
+      "edges": 8,
+      "established_edges": 5,
+      "paths": 2,
+      "tool_calls": 0,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 8,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "6fa25b160dce386646d7653f6186420d04649e5c7d4b9ca17fcaf64ab6435b79"
+    },
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "B1",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 5,
+      "tool_calls": 1,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "e8e239d3cb170e5637a0fa9cbf4be9f21e5d9776036521b1f6baa0a428345222"
+    },
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "B2",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 3,
+      "tool_calls": 1,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "4a2ba7600eba0408ef990713e37bffc2cb14353f93fd4cb8de8254b3cb080f35"
+    },
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "M",
+      "edges": 6,
+      "established_edges": 1,
+      "paths": 3,
+      "tool_calls": 11,
+      "stop_reason": "two_searches_added_nothing",
+      "unchecked_inferred_edges": 4,
+      "verifier_verdicts": {
+        "unsupported": 1,
+        "supported": 1
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "a44c451fcc92f4637df64314f5cab43c40607ef4f99f108023dcde93966bec6d"
+    }
+  ],
+  "compute": {
+    "B0": {
+      "model_calls": 2,
+      "prompt_tokens": 2779,
+      "completion_tokens": 613,
+      "model_call_wall_s": 64.1120069999015,
+      "tool_calls": 0,
+      "invalid_json_calls": 0
+    },
+    "B1": {
+      "model_calls": 2,
+      "prompt_tokens": 7428,
+      "completion_tokens": 951,
+      "model_call_wall_s": 128.8588027920341,
+      "tool_calls": 1,
+      "invalid_json_calls": 0
+    },
+    "B2": {
+      "model_calls": 1,
+      "prompt_tokens": 4736,
+      "completion_tokens": 760,
+      "model_call_wall_s": 93.84233095904347,
+      "tool_calls": 1,
+      "invalid_json_calls": 0
+    },
+    "M": {
+      "model_calls": 4,
+      "prompt_tokens": 6466,
+      "completion_tokens": 1082,
+      "model_call_wall_s": 128.4649489169242,
+      "tool_calls": 11,
+      "invalid_json_calls": 0
+    }
+  },
+  "compute_note": "measured model-call wall times and actual token counts; not GPU-active time or full phase time",
+  "research_acceptance": "pending model/retriever selection, human correction/support review, independent gold and anchor confirmation"
+}

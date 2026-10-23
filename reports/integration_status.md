@@ -39,13 +39,50 @@ Research completion is **not** established by this implementation checkpoint.
   not evidence of model-led recovery. The 40 action states and 25 safety prompts
   are explicitly synthetic, not human-labelled real-run benchmarks.
 
-The first real-model integration probe produced a six-edge RAG graph with an
-actual logged model call. A preliminary direct-graph sweep was interrupted
-after detecting its mismatch with the proposal's prose baselines. It remains
-local under `runs/development_20261023` and is excluded from comparisons.
-The corrected sweep is under `runs/development_prose_20261023`; its completion
-audit and compute report are separate artifacts. No hypothesis result is
-claimed from either unreviewed run.
+## Completed local integration run
+
+All **42 graphs** are complete: seven conditions × six source-backed, unreviewed
+candidates. The assembly retains baseline commit `20389a2` and corrected agent
+commit `79a1326` with their distinct source hashes; shared input hashes match.
+Earlier direct-graph baselines and the interrupted old agent attempt are excluded.
+This is not a single-version frozen research experiment.
+
+The completed run logged **87 model calls**, **260,325 prompt tokens**, **37,304
+completion tokens** and **188 tool calls**. Independent trace checks matched all
+354 retrieved passage occurrences to trusted source bytes and the pinned cutoff;
+model identity, prompt hashes, call/result pairs and budget/stop accounting pass.
+All 42 graphs validate, with at most 12 tool calls each. See
+`reports/integration_validation.json` and `reports/run_log_validation.json`.
+
+Fifteen asserted-edge spans are nonverbatim: B1 eight, B1-R one, B2 three and
+A-NoVerify three. These are preserved baseline/ablation outcomes, not silently
+corrected support scores. No asserted M/A-NoLoop edge fails the structural
+source/date/span audit. M retains eight model-verified assertions across 35
+edges, with 18 inferred edges lacking a verifier verdict. A-NoLoop retains no
+assertions and leaves five inferred edges without a verdict. These counts do
+not measure semantic support or reference recall.
+
+Eighteen prose corrections and a **227-edge support preview** are prepared.
+Correct prose first and rebuild the final blinded support packet afterward;
+do not label the preview. Reviewer identity is still unassigned. The separate
+retrieval pool has 1,988 items. Actual packet locations/hashes are in
+`reports/review_readiness.json`, with instructions in `reports/review_handoff.md`.
+
+The actual M example is exported to `reports/development_example.svg` and PNG,
+visually checked, and marked as awaiting independent review. No UER chart has
+been fabricated. Five observed trace/extraction cases are documented in
+`reports/development_failure_analysis.md`; they are not ranked human UER cases.
+The completed 40-state synthetic model probe chose the expected tool in only
+5/40 cases (12.5%); 34/40 calls (85%) passed schema/cutoff checks. This development diagnostic leaves D-01 open; the full two-model, five-task
+pilot remains required. The executed controller uses deterministic priority.
+The 25-prompt safety screen found zero regex advice/own-forecast flags; all
+responses still need human adjudication. A fresh-clone B0/B1/B2/M probe on one
+query completed four valid graphs, identical to the original graphs after
+excluding run IDs. It reused the heavy runtime and corpus, and is not a full
+frozen-gold reproduction. See `reports/capability_diagnostics.json`,
+`reports/fresh_clone_validation.json` and `reports/compute_log.md`.
+The current software gate is 547 tests passing;
+the core-only fresh clone passes 545 with two optional-library skips.
 
 ## Research gates still open
 

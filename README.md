@@ -34,6 +34,12 @@ before mechanical edge extraction. Human correction and blinded support review
 remain required. Three of six macro series are populated, including partial
 Indian basket coverage.
 
+The 23 October local integration completed all 42 graphs across six unreviewed
+candidates; 547 tests pass. The separate synthetic tool-choice probe succeeded
+on only 5/40 expected actions, so model selection remains open. Execution and
+structural validity do not establish research performance. See
+[the validation and remaining gates](reports/integration_status.md).
+
 The local Qwen3-8B run uses pinned public weights and no paid API. It is an
 integration model, not the result of the still-pending two-model selection pilot.
 The six source-backed queries in `data/eval/development_candidates.jsonl` are
