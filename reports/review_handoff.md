@@ -11,6 +11,8 @@ verification is an experimental component and cannot supply independent truth.
    absent from the actual answer; preserve the answer's uncertainty, citation
    errors and substantive mistakes. Do not improve the answer. Export corrected
    artifacts using `eval.prose_review export`.
+   In particular, three current B0 graphs are empty even though their answers
+   contain explanatory prose; an empty graph is not evidence of no claims.
 2. **Prepare the final blinded support packet from those corrected artifacts.**
    The curator retains `private_mapping.json`. The reviewer gets only
    `packet.json`, blank `judgments.json`, the annotation guide and the local
