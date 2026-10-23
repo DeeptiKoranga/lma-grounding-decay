@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import uuid
 from pathlib import Path
@@ -20,6 +21,24 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
+    inputs = {
+        "model": "mlx-community/Qwen3-8B-4bit",
+        "revision": args.revision,
+        "backend": "mlx",
+        "status": "synthetic diagnostics; no human labels or research acceptance",
+        "input_sha256": {
+            str(path): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in (
+                Path(__file__),
+                Path("src/eval/capabilities.py"),
+                Path("src/eval/safety.py"),
+                Path("src/llm/generate.py"),
+                Path("data/eval/synthetic/agent_states.jsonl"),
+                Path("data/eval/synthetic/safety_prompts.jsonl"),
+            )
+        },
+    }
+    (args.output / "inputs.json").write_text(json.dumps(inputs, indent=2) + "\n")
     generator = MLXGenerator(
         args.model_path, model_id="mlx-community/Qwen3-8B-4bit", revision=args.revision
     )

@@ -116,6 +116,27 @@ The independent retrieval review is separate: follow
 retriever relevance, and a retrieval relevance judgment does not establish an
 edge's causal direction or strength.
 
+## Recorded 23 October development phases
+
+The actual local run used a baseline phase and a corrected agent phase. A
+controller stop-state bug was fixed after the baseline phase; baseline
+generation itself was unchanged. Preserve both source fingerprints rather than
+presenting the assembly as a single-version frozen experiment:
+
+```sh
+PYTHONPATH=src .venv/bin/python scripts/assemble_development_phases.py \
+  --baseline runs/development_prose_20261023 \
+  --agent runs/development_agents_20261023 \
+  --queries data/eval/development_candidates.jsonl \
+  --output runs/development_complete_20261023
+```
+
+The assembler refuses incomplete cases or different shared inputs, validates
+graphs and logs, retains failed attempts and records per-file hashes. Earlier
+direct-graph runs and the interrupted old agent attempt are excluded. Human
+correction/review must use newly prepared packets bound to the assembled files;
+moving a packet between run folders invalidates its mapping.
+
 ## Capability fixtures and limits
 
 `scripts/build_capability_fixtures.py` regenerates 40 synthetic action states,

@@ -2,8 +2,9 @@
 
 Updated **23 October 2026** in the local project folder, branch
 `varun` (continued from `a/corpus-retrieval-foundation`). **Varun's work is not all complete.** The
-corpus/retrieval foundation is implemented and tested; research acceptance and
-four macro series remain outstanding.
+corpus/retrieval foundation and integrated development pipeline are implemented;
+research acceptance, three missing series and partial basket coverage remain
+outstanding.
 
 The 23 October series continuation added two Indian basket monthly observations,
 bringing canonical populated series to three of six, with partial basket coverage.
@@ -18,10 +19,11 @@ they cannot support causal edges. The mid-submission is 30 October.
 
 The project plan and ownership table assign Track A to Varun, Track B to Deepti,
 and Track C to Harshal. GitHub's live issue list currently has **no individual
-assignees**; all issues are open. This report follows the plan's ownership rather
-than claiming that GitHub has assigned the issues to Varun's account. No issues
-were closed, and no other owner's implementation was edited. This checkpoint
-is intended for Varun's branch, with unfinished research work explicitly listed.
+assignees** at the last inspection; all issues were open. This report follows the
+plan's ownership rather than claiming GitHub assignments. The continued-project
+integration adds Track B/C development components on this local branch and
+credits the existing Track B rules in `reports/integration_status.md`. It does
+not represent teammate review or merge acceptance. No issues were closed.
 
 ## Assignment status
 
@@ -144,19 +146,22 @@ only after reviewing source reproduction terms.
 
 ## Verification and later assignments
 
-`make lint test` passed: **361 tests**, Ruff and Black. Tests cover source/version
+The current `make lint test` passes: **536 tests**, Ruff and Black. Tests cover source/version
 exclusion, paragraph integrity, date boundaries, macro-series availability,
 checkpoint interruption/model changes, candidate reuse and all retrieval modes.
 The real backend checks and final snapshot audit are recorded alongside the
 pilot and manifest.
 
-Varun's later work is still pending: retrieval integration
+Varun's later assignments include retrieval integration
 [#33](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/33), the reviewed
 retrieval table [#45](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/45),
 figures [#46](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/46), and
 fresh-clone/full-dev reproduction
 [#50](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/50).
-The conditions runner, dev gold and generated run logs needed for those tasks
-are not available on the current main-based checkout. They were not implemented
-on behalf of Deepti or Harshal. Local unit checks do not replace the planned
-all-laptop and seven-condition integration gates.
+The conditions runner now connects the real corpus and model across all seven
+conditions. Development logs and a structural audit are recorded separately in
+`reports/integration_status.md`; independently reviewed development gold is
+still absent. The retrieval table is an unreviewed smoke comparison, and the
+qualitative graph carries pending-review labels. A fresh clone passes 534 core
+tests with two optional-library skips. These local checks do not replace
+all-laptop, Kaggle, annotation or research acceptance gates.

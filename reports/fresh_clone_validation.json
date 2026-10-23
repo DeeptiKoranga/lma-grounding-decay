@@ -1,0 +1,23 @@
+{
+  "source_commit": "79a1326",
+  "clone": "/private/tmp/lma-grounding-fresh-20261023",
+  "setup": "make setup; uv sync --python 3.12 --extra dev",
+  "fresh_python": "Python 3.12.13",
+  "status": "core-only fresh setup, lint and tests passed",
+  "original_environment_tests": {
+    "passed": 536,
+    "skipped": 0,
+    "log": "/private/tmp/lma-final-checks-20261023.log"
+  },
+  "limitations": [
+    "No model weights or corpus payload included in git",
+    "Two optional native-library tests skipped in the core-only fresh environment",
+    "Kaggle and other team laptops not exercised",
+    "Fresh-clone model sweep not yet run"
+  ],
+  "fresh_tests": {
+    "passed": 534,
+    "skipped": 2,
+    "log": "/private/tmp/lma-fresh-checks-20261023.log"
+  }
+}
