@@ -16,6 +16,11 @@ explicitly partial histories. Full fresh-source B0/B1/B2/M reproduction matches
 24/24 earlier v1 graphs. See [Track A status](reports/track_a_progress.md) for
 completed work, version boundaries and remaining research gates.
 
+The local reviewer workspace is ready at
+`data/interim/track_a_review_delivery_20261023/START_HERE.md`, with archived
+originals, blinded passage review and save/resume pages. Independent human
+judgments and research signoff remain pending.
+
 ## What this is
 
 Given a question like *"Brent crossed $100 on 12 March 2026; what effects on India were
@@ -44,7 +49,7 @@ remain required. All six macro series are populated; basket, Brent, benchmark yi
 coverage remain partial and do not confirm the planned anchor episodes.
 
 The 23 October local integration completed all 42 graphs across six unreviewed
-v1 candidates; 586 tests pass. The separate synthetic tool-choice probe succeeded
+v1 candidates; 600 tests pass. The separate synthetic tool-choice probe succeeded
 on only 5/40 expected actions, so model selection remains open. Execution and
 structural validity do not establish research performance. See
 [the validation and remaining gates](reports/integration_status.md).

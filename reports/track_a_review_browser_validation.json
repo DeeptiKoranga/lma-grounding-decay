@@ -1,0 +1,21 @@
+{
+  "checked_on": "2026-10-23",
+  "status": "browser workflow and downloaded JSON verified; no human judgments created",
+  "relevance_page_loaded": true,
+  "relevance_item_navigation": true,
+  "relevance_visible_items": 2062,
+  "relevance_visible_questions": 20,
+  "all_answers_initially_blank": true,
+  "blank_progress_downloaded": true,
+  "download_passes_retrieval_judgments_schema": true,
+  "download_matches_original_packet_hash": true,
+  "download_has_no_reviewer_or_attestations": true,
+  "saved_progress_restored_in_browser": true,
+  "restored_progress": "0 of 2062 items answered; 0/20 questions checked",
+  "corpus_page_loaded": true,
+  "corpus_visible_items": 73,
+  "archived_original_display_verified": true,
+  "html_original_isolation": "sandbox without permissions plus restrictive CSP; no external assets allowed",
+  "preview": "data/interim/track_a_review_delivery_20261023/review_preview.png",
+  "research_acceptance": false
+}

@@ -250,3 +250,53 @@ canonical series. The completed sweep used source `bbc9288`, all six development
 candidates and B0/B1/B2/M; all 24 canonical graphs match after dropping only
 `run_id`. It reused weights/runtime and does not certify other machines or
 Kaggle. A new v3 experiment needs new logs and review packets.
+
+## Local independent-review workspace
+
+Build a new reviewer folder from the current v3 snapshot and existing blank
+sample/relevance packets. This operation is local and copies no seeds, ranks,
+scores or private condition mapping into reviewer materials:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.prepare_track_a_review \
+  --output data/interim/track_a_review_recheck \
+  --report reports/track_a_review_recheck.json
+```
+
+Open `START_HERE.md`, then `01_corpus/Review.html` in a browser. Cached HTML
+originals render in a sandbox without scripts or external assets; PDFs remain
+checksummed local files. The page saves `corpus_judgments.json` for progress and
+resumption. After an independent human completes every check and their own
+identity/date/independence/acceptance record, validate that file:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m corpus.review export \
+  --snapshot data/processed \
+  --packet data/interim/track_a_review_delivery_20261023/01_corpus/packet.json \
+  --judgments /path/to/completed_corpus_judgments.json \
+  --output data/interim/corpus_sample_v3_accepted
+```
+
+This receipt covers only the fixed 73-item extraction sample. It does not grant
+redistribution rights or certify source balance/full extraction coverage. Stale
+corpus/parent/packet/text hashes, missing/rejected/duplicate rows, future review
+dates and absent or non-independent attestations are rejected before output.
+The actual blank packet was confirmed to fail.
+
+After corpus acceptance, a reviewer blinded to retrieval results uses
+`02_relevance/Review.html`, saves `relevance_judgments.json`, and returns it for
+validation. The following requires their complete real judgments, including all
+20 query suitability checks and exact spans for relevant passages:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m retrieval.review export \
+  --packet data/interim/track_a_review_delivery_20261023/02_relevance/packet.json \
+  --judgments /path/to/completed_relevance_judgments.json \
+  --corpus data/processed/articles.jsonl \
+  --output data/interim/retrieval_v3_accepted
+```
+
+Use that export's pairs/receipt for a reviewed pilot following
+`reports/retrieval_review_workflow.md`. Do not replace the placeholders with
+machine-produced judgments or prefill human attestations. Existing experiments
+still use v1 and their separate correction/support packets.

@@ -1,0 +1,7 @@
+{
+  "status": "passed on actual 73-item packet",
+  "blank_corpus_review_rejected": true,
+  "reason": "independent reviewer must be named and differ from curator",
+  "no_receipt_created": true,
+  "human_judgments_created": false
+}

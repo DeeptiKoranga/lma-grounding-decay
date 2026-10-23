@@ -22,6 +22,22 @@ The tools now reject a corpus that differs from recorded run provenance.
 A new v3 experiment requires new logs and review packets; old human work must
 never be relabelled as a different corpus version.
 
+## Start the Track A review
+
+The self-contained local workspace is
+`data/interim/track_a_review_delivery_20261023/START_HERE.md`. Open its corpus
+review page first; all 73 originals are attached. After independent corpus
+sample acceptance, open its separate relevance page. Save the downloaded
+`corpus_judgments.json` and `relevance_judgments.json`; each can be reloaded into
+the matching page. The browser save/resume check used entirely blank judgments.
+Do not infer acceptance from the presence of a prepared folder or saved file.
+
+The curator validates corpus sample review with `corpus.review export` and
+retrieval judgments with `retrieval.review export`. Both refuse incomplete
+acceptance. Exact commands and the scope of each receipt are in
+`docs/reproduction.md`. No ratings, reviewer identity or attestations have been
+filled. A reviewer who has seen comparison results cannot claim blinding to them.
+
 ## Required order
 
 1. **Correct prose extraction.** Review the 18 B0/B1/B1-R prose answers and

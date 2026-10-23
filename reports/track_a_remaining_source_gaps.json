@@ -1,0 +1,50 @@
+{
+  "checked_on": "2026-10-23",
+  "status": "additional public source checks completed; no new observations admitted",
+  "canonical_observations_unchanged": 161,
+  "corpus_unchanged": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+  "checks": [
+    {
+      "source": "PPAC public historical basket page",
+      "url": "https://ppac.gov.in/prices/international-prices-of-crude-oil",
+      "finding": "Public page exposes registration/captcha/OTP flow for historical reports; current month data is not an original historical vintage. No account, gate bypass or historical backdating attempted.",
+      "action": "Retain two original monthly observations; history remains incomplete."
+    },
+    {
+      "source": "ICE Brent contract/pricing",
+      "url": "https://www.ice.com/products/219/Brent-Crude-Futures/data",
+      "definition_url": "https://www.ice.com/products/219",
+      "finding": "Public pricing page did not expose a usable March-September daily settlement history. Contract specification distinguishes daily settlement from intraday quotes and the post-expiry index.",
+      "action": "Do not substitute spot/index/deferred contracts or report existing intraday points as settlement history."
+    },
+    {
+      "source": "DEA monthly economic review",
+      "url": "https://dea.gov.in/index.php/reports-monthly-economic-report",
+      "finding": "Listing discovered, but the bounded collector failed TLS chain verification while checking robots policy and stopped. No source bytes acquired or TLS verification disabled.",
+      "evidence": "reports/dea_series_source_check.json",
+      "action": "No values or publication/vintage dates inferred from search snippets."
+    },
+    {
+      "source": "Business Standard/RBI",
+      "finding": "Earlier robots-policy HTTP 403/418 failures remain recorded; access was not bypassed. No new source coverage is claimed.",
+      "evidence": [
+        "reports/business_standard_access_check.json",
+        "reports/rbi_mobile_acquisition.json"
+      ]
+    },
+    {
+      "source": "CDSL and FBIL candidates",
+      "finding": "Existing generated historical totals and undated newsletter assets still lack accepted original-vintage/benchmark evidence.",
+      "evidence": [
+        "reports/fpi_acquisition_review.json",
+        "reports/gsec_acquisition_review.json"
+      ],
+      "action": "Candidates remain outside the canonical series."
+    }
+  ],
+  "still_requires": [
+    "A human independent extraction/relevance reviewer with valid blinding attestations.",
+    "Eligible original histories or an explicit documented scope decision for sparse macro coverage.",
+    "Research configuration and team/TA acceptance; no automatic signoff."
+  ]
+}

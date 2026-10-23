@@ -52,9 +52,9 @@ relevance acceptance. See `reports/retrieval_v3_review_readiness.json`.
 
 ## Verification and handoff
 
-Local checks: **586 tests passed**, Ruff and Black passed. The refreshed clean
-clone at `57c0480` passes **584 tests with two optional PDF skips**, plus lint and
-formatting. The real saved-index
+Latest local checks: **600 tests passed**, Ruff and Black passed. The earlier clean clone at `57c0480` passed **584 tests with two optional PDF
+skips**; current review-workflow validation is recorded in
+`reports/track_a_review_validation.json`. The real saved-index
 reload passed; all 24 fresh graphs match. Fifteen quotation failures in the
 original seven-condition baseline/ablation outputs remain visible for independent
 correction; exact reproduction does not validate their support. No UER, human
@@ -75,3 +75,24 @@ Key records:
 The work remains local. The mid-submission draft records these limitations;
 no issue closure, remote publication, teammate acceptance or research signoff
 is implied by this delivery.
+
+## Ready-to-use independent review workspace
+
+Open `data/interim/track_a_review_delivery_20261023/START_HERE.md`.
+`01_corpus/Review.html` contains the 73 sampled documents and all 73 checksummed
+cached originals. `02_relevance/Review.html` contains the unchanged blinded
+20-question, 2,062-passage packet. Both pages work locally, keep attestations
+blank, and save/resume reviewer progress. The actual browser download and resume
+were checked without adding any human judgments.
+
+`corpus.review` now validates extraction sample acceptance against corpus,
+parent, packet and judgment hashes. Missing, rejected, duplicate, stale or
+non-independent review fails before a receipt is created. Acceptance covers the
+specified sample; it does not certify source balance, all documents or sharing
+rights. The relevance exporter retains its separate complete/blinded review gate.
+Commands are in `docs/reproduction.md`.
+
+The additional public-source checks admitted **no new data**. Histories and
+publisher coverage remain incomplete for the reasons in
+`reports/track_a_remaining_source_gaps.json`. No reviewer was assigned and no
+research decision was closed by preparing the workspace.

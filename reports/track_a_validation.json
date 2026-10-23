@@ -91,5 +91,6 @@
     "Cross-track human baseline correction/support/reference judgments, agreement, model/TA decisions and reviewed results.",
     "Other team-machine/Kaggle reproduction and team acceptance."
   ],
-  "export_status": "local only; no push or PR created in this continuation"
+  "export_status": "local only; no push or PR created in this continuation",
+  "latest_review_workflow_validation": "reports/track_a_review_validation.json"
 }

@@ -1,0 +1,7 @@
+{
+  "checked_at": "2026-10-23T15:43:19.115682+00:00",
+  "url": "https://dea.gov.in/index.php/reports-monthly-economic-report",
+  "status": "unavailable; stopped",
+  "reason": "<urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1000)>",
+  "requests": 1
+}
