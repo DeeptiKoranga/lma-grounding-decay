@@ -1,0 +1,16 @@
+{
+  "status": "passed on actual run metadata",
+  "cases": [
+    {
+      "runs": "runs/development_complete_20261023",
+      "v3_refused": true,
+      "archived_v1_accepted": true
+    },
+    {
+      "runs": "/private/tmp/lma-grounding-fresh-20261023/runs/fresh_full_development_20261023",
+      "v3_refused": true,
+      "archived_v1_accepted": true
+    }
+  ],
+  "unit_tests": "ten tests cover all three consumers and each provenance type"
+}

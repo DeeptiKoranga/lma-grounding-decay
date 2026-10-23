@@ -1,15 +1,21 @@
 # Integrated development pipeline — 23 October 2026
 
+Current Track A delivery is in `reports/track_a_progress.md`. The active root
+corpus is repaired v3 (1,177 documents, 28,391 passages). All six series contain
+161 total observations, with sparse histories. The 42-graph assembly below
+retains archived v1; audits/review preparation must explicitly select
+`data/interim/frozen_v1_20261023/articles.jsonl`. Full fresh-source B0/B1/B2/M
+reproduction now matches all 24 original graphs. Independent research acceptance
+remains open. Current checks: 586 tests, Ruff and Black pass.
+
 The software path now connects corpus/retrieval, model generation, extraction,
 verification, tools, controller, condition configs, run logging and evaluation.
 Research completion is **not** established by this implementation checkpoint.
 
-Later Track A work is recorded in `reports/track_a_continuation.md`: a separate
-cleaned corpus candidate, broader temporal retrieval pilot, 2,057-item blank
-relevance packet and macro-source audit. Existing 42-graph results remain bound
-to v1. Accepting the new corpus/retriever requires new experiments and review
-packets. Current local verification is 558 tests plus Ruff/Black; earlier
-counts in this report describe the preceding integration checkpoint.
+Earlier counts in the following run sections describe the preceding v1
+integration checkpoint. Current Track A versions and evidence are recorded in
+the delivery report above. A corpus/retriever change requires new experiments
+and corresponding review packets.
 
 ## Implemented and checked
 
@@ -88,8 +94,8 @@ query completed four valid graphs, identical to the original graphs after
 excluding run IDs. It reused the heavy runtime and corpus, and is not a full
 frozen-gold reproduction. See `reports/capability_diagnostics.json`,
 `reports/fresh_clone_validation.json` and `reports/compute_log.md`.
-The current software gate is 547 tests passing;
-the core-only fresh clone passes 545 with two optional-library skips.
+The earlier software gate was 547 tests (545 plus two skips in the core clone);
+current verification is recorded in `reports/track_a_validation.json`.
 
 ## Research gates still open
 
@@ -98,16 +104,17 @@ the core-only fresh clone passes 545 with two optional-library skips.
 2. Corpus acceptance: RBI coverage, publisher balance, broader extraction review
    and reproduction terms remain incomplete. The saved corpus is a convenience
    collection with integrity checks, not a representative accepted sample.
-3. Series and episodes: Brent, identified benchmark 10-year yields and accepted
-   FPI values remain unavailable; Indian basket coverage is partial. Eight
+3. Series and episodes: all six files now have observations, but Brent, benchmark
+   yields, FPI and Indian basket have sparse histories with explicit measurement
+   limitations. Eight
    anchor episodes have not been independently confirmed from complete series.
 4. Annotation: the six new queries span six months and are source-backed, but
    remain candidates. They do not replace the planned 30-query split, six
    reviewer gold graphs, ten annotated test queries, independent support labels,
    double annotation/kappa or the public-dataset strength/direction checks.
-5. Retriever/reranker acceptance: a blinded 1,988-item retrieval pool is prepared,
-   but its human judgments are blank and its queries are March-only. D-02/D-03
-   remain open. The new temporal candidates do not retroactively fix that pilot.
+5. Retriever/reranker acceptance: the current v3 blinded 2,062-item pool covers
+   20 questions across March–September. Its human judgments are blank; the older
+   March/v2 pools remain historical. D-02/D-03 remain open.
 6. Results: human correction of baseline extraction and blinded support review
    are required before reporting UER or strength inflation. The recall guard
    also needs independently reviewed reference graphs. No zero-denominator

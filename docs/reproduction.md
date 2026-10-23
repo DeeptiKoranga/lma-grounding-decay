@@ -2,7 +2,8 @@
 
 Updated 23 October 2026. Unit checks and development runs are distinct from a
 reviewed research experiment. Corpus acceptance, independent annotations, model
-selection and missing series remain open; see the acceptance report.
+selection, complete series histories and anchor confirmation remain open; see
+`reports/track_a_progress.md`.
 
 ## Core checks
 
@@ -48,8 +49,9 @@ passages and their parent document text. Do not substitute a new scrape without
 rebuilding indexes and repeating the input/review audits.
 
 The pipeline uses `data/processed/articles.jsonl`, `data/aliases.yaml` and the
-accepted CSVs under `data/series/`. Candidate FPI values remain outside that
-store. The development provenance file binds the corpus, aliases, query file,
+CSV observations under `data/series/`. All six files have data, but four
+have sparse coverage; read `data/series/README.md` for exact measurement types.
+Unverified dynamic CDSL/FBIL candidates remain outside that store. The development provenance file binds the corpus, aliases, query file,
 series CSVs, model revision, conditions and relevant source code hash.
 
 ## Run and resume
@@ -168,63 +170,83 @@ strength inflation and leaves all challenge outcome labels unfilled for review.
 `eval.agreement` calculates Cohen's kappa and the predeclared strength-collapse
 trigger. It never invents an agreement score when the paired labels are absent.
 
-## Track A corpus and temporal-pilot continuation
+## Current Track A development corpus and retrieval
 
-The active v1 experiment corpus is preserved. The proposed revision is local
-under `data/interim/corpus_revision_20261023/snapshot/`; its tracked manifest and
-audit are `reports/corpus_revision_manifest.md` and
-`reports/corpus_revision_audit.json`. Checksummed raw originals must be present
-locally. No source redistribution permission is implied by these commands.
+The active root corpus is **v3 development**, not a research-accepted freeze.
+It has 1,177 documents and 28,391 passages. `reports/corpus_versions.json` binds
+the current root, archived v1 experiments and superseded v2 candidate.
 
-To reproduce the candidate in a fresh output directory, using the saved ten
-eligible Mint pages plus the rejected-page sidecar:
+To rebuild v3 from its checksummed local raw inputs in a new output directory,
+start explicitly from the archived original v1 corpus:
 
 ```sh
 PYTHONPATH=src .venv/bin/python -m scripts.prepare_corpus_revision \
-  --output data/interim/corpus_revision_recheck \
-  --report reports/corpus_revision_recheck.json
-
-PYTHONPATH=src .venv/bin/python -m scripts.fetch.fbil_newsletters \
-  --report reports/gsec_acquisition_recheck.json
+  --frozen data/interim/frozen_v1_20261023 --reparse-raw data/raw \
+  --version v3-candidate --output data/interim/corpus_v3_recheck \
+  --report reports/corpus_v3_recheck.json
 ```
 
-The first command verifies original/revised offsets, reconstructs the archive
-twice in opposite input orders, and prepares blank extraction judgments. It
-refuses an existing candidate directory. The second audits locally cached
-newsletter PDFs against FBIL's saved public listing; it never creates canonical
-yield observations from unverified upload timestamps.
+This reparses original news, adds the ten eligible Mint pages, checks all exact
+offsets, freezes in both input orders and creates blank extraction judgments.
+Raw publisher/official files and cached rejection sidecars must be present;
+these commands imply no permission to redistribute them.
 
-The 20 questions in `reports/retriever_temporal_candidate_pairs.jsonl` were
-mapped by exact document/text identity from the source-first curation, with
-unchanged wording and cutoffs. They have **not** been independently judged.
-To rerun their development comparison using the saved candidate index:
+The current pairs preserve 43 seed texts and unchanged query wording/cutoffs.
+They are machine curated, not independently judged. To rerun the real comparison
+using the saved v3 index:
 
 ```sh
 HF_HOME="$PWD/data/raw/model_cache" HF_HUB_OFFLINE=1 OMP_NUM_THREADS=1 \
   VECLIB_MAXIMUM_THREADS=1 PYTHONPATH=src .venv/bin/python -m retrieval.pilot_runner \
-  --pairs reports/retriever_temporal_candidate_pairs.jsonl \
-  --corpus data/interim/corpus_revision_20261023/snapshot/articles.jsonl \
+  --pairs reports/retriever_temporal_v3_pairs.jsonl --corpus data/processed/articles.jsonl \
   --smoke --device cpu --max-length 1024 \
-  --dense-index data/interim/corpus_revision_20261023/bge_m3_vectors.json \
+  --dense-index data/interim/corpus_v3_20261023/bge_m3_vectors.json \
   --dense-backend faiss --embedding-batch-size 8 --reranker-batch-size 1 \
   --embedding-revision 5617a9f61b028005a4858fdac845db406aefb181 \
   --rerank --reranker-revision 953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e \
-  --local-files-only --output reports/pilot_temporal_recheck.md \
-  --candidate-output data/interim/retrieval_candidates_temporal_recheck.jsonl
+  --local-files-only --output reports/pilot_v3_recheck.md \
+  --candidate-output data/interim/retrieval_candidates_v3_recheck.jsonl
 ```
 
-Without the candidate index, copy the unchanged original embedding checkpoint
-to a fresh candidate checkpoint path and supply `--embedding-checkpoint` for
-that copy. The model/preprocessing and full title/text hashes validate reuse;
-26,722 unchanged input occurrences were reused and 166 new ones were encoded.
-Do not overwrite the v1 checkpoint or use its saved index with candidate passages.
+Without that index, supply a fresh `--dense-index` path and
+`--embedding-checkpoint data/interim/corpus_v3_20261023/bge_m3_checkpoint.json`.
+Text/model/preprocessing hashes validate reuse. Keep original caches unchanged.
+The pilot report records actual packages, pinning, cache state and phase time.
 
-`reports/retrieval_temporal_review_readiness.json` identifies the 2,057-item
-local blinded packet and all input hashes. Resolve corpus acceptance, then give
-an independent reviewer its `packet.json`, `review.md` and `judgments.json`;
-keep pair seeds, comparison reports and ranks hidden. Follow
-`reports/retrieval_review_workflow.md` to export completed review, substituting
-the candidate corpus and matching packet paths. Blank judgments were confirmed
-to fail before creating any accepted output. D-02/D-03 remain open, and accepting
-a revised corpus/retriever requires corresponding generation and human-review
-reruns before final scores.
+Current blinded packet: `data/interim/retrieval_review_temporal_v4/`, 2,062 items.
+To prepare another packet, use a fresh output directory:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m retrieval.review prepare \
+  --pairs reports/retriever_temporal_v3_pairs.jsonl --corpus data/processed/articles.jsonl \
+  --curator 'Codex (machine curation for Varun Patil)' \
+  --candidate-pool data/interim/retrieval_review_candidates_temporal_v4.jsonl \
+  --output data/interim/retrieval_review_v3_recheck
+```
+
+`reports/retrieval_v3_review_readiness.json` records the current packet hashes,
+all-seed/four-way-pool coverage, cutoff checks and actual blank-export refusal.
+Give only its packet, review text and blank judgments to an independent reviewer;
+keep seeds, ranks and reports hidden. Resolve extraction/source acceptance before
+final relevance selection. D-02/D-03 remain open. Old v2 commands and counts are
+preserved in the historical continuation, not the current pipeline recipe.
+
+## Reproducing or reviewing the earlier experiments
+
+The 42-graph assembly and full fresh 24-graph reproduction used archived v1.
+Their review preparation and audits **must** supply:
+
+```sh
+--corpus data/interim/frozen_v1_20261023/articles.jsonl
+```
+
+A recorded corpus mismatch now fails before review output is created. Corrected
+prose exports preserve the corpus hash for downstream support review.
+`reports/fresh_full_development_reproduction.json` records the exact original
+model, corpus, aliases, queries and three series hashes. The original series
+snapshot is `data/interim/fresh_reproduction_inputs_20261023/series/`.
+Reproducing those exact results requires those inputs, not the newly extended
+canonical series. The completed sweep used source `bbc9288`, all six development
+candidates and B0/B1/B2/M; all 24 canonical graphs match after dropping only
+`run_id`. It reused weights/runtime and does not certify other machines or
+Kaggle. A new v3 experiment needs new logs and review packets.

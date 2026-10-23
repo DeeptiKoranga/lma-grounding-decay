@@ -1,4 +1,8 @@
-# Track A continuation — 23 October 2026
+# Historical v2 Track A continuation — 23 October 2026
+
+Superseded by `reports/track_a_progress.md`: v3 is now active for development;
+the full v1 fresh-source reproduction is complete. Counts and active-path wording
+below describe the earlier v2 checkpoint and must not be treated as current.
 
 Track A has more completed local preparation, but is **not research-complete**.
 Independent relevance review, corpus/source acceptance, macro-data gaps and the

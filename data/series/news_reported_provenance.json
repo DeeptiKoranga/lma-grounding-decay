@@ -1,11 +1,11 @@
 {
   "status": "sparse news-reported observations; coverage incomplete",
-  "corpus_sha256": "b63a8743e7f227a90f4d08ae73a5f195ac10ceb581ee11060d59815b1e5f80e2",
-  "seeds_sha256": "898ef46a5ef99f7c697e276efc1898a82ecef163d13d95778531008cacc17536",
+  "corpus_sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+  "seeds_sha256": "67fa5777eddfee3fd702e511bdf8df74c1c78d2fe685aabc5f20313ed235fc0d",
   "counts": {
-    "brent_usd_bbl": 3,
+    "brent_usd_bbl": 4,
     "fpi_flows_usd_mn": 1,
-    "gsec_10y_pct": 3
+    "gsec_10y_pct": 6
   },
   "sources": [
     {
@@ -99,7 +99,7 @@
     },
     {
       "series_id": "gsec_10y_pct",
-      "passage_id": "economic_times-5aa3a984a8cd96018fa3#p0",
+      "passage_id": "economic_times-5aa3a984a8cd96018fa3#p1",
       "published_at": "2026-06-11T17:42:00+05:30",
       "raw_metadata": "data/raw/economic_times/5aa3a984a8cd96018fa3.meta.json",
       "raw_sha256": "8faef28a4eebb804cc9e091bd5932ee1dabf320d9c997b9d1686a0059c82433a",
@@ -133,6 +133,78 @@
       "conversion": "native USD billion multiplied by 1000; no exchange-rate conversion",
       "reported_precision_usd_million": 100.0,
       "coverage": "one observation; no flow move or monthly history established"
+    },
+    {
+      "series_id": "brent_usd_bbl",
+      "passage_id": "economic_times-17471b277ed706bc6360#p1",
+      "published_at": "2026-04-01T07:25:00+05:30",
+      "raw_metadata": "data/raw/economic_times/17471b277ed706bc6360.meta.json",
+      "raw_sha256": "a654f9d8ea97bbdf4840a5de7efbb803a93e9316d2758df5bea09fa87ac18c62",
+      "passage_sha256": "d37b14e961adf9c3eed703b50b52bac456aa12ff6ebbd8949c0e9cc12efa0844",
+      "observation": {
+        "on": "2026-04-01",
+        "value": 104.63,
+        "available_on": "2026-04-01",
+        "source_url": "https://economictimes.indiatimes.com/markets/commodities/news/front-month-brent-oil-futures-extend-gains-after-record-monthly-rise-in-march/articleshow/129939258.cms",
+        "unit": "USD per barrel"
+      },
+      "measure": "intraday front-month futures quote; not daily settlement",
+      "contract_basis": "explicit front-month label",
+      "contract_month": "June"
+    },
+    {
+      "series_id": "gsec_10y_pct",
+      "passage_id": "economic_times-69029a10fac1dfec4e3d#p2",
+      "published_at": "2026-04-13T18:05:00+05:30",
+      "raw_metadata": "data/raw/economic_times/69029a10fac1dfec4e3d.meta.json",
+      "raw_sha256": "9caaa692c552951b329c5213bc1920b5d7eb3d2334e25f317a2d0339fc888f9b",
+      "passage_sha256": "a56a900a1123eb447f095e2572aa73d3debe519697c83f54ee7a84931dc983ac",
+      "observation": {
+        "on": "2026-04-13",
+        "value": 6.9395,
+        "available_on": "2026-04-13",
+        "source_url": "https://economictimes.indiatimes.com/markets/bonds/india-bonds-trim-losses-as-soft-cpi-spurs-value-buying/articleshow/130237111.cms",
+        "unit": "percent"
+      },
+      "measure": "reported current ten-year benchmark closing yield",
+      "security": "6.48% GS 2035",
+      "roll_policy": "only explicitly identified current benchmark on each observed date; no inferred roll date"
+    },
+    {
+      "series_id": "gsec_10y_pct",
+      "passage_id": "economic_times-6886e143ca56b49b3f0d#p0",
+      "published_at": "2026-07-02T17:43:00+05:30",
+      "raw_metadata": "data/raw/economic_times/6886e143ca56b49b3f0d.meta.json",
+      "raw_sha256": "17bf7a4076eb7e232a545fdfc45e05a1ff791bc0d0347e9a2a6545d6848adade",
+      "passage_sha256": "6b4f296c1324c671ada07433e192b6f938f42e457cf84a8dd45f5afe430d2b22",
+      "observation": {
+        "on": "2026-07-02",
+        "value": 6.718,
+        "available_on": "2026-07-02",
+        "source_url": "https://economictimes.indiatimes.com/markets/bonds/india-bonds-india-bonds-surge-on-bloomberg-index-hopes-oil-led-inflation-relief/articleshow/132139035.cms",
+        "unit": "percent"
+      },
+      "measure": "reported current ten-year benchmark closing yield",
+      "security": "6.94% GS 2036",
+      "roll_policy": "only explicitly identified current benchmark on each observed date; no inferred roll date"
+    },
+    {
+      "series_id": "gsec_10y_pct",
+      "passage_id": "economic_times-c6c67f614f4281de7b1d#p1",
+      "published_at": "2026-08-31T18:11:00+05:30",
+      "raw_metadata": "data/raw/economic_times/c6c67f614f4281de7b1d.meta.json",
+      "raw_sha256": "ba55d690ad7a68e7145141bbaccff902513bfcf0955ca9a3dab549a54e9907d0",
+      "passage_sha256": "21711f42aa3168508f8cac96689015d632d2c0fb5722b7fda79189ca9ce5b09f",
+      "observation": {
+        "on": "2026-08-31",
+        "value": 6.9452,
+        "available_on": "2026-08-31",
+        "source_url": "https://economictimes.indiatimes.com/markets/bonds/india-10-year-bond-yield-sees-biggest-monthly-rise-in-fy27-on-rising-rate-hike-bets/articleshow/133653440.cms",
+        "unit": "percent"
+      },
+      "measure": "reported current ten-year benchmark closing yield",
+      "security": "6.94% GS 2036",
+      "roll_policy": "only explicitly identified current benchmark on each observed date; no inferred roll date"
     }
   ],
   "limitations": [

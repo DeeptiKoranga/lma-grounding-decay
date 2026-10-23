@@ -38,17 +38,19 @@ def extract_claim(kind: str, passage: Passage, on: date) -> tuple[Observation, d
     details = {}
     if kind == "brent_front_quote":
         match = re.search(
-            r"\bFront[ -]month Brent crude futures (?:gained|rose|fell|declined|increased|decreased).{0,100}?to \$(\d+\.\d+) a barrel",
+            r"\b(?:Front[ -]month Brent crude futures|front-month Brent contract(?: for (?P<contract>\w+) delivery)?) (?:gained|rose|fell|declined|increased|decreased).{0,100}?to \$(?P<value>\d+\.\d+) (?:a|per) barrel",
             text,
             re.IGNORECASE,
         )
         if match is None:
             raise ValueError("explicit front-month Brent price missing")
-        value = float(match[1])
+        value = float(match["value"])
         details = {
             "measure": "intraday front-month futures quote; not daily settlement",
             "contract_basis": "explicit front-month label",
         }
+        if match["contract"]:
+            details["contract_month"] = match["contract"]
     elif kind == "brent_expiry_quote":
         match = re.search(
             r"Brent crude futures for (\w+)(?: delivery)?, which expire on (\w+)[\u2019']?s?(?: settlement)?, ((?:rose|gained|fell|was down|were down|was up|were up|traded).{0,100}?)(?:at|reach) \$(\d+\.\d+) (?:a|per) barrel",
@@ -67,7 +69,9 @@ def extract_claim(kind: str, passage: Passage, on: date) -> tuple[Observation, d
         }
     elif kind == "gsec_close":
         security = re.search(r"(\d+\.\d+)\s*(?:per cent|%)\s*(?:GS\s*)?(203\d)", text)
-        closing = re.search(r"(?:closed|ended) at (\d+\.\d+)\s*(?:per cent|%)", text)
+        closing = re.search(
+            r"(?:closed|ended(?: the session)?) at (\d+\.\d+)\s*(?:per cent|%)", text
+        )
         if "benchmark" not in text.lower() or not security or not closing:
             raise ValueError("named benchmark security and realised closing yield required")
         if int(security[2]) - on.year not in {9, 10}:
@@ -184,7 +188,7 @@ def main():
     parser.add_argument(
         "--corpus",
         type=Path,
-        default=Path("data/interim/corpus_revision_20261023/snapshot/articles.jsonl"),
+        default=Path("data/interim/corpus_v3_20261023/snapshot/articles.jsonl"),
     )
     parser.add_argument("--raw", type=Path, default=Path("data/raw"))
     parser.add_argument("--output", type=Path, default=Path("data/series"))

@@ -1,0 +1,8 @@
+{
+  "checked_at": "2026-10-23T13:20:42.956528+00:00",
+  "source": "business_standard",
+  "policy": "same public robots check; stop on unavailable policy",
+  "status": "unavailable",
+  "reason": "robots.txt unavailable (HTTP 403); collection stopped",
+  "requests": 1
+}

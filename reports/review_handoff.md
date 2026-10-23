@@ -7,16 +7,20 @@ verification is an experimental component and cannot supply independent truth.
 ## Corpus acceptance before final review
 
 
-Before assigning final relevance or support judgments, read
-`reports/track_a_continuation.md`. A separate 1,183-document corpus candidate
-removes explicit related links and broadens Mint coverage; its 73-document
-extraction/source review is blank. It has a new all-seven-month retrieval
-packet with 2,057 items, recorded in
-`reports/retrieval_temporal_review_readiness.json`. Corpus acceptance must precede
-using that packet. The active corpus and the 42 development graphs described
-below retain their original v1 hashes. A corpus/retriever change requires new
-experimental runs and corresponding prose/support packets. Existing human
-work must never be relabelled as a different corpus version.
+Before final relevance or support judgments, read `reports/track_a_progress.md`.
+The current v3 development corpus has 1,177 documents and 28,391 passages. Its
+73-document extraction review and 2,062-item temporal retrieval packet are blank.
+The latter is at `data/interim/retrieval_review_temporal_v4/`; hashes and readiness
+checks are in `reports/retrieval_v3_review_readiness.json`. Independent corpus
+acceptance must precede final relevance selection.
+
+The existing 42 development graphs, prose/support packets and fresh 24-graph
+reproduction use archived **v1**, not the current root corpus. For their audit or
+review preparation always supply
+`--corpus data/interim/frozen_v1_20261023/articles.jsonl`.
+The tools now reject a corpus that differs from recorded run provenance.
+A new v3 experiment requires new logs and review packets; old human work must
+never be relabelled as a different corpus version.
 
 ## Required order
 
@@ -56,11 +60,10 @@ work must never be relabelled as a different corpus version.
    hop denominators remain null. No hypothesis acceptance follows from this
    unreviewed development run.
 
-Retrieval review is a separate task. Its existing blinded pool contains 1,988
-items across 20 March-only pilot queries at
-`data/interim/retrieval_review_v1/`. Follow
-`reports/retrieval_review_workflow.md`; broader temporal coverage still needs
-reviewed pairs before D-02/D-03 can be accepted.
+Retrieval review is a separate task. Use the current v3 20-question,
+March–September packet above. The older March-only 1,988-item and v2 2,057-item
+packets remain historical records. Follow `reports/retrieval_review_workflow.md`;
+D-02/D-03 remain open until accepted independent review.
 
 The synthetic action/safety probes also need their own interpretation. Tool
 selection against scripted expectations is not accuracy on real human-labelled

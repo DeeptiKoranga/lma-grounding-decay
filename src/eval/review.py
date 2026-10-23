@@ -10,6 +10,7 @@ from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from corpus.bindings import require_run_corpus
 from schema import Graph, Passage, Strength
 
 from .metrics import SupportJudgment, aggregate, recall_guard, score_graph
@@ -40,6 +41,7 @@ class Review(BaseModel):
 
 
 def prepare(*, runs: Path, corpus: Path, output: Path):
+    require_run_corpus(runs, corpus)
     passages = {
         p.passage_id: p
         for line in corpus.read_text().splitlines()

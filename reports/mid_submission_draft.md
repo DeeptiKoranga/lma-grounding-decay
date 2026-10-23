@@ -6,19 +6,18 @@ an accepted experimental freeze. The study asks whether unsupported established
 edges increase with distance from an anchor, and whether targeted verification
 and retrieval reduce that rate without losing supported reference edges.
 
-Latest Track A preparation is in `reports/track_a_continuation.md`. A separate
-1,183-document corpus candidate removes 564 explicit related-story paragraphs
-and extends Mint coverage to all seven months. A 20-question temporal retrieval
-comparison and 2,057-item blank review packet are prepared for that candidate.
-Corpus acceptance and independent judgments remain pending. The experimental
-counts below still refer to active v1; candidate diagnostics must not be merged
-with v1 results or presented as final research scores. Current local checks:
-558 tests, Ruff and Black pass.
+Track A delivery is recorded in `reports/track_a_progress.md`. The repaired v3
+development corpus contains 1,177 documents and 28,391 passages. Its all-month
+20-question comparison and 2,062-item blank review packet are ready. All six
+series now have data, with partial histories. Existing 42-graph results and the
+24-graph fresh reproduction retain archived v1. Do not merge their corpus
+versions or present unreviewed diagnostics as research scores. Current local
+checks: **586 tests, Ruff and Black pass**.
 
 ## What is built
 
-The local corpus contains 1,173 documents (1,112 news, 61 official) and 27,286
-passages spanning March–September 2026. Frozen passage offsets, corpus identity
+The current development corpus contains 1,177 documents (1,116 news, 61 official)
+and 28,391 passages spanning March–September 2026. Frozen passage offsets, corpus identity
 and publication cutoffs are checked. Plain/alias BM25, pinned BGE-M3 dense and
 hybrid retrieval, FAISS and the pinned cross-encoder have real cached-model
 execution evidence. The corpus remains concentrated in Economic Times and
@@ -57,11 +56,12 @@ reviewer has not been selected.
 
 ## Evidence available now
 
-- Current checkout: 547 tests pass; Ruff and Black pass. The core-only fresh
-  clone passes 545 tests with two optional-library skips on Python 3.12.13.
-- Retrieval smoke comparison on 20 unreviewed March-only convenience pairs:
-  Recall@10 is 0.900 for plain BM25, 0.925 for hybrid and 0.975 for BM25 plus
-  reranking. These incomplete labels cannot settle D-02/D-03.
+- Current checkout: 586 tests pass; Ruff and Black pass. Fresh-clone checks
+  and their source commits are recorded in `reports/track_a_validation.json`.
+- Current v3 retrieval comparison on 20 unreviewed March–September questions:
+  Recall@10 is 0.4333 BM25, 0.5167 alias BM25, 0.6000 dense, 0.5833 hybrid and
+  0.7667 dense plus reranking. These incomplete machine seeds cannot settle
+  D-02/D-03. Historical March results remain separate.
 - The model chose the expected next tool on 5/40 scripted states (12.5%);
   34/40 calls (85%) passed schema/cutoff checks. This weak synthetic result
   keeps model/prompt selection open; it does not evaluate the executed
@@ -69,10 +69,11 @@ reviewer has not been selected.
 - Twenty executed synthetic tool faults preserve the graph and cutoff, count
   attempted calls and produce the expected typed boundary outcome. Model-led
   fault recovery has not been established by this test.
-- Three of six series have accepted observations: seven original provisional
-  CPI releases, 141 FBIL exchange rates, and two Indian basket monthly averages
-  available from 17 June. Five FPI candidates are staged outside the canonical
-  store because historical vintages are unverified.
+- All six series have 161 observations: CPI 7, FX 141, basket 2, Brent 4,
+  benchmark yields 6 and FPI 1. The new latter three use precise dated archived
+  news vintages, not complete official histories. Units, timing and benchmark
+  identities are recorded; no missing value is filled. Unverified dynamic CDSL
+  and undated FBIL candidates remain excluded.
 
 The seven-condition run completed all 42 graphs and 227 edges. It logged 87
 model calls and 188 tool calls; graph and recorded-trace checks pass. Fifteen
@@ -80,9 +81,9 @@ asserted spans in the unverified baselines/ablation fail exact quotation
 matching. M retains eight model-verified assertions, with 18 inferred edges
 without a verifier verdict. These are structural/model counts, not support
 accuracy. The 25-prompt safety screen found no regex advice/own-forecast flags;
-all responses await human adjudication. A fresh-clone one-query probe completed
-B0/B1/B2/M with matching canonical graphs, reusing the local heavy runtime and
-corpus. Compute and diagnostic audits are separate artifacts. None supplies
+all responses await human adjudication. A full fresh-clone-source sweep completed
+B0/B1/B2/M across all six candidates with 24/24 matching canonical graphs,
+reusing the local heavy runtime, v1 corpus and original three series. Compute and diagnostic audits are separate artifacts. None supplies
 human UER, strength inflation, recall or a hypothesis result. The qualitative graph is explicitly marked as
 awaiting independent review.
 
@@ -98,8 +99,9 @@ this development assembly is not a single-version frozen sweep.
 
 OEA supplies some official coverage as a recorded source-list deviation. The
 Indian basket is monthly and partial; it cannot confirm every daily episode.
-Brent, identified benchmark 10-year yields and historically accepted FPI remain
-missing. The local MLX run replaces no claimed Kaggle execution: the notebook is
+Brent, identified benchmark 10-year yields and one FPI observation are now
+present as sparse news vintages; complete histories and episode confirmation
+remain missing. The local MLX run replaces no claimed Kaggle execution: the notebook is
 an unexecuted handoff template and no Kaggle GPU hours are claimed. The HTTP
 adapters are implemented but not exercised as a model-comparison result. No paid
 API request was made.
@@ -114,11 +116,11 @@ TA decisions. This draft leaves those decisions open.
 | Risk | Current evidence | Next action and acceptance criterion |
 |---|---|---|
 | Annotation bottleneck | Reviewer not assigned; all packet attestations blank | Assign reviewers; correct prose, then complete blinded support labels and an independently double-annotated subset |
-| Incomplete temporal/financial grounding | Three missing series; partial basket; unconfirmed episodes | Acquire the exact required definitions/vintages, then confirm or drop/redate each anchor |
-| Selection bias | March-only retrieval pilot; concentrated sources | Broaden reviewed pairs and source/extraction checks before accepting model/retriever settings |
+| Incomplete temporal/financial grounding | Sparse Brent/yield/FPI/basket histories; unconfirmed episodes | Acquire the exact required definitions/vintages, then confirm or drop/redate each anchor |
+| Selection bias | All-month machine-curated pilot; concentrated sources | Broaden reviewed pairs and source/extraction checks before accepting model/retriever settings |
 | Verifier abstention hides lost coverage | Some edges can remain inferred or unchecked at budget | Review reference graphs and report recall guard alongside UER; retain null denominators |
 | Quotation errors in baselines | Exact-span failures in actual generated outputs | Preserve them in review and report structural counts separately from semantic judgments |
-| Reproduction/environment differences | Fresh core check passes; optional runtime and payload are separate | Execute a recorded fresh model probe, then repeat on team machines/Kaggle before acceptance |
+| Reproduction/environment differences | Fresh core check passes; optional runtime and payload are separate | Full local v1 sweep matches; repeat on team machines/Kaggle before acceptance |
 | Synthetic benchmarks overstate capability | Repeated scripted scenarios; heuristic safety screen | Report them as diagnostics; add reviewed real states and adjudicate full safety responses |
 
 ## Remaining four-week plan (proposed, not assigned)

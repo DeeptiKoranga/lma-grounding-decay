@@ -8,12 +8,14 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 
+from corpus.bindings import require_run_corpus
 from schema import Graph, Passage, iter_run_log
 
 from .safety import inspect_graph
 
 
 def audit(*, runs: Path, corpus: Path) -> dict:
+    require_run_corpus(runs, corpus)
     passages = [
         Passage.model_validate_json(line)
         for line in corpus.read_text().splitlines()

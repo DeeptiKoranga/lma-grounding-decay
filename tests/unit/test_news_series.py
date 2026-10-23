@@ -37,6 +37,17 @@ def test_front_month_price_is_not_price_change_or_wti(news_series, passages):
     assert "intraday" in info["measure"]
 
 
+def test_explicit_front_month_contract_keeps_delivery_month(news_series, passages):
+    p = passage(
+        passages[0],
+        "The front-month Brent contract for June delivery rose 66 cents or 0.63% to $104.63 per barrel by 0010 GMT.",
+        "2026-04-01",
+    )
+    row, info = news_series.extract_claim("brent_front_quote", p, date(2026, 4, 1))
+    assert row.value == 104.63
+    assert info["contract_month"] == "June"
+
+
 def test_expiring_front_contract_is_not_more_active_deferred_contract(news_series, passages):
     p = passage(
         passages[0],
@@ -70,10 +81,11 @@ def test_front_month_forecast_cannot_be_imported_as_an_observation(news_series, 
         news_series.extract_claim("brent_front_quote", p, date(2026, 8, 4))
 
 
-def test_closing_benchmark_yield_is_not_coupon_high_or_previous(news_series, passages):
+@pytest.mark.parametrize("closing", ["closed", "ended the session"])
+def test_closing_benchmark_yield_is_not_coupon_high_or_previous(news_series, passages, closing):
     p = passage(
         passages[0],
-        "The yield of the benchmark 10-year G-Sec (6.48 per cent GS 2035), which touched an intraday high of 6.76 per cent, closed at 6.72 per cent, up over the previous close of 6.69 per cent.",
+        f"The yield of the benchmark 10-year G-Sec (6.48 per cent GS 2035), which touched an intraday high of 6.76 per cent, {closing} at 6.72 per cent, up over the previous close of 6.69 per cent.",
         "2026-03-09",
     )
     row, info = news_series.extract_claim("gsec_close", p, date(2026, 3, 9))

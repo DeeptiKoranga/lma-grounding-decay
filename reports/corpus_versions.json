@@ -1,0 +1,21 @@
+{
+  "current_development": "v3",
+  "research_accepted": false,
+  "v1": {
+    "path": "data/interim/frozen_v1_20261023",
+    "sha256": "7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3",
+    "use": "Earlier 42-graph development checkpoint and full 24-graph fresh reproduction."
+  },
+  "v2": {
+    "path": "data/interim/corpus_revision_20261023/snapshot",
+    "sha256": "b63a8743e7f227a90f4d08ae73a5f195ac10ceb581ee11060d59815b1e5f80e2",
+    "use": "Superseded candidate; earlier temporal review packet preserved."
+  },
+  "v3": {
+    "path": "data/processed",
+    "sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+    "use": "Current repaired development corpus; independent relevance/extraction acceptance pending."
+  },
+  "copied_bytes_identical_to_v3_candidate": true,
+  "original_files_preserved": true
+}

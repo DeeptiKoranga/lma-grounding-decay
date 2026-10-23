@@ -9,11 +9,12 @@ Deepti Koranga (2025204033).
 
 ## Latest Track A continuation
 
-A separate corpus candidate removes 564 explicit related-story paragraphs and
-adds ten Mint articles, extending that source to all seven months. Its broader
-retrieval pilot and 2,057-item blinded review packet are prepared; all human
-judgments and corpus acceptance remain pending. Existing experiments retain
-the active v1 corpus. See [Track A continuation](reports/track_a_continuation.md).
+The current development corpus repairs missing article text and contains 1,177
+documents and 28,391 passages. Its saved dense index, temporal retrieval comparison
+and 2,062-item blank review packet are ready. All six macro series have data, with
+explicitly partial histories. Full fresh-source B0/B1/B2/M reproduction matches
+24/24 earlier v1 graphs. See [Track A status](reports/track_a_progress.md) for
+completed work, version boundaries and remaining research gates.
 
 ## What this is
 
@@ -35,15 +36,15 @@ Primary metric is **UER** (unsupported established-edge rate), always sliced by 
 ## Status
 
 **Development pipeline integrated; research acceptance is incomplete.** The local
-snapshot contains 1,173 documents and 27,286 passages. Retrieval, constrained
+development snapshot contains 1,177 documents and 28,391 passages. Retrieval, constrained
 extraction, independent rule/LLM verification, six bounded read-only tools, the
 controller and all seven conditions are implemented. B0/B1/B1-R produce prose
 before mechanical edge extraction. Human correction and blinded support review
-remain required. Three of six macro series are populated, including partial
-Indian basket coverage.
+remain required. All six macro series are populated; basket, Brent, benchmark yield and FPI
+coverage remain partial and do not confirm the planned anchor episodes.
 
 The 23 October local integration completed all 42 graphs across six unreviewed
-candidates; 558 tests pass. The separate synthetic tool-choice probe succeeded
+v1 candidates; 586 tests pass. The separate synthetic tool-choice probe succeeded
 on only 5/40 expected actions, so model selection remains open. Execution and
 structural validity do not establish research performance. See
 [the validation and remaining gates](reports/integration_status.md).
@@ -139,7 +140,9 @@ Seven conditions, **one code path**, config flags only (`src/conditions/`, `conf
 ## Corpus
 
 Indian macro-financial news (BusinessLine, Economic Times, Business Standard, Mint) plus
-RBI / MOSPI / PPAC / PIB documents, **1 March – 30 September 2026**, frozen. The window is
+RBI / MOSPI / PPAC / PIB documents are the planned sources, **1 March – 30 September
+2026**. The current development snapshot contains ET, BusinessLine, Mint, MoSPI,
+PPAC and OEA; Business Standard and RBI remain absent. The window is
 enforced in the `Passage` model. Macro series only confirm that a move happened; they are
 never evidence for an edge.
 

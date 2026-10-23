@@ -27,21 +27,21 @@ No missing values are filled or interpolated.
   extraction pages and four excluded later-version snapshots. Coverage remains
   missing for March and June–September. Monthly averages cannot establish a
   daily threshold crossing or the date of an anchor episode.
-- `brent_usd_bbl.csv`: three **intraday front-month futures quotes** on 29 May,
-  30 June and 4 August. The first two explicitly concern the nearby contract
-  expiring on that day; the more-active deferred contract is excluded. The
-  third explicitly says front month. These are not settlement closes or a
+- `brent_usd_bbl.csv`: four **intraday front-month futures quotes** on 1 April, 29 May,
+  30 June and 4 August. April and August explicitly say front month. May and
+  June concern the nearby contract expiring on that day; the more-active
+  deferred contract is excluded. These are not settlement closes or a
   back-adjusted continuous series, and their intraday observation times differ.
-- `gsec_10y_pct.csv`: three reported **current benchmark closing yields** on
-  9 March, 27 March and 11 June. The first two identify 6.48% GS 2035; the third
-  identifies 6.94% GS 2036. The security labels are retained in provenance.
+- `gsec_10y_pct.csv`: six reported **current benchmark closing yields** on
+  9 March, 27 March, 13 April, 11 June, 2 July and 31 August. The March/April
+  observations identify 6.48% GS 2035; June/July/August identify 6.94% GS 2036. The security labels are retained in provenance.
   No benchmark roll date or missing yield is interpolated.
 - `fpi_flows_usd_mn.csv`: one news-reported completed-March net **local stocks
   plus bonds** outflow, available **13 April**. Native USD 13.6 billion is
   converted to −13,600 USD million; reported precision is 100 million. This
   single point returns `move=None` and does not establish a monthly history.
 
-`news_reported_provenance.json` records the latter seven observations, exact
+`news_reported_provenance.json` records the latter eleven observations, exact
 archived passage/raw hashes, publication timestamps, measurement definitions,
 security identities and limitations. These are specific **published news
 vintages**, not an acceptance of the dynamically generated CDSL archive or the
@@ -107,7 +107,7 @@ PYTHONPATH=src .venv/bin/python -m scripts.fetch.fbil_newsletters
 
 The acquisition-source column describes preferred full-history sources.
 Cached newsletter candidates do not constitute an accepted GSEC history; the
-three populated yield points instead come from dated, named-security news reports.
+six populated yield points instead come from dated, named-security news reports.
 Do not substitute spot Brent for front-month futures, CPI index levels for annual
 inflation, or INR-crore FPI values for USD million. Upward `inr_usd` means a weaker
 rupee. Keep the benchmark/security definition consistent for bond yields.

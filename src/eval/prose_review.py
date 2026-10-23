@@ -9,6 +9,7 @@ import re
 from datetime import date
 from pathlib import Path
 
+from corpus.bindings import recorded_corpus_sha256, require_run_corpus
 from schema import Graph, Passage
 
 
@@ -17,6 +18,8 @@ def digest(path):
 
 
 def prepare(runs: Path, output: Path, *, corpus: Path | None = None):
+    if corpus is not None:
+        require_run_corpus(runs, corpus)
     passages = (
         {
             p.passage_id: p
@@ -69,6 +72,9 @@ def prepare(runs: Path, output: Path, *, corpus: Path | None = None):
 
 def export(*, runs: Path, corrections: Path, output: Path):
     review = json.loads(corrections.read_text())
+    expected_corpus = recorded_corpus_sha256(runs)
+    if expected_corpus is not None and review.get("corpus_sha256") != expected_corpus:
+        raise ValueError("correction packet corpus differs from source run provenance")
     reviewer = review.get("reviewer", "").strip()
     if (
         not reviewer
@@ -124,6 +130,7 @@ def export(*, runs: Path, corrections: Path, output: Path):
             + "\n"
         )
     receipt = {
+        "corpus_sha256": review.get("corpus_sha256"),
         "reviewer": reviewer,
         "reviewed_on": review["reviewed_on"],
         "items": len(corrected),

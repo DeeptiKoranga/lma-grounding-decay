@@ -66,3 +66,22 @@ vectors and full logs remain ignored. Heavy dependency versions are pinned in
 The 20 synthetic faults are boundary tests, not GPU model-recovery runs. The
 fresh probe reuses the local model runtime and corpus with fresh-clone source
 code; it does not establish an all-laptop/Kaggle or full frozen-gold sweep.
+
+## Full fresh-source reproduction and repaired-corpus retrieval
+
+A separate complete B0/B1/B2/M sweep over all six candidates produced 24 graphs,
+all identical to their earlier v1 canonical graphs after dropping only `run_id`.
+Source commit: `bbc9288`. It reused the local MLX environment/weights, archived
+v1 corpus and original three series; it did not execute on other team machines
+or Kaggle. Validated logs record **53 model calls, 128,605 prompt tokens, 17,336
+completion tokens, 2,436.34 model-call wall seconds and 83 tool calls**. These
+are additional to the original 42-graph assembly, not substituted totals.
+See `reports/fresh_full_development_validation.json` and
+`reports/fresh_full_development_logs.json`.
+
+The repaired v3 corpus's real CPU retrieval/reranking comparison took **357.87
+wall seconds**, reusing a text/model-checked embedding checkpoint; this excludes
+earlier encoding, downloads and checks. A separate fresh-process saved-index
+reload plus two real query embeddings/searches took **16.50 wall seconds**.
+All 28,391 saved passages match the v3 corpus. These durations are phase wall
+times, not GPU-active time. No independent relevance scores are claimed.
