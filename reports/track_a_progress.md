@@ -52,7 +52,9 @@ relevance acceptance. See `reports/retrieval_v3_review_readiness.json`.
 
 ## Verification and handoff
 
-Local checks: **586 tests passed**, Ruff and Black passed. The real saved-index
+Local checks: **586 tests passed**, Ruff and Black passed. The refreshed clean
+clone at `57c0480` passes **584 tests with two optional PDF skips**, plus lint and
+formatting. The real saved-index
 reload passed; all 24 fresh graphs match. Fifteen quotation failures in the
 original seven-condition baseline/ablation outputs remain visible for independent
 correction; exact reproduction does not validate their support. No UER, human

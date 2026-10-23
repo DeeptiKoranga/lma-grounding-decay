@@ -42,5 +42,8 @@
       "M": true
     },
     "audit": "reports/fresh_model_probe_validation.json"
-  }
+  },
+  "historical_checkpoint": true,
+  "latest_core_and_full_sweep_validation": "reports/track_a_validation.json",
+  "latest_full_development_reproduction": "reports/fresh_full_development_reproduction.json"
 }
