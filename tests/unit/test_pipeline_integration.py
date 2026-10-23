@@ -234,3 +234,51 @@ def test_rebuilding_a_cycle_is_bounded_and_labels_weakest_link(query):
     ]
     graph = rebuild(query_id=query.query_id, anchor=query.anchor, as_of=query.as_of, edges=edges)
     assert len(graph.paths) == 1 and graph.paths[0].depth == 1
+
+
+def test_repair_stops_on_two_empty_searches_without_claiming_unused_budget_exhausted(
+    query, retriever
+):
+    from agent.controller import repair
+
+    tools = runtime(query, retriever)
+    tools.require_verification = False
+    tools.set_edges(
+        [
+            Edge(
+                edge_id="e1",
+                src_var="BRENT",
+                dst_var="IMPORT_BILL",
+                direction="up",
+                strength="conditional",
+                provenance="model_inferred",
+                hop=1,
+            )
+        ]
+    )
+    retriever.search = lambda **_: []
+    reason = repair(tools, loop=True, generate_repair=lambda *args: None)
+    assert reason == "two_searches_added_nothing"
+    assert tools.calls_used == 3 and tools.remaining == 9 and tools.stopped
+
+
+def test_failed_verification_retries_are_bounded_by_the_actual_call_budget(query, retriever):
+    from agent.controller import repair
+
+    tools = runtime(query, retriever, budget=4)
+    tools.set_edges(
+        [
+            Edge(
+                edge_id="e1",
+                src_var="BRENT",
+                dst_var="IMPORT_BILL",
+                direction="up",
+                strength="conditional",
+                provenance="model_inferred",
+                hop=1,
+            )
+        ]
+    )
+    # No verifier configured: the real tool returns a typed backend error.
+    assert repair(tools, loop=False) == "budget_exhausted"
+    assert tools.calls_used == 4 and tools.remaining == 0

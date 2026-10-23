@@ -10,7 +10,7 @@ from schema import parse_tool_call
 from schema.tools import ToolCallAdapter
 
 
-def evaluate_actions(generator, states: Path) -> dict:
+def evaluate_actions(generator, states: Path, *, on_completion=None) -> dict:
     records = [json.loads(line) for line in states.read_text().splitlines() if line.strip()]
     if not records or len({r["state_id"] for r in records}) != len(records):
         raise ValueError("frozen states must be nonempty and uniquely identified")
@@ -34,6 +34,8 @@ def evaluate_actions(generator, states: Path) -> dict:
                 error = "cutoff widened or changed"
         except ValueError as exc:
             error = str(exc)
+        if on_completion is not None:
+            on_completion(record["state_id"], prompt, completion, valid)
         outputs.append(
             {
                 "state_id": record["state_id"],

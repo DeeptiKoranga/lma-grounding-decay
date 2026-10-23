@@ -11,11 +11,11 @@ def priority(edges):
 
 
 def repair(runtime, *, loop: bool, generate_repair=None):
-    for edge in priority(list(runtime.graph.edges)):
-        if runtime.remaining < 2 or runtime.empty_searches >= 2:
-            break
-        if edge.is_asserted:
-            continue
+    if not runtime.require_verification and not (loop and generate_repair is not None):
+        raise ValueError("repair requires a verifier or a generator repair loop")
+    while runtime.remaining >= 2 and runtime.empty_searches < 2 and runtime.open_edges:
+        open_ids = set(runtime.open_edges)
+        edge = priority([edge for edge in runtime.graph.edges if edge.edge_id in open_ids])[0]
         ids = [pid for (eid, pid) in runtime.spans if eid == edge.edge_id and pid in runtime.seen]
         if not ids:
             ids = [
