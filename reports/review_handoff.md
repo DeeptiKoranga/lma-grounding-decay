@@ -13,6 +13,12 @@ verification is an experimental component and cannot supply independent truth.
    artifacts using `eval.prose_review export`.
    In particular, three current B0 graphs are empty even though their answers
    contain explanatory prose; an empty graph is not evidence of no claims.
+   The packet attaches trusted cited paragraphs. When prose cites a passage
+   without quoting it, correct the extractor's quotation from that same
+   paragraph. Preserve the answer's claim and passage identity; do not substitute
+   a new source to improve support.
+   If the prose has no citation, remove citations the extractor added. Attached
+   context does not authorize supplying a missing citation to improve grounding.
 2. **Prepare the final blinded support packet from those corrected artifacts.**
    The curator retains `private_mapping.json`. The reviewer gets only
    `packet.json`, blank `judgments.json`, the annotation guide and the local

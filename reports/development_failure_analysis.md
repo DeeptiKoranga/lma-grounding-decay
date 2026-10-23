@@ -17,3 +17,9 @@ Source artifacts remain under the ignored local run folders. Their final
 per-file hashes and included phase membership are recorded in the assembled
 run's `phases.json`. Structural flag counts, graph counts and actual model usage
 are in `reports/integration_validation.json`; support scores remain pending.
+
+The correction packet also exposes extractor-added document identifiers in
+several uncited prose answers (B1 candidates 05/06 and B1-R candidates 01/06).
+These identifiers must not be converted into valid citations to improve the
+baseline. Faithful correction removes extractor-added citations when the actual
+answer supplied none.

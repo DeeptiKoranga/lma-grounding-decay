@@ -5,22 +5,39 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from datetime import date
 from pathlib import Path
 
-from schema import Graph
+from schema import Graph, Passage
 
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def prepare(runs: Path, output: Path):
+def prepare(runs: Path, output: Path, *, corpus: Path | None = None):
+    passages = (
+        {
+            p.passage_id: p
+            for line in corpus.read_text().splitlines()
+            if line.strip()
+            if (p := Passage.model_validate_json(line))
+        }
+        if corpus is not None
+        else {}
+    )
     items = []
     for path in sorted(runs.glob("*/*.json")):
         payload = json.loads(path.read_text())
         if payload.get("prose_answer") is None:
             continue
+        ids = set(re.findall(r"\b[A-Za-z0-9_.:-]+#p\d+\b", payload["prose_answer"]))
+        ids.update(
+            edge["evidence_passage_id"]
+            for edge in [*payload["graph"]["edges"], *payload.get("raw_candidates", [])]
+            if edge.get("evidence_passage_id")
+        )
         items.append(
             {
                 "source_path": str(path.resolve()),
@@ -28,6 +45,10 @@ def prepare(runs: Path, output: Path):
                 "prose_answer": payload["prose_answer"],
                 "corrected_graph": payload["graph"],
                 "established_edge_ids": payload["established_edge_ids"],
+                "cited_passages": [
+                    passages[pid].model_dump(mode="json") for pid in sorted(ids & passages.keys())
+                ],
+                "unresolved_passage_ids": sorted(ids - passages.keys()),
                 "correction_complete": False,
             }
         )
@@ -37,7 +58,8 @@ def prepare(runs: Path, output: Path):
         "reviewer": "",
         "reviewed_on": None,
         "human_correction_attestation": False,
-        "instructions": "Correct all omitted/added/mislabelled edges against the actual prose answer. Preserve its hedging, citations and mistakes. Established means cited or unhedged. Do not improve the answer or silently replace its evidence.",
+        "corpus_sha256": digest(corpus) if corpus is not None else None,
+        "instructions": "Correct all omitted/added/mislabelled edges against the actual prose answer. Preserve its hedging, cited passage identities and substantive mistakes. If prose cites a passage without a quotation, correct the extractor's quotation using that same attached trusted passage. If the prose has no citation, remove citations added by the extractor. Never substitute a new source or improve the answer's claims. Established means cited or unhedged. Unresolved passage IDs are not valid evidence.",
         "items": items,
     }
     with output.open("x") as stream:
@@ -117,10 +139,11 @@ def main():
     parser.add_argument("command", choices=["prepare", "export"])
     parser.add_argument("--runs", type=Path, required=True)
     parser.add_argument("--corrections", type=Path)
+    parser.add_argument("--corpus", type=Path, default=Path("data/processed/articles.jsonl"))
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = (
-        prepare(args.runs, args.output)
+        prepare(args.runs, args.output, corpus=args.corpus)
         if args.command == "prepare"
         else export(runs=args.runs, corrections=args.corrections, output=args.output)
     )

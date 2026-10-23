@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from eval.prose_review import export, prepare
+from eval.prose_review import digest, export, prepare
 from schema import Graph
 
 
@@ -18,12 +18,17 @@ def test_correction_gate_preserves_original_and_rejects_stale_or_incomplete_work
     original = folder / "q.json"
     payload = {
         "graph": graph.model_dump(mode="json"),
-        "prose_answer": "Fixture answer",
+        "prose_answer": "Fixture answer cites nonexistent#p0",
         "established_edge_ids": ["e1"],
     }
     original.write_text(json.dumps(payload))
     corrections = tmp_path / "corrections.json"
-    assert prepare(folder.parent, corrections)["baseline_items"] == 1
+    corpus = fixture.parent / "passages.jsonl"
+    assert prepare(folder.parent, corrections, corpus=corpus)["baseline_items"] == 1
+    packet = json.loads(corrections.read_text())
+    assert packet["corpus_sha256"] == digest(corpus)
+    assert packet["items"][0]["cited_passages"]
+    assert "nonexistent#p0" in packet["items"][0]["unresolved_passage_ids"]
     with pytest.raises(ValueError, match="attestation"):
         export(runs=folder.parent, corrections=corrections, output=tmp_path / "export")
     reviewed = json.loads(corrections.read_text())

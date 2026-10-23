@@ -77,6 +77,9 @@ are transport adapters and have not been validated on Kaggle in this session.
 Correct the mechanically extracted prose baselines before their final support
 review. The correction packet includes the actual answer and editable graph;
 the reviewer must preserve the answer's errors rather than improve its content.
+It also attaches trusted cited paragraphs from `--corpus`. An extractor quote
+can be corrected from that same cited paragraph when the prose gives only its
+ID; the answer's claims and cited passage identity must be preserved.
 
 ```sh
 PYTHONPATH=src .venv/bin/python -m eval.prose_review prepare --runs runs/my-all-dev --output data/interim/prose_corrections.json
