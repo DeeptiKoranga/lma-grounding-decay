@@ -6,6 +6,15 @@ corpus/retrieval foundation and integrated development pipeline are implemented;
 research acceptance, three missing series and partial basket coverage remain
 outstanding.
 
+The latest continuation is detailed in `reports/track_a_continuation.md`.
+A separate **1,183-document, 26,888-passage corpus candidate** removes 564
+explicit related-story paragraphs and adds ten eligible Mint articles, extending
+that source to all seven months. Its 73-document extraction/source review is
+prepared but blank. The active 1,173-document snapshot and prior experiment
+hashes are preserved. Twenty new machine-curated retrieval questions now cover
+March–September; their comparison remains unreviewed. Four FBIL yield candidates
+are audited separately, with no canonical import. **Track A remains incomplete.**
+
 The 23 October series continuation added two Indian basket monthly observations,
 bringing canonical populated series to three of six, with partial basket coverage.
 Five CDSL FPI monthly candidates remain outside the series store pending historical
@@ -32,16 +41,16 @@ accepted on all team machines.
 
 | Assignment | Status and evidence | Outstanding work |
 |---|---|---|
-| [A1 / #1](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/1) | Four publisher identities supported; paced, bounded collectors and resumable archive acquisition. ET and BusinessLine cover all seven months. | Business Standard access is blocked; Mint has only two March items. Source balance and broader extraction review remain incomplete. |
+| [A1 / #1](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/1) | Four publisher identities supported; paced, bounded collectors and resumable archive acquisition. ET and BusinessLine cover all seven months. Candidate revision adds ten eligible Mint articles and gives Mint all-seven-month coverage (12 items total). | Business Standard remains absent; Mint is still sparse. Candidate corpus acceptance, source balance and broader extraction review remain incomplete. |
 | [A2 / #2](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/2) | Real MoSPI, PPAC and OEA original releases, with date-source manifests and PDF extraction. A PIB mirror was acquired and exactly deduplicated against MoSPI. | RBI access/coverage is missing. OEA is an explicit source-list deviation. Unreadable or later-version files remain excluded. |
-| [A3 / #3](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/3) | **Software complete:** normalized HTML/PDF documents, checksummed raw input, frozen Passage records and rejection audit. Current page recommendations and recognised promotions are filtered. | Broader manual extraction review; some opening sentences may be omitted and PDF tables can flatten. |
+| [A3 / #3](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/3) | **Software complete:** normalized HTML/PDF documents, checksummed raw input, frozen Passage records and rejection audit. The candidate revision additionally removes 564 explicit related-story paragraphs; regression checks cover their exclusion and revised offsets. | The 73-document review packet is blank. Unlabelled recommendations, omitted opening sentences and flattened PDF tables still need review. |
 | [A4 / #4](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/4) | Deterministic exact/MinHash deduplication, duplicate audit, source-by-month manifest and reproducible zip. Distinct monthly official reports are preserved despite identical covers. | Final source/extraction/licence review. Count targets alone do not establish a final research freeze. |
 | [A5 / #5](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/5) | **Software complete:** paragraph offsets address the exact archived parent text, including repeated paragraphs. | Preserve alignment through later corpus changes. |
 | [A6 / #6](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/6) | **Software complete:** BM25 and merged aliases for all 46 ontology variables. | Research configuration selection awaits A8 review. Some inherited aliases are broad. |
 | [A7 / #7](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/7) | Real pinned BGE-M3 on the local MPS GPU, FAISS and hybrid RRF; model/input-checked resumable embeddings and corpus-checked indexes. **Full 27,286-passage snapshot encoded; real saved-index reload passed.** Initial FAISS/exact backend agreement also passed. | Keep reviewed corpus/model/input settings fixed for comparisons. |
-| [A8 / #8](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/8) | Four-configuration runner and corrected full-corpus development run completed on 20 source-backed pairs; Recall@5/@10, MRR@50 and hashes recorded. | **Incomplete:** independent review and broader temporal coverage. Development results cannot freeze D-02. |
-| [A9 / #9](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/9) | Real pinned cross-encoder completed top-50 reranking on all 20 corrected development pairs. | **Incomplete research evaluation:** uses the same unreviewed convenience pairs; D-03 remains open. |
-| [A10 / #10](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/10) | Read/import layer plus **3/6 populated series**: 7 original provisional CPI observations, 141 daily FBIL USD/INR reference rates and 2 Indian basket monthly averages available from 17 June. Five native-USD CDSL FPI monthly candidates are staged separately for review. | **Incomplete:** Indian basket coverage; front-month Brent; benchmark 10-year GSEC yield; accepted net equity-plus-debt FPI data. CDSL historical vintages are unverified and excluded from SeriesStore. |
+| [A8 / #8](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/8) | Four-configuration runner; March-only comparison preserved. Twenty new source-first machine-curated questions cover March–September, with 43 seed references and input hashes. The real broader development comparison is recorded separately. | **Incomplete:** independent relevance review and accepted corpus choice. Development results cannot freeze D-02. |
+| [A9 / #9](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/9) | Real pinned cross-encoder completed top-50 reranking on the earlier March pairs and the new 20-query March–September set, including the separate corpus candidate. | **Incomplete research evaluation:** all comparisons still use unreviewed convenience seeds; D-03 remains open. |
+| [A10 / #10](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/10) | Read/import layer plus **3/6 populated series**: 7 original provisional CPI observations, 141 daily FBIL USD/INR reference rates and 2 Indian basket monthly averages available from 17 June. Five CDSL FPI candidates and four newly extracted FBIL yield candidates have separate audits. | **Incomplete:** Indian basket coverage; front-month Brent; accepted benchmark 10-year GSEC yield and FPI data. FPI vintages and yield publication dates/benchmark roll are unverified. The conflicting July yield table is excluded. |
 | [A11 / #11](https://github.com/DeeptiKoranga/lma-grounding-decay/issues/11) | **Software complete:** as-of filtering before ranking/cutoff across BM25, dense, hybrid and reranking. Future documents cannot alter BM25 statistics. Known later-version source copies are excluded. | Track C integration must preserve the interface guarantees. |
 
 ## Data and review records
@@ -75,7 +84,9 @@ eligible source before rerunning comparisons. The other positive texts were
 preserved while IDs were adjusted after navigation removal and exact source
 copy deduplication. No pair was adjusted to improve measured rankings.
 
-The pairs are machine-curated, March-only, and have incomplete positive labels.
+The original pairs are machine-curated, March-only, and have incomplete positive labels.
+They are preserved for provenance. The new temporal candidate pairs cover all
+seven months; see the latest continuation for their separate corpus/input hashes.
 Keep all model/retriever choices hidden during independent review. Research
 selection and shared decision-log edits remain pending. This is retrieval work,
 not Deepti's event/edge annotations or anchor-episode confirmation.
@@ -146,7 +157,7 @@ only after reviewing source reproduction terms.
 
 ## Verification and later assignments
 
-The current `make lint test` passes: **547 tests**, Ruff and Black. Tests cover source/version
+The current `make lint test` passes: **558 tests**, Ruff and Black. Tests cover source/version
 exclusion, paragraph integrity, date boundaries, macro-series availability,
 checkpoint interruption/model changes, candidate reuse and all retrieval modes.
 The real backend checks and final snapshot audit are recorded alongside the

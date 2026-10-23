@@ -6,6 +6,15 @@ an accepted experimental freeze. The study asks whether unsupported established
 edges increase with distance from an anchor, and whether targeted verification
 and retrieval reduce that rate without losing supported reference edges.
 
+Latest Track A preparation is in `reports/track_a_continuation.md`. A separate
+1,183-document corpus candidate removes 564 explicit related-story paragraphs
+and extends Mint coverage to all seven months. A 20-question temporal retrieval
+comparison and 2,057-item blank review packet are prepared for that candidate.
+Corpus acceptance and independent judgments remain pending. The experimental
+counts below still refer to active v1; candidate diagnostics must not be merged
+with v1 results or presented as final research scores. Current local checks:
+558 tests, Ruff and Black pass.
+
 ## What is built
 
 The local corpus contains 1,173 documents (1,112 news, 61 official) and 27,286

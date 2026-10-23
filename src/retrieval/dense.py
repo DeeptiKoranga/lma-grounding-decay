@@ -167,6 +167,10 @@ class DenseRetriever:
             import numpy as np
         except ImportError as exc:
             raise RuntimeError("FAISS retrieval requires faiss-cpu and numpy") from exc
+        # Each request searches one query. Keep this pool serial: the Mac runtime
+        # stalled at an OpenMP join with FAISS and Torch loaded together.
+        # Set it in the calling thread, as required by FAISS's OpenMP interface.
+        faiss.omp_set_num_threads(1)
         matrix = np.asarray([self.vectors[i] for i in indices], dtype="float32")
         index = faiss.IndexFlatIP(self.dimension)
         index.add(matrix)

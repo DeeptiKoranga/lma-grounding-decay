@@ -1,0 +1,2205 @@
+{
+  "status": "candidate only; active corpus/index/experiments unchanged",
+  "human_review_complete": false,
+  "original_articles_sha256": "7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3",
+  "candidate_articles_sha256": "b63a8743e7f227a90f4d08ae73a5f195ac10ceb581ee11060d59815b1e5f80e2",
+  "candidate_archive_sha256": "19c1a37d7fadd33b1462336dec9956af8c30902f29e0bc583e7bc9c3ee1ec072",
+  "removed_navigation_paragraphs": 564,
+  "changed_original_documents": 305,
+  "removals": [
+    {
+      "doc_id": "economic_times-00082dd9e9039abefc6e",
+      "paragraph_indices": [
+        5,
+        11
+      ]
+    },
+    {
+      "doc_id": "economic_times-014b1ef4ff6267c62557",
+      "paragraph_indices": [
+        4,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-015f8f79fd464ee060d8",
+      "paragraph_indices": [
+        2,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-025ae360d8f24ee14619",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-03110864791d4fd2da46",
+      "paragraph_indices": [
+        12
+      ]
+    },
+    {
+      "doc_id": "economic_times-0373ccee5b72f9e3ec7d",
+      "paragraph_indices": [
+        2,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-05a604984fbdcfce0a1e",
+      "paragraph_indices": [
+        3,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-05fe41d942257be4054b",
+      "paragraph_indices": [
+        5,
+        12
+      ]
+    },
+    {
+      "doc_id": "economic_times-06649f161c6fa42a7515",
+      "paragraph_indices": [
+        2,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-0745fbace67e2bc05fc4",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-074ae98592a283bcc9f7",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-0750f67e914c4836362d",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-0786cc69f20a832b0f18",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-0786ff7366240f86f42f",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-083ba95169b7130c0ae7",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-08b0cb43a61b3faa13d6",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-09f2cdd6b96094f4b320",
+      "paragraph_indices": [
+        1,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-0aab7279f5fd183412d1",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-0ab19512737d27114311",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-0b202b8814e2e3888e09",
+      "paragraph_indices": [
+        2,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-0ed923fdf7180c5722ba",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-0f4eab79a43493292305",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-1130c2fc39a57059cccf",
+      "paragraph_indices": [
+        3,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-11933d558d4998a34700",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-120789b1f23a38cfecae",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-12212a1bc7ef31fd7dd7",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-145edaf2fc0803c9b656",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-15f814f1710b1626aed2",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-16fe54d5cc02003b3f95",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-1745bbc546b615f1b626",
+      "paragraph_indices": [
+        0
+      ]
+    },
+    {
+      "doc_id": "economic_times-17e69e5eebdc0751d4f3",
+      "paragraph_indices": [
+        2,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-19abc124b433d3194c0b",
+      "paragraph_indices": [
+        11,
+        44
+      ]
+    },
+    {
+      "doc_id": "economic_times-1b2732b34ee05b32bf50",
+      "paragraph_indices": [
+        0,
+        4,
+        8,
+        14
+      ]
+    },
+    {
+      "doc_id": "economic_times-1c43accc5959172772a9",
+      "paragraph_indices": [
+        1,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-1dc33d0f06fafb2a0847",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-1df876e09a82ff63b551",
+      "paragraph_indices": [
+        9,
+        17,
+        35,
+        45
+      ]
+    },
+    {
+      "doc_id": "economic_times-1e1acec25c78f5ac32b9",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-203c3726299f08697b3d",
+      "paragraph_indices": [
+        4,
+        11
+      ]
+    },
+    {
+      "doc_id": "economic_times-21042ede1fbc31d04779",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-2165f39e1391512e3ceb",
+      "paragraph_indices": [
+        4,
+        11
+      ]
+    },
+    {
+      "doc_id": "economic_times-239dd579b568a1995460",
+      "paragraph_indices": [
+        3,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-24ec1e6a8dff7543b074",
+      "paragraph_indices": [
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-24f36b14f7b35608fe69",
+      "paragraph_indices": [
+        7,
+        16
+      ]
+    },
+    {
+      "doc_id": "economic_times-256787da6528f5caadef",
+      "paragraph_indices": [
+        4,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-261e4a815b36a5230e16",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-2642a25692440c809a74",
+      "paragraph_indices": [
+        3,
+        11
+      ]
+    },
+    {
+      "doc_id": "economic_times-27c04b7a3a86b954289c",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-28536871961c91776407",
+      "paragraph_indices": [
+        1,
+        3
+      ]
+    },
+    {
+      "doc_id": "economic_times-28723668e40c92e038a9",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-2a44a1112b5ce97d0e99",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-2a72e9f2e27cafe72091",
+      "paragraph_indices": [
+        1,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-2bc0141bd46aedbc47fb",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-2c171f7a61b12e390d66",
+      "paragraph_indices": [
+        4,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-2c474bb0f10ca7043a32",
+      "paragraph_indices": [
+        1,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-2ca27b31d4a5dc8317fd",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-2da19853a7c8de4b303f",
+      "paragraph_indices": [
+        0,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-2df410b3e85bdf13ce7b",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-2ed9a34941af97415702",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-30d1c944a2bb9f61efe2",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-31abb67b9f7a867972d9",
+      "paragraph_indices": [
+        0,
+        5,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-32442df101d178b2cd86",
+      "paragraph_indices": [
+        1,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-333d1d3c06f9a6f71fa5",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-334165cb65c18cb1bf93",
+      "paragraph_indices": [
+        1,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-3361c2a8f10a24fc7cef",
+      "paragraph_indices": [
+        2,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-3371e273e7b7e83aeb47",
+      "paragraph_indices": [
+        1,
+        15
+      ]
+    },
+    {
+      "doc_id": "economic_times-350c0925d09bbb267b34",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-3738b9d84bbf8c58a875",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-37429412e4ffbcb7647e",
+      "paragraph_indices": [
+        1,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-37c6f5d2f0d5034daaff",
+      "paragraph_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-3819edd1d8edd1294e59",
+      "paragraph_indices": [
+        0,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-3894f762c7241a19c134",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-38e02e886d8ceb43ff58",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-39023fbccd4d3154c3f3",
+      "paragraph_indices": [
+        1,
+        3,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-39836c697ef5a514427c",
+      "paragraph_indices": [
+        1,
+        11
+      ]
+    },
+    {
+      "doc_id": "economic_times-39a4cfa2c066db29d7e4",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-3b38382d965f62278015",
+      "paragraph_indices": [
+        5,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-3b4ae5045050c56f5bb4",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-3b54d1b955bbaf7b65b4",
+      "paragraph_indices": [
+        4,
+        11
+      ]
+    },
+    {
+      "doc_id": "economic_times-3bb3470d87880765e8c4",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-3e0f8267f58376a1263b",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-3e2bd3077cab7a02436e",
+      "paragraph_indices": [
+        1,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-3e5ca5fda2f33bc9f15a",
+      "paragraph_indices": [
+        2,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-3eb1ff8651a738b2d28e",
+      "paragraph_indices": [
+        0,
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-3f10b12ac4b4d45a2a14",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-3ff0f37255ded834bfde",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-419a6fa80e51422f0167",
+      "paragraph_indices": [
+        10,
+        23,
+        40,
+        45
+      ]
+    },
+    {
+      "doc_id": "economic_times-41c2a60142623217887a",
+      "paragraph_indices": [
+        4,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-41f35b68d932e53461b8",
+      "paragraph_indices": [
+        2,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-4246524a7090df187259",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-435838d9380f2e8e7766",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-452dfe55ff8b87f90632",
+      "paragraph_indices": [
+        3,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-4779c154cbd0c63144b9",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-47822330696a4a40ab8f",
+      "paragraph_indices": [
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-47ae3d7c24760d768910",
+      "paragraph_indices": [
+        20
+      ]
+    },
+    {
+      "doc_id": "economic_times-495eb898eadc0859642d",
+      "paragraph_indices": [
+        11,
+        26
+      ]
+    },
+    {
+      "doc_id": "economic_times-496f17d22204d4b237c0",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-4a678f4564789fcceb8e",
+      "paragraph_indices": [
+        2,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-4ae11d00a0a0f6710134",
+      "paragraph_indices": [
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-4c5208a532a2a7e689ad",
+      "paragraph_indices": [
+        3,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-4d00dd018e68ae44df00",
+      "paragraph_indices": [
+        11,
+        27
+      ]
+    },
+    {
+      "doc_id": "economic_times-4d5e5baf3380c97e2cda",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-4dab60ad4d6cb8b0215a",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-4eae3c987f485d29fe1d",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-4fa40d8770c821dd5406",
+      "paragraph_indices": [
+        3,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-4fd7e374d64209f81acb",
+      "paragraph_indices": [
+        3,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-517535be5c4c86c787b8",
+      "paragraph_indices": [
+        3
+      ]
+    },
+    {
+      "doc_id": "economic_times-51e33a7655f9f6555d3f",
+      "paragraph_indices": [
+        1,
+        13
+      ]
+    },
+    {
+      "doc_id": "economic_times-53b34d78d0eca3e1c1ce",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-53f9c72f9a17bf7436ec",
+      "paragraph_indices": [
+        5,
+        14
+      ]
+    },
+    {
+      "doc_id": "economic_times-58a90bf55acc40b31b72",
+      "paragraph_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-5969be5263973e5b09e9",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-59c4b57bc3e5f5f2beb0",
+      "paragraph_indices": [
+        4,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-5acae0ef34feb6239831",
+      "paragraph_indices": [
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-5ba4afbee285febad771",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-5c28199bea6512e8a3f5",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-5c57f6384ed1a3b3e3e3",
+      "paragraph_indices": [
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-5dda834071751583b9cc",
+      "paragraph_indices": [
+        1,
+        3
+      ]
+    },
+    {
+      "doc_id": "economic_times-5e069eb7bb51af006720",
+      "paragraph_indices": [
+        4,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-5e24d41c82202df5ca96",
+      "paragraph_indices": [
+        0,
+        3
+      ]
+    },
+    {
+      "doc_id": "economic_times-5e8072e19820d2514072",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-5ed235daa1f0bbe42cc6",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-606078add555aa039554",
+      "paragraph_indices": [
+        2,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-6080f868c604025a3e4a",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-611f5386e67994350f89",
+      "paragraph_indices": [
+        3,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-61849e805af15707262f",
+      "paragraph_indices": [
+        3,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-6423c576331d1d56747d",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-652124ace82bc5ff02ff",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-65d65205b2c8b99e23f7",
+      "paragraph_indices": [
+        0,
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-66e9d770c5d37128dab5",
+      "paragraph_indices": [
+        2,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-68e8c7fffe78a5b9b854",
+      "paragraph_indices": [
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-6a2730e3c15cb70618c9",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-6aac684f45289e43e739",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-6b89c84dc03b58e8605f",
+      "paragraph_indices": [
+        4,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-6c9a1f0fd316b09cb493",
+      "paragraph_indices": [
+        1,
+        5,
+        13
+      ]
+    },
+    {
+      "doc_id": "economic_times-6ee9cc9e0931b5987721",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-6fa68c0d05795a02a037",
+      "paragraph_indices": [
+        2,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-6fd0b395a8039cd42ddb",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-70503a04fe4b437ccb96",
+      "paragraph_indices": [
+        3,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-710fadde2bd93418aac6",
+      "paragraph_indices": [
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-7117bd9be24b1cd69154",
+      "paragraph_indices": [
+        0,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-712fd4a3e2995cdd4281",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-7213cdd0f46aff7da54a",
+      "paragraph_indices": [
+        0,
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-727188f1c30c83ba71c3",
+      "paragraph_indices": [
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-74d2087b2c272e91f30a",
+      "paragraph_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-76ba42814eeceb56a28c",
+      "paragraph_indices": [
+        1,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-76e743e8f70f17307d08",
+      "paragraph_indices": [
+        2,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-7761d702b8c469dec232",
+      "paragraph_indices": [
+        2,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-7d9978d157e0a5ae9024",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-7f122d0598d87738af67",
+      "paragraph_indices": [
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-7f634d186277c398629c",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-8022564002346c3cdcad",
+      "paragraph_indices": [
+        3,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-80687750753b5565e489",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-844485234e448fbd9751",
+      "paragraph_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-851f0e53f5977114c3bb",
+      "paragraph_indices": [
+        2,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-85754beb44da30b273af",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-85ba5a15ee382d521cc7",
+      "paragraph_indices": [
+        1,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-866ad430048501dddc6b",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-889e909048d7632ba919",
+      "paragraph_indices": [
+        3
+      ]
+    },
+    {
+      "doc_id": "economic_times-88dd82cf8e3aec106109",
+      "paragraph_indices": [
+        2,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-8a4426b852306f81db73",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-8bb25bf4b828929964b3",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-8e03ee0f598e2b71aa60",
+      "paragraph_indices": [
+        1,
+        9,
+        17
+      ]
+    },
+    {
+      "doc_id": "economic_times-8e406c72d55f7ec48027",
+      "paragraph_indices": [
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-8ed041dc7503c01625f7",
+      "paragraph_indices": [
+        2,
+        15
+      ]
+    },
+    {
+      "doc_id": "economic_times-902fede61242ffc7fd34",
+      "paragraph_indices": [
+        1,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-9086a960f8104cc7457c",
+      "paragraph_indices": [
+        3
+      ]
+    },
+    {
+      "doc_id": "economic_times-9488a1796e881575e8f2",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-967e2adba57c82264c61",
+      "paragraph_indices": [
+        2,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-96ec82984fd9b75a7d95",
+      "paragraph_indices": [
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-9714e4705c090aa2b24e",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-97a84109eafc96d0a09a",
+      "paragraph_indices": [
+        2,
+        15
+      ]
+    },
+    {
+      "doc_id": "economic_times-97cd2a95cfcfb3ce43ec",
+      "paragraph_indices": [
+        2,
+        14
+      ]
+    },
+    {
+      "doc_id": "economic_times-98107f7309c94920ba5d",
+      "paragraph_indices": [
+        2,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-983161e11ac9e4a4f16b",
+      "paragraph_indices": [
+        2,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-9931c919289c82f1315d",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-999a967856e41c766de9",
+      "paragraph_indices": [
+        3
+      ]
+    },
+    {
+      "doc_id": "economic_times-9a36b9ae1d480a509e5c",
+      "paragraph_indices": [
+        1,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-9ac2ab709217e165dd8d",
+      "paragraph_indices": [
+        2,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-9b3ebb9f3dd92b66fdd7",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-9b9a230db4db26f25731",
+      "paragraph_indices": [
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-9bcf0e5d88d1f501a83f",
+      "paragraph_indices": [
+        10,
+        15
+      ]
+    },
+    {
+      "doc_id": "economic_times-9c074eafa2a38b5a9371",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-9d431b6a4a68ef130e12",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-9d6952e6796ec3fc617a",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-9e98166a015b31b44e5b",
+      "paragraph_indices": [
+        4,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-9f392c08b5742f2908e2",
+      "paragraph_indices": [
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-9fd7365cf794b3b88edf",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-a08b0f7f5d90c20ee336",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-a1a260a8e4eb17bc4eb3",
+      "paragraph_indices": [
+        1,
+        8,
+        21
+      ]
+    },
+    {
+      "doc_id": "economic_times-a388e6ad7dee5b4ee511",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-a4f87e2c1944da3a212d",
+      "paragraph_indices": [
+        20
+      ]
+    },
+    {
+      "doc_id": "economic_times-a84afcec10280611b88b",
+      "paragraph_indices": [
+        3,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-a8e87f7bad66dda1e786",
+      "paragraph_indices": [
+        1,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-a90db433420f59372dcd",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-a9f1fc9881d89b8caac0",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-a9f6f10b98de2664af23",
+      "paragraph_indices": [
+        1,
+        10,
+        16
+      ]
+    },
+    {
+      "doc_id": "economic_times-ab07b3a208a585d92c05",
+      "paragraph_indices": [
+        2,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-ad7536b0f9a6c7dbcc7c",
+      "paragraph_indices": [
+        1,
+        6,
+        14
+      ]
+    },
+    {
+      "doc_id": "economic_times-ae8c9fd1d5329a2408cd",
+      "paragraph_indices": [
+        0,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-aeef41c48e7583bc45de",
+      "paragraph_indices": [
+        1,
+        5,
+        9,
+        14
+      ]
+    },
+    {
+      "doc_id": "economic_times-b0805a063ecc3a565e99",
+      "paragraph_indices": [
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-b299d33775f376eb0672",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-b2b1d18e5b5e560191d3",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-b39a2d6e3543aff58078",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-b4018ba1a2854031849a",
+      "paragraph_indices": [
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-b407b945c6d5069e39c7",
+      "paragraph_indices": [
+        2,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-b49275cb2b242935c163",
+      "paragraph_indices": [
+        1,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-b5067b9ffa78c92815ec",
+      "paragraph_indices": [
+        1,
+        10,
+        24
+      ]
+    },
+    {
+      "doc_id": "economic_times-b5efd2df2e3a77f81d99",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-b67f2e6ef32f98877cf9",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-b75c5f2b32a5c9cf3e11",
+      "paragraph_indices": [
+        1,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-b77e587dc39e2f52e652",
+      "paragraph_indices": [
+        1,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-b850e9d3005c7a0ec04d",
+      "paragraph_indices": [
+        3,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-b8c7707dba3c6a2ff9a7",
+      "paragraph_indices": [
+        3,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-b9a8844bf51703f73bbe",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-bc96c103ff5c704bb484",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-bcb258e68655f0cff8bd",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-bd85e6bddc898eefc56c",
+      "paragraph_indices": [
+        2,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-be55d57b376b7465e72e",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-befa0819ed5e62a91c97",
+      "paragraph_indices": [
+        3,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-bfe883c31e1ac9ddb39b",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-c0e94e45d6fd8027932e",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-c1ce20aaddbba6514d7b",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-c1d9a516a462a6bdda75",
+      "paragraph_indices": [
+        3
+      ]
+    },
+    {
+      "doc_id": "economic_times-c24fe8bfd6d26f2278df",
+      "paragraph_indices": [
+        4,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-c26f198bb005d8559ce6",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-c29beba93de05c623840",
+      "paragraph_indices": [
+        2,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-c4fe4042fa02133c6819",
+      "paragraph_indices": [
+        4,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-c64e13fb00fbf8afa175",
+      "paragraph_indices": [
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-c6742a7df2da0990c790",
+      "paragraph_indices": [
+        3
+      ]
+    },
+    {
+      "doc_id": "economic_times-c6d73717b019163d0838",
+      "paragraph_indices": [
+        1,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-ca39238a2fb8b6c816a0",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-ca8f2e6ba31f03aaa8ab",
+      "paragraph_indices": [
+        3,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-cb76eeeefc06d147479b",
+      "paragraph_indices": [
+        2,
+        3
+      ]
+    },
+    {
+      "doc_id": "economic_times-cc3b90280496d54e8d42",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-cc8380aa919dbb23e65c",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-cd4bf5a3c735a9ca04d3",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-ce4847872c11ca51660c",
+      "paragraph_indices": [
+        2,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-ce6c73fe714bca3533ed",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-ce95b1f30c16f9174fec",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-cf67d2ac84a1e89d54aa",
+      "paragraph_indices": [
+        3,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-cf773f4208ce49b2c742",
+      "paragraph_indices": [
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-d15295d8b44684c83ecf",
+      "paragraph_indices": [
+        4,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-d2a7b824266b28ac8958",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-d356e5387611e02938c8",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-d43a8cc2569cb6c571d2",
+      "paragraph_indices": [
+        0
+      ]
+    },
+    {
+      "doc_id": "economic_times-d4ab1ecc281f974ecb33",
+      "paragraph_indices": [
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-d503dd6bc128b5a1f2c1",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-d51045c797c103003169",
+      "paragraph_indices": [
+        2,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-d55c7576202dd3d36b58",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-d594ecec67cc75752880",
+      "paragraph_indices": [
+        5,
+        13
+      ]
+    },
+    {
+      "doc_id": "economic_times-d798386a6122813d0c03",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-d79b7bb213de7909def5",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-d7a68824ecb876811696",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-d8bb29c25a57d9c9e358",
+      "paragraph_indices": [
+        0
+      ]
+    },
+    {
+      "doc_id": "economic_times-da5a34687afe265055f2",
+      "paragraph_indices": [
+        7,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-da68fe7d2aefa5b467c2",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-de0454ba947528c63376",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-de4e006ccc06fd5e2576",
+      "paragraph_indices": [
+        2,
+        10,
+        17,
+        29
+      ]
+    },
+    {
+      "doc_id": "economic_times-df5460008a5a3d41eff8",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-dfa225a375ee906542fa",
+      "paragraph_indices": [
+        2,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-dffa0cfbd0f42c648d00",
+      "paragraph_indices": [
+        0,
+        4,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-e01a8383452e208f5a75",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-e0cec3b9a0a8be58a88b",
+      "paragraph_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-e179f91d541eac63c1c5",
+      "paragraph_indices": [
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-e192055920935c42bc8d",
+      "paragraph_indices": [
+        2,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-e19e92bf379122b3f13b",
+      "paragraph_indices": [
+        0,
+        2
+      ]
+    },
+    {
+      "doc_id": "economic_times-e5715c0da7ec898befe5",
+      "paragraph_indices": [
+        2,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-e5d99c6ff88adf78add9",
+      "paragraph_indices": [
+        5,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-e6216b49a48f81239656",
+      "paragraph_indices": [
+        1,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-e72c514914165ab2bd72",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-e746876ba0543db0330b",
+      "paragraph_indices": [
+        1,
+        8,
+        22
+      ]
+    },
+    {
+      "doc_id": "economic_times-e775fce8f3f76d12c099",
+      "paragraph_indices": [
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-e7f0eb716c799010ef57",
+      "paragraph_indices": [
+        1,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-e808e0238e2e2d2d275a",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-e93c1df03ff2f2ada28f",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-e97443413c65fc8af984",
+      "paragraph_indices": [
+        1,
+        5
+      ]
+    },
+    {
+      "doc_id": "economic_times-e9a27d41677de1fc7455",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-e9d1b4186348002666c8",
+      "paragraph_indices": [
+        2,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-eb5976964fc85b06c472",
+      "paragraph_indices": [
+        5,
+        10
+      ]
+    },
+    {
+      "doc_id": "economic_times-edabc83eb25a14d0ad1b",
+      "paragraph_indices": [
+        11,
+        21
+      ]
+    },
+    {
+      "doc_id": "economic_times-ee99be221fca73c3c025",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-ee9d523136e337a17e07",
+      "paragraph_indices": [
+        3,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-ee9dd4b8a72c524245f5",
+      "paragraph_indices": [
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-efd81bf8471380a80ddc",
+      "paragraph_indices": [
+        2,
+        5,
+        11
+      ]
+    },
+    {
+      "doc_id": "economic_times-f000c24258ab6e285b55",
+      "paragraph_indices": [
+        1,
+        11,
+        21
+      ]
+    },
+    {
+      "doc_id": "economic_times-f0bdc2c151191c217603",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-f2389f64888939e144e5",
+      "paragraph_indices": [
+        2,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-f26148dfe5bdb21f7081",
+      "paragraph_indices": [
+        3,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-f4bb815c344bca611e68",
+      "paragraph_indices": [
+        2,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-f5227ba88b9237867256",
+      "paragraph_indices": [
+        2,
+        12
+      ]
+    },
+    {
+      "doc_id": "economic_times-f52318a8736117dc604b",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-f5617819f84c7a577ae6",
+      "paragraph_indices": [
+        3,
+        17,
+        24
+      ]
+    },
+    {
+      "doc_id": "economic_times-f702fe484752a2e743ef",
+      "paragraph_indices": [
+        9,
+        19
+      ]
+    },
+    {
+      "doc_id": "economic_times-f73604f803200330b8f8",
+      "paragraph_indices": [
+        2,
+        11
+      ]
+    },
+    {
+      "doc_id": "economic_times-f74780b3adca7de26ca9",
+      "paragraph_indices": [
+        1,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-f80f60195b51f9189757",
+      "paragraph_indices": [
+        0,
+        4
+      ]
+    },
+    {
+      "doc_id": "economic_times-f83503fca3222a076350",
+      "paragraph_indices": [
+        2,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-f901d01e57275867c654",
+      "paragraph_indices": [
+        4,
+        9
+      ]
+    },
+    {
+      "doc_id": "economic_times-fa38c3b96e5636046eaf",
+      "paragraph_indices": [
+        2,
+        6
+      ]
+    },
+    {
+      "doc_id": "economic_times-fa95d3612d4d1a7e1bc1",
+      "paragraph_indices": [
+        2,
+        11
+      ]
+    },
+    {
+      "doc_id": "economic_times-fd876b2221f038fbe1ec",
+      "paragraph_indices": [
+        1
+      ]
+    },
+    {
+      "doc_id": "economic_times-fe13ef9b8bc245ef2b25",
+      "paragraph_indices": [
+        4,
+        8
+      ]
+    },
+    {
+      "doc_id": "economic_times-fe9e1690f491081f0b37",
+      "paragraph_indices": [
+        1,
+        7
+      ]
+    },
+    {
+      "doc_id": "economic_times-fe9f5a75719c89e65e41",
+      "paragraph_indices": [
+        6
+      ]
+    }
+  ],
+  "added": [
+    {
+      "url": "https://www.livemint.com/economy/rbi-warns-india-economy-growth-inflation-us-iran-war-impact-volatility-gdp-growth-infra-consumption-11776948948359.html",
+      "metadata": "data/raw/track_a_continuation/mint/0fb1b7f759f60c2ea39c.meta.json",
+      "doc_id": "mint-0fb1b7f759f60c2ea39c",
+      "published_at": "2026-04-23T19:21:25+05:30",
+      "raw_sha256": "e5413a30d823373825eb9f4681c7cfb10844358fdb34a984f79cd112de32a465"
+    },
+    {
+      "url": "https://www.livemint.com/economy/wholesale-inflation-surges-to-9-68-in-may-over-sharp-rise-in-crude-oil-prices-11781510050004.html",
+      "metadata": "data/raw/track_a_continuation/mint/14ebd360bcf3cb261d1b.meta.json",
+      "doc_id": "mint-14ebd360bcf3cb261d1b",
+      "published_at": "2026-06-15T13:56:43+05:30",
+      "raw_sha256": "8341084700d18a6bc6460e188ef503d0d9838d075016ba59e5dfa3ceee817d31"
+    },
+    {
+      "url": "https://www.livemint.com/economy/rbi-links-broad-based-rise-in-edible-oil-prices-to-biofuel-use-cites-indonesias-b50-mandate-food-inflation-palm-oil-11784794553358.html",
+      "metadata": "data/raw/track_a_continuation/mint/60fd764c9556c10e7f65.meta.json",
+      "doc_id": "mint-60fd764c9556c10e7f65",
+      "published_at": "2026-07-23T15:42:03+05:30",
+      "raw_sha256": "8211344bea0d7aa858c2e61f1a4d027bc0949f5eeb5b2399d95b003a99dee253"
+    },
+    {
+      "url": "https://www.livemint.com/economy/india-economic-growth-may-beat-rbi-forecast-deputy-governor-says-7-pace-possible-as-indicators-improve-11787315737135.html",
+      "metadata": "data/raw/track_a_continuation/mint/6b074e361d2f8c142fe3.meta.json",
+      "doc_id": "mint-6b074e361d2f8c142fe3",
+      "published_at": "2026-08-21T18:25:04+05:30",
+      "raw_sha256": "5b12e3d6838344feacb2102888d26c2560446dfb90edfa0bdf21e7c9b0ab2250"
+    },
+    {
+      "url": "https://www.livemint.com/economy/govt-warns-of-fresh-inflation-risks-fuel-prices-monsoon-to-further-squeeze-your-household-budget-11780191774249.html",
+      "metadata": "data/raw/track_a_continuation/mint/6fed3ae7d616f74e4b25.meta.json",
+      "doc_id": "mint-6fed3ae7d616f74e4b25",
+      "published_at": "2026-05-31T08:07:37+05:30",
+      "raw_sha256": "3b95032e6d81d34adcb718b09eb5a94caa55fe71dd4209b3745ea648c97cca08"
+    },
+    {
+      "url": "https://www.livemint.com/economy/indias-retail-inflation-rbi-s-midpoint-target-india-june-cpi-new-cpi-series-india-gdp-india-interest-rates-11783925607030.html",
+      "metadata": "data/raw/track_a_continuation/mint/74467ebbc52e72308935.meta.json",
+      "doc_id": "mint-74467ebbc52e72308935",
+      "published_at": "2026-07-13T16:06:11+05:30",
+      "raw_sha256": "4b77467b4a21ce5cf25f380f1bd844256ab3a2be09dacb558116aec7a8139a92"
+    },
+    {
+      "url": "https://www.livemint.com/economy/india-retail-inflation-august-2026-cpi-food-fuel-prices-rbi-inflation-target-11789113577685.html",
+      "metadata": "data/raw/track_a_continuation/mint/8cf455f3fc6aa35a09eb.meta.json",
+      "doc_id": "mint-8cf455f3fc6aa35a09eb",
+      "published_at": "2026-09-14T17:12:38+05:30",
+      "raw_sha256": "8214e6bd28a55f76800e903ce6b0a4b0d69002eb0a8645f7db6fd95660fe1b08"
+    },
+    {
+      "url": "https://www.livemint.com/market/stock-market-news/rbi-monetary-policy-sanjay-malhotra-led-mpc-raises-fy27-growth-projections-to-6-7-despite-middle-east-crisis-11785906516392.html",
+      "metadata": "data/raw/track_a_continuation/mint/c5365e2b132ca183486d.meta.json",
+      "doc_id": "mint-c5365e2b132ca183486d",
+      "published_at": "2026-08-05T10:44:19+05:30",
+      "raw_sha256": "7148f17c075683f0dc783e6362c2ff796583fdc62043563761214bcb63fd1804"
+    },
+    {
+      "url": "https://www.livemint.com/economy/india-retail-inflation-rbi-food-and-beverage-prices-clothing-housing-utilities-energy-costs-west-asia-war-cpi-new-series-11778566611748.html",
+      "metadata": "data/raw/track_a_continuation/mint/de1719bfdbdfdf458c21.meta.json",
+      "doc_id": "mint-de1719bfdbdfdf458c21",
+      "published_at": "2026-05-12T16:14:48+05:30",
+      "raw_sha256": "1402fc97d90e5cf1cf2e4267b5be02a36ee802eca23d48919971f9b456915b31"
+    },
+    {
+      "url": "https://www.livemint.com/economy/rbi-shuns-hawkish-signal-keeps-repo-rate-unchanged-amid-war-shock-sanjay-malhotra-11775654948194.html",
+      "metadata": "data/raw/track_a_continuation/mint/fe2f2de4648ad7f406a7.meta.json",
+      "doc_id": "mint-fe2f2de4648ad7f406a7",
+      "published_at": "2026-04-08T22:34:07+05:30",
+      "raw_sha256": "1f3041b0afea9931721835ecad02f59b4d7e9f2fefacb7b734551381df063c0b"
+    }
+  ],
+  "excluded": [
+    {
+      "url": "https://www.livemint.com/economy/cpi-inflation-india-rbi-rate-hike-food-prices-fuel-costs-crude-oil-prices-11789536112589.html",
+      "metadata": "data/raw/track_a_continuation/mint/0b6deae9f4984b16ee3c.meta.json",
+      "reason": "explicit subscription/paywall metadata; excluded"
+    }
+  ],
+  "documents": 1183,
+  "passages": 26888,
+  "sources": {
+    "businessline": 218,
+    "eaindustry": 10,
+    "economic_times": 892,
+    "mint": 12,
+    "mospi": 37,
+    "ppac": 14
+  },
+  "sampled_documents": 73,
+  "checks": {
+    "original_offsets_exact": true,
+    "candidate_offsets_exact": true,
+    "known_related_link_prefixes_absent": true,
+    "reversed_input_archive_identical": true,
+    "human_judgments_blank": true
+  },
+  "local_candidate": "data/interim/corpus_revision_20261023/snapshot",
+  "local_review": "data/interim/corpus_revision_20261023/extraction_review.md",
+  "limitations": [
+    "Unlabelled recommendations, missing lead sentences and flattened PDF tables still require inspection.",
+    "RBI and Business Standard remain absent; source terms have not been accepted.",
+    "Do not use v1 passage IDs, dense indexes or review receipts with the candidate.",
+    "A corpus change requires new retrieval curation, embeddings, review packets and experiments."
+  ]
+}

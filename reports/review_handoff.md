@@ -4,6 +4,20 @@ Reviewer: **not assigned**. The user has not yet decided who will review the
 packets. All judgment fields and reviewer attestations remain blank. Model
 verification is an experimental component and cannot supply independent truth.
 
+## Corpus acceptance before final review
+
+
+Before assigning final relevance or support judgments, read
+`reports/track_a_continuation.md`. A separate 1,183-document corpus candidate
+removes explicit related links and broadens Mint coverage; its 73-document
+extraction/source review is blank. It has a new all-seven-month retrieval
+packet with 2,057 items, recorded in
+`reports/retrieval_temporal_review_readiness.json`. Corpus acceptance must precede
+using that packet. The active corpus and the 42 development graphs described
+below retain their original v1 hashes. A corpus/retriever change requires new
+experimental runs and corresponding prose/support packets. Existing human
+work must never be relabelled as a different corpus version.
+
 ## Required order
 
 1. **Correct prose extraction.** Review the 18 B0/B1/B1-R prose answers and

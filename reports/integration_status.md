@@ -4,6 +4,13 @@ The software path now connects corpus/retrieval, model generation, extraction,
 verification, tools, controller, condition configs, run logging and evaluation.
 Research completion is **not** established by this implementation checkpoint.
 
+Later Track A work is recorded in `reports/track_a_continuation.md`: a separate
+cleaned corpus candidate, broader temporal retrieval pilot, 2,057-item blank
+relevance packet and macro-source audit. Existing 42-graph results remain bound
+to v1. Accepting the new corpus/retriever requires new experiments and review
+packets. Current local verification is 558 tests plus Ruff/Black; earlier
+counts in this report describe the preceding integration checkpoint.
+
 ## Implemented and checked
 
 - The existing Track B deterministic verifier and its 100 tests were integrated

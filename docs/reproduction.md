@@ -167,3 +167,64 @@ enough eligible reviewed gold exists. It requires genuinely hedged seeds for
 strength inflation and leaves all challenge outcome labels unfilled for review.
 `eval.agreement` calculates Cohen's kappa and the predeclared strength-collapse
 trigger. It never invents an agreement score when the paired labels are absent.
+
+## Track A corpus and temporal-pilot continuation
+
+The active v1 experiment corpus is preserved. The proposed revision is local
+under `data/interim/corpus_revision_20261023/snapshot/`; its tracked manifest and
+audit are `reports/corpus_revision_manifest.md` and
+`reports/corpus_revision_audit.json`. Checksummed raw originals must be present
+locally. No source redistribution permission is implied by these commands.
+
+To reproduce the candidate in a fresh output directory, using the saved ten
+eligible Mint pages plus the rejected-page sidecar:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.prepare_corpus_revision \
+  --output data/interim/corpus_revision_recheck \
+  --report reports/corpus_revision_recheck.json
+
+PYTHONPATH=src .venv/bin/python -m scripts.fetch.fbil_newsletters \
+  --report reports/gsec_acquisition_recheck.json
+```
+
+The first command verifies original/revised offsets, reconstructs the archive
+twice in opposite input orders, and prepares blank extraction judgments. It
+refuses an existing candidate directory. The second audits locally cached
+newsletter PDFs against FBIL's saved public listing; it never creates canonical
+yield observations from unverified upload timestamps.
+
+The 20 questions in `reports/retriever_temporal_candidate_pairs.jsonl` were
+mapped by exact document/text identity from the source-first curation, with
+unchanged wording and cutoffs. They have **not** been independently judged.
+To rerun their development comparison using the saved candidate index:
+
+```sh
+HF_HOME="$PWD/data/raw/model_cache" HF_HUB_OFFLINE=1 OMP_NUM_THREADS=1 \
+  VECLIB_MAXIMUM_THREADS=1 PYTHONPATH=src .venv/bin/python -m retrieval.pilot_runner \
+  --pairs reports/retriever_temporal_candidate_pairs.jsonl \
+  --corpus data/interim/corpus_revision_20261023/snapshot/articles.jsonl \
+  --smoke --device cpu --max-length 1024 \
+  --dense-index data/interim/corpus_revision_20261023/bge_m3_vectors.json \
+  --dense-backend faiss --embedding-batch-size 8 --reranker-batch-size 1 \
+  --embedding-revision 5617a9f61b028005a4858fdac845db406aefb181 \
+  --rerank --reranker-revision 953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e \
+  --local-files-only --output reports/pilot_temporal_recheck.md \
+  --candidate-output data/interim/retrieval_candidates_temporal_recheck.jsonl
+```
+
+Without the candidate index, copy the unchanged original embedding checkpoint
+to a fresh candidate checkpoint path and supply `--embedding-checkpoint` for
+that copy. The model/preprocessing and full title/text hashes validate reuse;
+26,722 unchanged input occurrences were reused and 166 new ones were encoded.
+Do not overwrite the v1 checkpoint or use its saved index with candidate passages.
+
+`reports/retrieval_temporal_review_readiness.json` identifies the 2,057-item
+local blinded packet and all input hashes. Resolve corpus acceptance, then give
+an independent reviewer its `packet.json`, `review.md` and `judgments.json`;
+keep pair seeds, comparison reports and ranks hidden. Follow
+`reports/retrieval_review_workflow.md` to export completed review, substituting
+the candidate corpus and matching packet paths. Blank judgments were confirmed
+to fail before creating any accepted output. D-02/D-03 remain open, and accepting
+a revised corpus/retriever requires corresponding generation and human-review
+reruns before final scores.

@@ -107,6 +107,23 @@ def test_short_body_is_rejected():
         )
 
 
+def test_explicit_related_links_cannot_become_evidence_or_change_offsets():
+    extra = (
+        "<p>ALSO READ | An unrelated future policy announcement</p>"
+        "<p>Read more: Another market headline</p>"
+        "<p>Also read: A linked inflation report</p>"
+        "<p>Analysts also read the earlier inflation release before commenting.</p>"
+    )
+    html = article_html().replace("</article>", extra + "</article>")
+    doc = parse_html(html, source="economic_times", url="https://economictimes.indiatimes.com/a")
+    assert "unrelated future" not in doc.text
+    assert "Another market headline" not in doc.text
+    assert "linked inflation report" not in doc.text
+    assert "Analysts also read the earlier" in doc.text
+    for passage in chunk_document(doc):
+        assert doc.text[passage.char_start : passage.char_end] == passage.text
+
+
 def test_rebuild_pipeline_only_uses_accepted_payloads(tmp_path, monkeypatch):
     monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2]))
     from scripts.fetch.client import Response

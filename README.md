@@ -7,6 +7,14 @@ Deepti Koranga (2025204033).
 
 ---
 
+## Latest Track A continuation
+
+A separate corpus candidate removes 564 explicit related-story paragraphs and
+adds ten Mint articles, extending that source to all seven months. Its broader
+retrieval pilot and 2,057-item blinded review packet are prepared; all human
+judgments and corpus acceptance remain pending. Existing experiments retain
+the active v1 corpus. See [Track A continuation](reports/track_a_continuation.md).
+
 ## What this is
 
 Given a question like *"Brent crossed $100 on 12 March 2026; what effects on India were
@@ -35,7 +43,7 @@ remain required. Three of six macro series are populated, including partial
 Indian basket coverage.
 
 The 23 October local integration completed all 42 graphs across six unreviewed
-candidates; 547 tests pass. The separate synthetic tool-choice probe succeeded
+candidates; 558 tests pass. The separate synthetic tool-choice probe succeeded
 on only 5/40 expected actions, so model selection remains open. Execution and
 structural validity do not establish research performance. See
 [the validation and remaining gates](reports/integration_status.md).

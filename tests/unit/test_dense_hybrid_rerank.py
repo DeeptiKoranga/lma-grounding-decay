@@ -98,6 +98,7 @@ def test_faiss_index_contains_only_eligible_rows(passages, monkeypatch):
     import sys
 
     added = []
+    thread_limits = []
 
     class FakeFlatIndex:
         def __init__(self, dimension):
@@ -112,12 +113,17 @@ def test_faiss_index_contains_only_eligible_rows(passages, monkeypatch):
             assert queries == [(1.0, 0.0)]
             return [[1.0] * k], [list(reversed(range(k)))]
 
-    monkeypatch.setitem(sys.modules, "faiss", SimpleNamespace(IndexFlatIP=FakeFlatIndex))
+    monkeypatch.setitem(
+        sys.modules,
+        "faiss",
+        SimpleNamespace(IndexFlatIP=FakeFlatIndex, omp_set_num_threads=thread_limits.append),
+    )
     monkeypatch.setitem(sys.modules, "numpy", SimpleNamespace(asarray=lambda rows, dtype: rows))
     retriever = DenseRetriever(passages, embedder=ConstantEmbedder(), backend="faiss")
     hits = retriever.search("oil", as_of=CUTOFF, source_kind="official", k=1)
     eligible = [p for p in passages if p.visible_at(CUTOFF) and p.source_kind.value == "official"]
     assert len(added) == len(eligible)
+    assert thread_limits == [1]
     assert hits == [Hit(sorted(eligible, key=lambda p: p.passage_id)[0], 1.0)]
 
 

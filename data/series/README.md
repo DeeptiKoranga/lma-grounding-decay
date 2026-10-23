@@ -59,8 +59,22 @@ explicitly and preserve the conversion audit before importing.
 | `fpi_flows_usd_mn.csv` | `FPI_FLOWS` | `USD million, net` | NSDL/CDSL net FPI equity-and-debt flow releases |
 
 Brent, benchmark 10-year yield and accepted FPI flows are still missing.
-Indian basket coverage is partial.
-The Brent and GSEC source entries above are acquisition guidance, not downloaded data.
+Indian basket coverage is partial. Four newly extracted FBIL month-end yield
+candidates (March–June) remain outside this store; see
+`reports/gsec_acquisition_review.json`. Their security coupon/maturity is
+recorded, but media upload timestamps do not verify newsletter publication
+dates or the historical benchmark roll. The July table is excluded because
+its header and footnote name different months. No `available_on` was invented.
+
+Reproduce the offline source audit after acquiring the checksummed original
+newsletter assets and public listing:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.fetch.fbil_newsletters
+```
+
+The Brent and GSEC source entries above remain guidance for accepted acquisition;
+cached newsletter candidates do not constitute an accepted GSEC series.
 Do not substitute spot Brent for front-month futures, CPI index levels for annual
 inflation, or INR-crore FPI values for USD million. Upward `inr_usd` means a weaker
 rupee. Keep the benchmark/security definition consistent for bond yields.

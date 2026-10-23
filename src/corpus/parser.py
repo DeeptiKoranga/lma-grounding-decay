@@ -23,6 +23,11 @@ class ParseError(ValueError):
     """The payload cannot safely become evidence."""
 
 
+def is_navigation_paragraph(text: str) -> bool:
+    """Recognise explicit related-story labels, without matching body mentions."""
+    return bool(re.match(r"^\s*(?:also\s+read|read\s+more)\s*[:|]", text, re.IGNORECASE))
+
+
 def _body_key(value: str) -> str:
     # ET removes quotation marks in JSON-LD while retaining them in its visible
     # article. This is a comparison key only; archived evidence stays verbatim.
@@ -187,7 +192,8 @@ def parse_html(
     paragraphs = [
         p
         for p in paragraphs
-        if not p.strip()
+        if not is_navigation_paragraph(p)
+        and not p.strip()
         .lstrip("(")
         .startswith(
             (

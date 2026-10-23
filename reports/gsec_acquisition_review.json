@@ -1,0 +1,88 @@
+{
+  "series_id": "gsec_10y_pct",
+  "accepted_for_historical_use": false,
+  "canonical_observations_added": 0,
+  "listing_url": "https://www.fbil.org.in/publications",
+  "listing_sha256": "ea737f93cba0b1624abd2c8619974675a932de629e10031d1232b073b083ac1b",
+  "candidate_count": 4,
+  "candidates": [
+    {
+      "issue": 86,
+      "url": "https://www.fbil.org.in/uploads/Newsletter_for_the_month_of_April_2026_f560e252ad.pdf",
+      "observation_on": "2026-03-31",
+      "value": 7.03,
+      "prior_year_comparison": 6.58,
+      "coupon_percent": 6.48,
+      "maturity": "2035-10-06",
+      "unit": "percent",
+      "measure": "month-end closing yield as printed; source credits LSEG",
+      "pdf_sha256": "5d5aa5455de14a997ff82726d913e76ee159770f29f3629ab86cbc9a27875359",
+      "page": 3,
+      "asset_created_at": "2026-04-10T12:22:37.722Z",
+      "available_on": null,
+      "accepted_for_historical_use": false
+    },
+    {
+      "issue": 87,
+      "url": "https://www.fbil.org.in/uploads/Newsletter_for_the_month_of_May_2026_c4bcf3a44f.pdf",
+      "observation_on": "2026-04-30",
+      "value": 7.01,
+      "prior_year_comparison": 6.36,
+      "coupon_percent": 6.48,
+      "maturity": "2035-10-06",
+      "unit": "percent",
+      "measure": "month-end closing yield as printed; source credits LSEG",
+      "pdf_sha256": "24a4561a3b53b580a4905dd3a187bb445031b871a7088ca81cd54f78a691d1f9",
+      "page": 4,
+      "asset_created_at": "2026-05-08T11:23:33.184Z",
+      "available_on": null,
+      "accepted_for_historical_use": false
+    },
+    {
+      "issue": 88,
+      "url": "https://www.fbil.org.in/uploads/Newsletter_for_the_month_of_June_2026_39f7123648.pdf",
+      "observation_on": "2026-05-31",
+      "value": 7.04,
+      "prior_year_comparison": 6.27,
+      "coupon_percent": 6.48,
+      "maturity": "2035-10-06",
+      "unit": "percent",
+      "measure": "month-end closing yield as printed; source credits LSEG",
+      "pdf_sha256": "3199909d6e0a12683a4bed18d562872d4e162c7e3e61a8ec07e264d040d89ed4",
+      "page": 4,
+      "asset_created_at": "2026-06-10T13:06:02.640Z",
+      "available_on": null,
+      "accepted_for_historical_use": false
+    },
+    {
+      "issue": 89,
+      "url": "https://www.fbil.org.in/uploads/Newsletter_for_the_month_of_July_2026_fb40450d38.pdf",
+      "observation_on": "2026-06-30",
+      "value": 6.75,
+      "prior_year_comparison": 6.31,
+      "coupon_percent": 6.94,
+      "maturity": "2036-05-11",
+      "unit": "percent",
+      "measure": "month-end closing yield as printed; source credits LSEG",
+      "pdf_sha256": "aa8533cb6e4b4b9cd3f69335bde251362e15ec4ad7890c61348a2fb988485e40",
+      "page": 4,
+      "asset_created_at": "2026-07-10T13:25:47.208Z",
+      "available_on": null,
+      "accepted_for_historical_use": false
+    }
+  ],
+  "excluded": [
+    {
+      "issue": 90,
+      "url": "https://www.fbil.org.in/uploads/Newsletter_for_the_month_of_Aug_2026_1_bf731d2d25.pdf",
+      "reason": "sovereign-yield footnote conflicts with observation month"
+    }
+  ],
+  "remaining_checks": [
+    "Media upload timestamps are not verified newsletter publication dates.",
+    "Verify the reported coupon/maturity against the historical benchmark roll calendar.",
+    "Monthly closes cannot confirm daily threshold crossings or episode dates.",
+    "July has conflicting header/footnote months; August/September originals are absent.",
+    "Average YTM and par-yield tables are different measures and were not substituted."
+  ]
+}

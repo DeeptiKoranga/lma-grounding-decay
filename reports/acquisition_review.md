@@ -85,8 +85,13 @@ exchange rates, with observation and public display timestamps. Both keep raw
 checksums. Missing days are omitted, and subsequent revisions do not replace
 values in earlier as-of queries.
 
-Four required series remain unpopulated: front-month Brent, Indian basket,
-benchmark 10-year GSEC yield and equity-plus-debt FPI flows in USD million. PPAC's
+Three required series remain unpopulated: front-month Brent,
+benchmark 10-year GSEC yield and equity-plus-debt FPI flows in USD million.
+The 23 October continuation added two Indian basket observations (April/May,
+both available 17 June); its other months are still missing. Four FBIL yield
+candidates are separately staged, without verified publication dates/benchmark
+roll. See `reports/track_a_continuation.md` for the candidate corpus cleanup,
+broader temporal pilot and subsequent source checks. PPAC's
 current monthly table has an October modification date; its available news
 archive lacked the in-window daily basket records. FBIL's GSEC endpoint exposed
 report links but did not establish a consistent benchmark-security series.
