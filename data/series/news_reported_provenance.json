@@ -1,0 +1,146 @@
+{
+  "status": "sparse news-reported observations; coverage incomplete",
+  "corpus_sha256": "b63a8743e7f227a90f4d08ae73a5f195ac10ceb581ee11060d59815b1e5f80e2",
+  "seeds_sha256": "898ef46a5ef99f7c697e276efc1898a82ecef163d13d95778531008cacc17536",
+  "counts": {
+    "brent_usd_bbl": 3,
+    "fpi_flows_usd_mn": 1,
+    "gsec_10y_pct": 3
+  },
+  "sources": [
+    {
+      "series_id": "brent_usd_bbl",
+      "passage_id": "businessline-e6e5cf16b0f8620910f7#p1",
+      "published_at": "2026-05-29T07:02:15+05:30",
+      "raw_metadata": "data/raw/businessline/e6e5cf16b0f8620910f7.meta.json",
+      "raw_sha256": "ae2ce865a09fc2b29a40a945a54cf1df1238f009133be370ebcbe7099362df8f",
+      "passage_sha256": "b8cb6bdc8516fff41076ec9a73a4bb6e222ede82583ab06acd451f02f9728c1b",
+      "observation": {
+        "on": "2026-05-29",
+        "value": 93.36,
+        "available_on": "2026-05-29",
+        "source_url": "https://www.thehindubusinessline.com/markets/commodities/crude-oil-falls-slightly-on-reports-of-potential-us-iran-ceasefire-deal/article71035749.ece",
+        "unit": "USD per barrel"
+      },
+      "measure": "intraday front-month futures quote; not daily settlement",
+      "contract_basis": "nearby contract explicitly expiring today; deferred contract excluded",
+      "contract_month": "July"
+    },
+    {
+      "series_id": "brent_usd_bbl",
+      "passage_id": "economic_times-736394ec7b8f2c65ea24#p1",
+      "published_at": "2026-06-30T19:01:00+05:30",
+      "raw_metadata": "data/raw/economic_times/736394ec7b8f2c65ea24.meta.json",
+      "raw_sha256": "b638cd13d3d6a06a030a709c25b987dd28ecda0ea10d5ea1c76b13dc4e19c340",
+      "passage_sha256": "b9f989184d2852798a01dae7d07b1e6ba5c779fa49008d5fa884c479ac5f8a2a",
+      "observation": {
+        "on": "2026-06-30",
+        "value": 73.31,
+        "available_on": "2026-06-30",
+        "source_url": "https://economictimes.indiatimes.com/news/international/us/why-are-oil-prices-up-today-and-will-brent-and-us-wti-crude-futures-continue-to-rise-or-fall-again-oil-market-reacts-to-us-iran-talks-strait-of-hormuz-developments-and-supply-outlook/articleshow/132094189.cms",
+        "unit": "USD per barrel"
+      },
+      "measure": "intraday front-month futures quote; not daily settlement",
+      "contract_basis": "nearby contract explicitly expiring today; deferred contract excluded",
+      "contract_month": "August"
+    },
+    {
+      "series_id": "brent_usd_bbl",
+      "passage_id": "economic_times-4c5208a532a2a7e689ad#p1",
+      "published_at": "2026-08-04T07:51:00+05:30",
+      "raw_metadata": "data/raw/economic_times/4c5208a532a2a7e689ad.meta.json",
+      "raw_sha256": "d83aa9875512d6a2600285136ac1a4a016605aaa0889bd93bdf09b2d1128f82d",
+      "passage_sha256": "cdf20f12b196ed88d9b88258b532008e84f62728ff3c456305b67639efd2053b",
+      "observation": {
+        "on": "2026-08-04",
+        "value": 84.5,
+        "available_on": "2026-08-04",
+        "source_url": "https://economictimes.indiatimes.com/markets/commodities/news/oil-price-today-august-4-crude-oil-nears-85-as-peace-talks-uncertainty-loom-after-fresh-attacks-what-are-experts-saying/articleshow/132844010.cms",
+        "unit": "USD per barrel"
+      },
+      "measure": "intraday front-month futures quote; not daily settlement",
+      "contract_basis": "explicit front-month label"
+    },
+    {
+      "series_id": "gsec_10y_pct",
+      "passage_id": "businessline-469aabd081e5b5594ab2#p7",
+      "published_at": "2026-03-09T20:55:04+05:30",
+      "raw_metadata": "data/raw/businessline/469aabd081e5b5594ab2.meta.json",
+      "raw_sha256": "580aec3afdef0240a697d49890edd3723e432623251ffbeca36d06505f5cd440",
+      "passage_sha256": "d1cdd97a139988c9f1804699a948a7bf16662f6cef760113d642fbf6cc46c3cc",
+      "observation": {
+        "on": "2026-03-09",
+        "value": 6.72,
+        "available_on": "2026-03-09",
+        "source_url": "https://www.thehindubusinessline.com/money-and-banking/rupee-closes-at-record-low-g-sec-yields-rise/article70723317.ece",
+        "unit": "percent"
+      },
+      "measure": "reported current ten-year benchmark closing yield",
+      "security": "6.48% GS 2035",
+      "roll_policy": "only explicitly identified current benchmark on each observed date; no inferred roll date"
+    },
+    {
+      "series_id": "gsec_10y_pct",
+      "passage_id": "businessline-6a0ed15b9a4761115dc7#p3",
+      "published_at": "2026-03-27T20:35:36+05:30",
+      "raw_metadata": "data/raw/businessline/6a0ed15b9a4761115dc7.meta.json",
+      "raw_sha256": "d3bfb7030168595b7e9fbac2e2f8365271ee1d489b491e2837f90fe370b34324",
+      "passage_sha256": "e4a0b9b4c3061bac99ad50d9c2d34cffcfdcec03bfa0bdae044741e3938d097f",
+      "observation": {
+        "on": "2026-03-27",
+        "value": 6.94,
+        "available_on": "2026-03-27",
+        "source_url": "https://www.thehindubusinessline.com/money-and-banking/iran-war-rupee-closes-at-all-time-low-bond-yields-harden-equities-take-a-beating/article70793146.ece",
+        "unit": "percent"
+      },
+      "measure": "reported current ten-year benchmark closing yield",
+      "security": "6.48% GS 2035",
+      "roll_policy": "only explicitly identified current benchmark on each observed date; no inferred roll date"
+    },
+    {
+      "series_id": "gsec_10y_pct",
+      "passage_id": "economic_times-5aa3a984a8cd96018fa3#p0",
+      "published_at": "2026-06-11T17:42:00+05:30",
+      "raw_metadata": "data/raw/economic_times/5aa3a984a8cd96018fa3.meta.json",
+      "raw_sha256": "8faef28a4eebb804cc9e091bd5932ee1dabf320d9c997b9d1686a0059c82433a",
+      "passage_sha256": "77641a1df73087285d90e04e24d36585d9032c9695b4757030033238c73a3b52",
+      "observation": {
+        "on": "2026-06-11",
+        "value": 6.924,
+        "available_on": "2026-06-11",
+        "source_url": "https://economictimes.indiatimes.com/markets/bonds/india-bonds-end-higher-as-oil-eases-focus-shifts-to-debt-sale-inflation/articleshow/131659094.cms",
+        "unit": "percent"
+      },
+      "measure": "reported current ten-year benchmark closing yield",
+      "security": "6.94% GS 2036",
+      "roll_policy": "only explicitly identified current benchmark on each observed date; no inferred roll date"
+    },
+    {
+      "series_id": "fpi_flows_usd_mn",
+      "passage_id": "businessline-229f1dddd86b622b74a1#p5",
+      "published_at": "2026-04-13T16:00:09+05:30",
+      "raw_metadata": "data/raw/businessline/229f1dddd86b622b74a1.meta.json",
+      "raw_sha256": "f9a67887218e7aee4c9762c34d64510c30b2bdcc505eede1089f1b6489b144ac",
+      "passage_sha256": "c72d1d511f4f9a370b4f292abe54df922478ce531104e80ad598f85eea76f7e9",
+      "observation": {
+        "on": "2026-03-31",
+        "value": -13600.0,
+        "available_on": "2026-04-13",
+        "source_url": "https://www.thehindubusinessline.com/markets/forex/rupee-falls-most-in-two-weeks-as-oil-spikes-on-us-move-to-blockade-iran-ports/article70857133.ece",
+        "unit": "USD million, net"
+      },
+      "measure": "reported completed-calendar-month net equity-plus-debt flow",
+      "conversion": "native USD billion multiplied by 1000; no exchange-rate conversion",
+      "reported_precision_usd_million": 100.0,
+      "coverage": "one observation; no flow move or monthly history established"
+    }
+  ],
+  "limitations": [
+    "News-reported vintages, not an official continuous exchange/depository history.",
+    "Known later-day article versions are rejected; unknown historical edits remain a limitation of the archived corpus.",
+    "Brent values are intraday quotes at different times and contract months, not settlement closes or a back-adjusted continuous series.",
+    "GSEC uses each report's explicitly named current benchmark; security changes are retained, with no filled roll date.",
+    "FPI is one rounded completed-month total; move=None, with no monthly coverage inferred.",
+    "Do not use sparse observations to confirm unsampled daily thresholds, anchor dates or causal edges."
+  ]
+}

@@ -124,6 +124,60 @@ def test_explicit_related_links_cannot_become_evidence_or_change_offsets():
         assert doc.text[passage.char_start : passage.char_end] == passage.text
 
 
+def test_invisible_metadata_characters_do_not_discard_visible_source_text():
+    body = BODY.replace("oil shipping", "oil\u2060 shipping").replace(
+        "lift headline", "lift\u200c headline"
+    )
+    record = {
+        "@type": "NewsArticle",
+        "headline": "Crude and rupee",
+        "datePublished": "2026-03-12",
+        "articleBody": body,
+    }
+    extra = f'<script type="application/ld+json">{json.dumps(record)}</script>'
+    doc = parse_html(
+        article_html(extra=extra),
+        source="economic_times",
+        url="https://economictimes.indiatimes.com/a",
+    )
+    assert doc.text == BODY + "\n\n" + BODY
+    assert "\u2060" not in doc.text
+
+
+def test_visible_lead_is_recovered_without_copying_metadata_or_recommendations():
+    lead = "Mumbai: " + BODY
+    record = {
+        "@type": "NewsArticle",
+        "headline": "Crude and rupee",
+        "datePublished": "2026-03-12",
+        "articleBody": lead + " " + BODY,
+    }
+    extra = f'<script type="application/ld+json">{json.dumps(record)}</script>'
+    html = article_html(extra=extra).replace(
+        "<article>",
+        f'<div class="artText">{lead}<br><p>Unrelated recommendation</p></div><article>',
+    )
+    doc = parse_html(html, source="economic_times", url="https://economictimes.indiatimes.com/a")
+    assert doc.text.startswith(lead + "\n\n")
+    assert "Unrelated recommendation" not in doc.text
+    assert doc.text.count("Mumbai:") == 1
+
+
+def test_unmatched_visible_lead_cannot_be_added_to_current_story():
+    record = {
+        "@type": "NewsArticle",
+        "headline": "Crude and rupee",
+        "datePublished": "2026-03-12",
+        "articleBody": BODY,
+    }
+    extra = f'<script type="application/ld+json">{json.dumps(record)}</script>'
+    html = article_html(extra=extra).replace(
+        "<article>", f'<div class="artText">Unrelated story: {BODY}<br></div><article>'
+    )
+    doc = parse_html(html, source="economic_times", url="https://economictimes.indiatimes.com/a")
+    assert "Unrelated story" not in doc.text
+
+
 def test_rebuild_pipeline_only_uses_accepted_payloads(tmp_path, monkeypatch):
     monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2]))
     from scripts.fetch.client import Response

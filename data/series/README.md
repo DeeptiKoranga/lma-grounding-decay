@@ -1,8 +1,11 @@
 # Macro series store (Track A, A10)
 
-The importer and date-aware read layer are implemented. **Three of the six series
-have real observations, including partial Indian basket coverage; A10 is incomplete.** No demonstration values, interpolation,
-or substitutes for the frozen definitions are stored as project data.
+The importer and date-aware read layer are implemented. **All six required series
+now have observations, with explicitly sparse coverage.** CPI and FX use official
+sources; Indian basket has two official monthly averages. Brent, benchmark yield
+and FPI use the dated news-reported observations below. These do not constitute
+complete daily/monthly histories or confirmation of all planned anchor episodes.
+No missing values are filled or interpolated.
 
 ## Acquired observations
 
@@ -24,6 +27,35 @@ or substitutes for the frozen definitions are stored as project data.
   extraction pages and four excluded later-version snapshots. Coverage remains
   missing for March and June–September. Monthly averages cannot establish a
   daily threshold crossing or the date of an anchor episode.
+- `brent_usd_bbl.csv`: three **intraday front-month futures quotes** on 29 May,
+  30 June and 4 August. The first two explicitly concern the nearby contract
+  expiring on that day; the more-active deferred contract is excluded. The
+  third explicitly says front month. These are not settlement closes or a
+  back-adjusted continuous series, and their intraday observation times differ.
+- `gsec_10y_pct.csv`: three reported **current benchmark closing yields** on
+  9 March, 27 March and 11 June. The first two identify 6.48% GS 2035; the third
+  identifies 6.94% GS 2036. The security labels are retained in provenance.
+  No benchmark roll date or missing yield is interpolated.
+- `fpi_flows_usd_mn.csv`: one news-reported completed-March net **local stocks
+  plus bonds** outflow, available **13 April**. Native USD 13.6 billion is
+  converted to −13,600 USD million; reported precision is 100 million. This
+  single point returns `move=None` and does not establish a monthly history.
+
+`news_reported_provenance.json` records the latter seven observations, exact
+archived passage/raw hashes, publication timestamps, measurement definitions,
+security identities and limitations. These are specific **published news
+vintages**, not an acceptance of the dynamically generated CDSL archive or the
+undated FBIL newsletter candidates. Unknown historical article edits remain a
+limitation, as for the text corpus; known later-day versions are rejected.
+
+The reproducible news importer validates the full input before writing and
+refuses to replace any existing series. Use a fresh output directory to recheck:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.fetch.news_series \
+  --output data/interim/news_series_recheck \
+  --report reports/news_series_recheck.json
+```
 
 Raw CPI/FX responses are retained under `data/raw/series/`; PPAC originals remain
 under `data/raw/ppac/` locally.
@@ -58,8 +90,8 @@ explicitly and preserve the conversion audit before importing.
 | `gsec_10y_pct.csv` | `GSEC_10Y` | `percent` | RBI/FBIL benchmark 10-year government-security series |
 | `fpi_flows_usd_mn.csv` | `FPI_FLOWS` | `USD million, net` | NSDL/CDSL net FPI equity-and-debt flow releases |
 
-Brent, benchmark 10-year yield and accepted FPI flows are still missing.
-Indian basket coverage is partial. Four newly extracted FBIL month-end yield
+All six files are populated, but Brent/yield/FPI and Indian basket coverage
+remain sparse. Four separately extracted FBIL month-end yield
 candidates (March–June) remain outside this store; see
 `reports/gsec_acquisition_review.json`. Their security coupon/maturity is
 recorded, but media upload timestamps do not verify newsletter publication
@@ -73,8 +105,9 @@ newsletter assets and public listing:
 PYTHONPATH=src .venv/bin/python -m scripts.fetch.fbil_newsletters
 ```
 
-The Brent and GSEC source entries above remain guidance for accepted acquisition;
-cached newsletter candidates do not constitute an accepted GSEC series.
+The acquisition-source column describes preferred full-history sources.
+Cached newsletter candidates do not constitute an accepted GSEC history; the
+three populated yield points instead come from dated, named-security news reports.
 Do not substitute spot Brent for front-month futures, CPI index levels for annual
 inflation, or INR-crore FPI values for USD million. Upward `inr_usd` means a weaker
 rupee. Keep the benchmark/security definition consistent for bond yields.
@@ -86,8 +119,8 @@ provides the two monthly observations above; four other cached snapshot PDFs
 have later file versions and remain excluded. FBIL's GSEC listing returns
 dated download links, not a verified benchmark-yield series. The NSDL production
 report pages were inaccessible in this session; pilot/test-domain values were
-not imported. A licensed front-month Brent history, benchmark identification,
-and source publication dates still need verification for the remaining files.
+not imported. Full front-month Brent, benchmark-yield and FPI histories remain
+acquisition gaps; the sparse news observations do not fill those histories.
 
 ## FPI acquisition candidates, pending vintage review
 

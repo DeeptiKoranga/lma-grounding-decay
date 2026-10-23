@@ -25,7 +25,15 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def prepare(*, frozen: Path, extra_raw: Path, output: Path, report: Path) -> dict:
+def prepare(
+    *,
+    frozen: Path,
+    extra_raw: Path,
+    output: Path,
+    report: Path,
+    reparse_raw: Path | None = None,
+    version: str = "v2-candidate",
+) -> dict:
     if output.exists():
         raise ValueError("candidate output exists; preserve it and choose a fresh path")
     original = [
@@ -39,11 +47,42 @@ def prepare(*, frozen: Path, extra_raw: Path, output: Path, report: Path) -> dic
     parents = {d.doc_id: d for d in original}
     if any(parents[p.doc_id].text[p.char_start : p.char_end] != p.text for p in before):
         raise ValueError("original passage/parent alignment failed")
-    revised, removals = [], []
+    revised, removals, reparsed = [], [], []
     for document in original:
         paragraphs = document.text.split("\n\n")
         removed = [i for i, p in enumerate(paragraphs) if is_navigation_paragraph(p)]
         text = normalise_paragraphs(p for p in paragraphs if not is_navigation_paragraph(p))
+        if reparse_raw is not None and document.source_kind.value == "news":
+            key = hashlib.sha256(document.url.encode()).hexdigest()[:20]
+            sidecar = reparse_raw / document.source / f"{key}.meta.json"
+            meta = json.loads(sidecar.read_text())
+            payload = sidecar.with_name(f"{key}.html").read_bytes()
+            if (
+                not meta.get("accepted")
+                or meta["url"] != document.url
+                or meta["source"] != document.source
+            ):
+                raise ValueError("original source cache identity/acceptance mismatch")
+            if hashlib.sha256(payload).hexdigest() != meta["sha256"]:
+                raise ValueError("original source cache checksum mismatch")
+            parsed = parse_html(
+                payload.decode(meta.get("charset") or "utf-8"),
+                source=document.source,
+                url=document.url,
+            )
+            if parsed.doc_id != document.doc_id or parsed.published_at != document.published_at:
+                raise ValueError("reparsed original changed publication identity")
+            if reason := rejection_reason(parsed):
+                raise ValueError(reason)
+            text = parsed.text
+            reparsed.append(
+                {
+                    "doc_id": document.doc_id,
+                    "changed": text != document.text,
+                    "added_paragraphs": sum(p not in paragraphs for p in text.split("\n\n")),
+                    "raw_sha256": meta["sha256"],
+                }
+            )
         revised.append(Document.model_validate({**document.model_dump(), "text": text}))
         if removed:
             removals.append({"doc_id": document.doc_id, "paragraph_indices": removed})
@@ -80,9 +119,9 @@ def prepare(*, frozen: Path, extra_raw: Path, output: Path, report: Path) -> dic
         except (ValueError, OSError, KeyError) as exc:
             excluded.append({**identity, "reason": str(exc)})
     snapshot = output / "snapshot"
-    result = freeze_corpus(revised, snapshot, version="v2-candidate")
+    result = freeze_corpus(revised, snapshot, version=version)
     reverse = output / "reverse_order_check"
-    repeated = freeze_corpus(list(reversed(revised)), reverse, version="v2-candidate")
+    repeated = freeze_corpus(list(reversed(revised)), reverse, version=version)
     if result.archive_sha256 != repeated.archive_sha256:
         raise ValueError("candidate archive depends on input order")
     documents = [
@@ -155,6 +194,9 @@ def prepare(*, frozen: Path, extra_raw: Path, output: Path, report: Path) -> dic
         "removed_navigation_paragraphs": sum(len(x["paragraph_indices"]) for x in removals),
         "changed_original_documents": len(removals),
         "removals": removals,
+        "reparsed_original_news": len(reparsed),
+        "restored_original_paragraphs": sum(item["added_paragraphs"] for item in reparsed),
+        "reparse_details": reparsed,
         "added": added,
         "excluded": excluded,
         "documents": len(documents),
@@ -190,9 +232,18 @@ def main():
         "--output", type=Path, default=Path("data/interim/corpus_revision_20261023")
     )
     parser.add_argument("--report", type=Path, default=Path("reports/corpus_revision_audit.json"))
+    parser.add_argument(
+        "--reparse-raw", type=Path, help="Reparse original news from checksummed source caches"
+    )
+    parser.add_argument("--version", default="v2-candidate")
     args = parser.parse_args()
     audit = prepare(
-        frozen=args.frozen, extra_raw=args.extra_raw, output=args.output, report=args.report
+        frozen=args.frozen,
+        extra_raw=args.extra_raw,
+        output=args.output,
+        report=args.report,
+        reparse_raw=args.reparse_raw,
+        version=args.version,
     )
     print(
         json.dumps(

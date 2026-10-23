@@ -1,0 +1,12 @@
+{
+  "corpus_sha256": "b63a8743e7f227a90f4d08ae73a5f195ac10ceb581ee11060d59815b1e5f80e2",
+  "claims": [
+    {"kind": "brent_expiry_quote", "passage_id": "businessline-e6e5cf16b0f8620910f7#p1", "on": "2026-05-29"},
+    {"kind": "brent_expiry_quote", "passage_id": "economic_times-736394ec7b8f2c65ea24#p1", "on": "2026-06-30"},
+    {"kind": "brent_front_quote", "passage_id": "economic_times-4c5208a532a2a7e689ad#p1", "on": "2026-08-04"},
+    {"kind": "gsec_close", "passage_id": "businessline-469aabd081e5b5594ab2#p7", "on": "2026-03-09"},
+    {"kind": "gsec_close", "passage_id": "businessline-6a0ed15b9a4761115dc7#p3", "on": "2026-03-27"},
+    {"kind": "gsec_close", "passage_id": "economic_times-5aa3a984a8cd96018fa3#p0", "on": "2026-06-11"},
+    {"kind": "fpi_monthly_net", "passage_id": "businessline-229f1dddd86b622b74a1#p5", "on": "2026-03-31"}
+  ]
+}

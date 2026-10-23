@@ -70,3 +70,57 @@ def test_corrupt_new_source_is_excluded_before_parsing(tmp_path, prepare):
     assert result["documents"] == 0
     assert result["added"] == []
     assert result["excluded"][0]["reason"] == "raw source checksum mismatch"
+
+
+def test_original_news_reparse_restores_visible_lead_from_verified_raw(
+    tmp_path, prepare, monkeypatch
+):
+    import sys
+    from types import SimpleNamespace
+
+    from corpus import parse_html
+
+    monkeypatch.setitem(sys.modules, "trafilatura", SimpleNamespace(extract=lambda *a, **kw: None))
+    body = "Oil costs increased and put pressure on the rupee. " * 5
+    lead = "Mumbai: " + body.strip()
+    url = "https://economictimes.indiatimes.com/verified-original"
+    record = {
+        "@type": "NewsArticle",
+        "headline": "Crude and rupee",
+        "datePublished": "2026-04-02",
+        "articleBody": lead + " " + body.strip(),
+    }
+    html = f'<meta property="og:title" content="Crude and rupee"><script type="application/ld+json">{json.dumps(record)}</script><div class="artText">{lead}<br></div><article><p>{body}</p></article>'
+    parsed = parse_html(html, source="economic_times", url=url)
+    old = Document.model_validate({**parsed.model_dump(), "text": body.strip()})
+    active = tmp_path / "active"
+    freeze_corpus([old], active, version="old")
+    raw = tmp_path / "raw" / "economic_times"
+    raw.mkdir(parents=True)
+    key = hashlib.sha256(url.encode()).hexdigest()[:20]
+    payload = html.encode()
+    (raw / f"{key}.html").write_bytes(payload)
+    (raw / f"{key}.meta.json").write_text(
+        json.dumps(
+            {
+                "accepted": True,
+                "url": url,
+                "source": "economic_times",
+                "sha256": hashlib.sha256(payload).hexdigest(),
+            }
+        )
+    )
+    extra = tmp_path / "extra"
+    extra.mkdir()
+    result = prepare(
+        frozen=active,
+        extra_raw=extra,
+        output=tmp_path / "candidate",
+        report=tmp_path / "audit.json",
+        reparse_raw=raw.parent,
+        version="test-v3",
+    )
+    assert result["reparsed_original_news"] == 1
+    assert result["restored_original_paragraphs"] == 1
+    updated = json.loads((tmp_path / "candidate/snapshot/documents.jsonl").read_text())
+    assert updated["text"].startswith(lead + "\n\n")

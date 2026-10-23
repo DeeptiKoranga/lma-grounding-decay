@@ -31,9 +31,53 @@ def is_navigation_paragraph(text: str) -> bool:
 def _body_key(value: str) -> str:
     # ET removes quotation marks in JSON-LD while retaining them in its visible
     # article. This is a comparison key only; archived evidence stays verbatim.
-    return re.sub(
-        r"""[\s"'\u201c\u201d\u2018\u2019]""", "", unicodedata.normalize("NFC", unescape(value))
+    value = "".join(
+        char
+        for char in unicodedata.normalize("NFC", unescape(value))
+        if unicodedata.category(char) != "Cf"
     )
+    return re.sub(r"""[\s"'\u201c\u201d\u2018\u2019]""", "", value)
+
+
+class LeadingArticleText(HTMLParser):
+    """Read ET's visible text before its first body break, preserving punctuation.
+
+    ET places this text directly in div.artText instead of a paragraph. Some
+    extraction backends omit it. Only a prefix matching the declared current
+    article body is admitted by the caller; JSON-LD is never copied as evidence.
+    """
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.active = False
+        self.finished = False
+        self.parts: list[str] = []
+
+    def handle_starttag(self, tag, attrs):
+        if self.finished:
+            return
+        if self.active and tag in {
+            "br",
+            "p",
+            "div",
+            "script",
+            "style",
+            "aside",
+            "ul",
+            "ol",
+            "table",
+        }:
+            self.active, self.finished = False, True
+        elif tag == "div" and "artText" in dict(attrs).get("class", "").split():
+            self.active = True
+
+    def handle_endtag(self, tag):
+        if self.active and tag == "div":
+            self.active, self.finished = False, True
+
+    def handle_data(self, data):
+        if self.active:
+            self.parts.append(data)
 
 
 def publication_time(value: str) -> datetime:
@@ -189,6 +233,17 @@ def parse_html(
     if bodies:
         body = next(iter(bodies))
         paragraphs = [p for p in paragraphs if _body_key(p) in body]
+        if source == "economic_times":
+            lead = LeadingArticleText()
+            lead.feed(html)
+            text = " ".join("".join(lead.parts).split())
+            key = _body_key(text)
+            if (
+                len(text) >= 80
+                and body.startswith(key)
+                and not any(key in _body_key(p) for p in paragraphs)
+            ):
+                paragraphs.insert(0, text)
     paragraphs = [
         p
         for p in paragraphs
