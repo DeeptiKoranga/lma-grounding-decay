@@ -36,6 +36,12 @@ def audit(*, runs: Path, corpus: Path) -> dict:
                 "paths": len(graph.paths),
                 "tool_calls": payload["tool_calls"],
                 "stop_reason": payload["stop_reason"],
+                "unchecked_inferred_edges": sum(
+                    not edge.is_asserted and edge.verdict is None for edge in graph.edges
+                ),
+                "verifier_verdicts": dict(
+                    Counter(str(edge.verdict) for edge in graph.edges if edge.verdict is not None)
+                ),
                 "safety": safety,
                 "artifact_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             }

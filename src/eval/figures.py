@@ -22,14 +22,17 @@ def graph_figure(graph: Graph, output: Path):
         label = node.var.replace("_", " ") + f" ({node.direction})"
         lines.append(f"{json.dumps(node.var)} [label={json.dumps(label)}];")
     for edge in graph.edges:
-        label = f"{edge.strength} | hop {edge.hop}"
+        label = f"{edge.direction} | {edge.strength} | hop {edge.hop}"
         style = "solid" if edge.is_asserted else "dashed"
         lines.append(
             f'{json.dumps(edge.src_var)} -> {json.dumps(edge.dst_var)} [label={json.dumps(label)}, style="{style}"];'
         )
-    lines.append(
-        'label="Development example: model verification labels; independent review pending"; labelloc=b; }'
+    caption = (
+        f"{graph.query_id} | cutoff {graph.as_of}\n"
+        "Development example: model labels; independent review pending\n"
+        "Solid: source_asserted; dashed: model_inferred"
     )
+    lines.append(f"label={json.dumps(caption)}; labelloc=b; }}")
     output.parent.mkdir(parents=True, exist_ok=True)
     dot = output.with_suffix(".dot")
     dot.write_text("\n".join(lines) + "\n")

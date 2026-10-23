@@ -12,7 +12,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from schema import Graph, Passage, Strength
 
-from .metrics import SupportJudgment, aggregate, score_graph
+from .metrics import SupportJudgment, aggregate, recall_guard, score_graph
+from .references import validate as validate_references
 from .stats import predeclared_contrasts
 
 
@@ -96,7 +97,12 @@ def prepare(*, runs: Path, corpus: Path, output: Path):
     }
 
 
-def evaluate(*, review_dir: Path, reference_dir: Path | None = None):
+def evaluate(
+    *,
+    review_dir: Path,
+    reference_dir: Path | None = None,
+    corpus: Path = Path("data/processed/articles.jsonl"),
+):
     packet_path = review_dir / "packet.json"
     packet = json.loads(packet_path.read_text())
     review = Review.model_validate_json((review_dir / "judgments.json").read_text())
@@ -128,6 +134,13 @@ def evaluate(*, review_dir: Path, reference_dir: Path | None = None):
         grouped[address["artifact"]][address["edge_id"]] = SupportJudgment(
             judgment.supported, judgment.evidence_strength
         )
+    references, reference_receipt_sha256 = {}, None
+    if reference_dir is not None:
+        references, reference_receipt_sha256 = validate_references(
+            references=reference_dir,
+            corpus=corpus,
+            expected_corpus_sha256=packet["corpus_sha256"],
+        )
     scores = {}
     for address, expected_hash in private["artifacts"].items():
         path = Path(address)
@@ -147,11 +160,14 @@ def evaluate(*, review_dir: Path, reference_dir: Path | None = None):
                 )
         reference = None
         if reference_dir is not None:
-            reference = Graph.model_validate_json(
-                (reference_dir / f"{graph.query_id}.json").read_text()
-            )
-            if reference.query_id != graph.query_id or reference.as_of != graph.as_of:
-                raise ValueError("reference graph query/cutoff mismatch")
+            reference = references.get(graph.query_id)
+            if reference is None or (
+                reference.as_of,
+                reference.anchor.var,
+                reference.anchor.direction,
+                reference.anchor.event_date,
+            ) != (graph.as_of, graph.anchor.var, graph.anchor.direction, graph.anchor.event_date):
+                raise ValueError("reference graph query/cutoff/anchor mismatch")
         scores.setdefault(graph.condition, {})[graph.query_id] = score_graph(
             graph,
             established=set(payload["established_edge_ids"]),
@@ -163,6 +179,7 @@ def evaluate(*, review_dir: Path, reference_dir: Path | None = None):
         "reviewer": review.reviewer,
         "reviewed_on": str(review.reviewed_on),
         "judgments_sha256": digest(review_dir / "judgments.json"),
+        "reference_review_receipt_sha256": reference_receipt_sha256,
         "per_query": scores,
         "aggregate": {key: aggregate(list(value.values())) for key, value in scores.items()},
         "contrasts": (
@@ -173,11 +190,7 @@ def evaluate(*, review_dir: Path, reference_dir: Path | None = None):
             if {"B1", "M"} <= scores.keys()
             else None
         ),
-        "recall_guard": (
-            "requires independently reviewed reference graphs; null recall cannot pass H2d"
-            if reference_dir is None
-            else "assess M minus B1 recall against -0.10"
-        ),
+        "recall_guard": recall_guard(scores),
     }
 
 
@@ -191,12 +204,13 @@ def main():
     score = sub.add_parser("score")
     score.add_argument("--review", type=Path, required=True)
     score.add_argument("--references", type=Path)
+    score.add_argument("--corpus", type=Path, default=Path("data/processed/articles.jsonl"))
     score.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if args.command == "prepare":
         result = prepare(runs=args.runs, corpus=args.corpus, output=args.output)
     else:
-        result = evaluate(review_dir=args.review, reference_dir=args.references)
+        result = evaluate(review_dir=args.review, reference_dir=args.references, corpus=args.corpus)
         with args.output.open("x") as stream:
             stream.write(json.dumps(result, indent=2) + "\n")
     print(

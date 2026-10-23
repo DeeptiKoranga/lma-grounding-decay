@@ -37,8 +37,8 @@ reviewer has not been selected.
 
 ## Evidence available now
 
-- Current checkout: 536 tests pass; Ruff and Black pass. The core-only fresh
-  clone passes 534 tests with two optional-library skips on Python 3.12.13.
+- Current checkout: 547 tests pass; Ruff and Black pass. The core-only fresh
+  clone passes 537 tests with two optional-library skips on Python 3.12.13.
 - Retrieval smoke comparison on 20 unreviewed March-only convenience pairs:
   Recall@10 is 0.900 for plain BM25, 0.925 for hybrid and 0.975 for BM25 plus
   reranking. These incomplete labels cannot settle D-02/D-03.

@@ -146,7 +146,7 @@ only after reviewing source reproduction terms.
 
 ## Verification and later assignments
 
-The current `make lint test` passes: **536 tests**, Ruff and Black. Tests cover source/version
+The current `make lint test` passes: **547 tests**, Ruff and Black. Tests cover source/version
 exclusion, paragraph integrity, date boundaries, macro-series availability,
 checkpoint interruption/model changes, candidate reuse and all retrieval modes.
 The real backend checks and final snapshot audit are recorded alongside the
@@ -162,6 +162,6 @@ The conditions runner now connects the real corpus and model across all seven
 conditions. Development logs and a structural audit are recorded separately in
 `reports/integration_status.md`; independently reviewed development gold is
 still absent. The retrieval table is an unreviewed smoke comparison, and the
-qualitative graph carries pending-review labels. A fresh clone passes 534 core
+qualitative graph carries pending-review labels. A fresh clone passes 537 core
 tests with two optional-library skips. These local checks do not replace
 all-laptop, Kaggle, annotation or research acceptance gates.

@@ -31,6 +31,9 @@ Research completion is **not** established by this implementation checkpoint.
   challenge-generation gates are available. The local review page uploads
   nothing. Scores cannot be exported from missing/partial support judgments or
   uncorrected prose baselines. UER figures reject unreviewed results.
+- Reference recall additionally requires independently reviewed, nonempty
+  reference graphs with exact eligible citations and a hash-bound receipt.
+  Changes to gold bytes, corpus or anchor invalidate that scoring path.
 - Twenty synthetic tool faults were executed: all preserved the graph/cutoff,
   returned the expected boundary outcome and counted attempted calls. This is
   not evidence of model-led recovery. The 40 action states and 25 safety prompts

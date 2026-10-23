@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from eval.metrics import SupportJudgment, aggregate, score_graph
+from eval.metrics import SupportJudgment, aggregate, recall_guard, score_graph
 from eval.review import evaluate, prepare
 from eval.safety import inspect_graph, screen_text
 from eval.stats import paired_bootstrap, predeclared_contrasts
@@ -48,6 +48,22 @@ def test_abstention_does_not_become_zero_uer_or_pass_recall_guard(graph):
     summary = aggregate([full, scored])
     assert summary["overall"]["uer"]["mean"] == 0
     assert summary["overall"]["uer"]["queries_without_denominator"] == 1
+
+
+@pytest.mark.parametrize("m_recall,passed", [(0.0, False), (0.4, True), (None, None)])
+def test_reference_recall_guard_counts_abstention_and_never_passes_missing_data(m_recall, passed):
+    scores = {
+        "B1": {"q": {"overall": {"reference_edge_recall": 0.5}}},
+        "M": {"q": {"overall": {"reference_edge_recall": m_recall}}},
+    }
+    result = recall_guard(scores)
+    assert result["passes_descriptively"] is passed
+    if m_recall is None:
+        assert result["M_minus_B1"] is None and result["paired_queries"] == 0
+    else:
+        assert result["M_minus_B1"] == pytest.approx(m_recall - 0.5)
+    scores["M"] = {}
+    assert recall_guard(scores)["passes_descriptively"] is None
 
 
 def test_missing_judgments_cannot_default_to_supported(graph):

@@ -1,0 +1,17 @@
+digraph explanation {
+rankdir=LR;
+graph [bgcolor="white", pad="0.3"];
+node [shape=box, style="rounded,filled", fillcolor="#edf4ef", fontname="Helvetica"];
+edge [fontname="Helvetica", fontsize=10];
+"BRENT" [label="BRENT (up)"];
+"INDIAN_BASKET" [label="INDIAN BASKET (up)"];
+"IMPORT_BILL" [label="IMPORT BILL (up)"];
+"TRADE_DEFICIT" [label="TRADE DEFICIT (up)"];
+"INR_USD" [label="INR USD (up)"];
+"BRENT" -> "INDIAN_BASKET" [label="up | direct | hop 1", style="dashed"];
+"INDIAN_BASKET" -> "IMPORT_BILL" [label="up | direct | hop 2", style="dashed"];
+"IMPORT_BILL" -> "TRADE_DEFICIT" [label="up | direct | hop 2", style="dashed"];
+"TRADE_DEFICIT" -> "INR_USD" [label="up | conditional | hop 3", style="dashed"];
+"BRENT" -> "INR_USD" [label="up | conditional | hop 1", style="solid"];
+"BRENT" -> "IMPORT_BILL" [label="up | direct | hop 1", style="dashed"];
+label="dev-candidate-01 | cutoff 2026-03-02\nDevelopment example: model labels; independent review pending\nSolid: source_asserted; dashed: model_inferred"; labelloc=b; }

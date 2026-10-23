@@ -98,18 +98,31 @@ Give a reviewer `packet.json` and blank `judgments.json`, keeping
 `notebooks/review_edges.html` loads these files without uploading them. The
 reviewer judges all items and fills their own identity, date and attestations.
 Incomplete, changed or unattested packets fail scoring.
+The correction packet exposes condition names, so its corrector cannot also
+claim blinded support review of those same items. Keep that support review with
+someone who has not consulted the corrections or run outputs.
 
 ```sh
+# After building source-backed reference graphs, prepare their blank review receipt:
+PYTHONPATH=src .venv/bin/python -m eval.references --references data/eval/gold/dev
+# An independent human reviews every relation/strength and fills their own receipt.
 PYTHONPATH=src .venv/bin/python -m eval.review score --review data/interim/my-support-review --references data/eval/gold/dev --output reports/reviewed_dev.json
 PYTHONPATH=src data/raw/llm_env/bin/python -m eval.figures --reviewed-scores reports/reviewed_dev.json --output reports/uer_by_hop.png
 PYTHONPATH=src .venv/bin/python -m eval.figures --graph runs/my-all-dev/M/dev-candidate-01.json --output reports/development_example.svg
 ```
 
-Reference graphs must exist and match the reviewed query/cutoff; the placeholder
-gold directory is insufficient. Omit `--references` to measure attached support
+Reference graphs must contain exact eligible source citations, match the reviewed
+query/cutoff/anchor and carry a complete independent `review_receipt.json` bound
+to their bytes and the support corpus. The placeholder gold directory is
+insufficient. Omit `--references` to measure attached support
 without reference recall. Missing recall cannot pass the recall guard. The UER
 plot refuses unreviewed scores and missing hop denominators. Graph exports need
 Graphviz; plots use the isolated runtime's pinned Matplotlib.
+
+The recall guard reports the query-macro M-minus-B1 reference-recall difference
+against the predeclared −0.10 threshold only when both conditions cover the same
+queries with complete reference denominators. Otherwise its descriptive outcome
+remains null. This development guard is not confirmation of H2.
 
 The independent retrieval review is separate: follow
 `reports/retrieval_review_workflow.md`. A support-review packet does not resolve

@@ -19,9 +19,14 @@ verification is an experimental component and cannot supply independent truth.
    `notebooks/review_edges.html` page. Condition names, model labels and
    established-edge membership are withheld. Review every item before filling
    the reviewer's own identity/date/independence/blinding attestations.
+   The prose-correction packet exposes condition names. Anyone who has seen
+   those names or the run outputs must not attest to blinded support review of
+   the same items; use a different support reviewer in that case.
 3. **Prepare reference graphs separately.** Confirm episode dates from accepted
    series; freeze the intended queries; build independently reviewed evidence
    graphs with eligible exact spans. References are needed for the recall guard.
+   `eval.references` prepares a blank hash-bound review receipt; an independent
+   reviewer must complete it before reference recall can be scored.
    The six current source-backed candidates are not accepted development gold.
 4. **Double-annotate a shared subset independently.** Record both original
    judgments, calculate agreement and adjudicate disagreements. Apply the

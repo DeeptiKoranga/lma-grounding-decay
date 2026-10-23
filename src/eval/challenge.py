@@ -6,7 +6,9 @@ import argparse
 import json
 from pathlib import Path
 
-from schema import Graph, Passage
+from schema import Passage
+
+from .references import digest, validate
 
 
 def build(*, gold: Path, corpus: Path, output: Path):
@@ -16,9 +18,11 @@ def build(*, gold: Path, corpus: Path, output: Path):
         if line.strip()
         if (p := Passage.model_validate_json(line))
     }
+    graphs, receipt_hash = validate(
+        references=gold, corpus=corpus, expected_corpus_sha256=digest(corpus)
+    )
     seeds = []
-    for path in sorted(gold.glob("*.json")):
-        graph = Graph.model_validate_json(path.read_text())
+    for graph in graphs.values():
         for edge in graph.edges:
             p = passages.get(edge.evidence_passage_id)
             if (
@@ -50,6 +54,7 @@ def build(*, gold: Path, corpus: Path, output: Path):
                 "proposed_corruption": None,
                 "human_reviewed": False,
                 "expected_supported": None,
+                "reference_review_receipt_sha256": receipt_hash,
             }
         )
     for kind in (
@@ -90,6 +95,7 @@ def build(*, gold: Path, corpus: Path, output: Path):
                     "proposed_corruption": kind,
                     "human_reviewed": False,
                     "expected_supported": None,
+                    "reference_review_receipt_sha256": receipt_hash,
                 }
             )
     with output.open("x") as stream:

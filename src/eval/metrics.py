@@ -127,3 +127,34 @@ def aggregate(queries: list[dict]) -> dict:
         }
         for bucket in ("overall", "1", "2", "3+")
     }
+
+
+def recall_guard(scores: dict) -> dict:
+    """Descriptive H2d guard; missing reference recall can never pass."""
+    result = {
+        "minimum_M_minus_B1": -0.10,
+        "M_minus_B1": None,
+        "paired_queries": 0,
+        "passes_descriptively": None,
+        "status": "requires B1/M on the same queries with reviewed reference recall",
+        "scope": "development guard only; not a confirmatory hypothesis result",
+    }
+    if not {"B1", "M"} <= scores.keys():
+        return result
+    b1, full = scores["B1"], scores["M"]
+    if not b1 or set(b1) != set(full):
+        return result
+    pairs = [
+        (full[qid]["overall"]["reference_edge_recall"], b1[qid]["overall"]["reference_edge_recall"])
+        for qid in sorted(b1)
+    ]
+    result["paired_queries"] = sum(left is not None and right is not None for left, right in pairs)
+    if result["paired_queries"] != len(pairs):
+        return result
+    delta = mean(left - right for left, right in pairs)
+    result.update(
+        M_minus_B1=delta,
+        passes_descriptively=delta >= result["minimum_M_minus_B1"] - 1e-12,
+        status="complete paired reference recall; assess alongside UER and strength",
+    )
+    return result
