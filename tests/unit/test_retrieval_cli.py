@@ -87,7 +87,7 @@ def test_pilot_rejects_incomplete_pairs_before_loading_models(tmp_path, monkeypa
     with pytest.raises(SystemExit) as error:
         pilot_main()
     assert error.value.code == 2
-    assert "exactly 20" in capsys.readouterr().err
+    assert "nonempty" in capsys.readouterr().err
 
 
 def test_smoke_pilot_records_inputs_without_claiming_research_decision(
@@ -109,6 +109,7 @@ def test_smoke_pilot_records_inputs_without_claiming_research_decision(
         + "\n"
     )
     report = tmp_path / "smoke.md"
+    candidate_pool = tmp_path / "pool.jsonl"
     monkeypatch.setattr(
         sys,
         "argv",
@@ -125,6 +126,8 @@ def test_smoke_pilot_records_inputs_without_claiming_research_decision(
             "--embedding-revision",
             "test-only",
             "--smoke",
+            "--candidate-output",
+            str(candidate_pool),
         ],
     )
     pilot_main()
@@ -132,3 +135,6 @@ def test_smoke_pilot_records_inputs_without_claiming_research_decision(
     assert "SMOKE CHECK ONLY; no research decision" in text
     assert "Corpus SHA-256" in text and "Pair file SHA-256" in text
     assert all(name in text for name in ("bm25", "bm25_alias", "bge_m3", "hybrid_rrf"))
+    pool = json.loads(candidate_pool.read_text())
+    assert pool["passage_ids"]
+    assert "score" not in pool and "relevant_passage_ids" not in pool

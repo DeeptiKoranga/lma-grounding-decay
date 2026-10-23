@@ -1,0 +1,55 @@
+status: Declared condition flags; source of truth is conditions.config.SETTINGS; research
+  selection pending
+conditions:
+  B0:
+    retrieve: false
+    prose: true
+    rerank: false
+    self_labels: false
+    verify: false
+    loop: false
+  B1:
+    retrieve: true
+    prose: true
+    rerank: false
+    self_labels: false
+    verify: false
+    loop: false
+  B1-R:
+    retrieve: true
+    prose: true
+    rerank: true
+    self_labels: false
+    verify: false
+    loop: false
+  B2:
+    retrieve: true
+    prose: false
+    rerank: false
+    self_labels: true
+    verify: false
+    loop: false
+  A-NoVerify:
+    retrieve: true
+    prose: false
+    rerank: false
+    self_labels: true
+    verify: false
+    loop: true
+  A-NoLoop:
+    retrieve: true
+    prose: false
+    rerank: false
+    self_labels: false
+    verify: true
+    loop: false
+  M:
+    retrieve: true
+    prose: false
+    rerank: false
+    self_labels: false
+    verify: true
+    loop: true
+tool_budget: 12
+decoding: greedy
+development_model_revision: 545dc4251c05440727734bcd94334791f6ab0192

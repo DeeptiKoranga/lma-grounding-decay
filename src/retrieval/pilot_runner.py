@@ -19,13 +19,13 @@ from .factory import build_retriever
 from .hybrid import HybridRetriever
 from .pilot import (
     CONFIG_ORDER,
-    EvidenceQuery,
     PlainBM25,
     evaluate,
     evaluate_configs,
     select_simplest,
 )
 from .rerank import BGEReranker, RerankingRetriever
+from .review import read_queries, sha256, validate_receipt
 
 
 class CachedCandidates:
@@ -81,6 +81,16 @@ def main():
     parser.add_argument("--aliases", type=Path, default=Path("data/aliases.yaml"))
     parser.add_argument("--output", type=Path, default=Path("reports/pilot_retriever.md"))
     parser.add_argument("--smoke", action="store_true")
+    parser.add_argument(
+        "--review-receipt",
+        type=Path,
+        help="Hash-bound independent review receipt; required outside --smoke",
+    )
+    parser.add_argument(
+        "--candidate-output",
+        type=Path,
+        help="Export unranked union of all four top-50 pools for blinded review",
+    )
     parser.add_argument("--device", default="cpu")
     parser.add_argument("--max-length", type=int, default=1024)
     parser.add_argument("--embedding-batch-size", type=int, default=2)
@@ -101,6 +111,13 @@ def main():
     started = time.monotonic()
     if args.output.exists() and not args.overwrite:
         parser.error("report already exists; review it before using --overwrite")
+    if args.candidate_output is not None and args.candidate_output.exists():
+        parser.error("candidate output already exists; choose a fresh path")
+    if (
+        args.candidate_output is not None
+        and args.candidate_output.resolve() == args.output.resolve()
+    ):
+        parser.error("candidate output and report must use distinct paths")
     if args.rerank and not args.reranker_revision:
         parser.error("--rerank requires a pinned --reranker-revision")
     cache_state = {
@@ -110,15 +127,18 @@ def main():
         ),
     }
     try:
-        queries = [
-            EvidenceQuery.model_validate_json(line)
-            for line in args.pairs.read_text(encoding="utf-8").splitlines()
-            if line.strip()
-        ]
+        queries = read_queries(args.pairs)
         if len(queries) != 20 and not args.smoke:
             raise ValueError(
                 "the research pilot requires exactly 20 reviewed pairs; use --smoke for checks"
             )
+        review = None
+        if not args.smoke:
+            if args.review_receipt is None:
+                raise ValueError(
+                    "research pilot requires --review-receipt from independent evidence review; use --smoke for development"
+                )
+            review = validate_receipt(args.review_receipt, pairs=args.pairs, corpus=args.corpus)
         aliases = Aliases.load(args.aliases)
         lexical = BM25Retriever.from_jsonl(args.corpus, aliases=aliases)
         dense = build_retriever(
@@ -167,6 +187,29 @@ def main():
     except (ValueError, OSError, RuntimeError) as exc:
         parser.error(str(exc))
     status = "SMOKE CHECK ONLY; no research decision" if args.smoke else "REVIEWED PILOT"
+    if args.candidate_output is not None:
+        pooled = []
+        for query in queries:
+            ids = sorted(
+                {
+                    hit.passage.passage_id
+                    for retriever in configs.values()
+                    for hit in retriever.search(query.query, as_of=query.as_of, k=50)
+                }
+            )
+            pooled.append(
+                json.dumps(
+                    {
+                        "query_id": query.query_id,
+                        "query": query.query,
+                        "as_of": str(query.as_of),
+                        "passage_ids": ids,
+                    },
+                    sort_keys=True,
+                )
+            )
+        args.candidate_output.parent.mkdir(parents=True, exist_ok=True)
+        args.candidate_output.write_text("\n".join(pooled) + "\n", encoding="utf-8")
     lines = [
         "# Retriever pilot",
         "",
@@ -210,6 +253,24 @@ def main():
             "",
         ]
     )
+    if review is not None:
+        lines.extend(
+            [
+                f"Review receipt SHA-256: `{sha256(args.review_receipt)}`.",
+                f"Review attested by {review.reviewer}, {review.reviewed_on}; curator: {review.curator}.",
+                f"Pool: {review.pool_method}. {review.scope}",
+                "The receipt verifies input integrity and recorded attestations; it does not authenticate reviewer identity or establish representative temporal coverage.",
+                "",
+            ]
+        )
+    if args.candidate_output is not None:
+        lines.extend(
+            [
+                f"Unranked review candidate pool SHA-256: `{sha256(args.candidate_output)}`.",
+                "Candidate pool contains the union of all four first-stage top-50 lists, without scores or relevance judgments.",
+                "",
+            ]
+        )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(lines), encoding="utf-8")
     print(

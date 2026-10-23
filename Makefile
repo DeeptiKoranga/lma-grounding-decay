@@ -7,6 +7,27 @@ PY := $(UV) run
 .DEFAULT_GOAL := help
 .PHONY: help setup test lint fmt schemas fixtures hooks clean
 
+LMA_PYTHON ?= data/raw/llm_env/bin/python
+DEV_OUTPUT ?= runs/local-dev
+MODEL_REVISION ?= 545dc4251c05440727734bcd94334791f6ab0192
+
+.PHONY: run-dev run-all-dev review-dev audit-dev synthetic-faults
+
+run-dev: ## Run B0/B1/B2/M on the six unreviewed development candidates (local model required)
+	HF_HOME="$(CURDIR)/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src $(LMA_PYTHON) -m conditions --queries data/eval/development_candidates.jsonl --conditions B0 B1 B2 M --revision $(MODEL_REVISION) --output $(DEV_OUTPUT) --resume
+
+run-all-dev: ## Run all seven conditions with the cached native cross-encoder
+	HF_HOME="$(CURDIR)/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src $(LMA_PYTHON) -m conditions --queries data/eval/development_candidates.jsonl --revision $(MODEL_REVISION) --reranker-python .venv/bin/python --output $(DEV_OUTPUT) --resume
+
+review-dev: ## Prepare a fresh local blinded support-review packet
+	PYTHONPATH=src $(PY) python -m eval.review prepare --runs $(DEV_OUTPUT) --output data/interim/support-review
+
+audit-dev: ## Validate generated graphs, safety boundaries, logs and measured compute
+	PYTHONPATH=src $(PY) python -m eval.run_audit --runs $(DEV_OUTPUT) --output reports/integration_validation.json
+
+synthetic-faults: ## Exercise the frozen synthetic tool-fault diagnostic
+	PYTHONPATH=src $(PY) python -m eval.faults --output reports/tool_faults_recheck.json
+
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
 

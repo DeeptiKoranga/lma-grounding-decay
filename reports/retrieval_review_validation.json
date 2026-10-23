@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "queries": 20,
+  "review_items": 1988,
+  "items_per_query": {
+    "a8-curated-01": 87,
+    "a8-curated-02": 94,
+    "a8-curated-03": 108,
+    "a8-curated-04": 104,
+    "a8-curated-05": 111,
+    "a8-curated-06": 90,
+    "a8-curated-07": 82,
+    "a8-curated-08": 86,
+    "a8-curated-09": 92,
+    "a8-curated-10": 99,
+    "a8-curated-11": 109,
+    "a8-curated-12": 91,
+    "a8-curated-13": 120,
+    "a8-curated-14": 117,
+    "a8-curated-15": 96,
+    "a8-curated-16": 89,
+    "a8-curated-17": 111,
+    "a8-curated-18": 107,
+    "a8-curated-19": 97,
+    "a8-curated-20": 98
+  },
+  "checks": {
+    "packet_matches_judgments_hash": true,
+    "corpus_hash_matches": true,
+    "pairs_hash_matches": true,
+    "all_candidates_match_saved_corpus": true,
+    "all_candidates_visible_at_cutoff": true,
+    "no_duplicate_query_passage_items": true,
+    "all_seed_candidates_retained": true,
+    "all_query_judgments_blank": true,
+    "all_candidate_judgments_blank": true,
+    "no_reviewer_attestation_fabricated": true
+  },
+  "acceptance": "pending independent review; March-only query coverage remains"
+}

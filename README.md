@@ -26,11 +26,33 @@ Primary metric is **UER** (unsupported established-edge rate), always sliced by 
 
 ## Status
 
-**Phase 0 — contracts and scaffold.** The five records are frozen, the ontology is closed, and
-the fixtures exist so Tracks B and C can build against them with no dependency on the real
-corpus. No scraper, retriever, agent or model call is implemented yet. See
-[PLAN_MIDSUB.md](PLAN_MIDSUB.md) for the 11-day plan and
-[docs/decisions.md](docs/decisions.md) for what is still open.
+**Development pipeline integrated; research acceptance is incomplete.** The local
+snapshot contains 1,173 documents and 27,286 passages. Retrieval, constrained
+extraction, independent rule/LLM verification, six bounded read-only tools, the
+controller and all seven conditions are implemented. B0/B1/B1-R produce prose
+before mechanical edge extraction. Human correction and blinded support review
+remain required. Three of six macro series are populated, including partial
+Indian basket coverage.
+
+The local Qwen3-8B run uses pinned public weights and no paid API. It is an
+integration model, not the result of the still-pending two-model selection pilot.
+The six source-backed queries in `data/eval/development_candidates.jsonl` are
+unreviewed candidates, not the frozen development gold set. See
+[docs/reproduction.md](docs/reproduction.md), [PLAN_MIDSUB.md](PLAN_MIDSUB.md),
+and [docs/decisions.md](docs/decisions.md).
+
+```mermaid
+flowchart LR
+  Q[Question and pinned cutoff] --> R[Shared date-safe retrieval]
+  R --> G[Prose or constrained graph generation]
+  G --> V[Corpus, date, variable and quotation checks]
+  V --> J[Fresh-context semantic verifier]
+  J --> A[Bounded edge repair and targeted retrieval]
+  A --> O[Graph with BFS hops and weakest-link paths]
+  A --> R
+  O --> H[Blinded human support review]
+  H --> E[Hop metrics and paired query bootstrap]
+```
 
 ## Quick start
 
