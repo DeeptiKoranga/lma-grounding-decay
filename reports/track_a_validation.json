@@ -1,0 +1,60 @@
+{
+  "checked_on": "2026-10-23",
+  "source_commit": "bbc9288",
+  "scope": "Track A local continuation; not research acceptance or full reviewed-development reproduction",
+  "local": {
+    "tests_passed": 558,
+    "tests_skipped": 0,
+    "ruff": "passed",
+    "black": "passed",
+    "log": "/private/tmp/lma-track-a-final-checks-20261023.log"
+  },
+  "clean_clone": {
+    "path": "/private/tmp/lma-grounding-fresh-20261023",
+    "source_commit": "bbc9288",
+    "method": "refreshed the previously created clean clone from the local project repository; reused its core environment",
+    "tests_passed": 556,
+    "tests_skipped": 2,
+    "skip_reason": "two optional PyMuPDF checks; core-only environment",
+    "ruff": "passed",
+    "black": "passed",
+    "log": "/private/tmp/lma-track-a-fresh-checks-20261023.log",
+    "new_heavy_install": false,
+    "full_reviewed_dev_run": false
+  },
+  "candidate_corpus": {
+    "documents": 1183,
+    "passages": 26888,
+    "related_navigation_paragraphs_removed": 564,
+    "eligible_mint_documents_added": 10,
+    "source_month_extraction_samples": 73,
+    "review_complete": false
+  },
+  "retrieval": {
+    "questions": 20,
+    "months": 7,
+    "seed_candidates": 43,
+    "blinded_items": 2057,
+    "independent_judgments": 0,
+    "blank_export_rejected": true,
+    "saved_index_reload": "passed",
+    "readiness": "reports/retrieval_temporal_review_readiness.json",
+    "index_validation": "reports/retrieval_temporal_saved_index_validation.json"
+  },
+  "series": {
+    "canonical_populated": 3,
+    "required": 6,
+    "basket_coverage": "partial",
+    "new_gsec_candidates": 4,
+    "new_gsec_canonical_observations": 0
+  },
+  "active_corpus_sha256": "7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3",
+  "open_gates": [
+    "Corpus extraction/source-terms acceptance and source coverage gaps.",
+    "Independent blinded retrieval relevance judgments; D-02/D-03 remain open.",
+    "Verified original macro data/vintages for Brent, benchmark GSEC, FPI and missing basket coverage.",
+    "Cross-track reviewed development gold/prose/support labels before final tables/figures and full reviewed-development reproduction.",
+    "Other team-machine reproduction and team acceptance."
+  ],
+  "export_status": "local only; no push or PR created in this continuation"
+}

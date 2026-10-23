@@ -139,6 +139,12 @@ exclusion/offsets, candidate isolation and overwrite refusal, corrupted raw
 input rejection, yield-column identity and conflicting month-label rejection.
 The real full-corpus comparison also exercises the thread handling change.
 
+The previously created clean clone was refreshed from local commit `bbc9288`
+and passes Ruff/Black plus **556 tests, with two optional PyMuPDF checks skipped**
+in its core-only environment. This reused the clone's core environment and does
+not claim a new heavy installation or full reviewed-development run.
+`reports/track_a_validation.json` records the scope and log paths.
+
 Remaining work is concrete:
 
 1. A human reviews the extraction/source-terms sample and resolves remaining
