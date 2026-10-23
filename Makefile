@@ -36,7 +36,7 @@ setup: ## Create .venv (Python 3.12) and install the project + dev tools
 		echo "uv not found. Install it with:  curl -LsSf https://astral.sh/uv/install.sh | sh"; \
 		echo "or:  python3 -m pip install --user uv"; exit 1; }
 	$(UV) python install 3.12
-	$(UV) sync --extra dev
+	$(UV) sync --python 3.12 --extra dev
 	@echo "env ready -> .venv (python 3.12). Run 'make hooks' once to enable pre-commit."
 
 test: ## Run the test suite
