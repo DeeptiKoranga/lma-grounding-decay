@@ -341,3 +341,35 @@ Use that export's pairs/receipt for a reviewed pilot following
 `reports/retrieval_review_workflow.md`. Do not replace the placeholders with
 machine-produced judgments or prefill human attestations. Existing experiments
 still use v1 and their separate correction/support packets.
+
+## Completed development source review — 25 October
+
+`reports/track_a_source_review_20261025.json` contains the actual Codex decisions
+for all 73 corpus samples and 2,062 pooled items. Exact evidence offsets and
+text hashes refer to the original v3 packet. Revalidate coverage, dates, raw
+originals and unchanged independent-review files with the local source caches:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.validate_source_review \
+  --output /private/tmp/track_a_source_review_recheck.json
+```
+
+The original reviewer-delivery hashes must match. This validator checks record
+integrity, not the correctness or independence of judgments; it creates no
+human receipt. Uncertain labels are unresolved, not negatives. Findings and
+inspection limits are in `reports/track_a_source_review_20261025.md`.
+
+The HTML repairs can be replayed offline into a fresh candidate directory:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.apply_source_review \
+  --output data/interim/corpus_source_review_recheck \
+  --report /private/tmp/corpus_source_review_recheck.json
+```
+
+This needs all original news caches and the optional extraction dependencies.
+It checks raw checksums, publication identity, every passage offset and a
+reverse-order freeze. It preserves active v3 and cannot promote the candidate
+or migrate its index/review identities. The recorded candidate has 1,159
+documents and 29,595 passages; its hash is in the repair report. PDF layout,
+infographic content, residual recommendations/scope and acceptance remain open.

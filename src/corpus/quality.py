@@ -15,7 +15,7 @@ from schema import SourceKind
 from .documents import Document
 
 MACRO_TOPIC = re.compile(
-    r"\b(brent|crude|oil|rupee|forex|foreign exchange|dollar|inflation|CPI|WPI|"
+    r"\b(brent|crude|oil|rupee|forex|foreign exchange|dollar|inflation|CPI(?!\s*\(\s*M\s*\))|WPI|"
     r"import(?:s|ed|ing)?|exports?|trade deficit|current account|fiscal|monetary|"
     r"repo(?: rate)?|bond yields?|g-sec|government borrowing|liquidity|FPI|FII|"
     r"foreign portfolio|GDP|economic growth|ATF|aviation turbine fuel|LPG|"
@@ -25,7 +25,8 @@ MACRO_TOPIC = re.compile(
 PERSONAL_PATH = re.compile(r"/(?:wealth|personal-finance|mutual-funds|etwealth)/", re.IGNORECASE)
 SPONSORED = re.compile(
     r"\b(?:published by ET Spotlight|generated and published by ET Spotlight|"
-    r"sponsored content|brand post|paid promotion|advertorial)\b",
+    r"sponsored content|brand post|paid promotion|advertorial|"
+    r"company press release that is not part of editorial content)\b",
     re.IGNORECASE,
 )
 

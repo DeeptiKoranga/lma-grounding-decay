@@ -24,6 +24,12 @@ The local reviewer workspace is ready at
 originals, blinded passage review and save/resume pages. Independent human
 judgments and research signoff remain pending.
 
+The 25 October [source review](reports/track_a_source_review_20261025.md) covers
+all 73 corpus samples and 2,062 pooled judgments: 182 relevant, 1,874 irrelevant
+and six uncertain. A separate candidate repairs HTML extraction and excludes
+18 unsuitable documents. PDF context and residual scope defects remain open;
+the active corpus and independent-review records are unchanged.
+
 ## What this is
 
 Given a question like *"Brent crossed $100 on 12 March 2026; what effects on India were
@@ -52,7 +58,7 @@ remain required. All six macro series are populated; basket, Brent, benchmark yi
 coverage remain partial and do not confirm the planned anchor episodes.
 
 The 23 October local integration completed all 42 graphs across six unreviewed
-v1 candidates; current checks pass 620 tests. The separate synthetic tool-choice probe succeeded
+v1 candidates; current checks pass 623 tests. The separate synthetic tool-choice probe succeeded
 on only 5/40 expected actions, so model selection remains open. Execution and
 structural validity do not establish research performance. See
 [the validation and remaining gates](reports/integration_status.md).

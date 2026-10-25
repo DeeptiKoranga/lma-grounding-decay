@@ -105,3 +105,22 @@ not filled with an estimate. Two earlier formatting-failure attempts also remain
 excluded: three completed calls in total; their actual usage is recorded in
 `reports/relevance_screen_failure_audit_20261025.json`. No paid API or Kaggle
 work occurred.
+
+## Completed source and pooled relevance review
+
+The 25 October Codex source review covers 73 sampled documents and all 2,062
+pooled judgments over 20 questions, using cached originals and full passage
+text. It retains 182 relevant judgments, rejects 1,874, and leaves six uncertain.
+No additional local classifier output was used and no paid API was called.
+This is development review with prior exposure to project results, not
+independent human annotation. No retrieval experiment or final research scores
+were run from these labels.
+
+The offline HTML reparse staged a separate 1,159-document/29,595-passage
+candidate, changing 643 retained documents and excluding 18. Both input orders
+produce the same archive and every passage offset is exact. Active v3 and its
+index remain unchanged. Source-review checks pass 623 tests with Ruff/Black
+clean; the original 83 reviewer-delivery files retain their hashes. The final
+local check log is `/private/tmp/lma-source-review-final-checks-20261025.log`.
+Review and extraction phase wall times were not instrumented and are not
+invented here. Findings and limits: `reports/track_a_source_review_20261025.md`.

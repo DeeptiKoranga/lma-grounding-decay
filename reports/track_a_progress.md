@@ -11,9 +11,9 @@ issues or record team/TA approval.
 | Work | Current evidence | Remaining acceptance requirement |
 |---|---|---|
 | News/official collection (A1–A2) | 1,177 retained documents: 1,116 news and 61 official, March–September. ET 889, BusinessLine 215, Mint 12; MoSPI 37, PPAC 14, OEA 10. Mint now covers all seven months. | Business Standard and RBI remain absent after access failures. ET dominates; Mint is sparse. OEA is a documented source-list deviation. |
-| Parsing, deduplication, freeze and offsets (A3–A5) | Repaired invisible-format-character matching and omitted visible article leads. Reparsed 1,112 original news caches; restored 1,572 paragraphs in retained documents. Removed explicit related links and six additional same-day near duplicates. All 28,391 passage offsets match saved parent text; reverse-input archive is identical. | The 73-item extraction/source review is blank. Residual recommendations and PDF table/header quality need independent acceptance. |
+| Parsing, deduplication, freeze and offsets (A3–A5) | Repaired invisible-format-character matching and omitted visible article leads. Reparsed 1,112 original news caches; restored 1,572 paragraphs in retained documents. Removed explicit related links and six additional same-day near duplicates. All 28,391 passage offsets match saved parent text; reverse-input archive is identical. | The separate Codex review covers all 73 samples and identifies concrete HTML/PDF/scope defects. Independent acceptance is blank; the repair candidate is unpromoted. |
 | Lexical, dense, hybrid and date filtering (A6–A7, A11) | Plain/alias BM25, pinned BGE-M3, FAISS and RRF implemented. All 28,391 passages indexed. Saved index reloaded in a fresh process and searched at March and September cutoffs. Future documents are excluded before ranking. | Accepted corpus and retriever choice; broad aliases and source concentration remain limitations. |
-| Retrieval/reranking pilot (A8–A9, #45) | Real four-way comparison and pinned top-50 cross-encoder on 20 machine-curated questions across all seven months, with 43 unchanged seed texts. A new 2,062-item blinded packet is ready. | Independent relevance judgments, corpus acceptance, D-02 and D-03. Smoke scores do not establish research performance. |
+| Retrieval/reranking pilot (A8–A9, #45) | Real four-way comparison and pinned top-50 cross-encoder on 20 machine-curated questions across all seven months, with 43 unchanged seed texts. All 2,062 pooled items have a separate Codex review (182 relevant, 1,874 irrelevant, six uncertain); the original blinded human packet is unchanged. | Independent relevance judgments, corpus acceptance, D-02 and D-03. Smoke scores do not establish research performance. |
 | Macro-series store (A10) | Original store: CPI 7, FX 141, basket 2, Brent 4, benchmark yield 6, FPI 1; **161 observations unchanged**. Separate retrospective snapshot: **317 observations**, with March–September Brent daily closes and monthly basket/yield/FPI. Actual read-layer checks reject October snapshots at September cutoffs. | Original-vintage histories and anchor confirmation remain incomplete. Retrospective financial-futures closes and monthly main yields have different definitions from the dated news points. Monthly values cannot confirm daily episode dates. |
 | Integration and reproduction (#33, #50) | All six development candidates rerun from fresh-clone source for B0/B1/B2/M: **24/24 canonical graphs match** the earlier v1 checkpoint. Prompt/model/tool/budget/corpus logs checked. Corpus binding now rejects v3 text for old v1 runs. | These are unreviewed candidates and reused local weights/runtime. Other team machines, Kaggle and accepted gold remain untested. |
 | Figures/report (#46) | Source-by-month and series-coverage PNG/SVG, retrieval comparisons, provenance, computation and review handoff are saved. | Final UER, reference recall and strength figures require independent labels and corrected baseline graphs. |
@@ -52,7 +52,7 @@ relevance acceptance. See `reports/retrieval_v3_review_readiness.json`.
 
 ## Verification and handoff
 
-Latest local checks: **620 tests passed**, Ruff and Black passed. The earlier clean clone at `57c0480` passed **584 tests with two optional PDF
+Latest local checks: **623 tests passed**, Ruff and Black passed. The earlier clean clone at `57c0480` passed **584 tests with two optional PDF
 skips**; current review-workflow validation is recorded in
 `reports/track_a_review_validation.json` (598 passed and two optional PDF skips
 at source `80a6d7a`). The real saved-index
@@ -135,3 +135,21 @@ The new retrospective store and actual date-filter checks are documented in
 `reports/retrospective_series_read_validation_20261025.json`.
 An offline replay into a fresh directory reproduced all six CSV hashes. The
 coverage figure `reports/series_coverage_20261025.png` was visually checked.
+
+## Completed source and pooled relevance review
+
+The [25 October source review](track_a_source_review_20261025.md) records every
+corpus-sample finding and every pooled passage judgment. All 40 sampled article
+texts were read; 33 PDF covers/native extractions were inspected, with selected
+layout checks. It does not claim exhaustive PDF-cell validation or human
+independence. All 20 questions retain positive evidence, and uncertain judgments
+remain unresolved rather than becoming negatives.
+
+The separate repair candidate has 1,159 documents and 29,595 passages: 643 retained
+documents changed and 18 unsuitable documents excluded. All known omitted ET
+sample bodies and five Mint biographies are addressed. PDF context, infographic
+content, residual recommendations/topic false positives, source terms and dated
+source adequacy still prevent corpus acceptance. Active v3, its index, v1 runs
+and all 83 original reviewer-delivery files remain unchanged. No new scores,
+human receipt, D-02/D-03 closure, push or PR is implied. The current local suite
+passes 623 tests with Ruff/Black clean.

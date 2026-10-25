@@ -80,6 +80,82 @@ class LeadingArticleText(HTMLParser):
             self.parts.append(data)
 
 
+class VisibleArticleBlocks(HTMLParser):
+    """Read ET's visible body across widget boundaries without executing scripts."""
+
+    BREAKS = {"br", "p", "div", "h1", "h2", "h3", "h4", "ul", "ol", "li", "blockquote", "table"}
+    SKIP = {"script", "style", "nav", "aside", "footer", "iframe", "figure"}
+    VOID = {
+        "br",
+        "hr",
+        "img",
+        "input",
+        "meta",
+        "link",
+        "source",
+        "wbr",
+        "embed",
+        "area",
+        "col",
+        "param",
+    }
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack = []
+        self.parts = []
+        self.paragraphs = []
+        self.started = False
+        self.finished = False
+
+    def flush(self):
+        text = " ".join("".join(self.parts).split())
+        if text:
+            self.paragraphs.append(text)
+        self.parts = []
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if not self.started:
+            if tag == "div" and "artText" in attrs.get("class", "").split():
+                self.started = True
+                self.stack.append((tag, False))
+            return
+        if self.finished:
+            return
+        skipped = self.stack[-1][1] if self.stack else False
+        if tag in self.BREAKS and not skipped:
+            self.flush()
+        hidden = "hidden" in attrs or bool(
+            re.search(r"display\s*:\s*none|visibility\s*:\s*hidden", attrs.get("style", ""), re.I)
+        )
+        if tag not in self.VOID:
+            self.stack.append((tag, skipped or hidden or tag in self.SKIP))
+
+    def handle_endtag(self, tag):
+        if not self.stack or self.finished:
+            return
+        matches = [i for i, (name, _) in enumerate(self.stack) if name == tag]
+        if not matches:
+            return
+        if tag in self.BREAKS and not self.stack[-1][1]:
+            self.flush()
+        self.stack = self.stack[: matches[-1]]
+        if not self.stack:
+            self.flush()
+            self.finished = True
+
+    def handle_data(self, data):
+        if self.stack and not self.stack[-1][1]:
+            self.parts.append(data)
+
+
+def _headline_key(value: str, source: str) -> str:
+    if source == "mint":
+        value = re.sub(r"\s*\|\s*(?:Mint|Stock Market News|Today News)\s*$", "", value)
+    return " ".join(value.split())
+
+
 def publication_time(value: str) -> datetime:
     """Publication date, never sitemap lastmod/dateModified or a guessed URL date."""
     try:
@@ -224,7 +300,7 @@ def parse_html(
         if isinstance(a.get("articleBody"), str)
         and len(a["articleBody"]) >= min_chars
         and isinstance(a.get("headline"), str)
-        and " ".join(a["headline"].split()) == " ".join(title.split())
+        and _headline_key(a["headline"], source) == _headline_key(title, source)
         and a.get("datePublished")
         and publication_time(a["datePublished"]).date() == published_stamp.date()
     }
@@ -232,8 +308,31 @@ def parse_html(
         raise ParseError("conflicting declared bodies for the same article")
     if bodies:
         body = next(iter(bodies))
-        paragraphs = [p for p in paragraphs if _body_key(p) in body]
+        paragraphs = [
+            p for p in paragraphs if _body_key(p) in body and not is_navigation_paragraph(p)
+        ]
         if source == "economic_times":
+            visible = VisibleArticleBlocks()
+            visible.feed(html)
+            blocks = [
+                p
+                for p in visible.paragraphs
+                if _body_key(p) and _body_key(p) in body and not is_navigation_paragraph(p)
+            ]
+            joined = _body_key(normalise_paragraphs(blocks))
+            narrative_body = body
+            for paragraph in visible.paragraphs:
+                if is_navigation_paragraph(paragraph):
+                    narrative_body = narrative_body.replace(_body_key(paragraph), "")
+            # Replace the backend only when the visible body retains all of its
+            # admitted content and recovers additional source text. Never copy
+            # missing JSON-LD text into evidence.
+            if (
+                len(joined) > len(_body_key(normalise_paragraphs(paragraphs)))
+                and len(joined) >= 0.9 * len(narrative_body)
+                and all(_body_key(p) in joined for p in paragraphs)
+            ):
+                paragraphs = blocks
             lead = LeadingArticleText()
             lead.feed(html)
             text = " ".join("".join(lead.parts).split())

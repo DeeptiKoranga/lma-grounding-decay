@@ -1,0 +1,38 @@
+{
+  "review_sha256": "1eec777802f84068ecb737d61d0e383504ce1bc3662382dabb83be2bf5d14f08",
+  "corpus_samples_verified": 73,
+  "queries_verified": 20,
+  "pooled_judgments_verified": 2062,
+  "counts": {
+    "irrelevant": 1874,
+    "relevant": 182,
+    "uncertain": 6
+  },
+  "all_positive_evidence_offsets_valid": true,
+  "all_candidates_date_eligible": true,
+  "all_43_seed_decisions_agree_with_prior_audit": true,
+  "repair_candidate_hashes_verified": true,
+  "review_delivery_files_unchanged": 83,
+  "human_records_changed": false,
+  "active_corpus_unchanged": true,
+  "research_acceptance": false,
+  "source_files_sha256": {
+    "src/corpus/parser.py": "38349648d7dc5adce2f243030dea87cb8829380f3bb5f0f8fb74c64b277eeeba",
+    "src/corpus/quality.py": "d9d881964bb779edae1deb0feedecf1737dfa73d9ff070d68a5ca26e91d2773b",
+    "scripts/apply_source_review.py": "d0e6d308bc9ea93bd0dbd8e25488a4bc416ff848353468d32ed73776c8ff7642",
+    "scripts/validate_source_review.py": "75a9d8bb6439246130652143200f748c46e37f44de46d33b7f3a293bdc9157ee",
+    "tests/unit/test_corpus_pipeline.py": "0c12f30b2aa1b19008e4277a917a9bdf736a57dc469240cfdf9cfa56563511ec",
+    "tests/unit/test_corpus_quality.py": "89f8a069984695b6e4e2ce46239c08f01fc66ea309ba970b6109705de5400a7f"
+  },
+  "checked_on": "2026-10-25",
+  "full_offline_repair_replay_identical": true,
+  "known_et_sample_omissions_recovered": 12,
+  "local_checks": {
+    "tests_passed": 623,
+    "tests_skipped": 0,
+    "ruff": "passed",
+    "black": "passed",
+    "log": "/private/tmp/lma-source-review-final-checks-20261025.log",
+    "scope": "Current working checkout with optional PDF/extraction dependencies; no new clean clone or other-machine run."
+  }
+}

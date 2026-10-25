@@ -54,6 +54,25 @@ def test_topic_screen_does_not_accept_footer_topic_or_sponsored_copy():
     )
 
 
+def test_political_cpi_and_explicit_company_release_are_not_macro_news():
+    assert rejection_reason(
+        doc(
+            "CPI(M) demands TMC account freeze",
+            "A party treasurer disputed control of party bank accounts.",
+        )
+    )
+    assert (
+        rejection_reason(doc("Consumer Price Index CPI rises", "Consumer inflation increased."))
+        is None
+    )
+    assert "sponsored" in rejection_reason(
+        doc(
+            "Farm care at one rupee per litre",
+            "This is a company press release that is not part of editorial content.",
+        )
+    )
+
+
 def test_later_day_revision_cannot_leak_into_an_earlier_as_of_query(monkeypatch):
     monkeypatch.setitem(sys.modules, "trafilatura", SimpleNamespace(extract=lambda *a, **k: None))
     body = "Higher crude oil prices raised import costs and put pressure on the rupee. " * 4

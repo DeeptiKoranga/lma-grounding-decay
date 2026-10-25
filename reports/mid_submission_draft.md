@@ -12,10 +12,18 @@ development corpus contains 1,177 documents and 28,391 passages. Its all-month
 series now have data, with partial histories. Existing 42-graph results and the
 24-graph fresh reproduction retain archived v1. Do not merge their corpus
 versions or present unreviewed diagnostics as research scores. Current local
-checks: **620 tests, Ruff and Black pass**. A separate 317-observation retrospective
+checks: **623 tests, Ruff and Black pass**. A separate 317-observation retrospective
 snapshot now covers all seven months for four previously sparse series, with
 October availability and explicit measurement differences. It is excluded from
 the historical runs.
+
+The separate [completed source review](track_a_source_review_20261025.md) covers
+73 corpus samples and all 2,062 query–passage judgments. It records 182 relevant,
+1,874 irrelevant and six uncertain decisions. Extraction/scope defects were
+repaired in an unpromoted 1,159-document candidate; PDF context and residual
+issues remain. The reviewer is Codex with prior exposure to results; this
+supplies development evidence and does not complete independent human
+acceptance or provide final research scores.
 
 ## What is built
 
@@ -59,7 +67,7 @@ reviewer has not been selected.
 
 ## Evidence available now
 
-- Current checkout: 620 tests pass; Ruff and Black pass. Fresh-clone checks
+- Current checkout: 623 tests pass; Ruff and Black pass. Fresh-clone checks
   and their source commits are recorded in `reports/track_a_validation.json`.
 - Current v3 retrieval comparison on 20 unreviewed March–September questions:
   Recall@10 is 0.4333 BM25, 0.5167 alias BM25, 0.6000 dense, 0.5833 hybrid and

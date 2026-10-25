@@ -6,9 +6,9 @@ corpus is repaired v3 (1,177 documents, 28,391 passages). All six series contain
 retains archived v1; audits/review preparation must explicitly select
 `data/interim/frozen_v1_20261023/articles.jsonl`. Full fresh-source B0/B1/B2/M
 reproduction now matches all 24 original graphs. Independent research acceptance
-remains open. Current checks: 620 tests, Ruff and Black pass.
+remains open. Current checks: 623 tests, Ruff and Black pass.
 
-25 October update: **620 tests pass**, with Ruff and Black clean. The original
+25 October update: **623 tests pass**, with Ruff and Black clean. The original
 161-observation historical store remains unchanged. A separate 317-observation
 snapshot provides later-captured Brent daily closes and monthly basket/yield/FPI
 histories; real read-layer checks hide these backfills at September cutoffs.
@@ -25,6 +25,13 @@ Earlier counts in the following run sections describe the preceding v1
 integration checkpoint. Current Track A versions and evidence are recorded in
 the delivery report above. A corpus/retriever change requires new experiments
 and corresponding review packets.
+
+The [completed 25 October source review](track_a_source_review_20261025.md) covers
+73 samples and all 2,062 pooled judgments (182 relevant, 1,874 irrelevant, six
+uncertain). Its 1,159-document repair candidate is unpromoted. PDF context and
+residual scope defects remain; original v3, v1 experiments and independent human
+review files are unchanged. This is Codex development review, with no independent
+acceptance or final research metrics.
 
 ## Implemented and checked
 

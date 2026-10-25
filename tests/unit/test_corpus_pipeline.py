@@ -178,6 +178,49 @@ def test_unmatched_visible_lead_cannot_be_added_to_current_story():
     assert "Unrelated story" not in doc.text
 
 
+def test_visible_body_recovers_middle_and_end_across_widgets_and_lists(monkeypatch):
+    middle = 'A trader said, "Dollar demand from arbitrage positions pressured the rupee."'
+    ending = "If oil pressure persists, the recovery in foreign bond flows could dissipate."
+    bullet = "Refiners sought alternative crude suppliers."
+    body = BODY + middle + bullet + ending
+    record = {
+        "@type": "NewsArticle",
+        "headline": "Crude and rupee",
+        "datePublished": "2026-03-12",
+        "articleBody": body + " Metadata-only fact.",
+    }
+    extra = f'<script type="application/ld+json">{json.dumps(record)}</script>'
+    html = article_html(extra=extra).replace(
+        "<article>",
+        f'<div class="artText">{BODY}<br><div class="advert">Unrelated ad</div>'
+        f"{middle}<br><script>Fake instruction</script><ol><li>{bullet}</li></ol>"
+        f'<div style="display:none">Metadata-only fact.</div>{ending}</div><article>',
+    )
+    monkeypatch.setitem(sys.modules, "trafilatura", SimpleNamespace(extract=lambda *a, **k: BODY))
+    doc = parse_html(html, source="economic_times", url="https://example.com/a")
+    assert doc.text.split("\n\n") == [BODY, middle, bullet, ending]
+    assert "Unrelated ad" not in doc.text and "Metadata-only" not in doc.text
+    assert "Fake instruction" not in doc.text
+    assert all(doc.text[p.char_start : p.char_end] == p.text for p in chunk_document(doc))
+
+
+def test_mint_brand_suffix_cannot_disable_body_guard_or_admit_author_bio(monkeypatch):
+    bio = "Reporter covers monetary policy, inflation, trade and the rupee. " * 3
+    record = {
+        "@type": "NewsArticle",
+        "headline": "Crude and rupee",
+        "datePublished": "2026-03-12",
+        "articleBody": BODY,
+    }
+    html = article_html(extra=f'<script type="application/ld+json">{json.dumps(record)}</script>')
+    html = html.replace('content="Crude and rupee"', 'content="Crude and rupee | Mint"')
+    monkeypatch.setitem(
+        sys.modules, "trafilatura", SimpleNamespace(extract=lambda *a, **k: BODY + "\n" + bio)
+    )
+    doc = parse_html(html, source="mint", url="https://www.livemint.com/a")
+    assert doc.text == BODY
+
+
 def test_rebuild_pipeline_only_uses_accepted_payloads(tmp_path, monkeypatch):
     monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2]))
     from scripts.fetch.client import Response
