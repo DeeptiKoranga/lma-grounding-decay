@@ -61,6 +61,12 @@ original seven-condition baseline/ablation outputs remain visible for independen
 correction; exact reproduction does not validate their support. No UER, human
 agreement or reference recall is claimed.
 
+The 25 October clean clone of source `a27e8e0` passed **618 tests with two optional
+PDF skips**, with Ruff/Black clean and imports verified from the new checkout.
+It validated all tracked snapshot files without raw caches. This reused the
+core environment and does not certify a fresh heavy install or other machines.
+Current evidence is in `reports/track_a_validation_20261025.json`.
+
 Key records:
 
 - `reports/corpus_v3_audit.json`, `reports/corpus_v3_extraction_qa.json`,
@@ -74,7 +80,8 @@ Key records:
 - `reports/review_handoff.md`, `docs/reproduction.md`, `reports/compute_log.md`.
 
 The earlier work through `c01d222` is on GitHub branch `varun`. The 25 October
-additions are recorded separately below. No pull request, issue closure, teammate
+data/source additions are committed locally at `a27e8e0` and documented below.
+They have not been pushed. No pull request, issue closure, teammate
 acceptance or research signoff is implied by the development delivery.
 
 ## Ready-to-use independent review workspace
