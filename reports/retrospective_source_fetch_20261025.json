@@ -1,0 +1,109 @@
+{
+  "status": "public snapshot acquisition; no historical vintage acceptance",
+  "sources": [
+    {
+      "source": "brent_nymex_chart",
+      "status": "acquired; retrospective inspection required",
+      "raw": "data/raw/track_a_20261025/brent_nymex_chart.json",
+      "url": "https://query1.finance.yahoo.com/v8/finance/chart/BZ%3DF?period1=1772323200&period2=1790812800&interval=1d&events=history",
+      "checked_at": "2026-10-25T14:27:10.642198+00:00",
+      "purpose": "retrospective market history; no original historical-vintage availability inferred",
+      "content_type": "application/json",
+      "bytes": 16691,
+      "sha256": "3e9af84ea8be2428e52b9fe9c2f269e8ffac967ec91ba11a0801b46c8d2d7ddd",
+      "records": 148,
+      "metadata": {
+        "currency": "USD",
+        "symbol": "BZ=F",
+        "exchangeName": "NYM",
+        "fullExchangeName": "NY Mercantile",
+        "instrumentType": "FUTURE",
+        "firstTradeDate": 1185768000,
+        "regularMarketTime": 1792789159,
+        "hasPrePostMarketData": false,
+        "gmtoffset": -14400,
+        "timezone": "EDT",
+        "exchangeTimezoneName": "America/New_York",
+        "regularMarketPrice": 111.7,
+        "regularMarketChangePercent": 2.798,
+        "fulldayPrice": 111.7,
+        "fulldayChange": 3.04,
+        "fulldayChangePercent": 2.798,
+        "fiftyTwoWeekHigh": 126.1,
+        "fiftyTwoWeekLow": 58.72,
+        "regularMarketDayHigh": 112.41,
+        "regularMarketDayLow": 108.28,
+        "regularMarketVolume": 41394,
+        "longName": "Brent Crude Oil Last Day Financial Futures",
+        "shortName": "Brent Crude Oil Last Day Financ",
+        "chartPreviousClose": 72.48,
+        "priceHint": 2,
+        "currentTradingPeriod": {
+          "pre": {
+            "timezone": "EDT",
+            "start": 1792900800,
+            "end": 1792900800,
+            "gmtoffset": -14400
+          },
+          "regular": {
+            "timezone": "EDT",
+            "start": 1792900800,
+            "end": 1792987140,
+            "gmtoffset": -14400
+          },
+          "post": {
+            "timezone": "EDT",
+            "start": 1792987140,
+            "end": 1792987140,
+            "gmtoffset": -14400
+          }
+        },
+        "dataGranularity": "1d",
+        "range": "",
+        "validRanges": [
+          "1d",
+          "5d",
+          "1mo",
+          "3mo",
+          "6mo",
+          "1y",
+          "2y",
+          "5y",
+          "10y",
+          "ytd",
+          "max"
+        ]
+      }
+    },
+    {
+      "source": "gsec_oecd_fred_main",
+      "status": "acquired; retrospective inspection required",
+      "raw": "data/raw/track_a_20261025/gsec_oecd_fred_main.csv",
+      "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30",
+      "checked_at": "2026-10-25T14:33:40.871884+00:00",
+      "purpose": "retrospective OECD/FRED monthly main ten-year government bond yield; no historical release dates inferred",
+      "bytes": 228,
+      "content_type": "application/csv",
+      "sha256": "93caf1809a450d4400f6a9ef1d4c267901023b7c1e4110d970bd5755782a30a4",
+      "path": "data/raw/track_a_20261025/gsec_oecd_fred_main.csv"
+    },
+    {
+      "source": "ppac_current_monthly",
+      "status": "acquired; retrospective inspection required",
+      "raw": "data/raw/track_a_20261025/ppac_current_monthly.json",
+      "checked_at": "2026-10-25T14:34:24.252913+00:00",
+      "url": "https://ppac.gov.in/AjaxController/getInternationalPricesCrudeOil",
+      "parameters": {
+        "financialYear": "2026-2027",
+        "reportBy": "4",
+        "pageId": "30"
+      },
+      "purpose": "public current financial-year monthly table; retrospective capture only",
+      "sha256": "907af16bde4a185d7da38f14eb497fe46719622fd432d56ea91397c6dc418683",
+      "bytes": 2556,
+      "path": "data/raw/track_a_20261025/ppac_current_monthly.json",
+      "requests": 2
+    }
+  ],
+  "complete": true
+}

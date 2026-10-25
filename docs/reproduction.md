@@ -1,6 +1,6 @@
 # Reproduce the integrated development pipeline
 
-Updated 23 October 2026. Unit checks and development runs are distinct from a
+Updated 25 October 2026. Unit checks and development runs are distinct from a
 reviewed research experiment. Corpus acceptance, independent annotations, model
 selection, complete series histories and anchor confirmation remain open; see
 `reports/track_a_progress.md`.
@@ -53,6 +53,23 @@ CSV observations under `data/series/`. All six files have data, but four
 have sparse coverage; read `data/series/README.md` for exact measurement types.
 Unverified dynamic CDSL/FBIL candidates remain outside that store. The development provenance file binds the corpus, aliases, query file,
 series CSVs, model revision, conditions and relevant source code hash.
+
+The separate `data/series/retrospective_20261025/` snapshot contains 317
+observations, including unchanged CPI/FX copies. Its four newly imported histories
+have October capture-date availability. The default store ignores this nested
+directory. Its README records public sources, measurement differences and replay
+commands. Verify the actual stored files and absence of historical leakage with:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.validate_retrospective_series \
+  --report reports/retrospective_read_layer_recheck.json
+MPLCONFIGDIR=/private/tmp/lma-matplotlib PYTHONPATH=src .venv/bin/python \
+  -m scripts.plot_series_coverage --output reports/series_coverage_recheck
+```
+
+Post-capture analysis must explicitly select that directory. It cannot supply
+missing information to the frozen March–September runs or independently confirm
+daily anchor episodes from monthly data.
 
 ## Run and resume
 
@@ -212,6 +229,30 @@ Without that index, supply a fresh `--dense-index` path and
 `--embedding-checkpoint data/interim/corpus_v3_20261023/bge_m3_checkpoint.json`.
 Text/model/preprocessing hashes validate reuse. Keep original caches unchanged.
 The pilot report records actual packages, pinning, cache state and phase time.
+
+### Source-audited development seeds — 25 October
+
+A separate Codex audit read all 43 existing seed paragraphs against their fixed
+questions. It retained 37 direct answers, rejected four outcome/background-only
+seeds and left two unresolved-context seeds uncertain. All 20 questions retain
+positive evidence. This is **not independent human annotation** and covers only
+the pre-existing seeds, not the full pooled candidates. The human packet and
+acceptance requirements remain unchanged. The local Qwen pool-classification
+attempt was stopped after source-audited false positives; none of its labels
+entered the new pair file. See `reports/relevance_screen_failure_audit_20261025.json`.
+
+Replay the recorded source judgments into fresh files:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.audit_retrieval_seeds \
+  --output reports/retriever_audited_seed_recheck.jsonl \
+  --report reports/retriever_seed_audit_recheck.json
+```
+
+Run the four configurations/reranker with the preceding command, replacing
+`--pairs` with the new file and selecting a new `--output`. Keep `--smoke`:
+this audit cannot create a human review receipt or resolve research D-02/D-03.
+The recorded result is `reports/pilot_retriever_v3_audited_seeds_20261025.md`.
 
 Current blinded packet: `data/interim/retrieval_review_temporal_v4/`, 2,062 items.
 To prepare another packet, use a fresh output directory:

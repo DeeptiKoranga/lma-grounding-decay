@@ -162,3 +162,14 @@ def test_read_only_filter_respects_robots_request_and_byte_limits(cdsl, conditio
     with pytest.raises(cdsl.FetchError):
         cdsl.submit_date(client, {"selectedDate": "April 30, 2026"})
     assert bool(opened) == (condition == "bytes")
+
+
+def test_retrospective_month_end_holiday_does_not_invent_a_release_date(cdsl):
+    html = snapshot().replace("30-04-2026", "29-04-2026")
+    with pytest.raises(ValueError, match="actual month-end"):
+        cdsl.parse_month(html, cutoff=date(2026, 4, 30))
+    row, details = cdsl.parse_month(html, cutoff=date(2026, 4, 30), captured_on=date(2026, 10, 23))
+    assert row.on == date(2026, 4, 30) and row.available_on == date(2026, 10, 23)
+    assert row.value == 15 and details["retrospective_only"]
+    with pytest.raises(ValueError, match="capture cannot precede"):
+        cdsl.parse_month(html, cutoff=date(2026, 4, 30), captured_on=date(2026, 4, 29))

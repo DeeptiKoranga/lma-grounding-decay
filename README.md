@@ -12,7 +12,10 @@ Deepti Koranga (2025204033).
 The current development corpus repairs missing article text and contains 1,177
 documents and 28,391 passages. Its saved dense index, temporal retrieval comparison
 and 2,062-item blank review packet are ready. All six macro series have data, with
-explicitly partial histories. Full fresh-source B0/B1/B2/M reproduction matches
+explicitly partial original histories. A separate 317-observation retrospective
+snapshot adds seven-month coverage with October capture dates and cannot leak
+into earlier queries. The 43 retrieval seeds have a separate source audit
+(37 retained); research acceptance remains open. Full fresh-source B0/B1/B2/M reproduction matches
 24/24 earlier v1 graphs. See [Track A status](reports/track_a_progress.md) for
 completed work, version boundaries and remaining research gates.
 
@@ -49,7 +52,7 @@ remain required. All six macro series are populated; basket, Brent, benchmark yi
 coverage remain partial and do not confirm the planned anchor episodes.
 
 The 23 October local integration completed all 42 graphs across six unreviewed
-v1 candidates; 600 tests pass. The separate synthetic tool-choice probe succeeded
+v1 candidates; current checks pass 620 tests. The separate synthetic tool-choice probe succeeded
 on only 5/40 expected actions, so model selection remains open. Execution and
 structural validity do not establish research performance. See
 [the validation and remaining gates](reports/integration_status.md).

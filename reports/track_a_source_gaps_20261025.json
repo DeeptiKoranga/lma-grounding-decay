@@ -1,0 +1,52 @@
+{
+  "checked_on": "2026-10-25",
+  "corpus_sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+  "corpus_changed": false,
+  "checks": [
+    {
+      "metadata": "data/raw/track_a_20261025/business_standard_policy.meta.json",
+      "checked_at": "2026-10-25T14:29:20.743064+00:00",
+      "url": "https://www.business-standard.com/",
+      "status": "unavailable; stopped",
+      "reason": "robots.txt unavailable (HTTP 403); collection stopped",
+      "requests": 1
+    },
+    {
+      "metadata": "data/raw/track_a_20261025/rbi_bulletin.meta.json",
+      "checked_at": "2026-10-25T14:21:01.775132+00:00",
+      "url": "https://bulletin.rbi.org.in/",
+      "status": "excluded; bot challenge, not source content",
+      "content_type": "text/html",
+      "bytes": 49661,
+      "sha256": "22d3d426e5c7778c10a81978c2dfaecd8f0c19b16f38c1c23028e35abee48fe8",
+      "fetched_url": "https://bulletin.rbi.org.in/",
+      "path": "data/raw/track_a_20261025/rbi_bulletin.html",
+      "requests": 2,
+      "reason": "HTML contains TSPD challenge script rather than a dated RBI Bulletin listing; no challenge execution or bypass attempted."
+    },
+    {
+      "metadata": "data/raw/track_a_20261025/fbil_gsec.meta.json",
+      "checked_at": "2026-10-25T14:20:36.150357+00:00",
+      "url": "https://www.fbil.org.in/wasdm/gsec/downloadPublished?date=2026-03-06",
+      "status": "unavailable; stopped",
+      "reason": "The read operation timed out",
+      "requests": 1
+    },
+    {
+      "metadata": "data/raw/track_a_20261025/fbil_gsec_retry.meta.json",
+      "checked_at": "2026-10-25T14:28:55.602079+00:00",
+      "url": "https://www.fbil.org.in/wasdm/gsec/downloadPublished?date=2026-03-06",
+      "status": "unavailable; stopped",
+      "reason": "The read operation timed out",
+      "requests": 1
+    }
+  ],
+  "new_snapshot_sources": "reports/retrospective_source_fetch_20261025.json",
+  "series_backfills": "reports/retrospective_series_acquisition_20261025.json",
+  "source_limits": [
+    "Business Standard and RBI remain absent; no access control or robots-policy bypass.",
+    "FBIL daily GSEC collection stopped after bounded timeouts. The separate OECD/FRED monthly main-yield snapshot has a different definition and October availability.",
+    "Four retrospective histories now cover all seven months; original point-in-time histories remain sparse.",
+    "No retrospective value is used to support an earlier as-of query or automatically accept an anchor episode."
+  ]
+}

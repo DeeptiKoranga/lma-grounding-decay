@@ -1,0 +1,8 @@
+on,value,available_on,source_url,unit
+2026-03-31,6.84,2026-10-25,https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30,percent
+2026-04-30,7.05,2026-10-25,https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30,percent
+2026-05-31,7.02,2026-10-25,https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30,percent
+2026-06-30,6.89,2026-10-25,https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30,percent
+2026-07-31,6.78,2026-10-25,https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30,percent
+2026-08-31,6.84,2026-10-25,https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30,percent
+2026-09-30,7.06,2026-10-25,https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30,percent

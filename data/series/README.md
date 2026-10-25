@@ -7,6 +7,16 @@ and FPI use the dated news-reported observations below. These do not constitute
 complete daily/monthly histories or confirmation of all planned anchor episodes.
 No missing values are filled or interpolated.
 
+An additional **317-observation retrospective snapshot** now lives in
+`retrospective_20261025/`. It adds 148 Brent daily vendor closes and seven monthly
+observations each for basket, ten-year yield and FPI, with unchanged CPI/FX
+copies. All four new histories cover March–September, but carry October capture
+dates. They are excluded from the default historical store and earlier as-of
+queries. Read that directory's README and provenance before use: its Brent and
+yield definitions differ from the news observations below. See
+`reports/retrospective_series_read_validation_20261025.json` and
+`reports/series_coverage_20261025.png`.
+
 ## Acquired observations
 
 - `cpi_headline_yoy.csv`: seven original MoSPI provisional combined headline YoY

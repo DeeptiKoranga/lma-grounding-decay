@@ -1,8 +1,8 @@
-# Track A delivery status — 23 October 2026
+# Track A delivery status — 25 October 2026
 
 The local corpus, retrieval and series implementation is delivered and verified.
 **Track A research acceptance is still incomplete.** Independent reviewers are
-unassigned, required source balance is not met, and several series remain sparse.
+unassigned, required source balance is not met, and original point-in-time series remain sparse.
 This report replaces the older continuation status; it does not close research
 issues or record team/TA approval.
 
@@ -14,9 +14,9 @@ issues or record team/TA approval.
 | Parsing, deduplication, freeze and offsets (A3–A5) | Repaired invisible-format-character matching and omitted visible article leads. Reparsed 1,112 original news caches; restored 1,572 paragraphs in retained documents. Removed explicit related links and six additional same-day near duplicates. All 28,391 passage offsets match saved parent text; reverse-input archive is identical. | The 73-item extraction/source review is blank. Residual recommendations and PDF table/header quality need independent acceptance. |
 | Lexical, dense, hybrid and date filtering (A6–A7, A11) | Plain/alias BM25, pinned BGE-M3, FAISS and RRF implemented. All 28,391 passages indexed. Saved index reloaded in a fresh process and searched at March and September cutoffs. Future documents are excluded before ranking. | Accepted corpus and retriever choice; broad aliases and source concentration remain limitations. |
 | Retrieval/reranking pilot (A8–A9, #45) | Real four-way comparison and pinned top-50 cross-encoder on 20 machine-curated questions across all seven months, with 43 unchanged seed texts. A new 2,062-item blinded packet is ready. | Independent relevance judgments, corpus acceptance, D-02 and D-03. Smoke scores do not establish research performance. |
-| Macro-series store (A10) | All six files populated: CPI 7, FX 141, Indian basket 2, Brent 4, benchmark GSEC yield 6, FPI 1; **161 observations**. Exact provenance, availability filtering and strict news import checks are recorded. | Complete histories and anchor-episode confirmation. Basket is monthly; Brent is intraday front-month futures; yields identify two benchmark securities; FPI has one completed-month news vintage. No interpolation or invented roll date. |
+| Macro-series store (A10) | Original store: CPI 7, FX 141, basket 2, Brent 4, benchmark yield 6, FPI 1; **161 observations unchanged**. Separate retrospective snapshot: **317 observations**, with March–September Brent daily closes and monthly basket/yield/FPI. Actual read-layer checks reject October snapshots at September cutoffs. | Original-vintage histories and anchor confirmation remain incomplete. Retrospective financial-futures closes and monthly main yields have different definitions from the dated news points. Monthly values cannot confirm daily episode dates. |
 | Integration and reproduction (#33, #50) | All six development candidates rerun from fresh-clone source for B0/B1/B2/M: **24/24 canonical graphs match** the earlier v1 checkpoint. Prompt/model/tool/budget/corpus logs checked. Corpus binding now rejects v3 text for old v1 runs. | These are unreviewed candidates and reused local weights/runtime. Other team machines, Kaggle and accepted gold remain untested. |
-| Figures/report (#46) | Source-by-month coverage PNG/SVG, retrieval comparison, provenance, computation and review handoff are saved. | Final UER, reference recall and strength figures require independent labels and corrected baseline graphs. |
+| Figures/report (#46) | Source-by-month and series-coverage PNG/SVG, retrieval comparisons, provenance, computation and review handoff are saved. | Final UER, reference recall and strength figures require independent labels and corrected baseline graphs. |
 
 ## Corpus and experiment versions
 
@@ -52,7 +52,7 @@ relevance acceptance. See `reports/retrieval_v3_review_readiness.json`.
 
 ## Verification and handoff
 
-Latest local checks: **600 tests passed**, Ruff and Black passed. The earlier clean clone at `57c0480` passed **584 tests with two optional PDF
+Latest local checks: **620 tests passed**, Ruff and Black passed. The earlier clean clone at `57c0480` passed **584 tests with two optional PDF
 skips**; current review-workflow validation is recorded in
 `reports/track_a_review_validation.json` (598 passed and two optional PDF skips
 at source `80a6d7a`). The real saved-index
@@ -73,9 +73,9 @@ Key records:
   `reports/fresh_full_development_logs.json`, `reports/corpus_binding_validation.json`.
 - `reports/review_handoff.md`, `docs/reproduction.md`, `reports/compute_log.md`.
 
-The work remains local. The mid-submission draft records these limitations;
-no issue closure, remote publication, teammate acceptance or research signoff
-is implied by this delivery.
+The earlier work through `c01d222` is on GitHub branch `varun`. The 25 October
+additions are recorded separately below. No pull request, issue closure, teammate
+acceptance or research signoff is implied by the development delivery.
 
 ## Ready-to-use independent review workspace
 
@@ -93,7 +93,38 @@ specified sample; it does not certify source balance, all documents or sharing
 rights. The relevance exporter retains its separate complete/blinded review gate.
 Commands are in `docs/reproduction.md`.
 
-The additional public-source checks admitted **no new data**. Histories and
-publisher coverage remain incomplete for the reasons in
-`reports/track_a_remaining_source_gaps.json`. No reviewer was assigned and no
-research decision was closed by preparing the workspace.
+The 23 October checks admitted no new data; their historical record remains
+`reports/track_a_remaining_source_gaps.json`. On 25 October, public Yahoo,
+FRED/OECD, PPAC and existing CDSL caches supplied the separate retrospective
+histories. New Business Standard/RBI/FBIL checks remain unsuccessful, documented
+in `reports/track_a_source_gaps_20261025.json`. No reviewer was assigned and no
+human receipt was created.
+
+## 25 October source audit and backfills
+
+The 43 existing retrieval seeds were checked directly against their fixed
+questions and isolated source paragraphs. The separate Codex audit retained
+**37 relevant**, rejected **four irrelevant** and left **two uncertain** seeds.
+Every question retains evidence; exact spans and reasons are in
+`reports/retriever_seed_audit_20261025.json`. This is development curation, not
+independent human review or full-pool relevance acceptance. The original pairs,
+corpus, review packet and human judgments are unchanged. The follow-up pilot is
+`reports/pilot_retriever_v3_audited_seeds_20261025.md`; D-02/D-03 remain open.
+The recorded CPU/FAISS rerun took 145.04 seconds with the saved v3 index. Recall@10
+was 0.4333 BM25, 0.4917 alias BM25, 0.6000 dense and 0.5583 hybrid; dense plus
+top-50 reranking reached 0.7667. Dense remains the provisional simplest option
+within 0.03 of the best. Seed curation is incomplete pool coverage and supplies
+no human receipt; the existing shared development runs/settings are preserved.
+
+The local Qwen classifier was stopped after 11 completed batches/313 items:
+source inspection found it accepting generic background as direct answers.
+All its outputs are excluded from pilot labels. Formatting and verbatim spans
+alone cannot establish relevance. Actual usage, failed attempts and source-audit
+examples are in `reports/relevance_screen_failure_audit_20261025.json`.
+
+The new retrospective store and actual date-filter checks are documented in
+`data/series/retrospective_20261025/README.md`,
+`reports/retrospective_series_acquisition_20261025.json` and
+`reports/retrospective_series_read_validation_20261025.json`.
+An offline replay into a fresh directory reproduced all six CSV hashes. The
+coverage figure `reports/series_coverage_20261025.png` was visually checked.

@@ -71,7 +71,11 @@ class ArchiveHTML(HTMLParser):
             self.in_first_table = False
 
 
-def parse_month(html: str, *, cutoff: date) -> tuple[Observation, dict]:
+def parse_month(
+    html: str, *, cutoff: date, captured_on: date | None = None
+) -> tuple[Observation, dict]:
+    if captured_on is not None and captured_on < cutoff:
+        raise ValueError("retrospective capture cannot precede the observation month end")
     page = ArchiveHTML()
     page.feed(html)
     text = " ".join(" ".join(page.text).split())
@@ -134,7 +138,7 @@ def parse_month(html: str, *, cutoff: date) -> tuple[Observation, dict]:
             if target is None or category in target:
                 raise ValueError("duplicate or undated FPI subtotal")
             target[category] = usd
-    if not daily or max(daily) != cutoff:
+    if not daily or (captured_on is None and max(daily) != cutoff):
         raise ValueError(
             "no actual month-end reporting row; selected calendar date cannot date publication"
         )
@@ -149,12 +153,18 @@ def parse_month(html: str, *, cutoff: date) -> tuple[Observation, dict]:
             raise ValueError("daily and monthly USD FPI subtotals disagree beyond rounding")
     observation = Observation(
         on=cutoff,
-        available_on=cutoff,
+        available_on=captured_on or cutoff,
         value=float(sum(monthly.values())),
         source_url=ARCHIVE_URL,
         unit="USD million, net",
     )
     return observation, {
+        "availability_basis": (
+            "actual capture date; no historical release/vintage claim"
+            if captured_on is not None
+            else "candidate reporting date; historical vintage unverified"
+        ),
+        "retrospective_only": captured_on is not None,
         "components_usd_million": {key: str(monthly[key]) for key in sorted(COMPONENTS)},
         "daily_reporting_rows": len(daily),
         "last_reporting_date": str(max(daily)),

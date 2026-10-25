@@ -1,4 +1,4 @@
-# Compute log — 23 October 2026
+# Compute log — updated 25 October 2026
 
 Actual completed-call usage from validated local logs. All generation used pinned
 Qwen3-8B 4-bit revision `545dc4251c05440727734bcd94334791f6ab0192` under MLX.
@@ -85,3 +85,23 @@ earlier encoding, downloads and checks. A separate fresh-process saved-index
 reload plus two real query embeddings/searches took **16.50 wall seconds**.
 All 28,391 saved passages match the v3 corpus. These durations are phase wall
 times, not GPU-active time. No independent relevance scores are claimed.
+
+## 25 October seed audit and rejected relevance screen
+
+The real 20-question retrieval/reranker rerun with 37 source-audited seeds took
+**146.30 phase wall seconds** initially; the replay after deterministic pair-file
+serialization took **145.04 seconds** and produced identical metrics. Both reused
+the saved v3 dense index and local pinned
+BGE models. It excludes earlier encoding/downloads. Its source audit is Codex
+development curation, not independent human annotation. See
+`reports/pilot_retriever_v3_audited_seeds_20261025.md`.
+
+The separate local Qwen relevance classifier was stopped after source inspection
+found background false positives. All outputs are excluded from labels and
+research decisions. Eleven completed batches covered 313 items, recording
+**46,463 prompt tokens, 5,574 completion tokens and 812.83 model-call wall
+seconds**. Its interrupted in-flight call has no completed usage record and is
+not filled with an estimate. Two earlier formatting-failure attempts also remain
+excluded: three completed calls in total; their actual usage is recorded in
+`reports/relevance_screen_failure_audit_20261025.json`. No paid API or Kaggle
+work occurred.

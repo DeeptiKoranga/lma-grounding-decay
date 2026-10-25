@@ -1,0 +1,409 @@
+{
+  "method": "Codex source-evidence audit of existing development seeds; not independent human annotation",
+  "reviewed_on": "2026-10-25",
+  "independent_human_review": false,
+  "blinded_to_previous_results": false,
+  "research_acceptance": false,
+  "scope": "43 pre-existing positive seeds only; no exhaustive candidate-pool judgment or corpus recall claim",
+  "criterion": "The isolated paragraph must directly answer at least part of the fixed question. A driver question requires a driver, not only the outcome. Unresolved references remain uncertain.",
+  "input_pairs_sha256": "0133cefc4246ed15673e78c1d7efc8b7f5f0954883efcbe91dc32d92efa18f2f",
+  "packet_sha256": "1cd044b3801589b332b5e2e62e5a7add9313f48e3942777f18811d2812297f65",
+  "corpus_sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+  "audited_pairs_sha256": "6d02f0299a12ac1565874071dc307ad15449f851a3137513ffb3aa08b48a2823",
+  "audit_source_sha256": "bf7a4ead176e88d3fff35e536b1d868a27ad51388c504e64b5c7bf9e06617913",
+  "queries": 20,
+  "decisions": {
+    "relevant": 37,
+    "irrelevant": 4,
+    "uncertain": 2
+  },
+  "records": [
+    {
+      "query_id": "a8-temporal-01",
+      "passage_id": "mint-820a071eb59246e8f4e4#p3",
+      "decision": "relevant",
+      "evidence_span": "rising oil prices, thus weighing on the local currency.",
+      "reason": "Explicitly connects India's fiscal/current-account deficit risk from oil to its currency.",
+      "source_text_sha256": "154221b8b33aec24c6ee0ca9694001dfdbd65c2cdb99ae1a27b2cd632ce73ad9",
+      "source_url": "https://www.livemint.com/market/stock-market-news/indian-rupee-hits-record-low-of-92-35-against-us-dollar-on-surge-in-crude-oil-prices-amid-us-iran-war-11773294145996.html"
+    },
+    {
+      "query_id": "a8-temporal-02",
+      "passage_id": "economic_times-41c2a60142623217887a#p6",
+      "decision": "relevant",
+      "evidence_span": "shipping companies impose war risk premiums and reroute vessels along longer, safer paths",
+      "reason": "Names the freight-cost mechanisms requested.",
+      "source_text_sha256": "9f394bf5392c47aeb30d22fe88ba8bdc1f35735e12f8b2fcf7691461dc83263e",
+      "source_url": "https://economictimes.indiatimes.com/industry/energy/oil-gas/asian-refining-margins-slip-into-negative-territory-as-iran-war-disrupts-crude-flows/articleshow/129651909.cms"
+    },
+    {
+      "query_id": "a8-temporal-02",
+      "passage_id": "economic_times-41c2a60142623217887a#p7",
+      "decision": "irrelevant",
+      "evidence_span": null,
+      "reason": "Lists freight prices without explaining why charges rose; the adjacent paragraph is not part of this passage.",
+      "source_text_sha256": "1c7bbe0485b14a6b85579112d4ac3e8a9faa16310b97c50fa064c65ac612e121",
+      "source_url": "https://economictimes.indiatimes.com/industry/energy/oil-gas/asian-refining-margins-slip-into-negative-territory-as-iran-war-disrupts-crude-flows/articleshow/129651909.cms"
+    },
+    {
+      "query_id": "a8-temporal-03",
+      "passage_id": "mospi-5a1b977e356b0b14de7c#p8",
+      "decision": "relevant",
+      "evidence_span": "Corresponding inflation rates for rural and urban are 3.37% and 3.02%, respectively.",
+      "reason": "The same paragraph states provisional national 3.21% and both requested sector rates for February.",
+      "source_text_sha256": "d1cb7abcf151043794e9b52ab0ffeeae83f284b9b2de40f04d24c949b1df2006",
+      "source_url": "https://mospi.gov.in/uploads/latestReleases/latest_release_1773310539387_714ce3b5-4644-4aef-b2e3-64433640a9c3_Press_Release_of_CPI_February_2026.pdf"
+    },
+    {
+      "query_id": "a8-temporal-04",
+      "passage_id": "economic_times-ae679171e11946f3db64#p1",
+      "decision": "irrelevant",
+      "evidence_span": null,
+      "reason": "Documents the yield rise despite cuts but supplies no driver for the question's why.",
+      "source_text_sha256": "764973383c9c61d523bd22a6b2d16e64983852fad72e57637ed3374c97dffb16",
+      "source_url": "https://economictimes.indiatimes.com/markets/bonds/g-sec-yields-near-two-year-high-inflation-risks-may-keep-fy27-trend-upwards/articleshow/129938729.cms"
+    },
+    {
+      "query_id": "a8-temporal-04",
+      "passage_id": "economic_times-ae679171e11946f3db64#p2",
+      "decision": "relevant",
+      "evidence_span": "largely due to oversupply of bonds and heightened geopolitical risks.",
+      "reason": "Explicitly explains the divergence of yields from policy cuts.",
+      "source_text_sha256": "b1a4580d2daa5e2640b1c6c65b018e39888e4283a128dec878d7cc4883722774",
+      "source_url": "https://economictimes.indiatimes.com/markets/bonds/g-sec-yields-near-two-year-high-inflation-risks-may-keep-fy27-trend-upwards/articleshow/129938729.cms"
+    },
+    {
+      "query_id": "a8-temporal-05",
+      "passage_id": "businessline-229f1dddd86b622b74a1#p0",
+      "decision": "relevant",
+      "evidence_span": "supportive dollar flows for the currency, spurred by banks’ unwinding of arbitrage positions, dissipated.",
+      "reason": "States both oil above $100 and disappearance of supportive dollar flows in the specified decline.",
+      "source_text_sha256": "97eab9e7252411a4b7f182180a81a9f49f91ac320a4515fff287bac719c47daa",
+      "source_url": "https://www.thehindubusinessline.com/markets/forex/rupee-falls-most-in-two-weeks-as-oil-spikes-on-us-move-to-blockade-iran-ports/article70857133.ece"
+    },
+    {
+      "query_id": "a8-temporal-05",
+      "passage_id": "businessline-229f1dddd86b622b74a1#p2",
+      "decision": "uncertain",
+      "evidence_span": null,
+      "reason": "Reports unwinding and breathing room; the measures and their relation to the current decline require omitted context.",
+      "source_text_sha256": "dd140fb33fa7687b0f06a471afa2e704d26d64a87e8ff4eafceda266fe047735",
+      "source_url": "https://www.thehindubusinessline.com/markets/forex/rupee-falls-most-in-two-weeks-as-oil-spikes-on-us-move-to-blockade-iran-ports/article70857133.ece"
+    },
+    {
+      "query_id": "a8-temporal-06",
+      "passage_id": "economic_times-e19e92bf379122b3f13b#p4",
+      "decision": "irrelevant",
+      "evidence_span": null,
+      "reason": "Earlier policy history and the December Goldilocks assessment do not state the April growth/inflation outlook.",
+      "source_text_sha256": "e4e735af96c3fca0aa1351ad8b1467a9c23fd64b8e31e6ca3ba009eb23c38b58",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/policy/rbi-repo-rate-8-april-2026-mpc-announcement-economic-impact-sanjay-malhotra-co-hold-repo-rates-steady-at-5-25-as-war-shocks-rattle-outlook/articleshow/130100749.cms"
+    },
+    {
+      "query_id": "a8-temporal-06",
+      "passage_id": "economic_times-e19e92bf379122b3f13b#p5",
+      "decision": "uncertain",
+      "evidence_span": null,
+      "reason": "That assessment is an unresolved reference in this isolated paragraph; the changed outlook is not stated.",
+      "source_text_sha256": "3d29fa0c58ac9902bb2ca23682f783c751d7ed0b6749108637432964fd51d6fd",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/policy/rbi-repo-rate-8-april-2026-mpc-announcement-economic-impact-sanjay-malhotra-co-hold-repo-rates-steady-at-5-25-as-war-shocks-rattle-outlook/articleshow/130100749.cms"
+    },
+    {
+      "query_id": "a8-temporal-06",
+      "passage_id": "economic_times-e19e92bf379122b3f13b#p7",
+      "decision": "relevant",
+      "evidence_span": "CPI inflation is projected at 4.6%",
+      "reason": "States the new FY27 inflation forecast; one part of the requested outlook.",
+      "source_text_sha256": "fca2725bafa383462e34fe420e686a301a3dd8e68747ef38fab9c540c265bd8c",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/policy/rbi-repo-rate-8-april-2026-mpc-announcement-economic-impact-sanjay-malhotra-co-hold-repo-rates-steady-at-5-25-as-war-shocks-rattle-outlook/articleshow/130100749.cms"
+    },
+    {
+      "query_id": "a8-temporal-06",
+      "passage_id": "economic_times-e19e92bf379122b3f13b#p8",
+      "decision": "relevant",
+      "evidence_span": "pencilled in a slower 6.9% expansion for FY27",
+      "reason": "States the slower FY27 growth forecast; one part of the requested outlook.",
+      "source_text_sha256": "37ca6e3b8fb7987365da210cea69797dd297b36d7f258c9f8722641c6f2e63ee",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/policy/rbi-repo-rate-8-april-2026-mpc-announcement-economic-impact-sanjay-malhotra-co-hold-repo-rates-steady-at-5-25-as-war-shocks-rattle-outlook/articleshow/130100749.cms"
+    },
+    {
+      "query_id": "a8-temporal-07",
+      "passage_id": "economic_times-37429412e4ffbcb7647e#p3",
+      "decision": "relevant",
+      "evidence_span": "higher prices for aluminium, chemicals, electrical components, fuel, leather, petroleum products and rubber.",
+      "reason": "Connects the April cost burden to conflict and identified inputs.",
+      "source_text_sha256": "d9467f513075965b3b1fd4a1a68c3b500d0b064ae288f03293a55d73925c2f0d",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/indicators/pmi-rises-to-54-7-inflation-pressures-mount/articleshow/130809786.cms"
+    },
+    {
+      "query_id": "a8-temporal-07",
+      "passage_id": "economic_times-37429412e4ffbcb7647e#p4",
+      "decision": "irrelevant",
+      "evidence_span": null,
+      "reason": "States how fast costs rose, not the drivers requested in the question.",
+      "source_text_sha256": "64e768262570920437176f8faff912bd7a35f98b9984452cb4f482e6a45183a0",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/indicators/pmi-rises-to-54-7-inflation-pressures-mount/articleshow/130809786.cms"
+    },
+    {
+      "query_id": "a8-temporal-08",
+      "passage_id": "businessline-00312b9e77a269e0f3ac#p0",
+      "decision": "relevant",
+      "evidence_span": "amid elevated Aviation Turbine Fuel (ATF) prices.",
+      "reason": "Connects Air India's international suspensions/reductions to fuel costs.",
+      "source_text_sha256": "53d733febec48002421b7b9517b50590bffa4ef4153b911e259ff9f69913c1e0",
+      "source_url": "https://www.thehindubusinessline.com/economy/logistics/air-india-suspends-flights-on-six-international-routes-as-atf-prices-bite/article70974143.ece"
+    },
+    {
+      "query_id": "a8-temporal-08",
+      "passage_id": "businessline-00312b9e77a269e0f3ac#p2",
+      "decision": "relevant",
+      "evidence_span": "prolonged airspace restrictions along with geopolitical disruptions have impacted the airline’s international operations.",
+      "reason": "Names both the fuel and airspace pressures.",
+      "source_text_sha256": "ce2e1369a1c355e53162e0d6b0f390366bb6c185726239671fb3d354ee12da3d",
+      "source_url": "https://www.thehindubusinessline.com/economy/logistics/air-india-suspends-flights-on-six-international-routes-as-atf-prices-bite/article70974143.ece"
+    },
+    {
+      "query_id": "a8-temporal-09",
+      "passage_id": "economic_times-d4ab1ecc281f974ecb33#p5",
+      "decision": "relevant",
+      "evidence_span": "the pressure stemming simultaneously from rupee depreciation and raw material inflation.",
+      "reason": "Explains inability to pass through the combined cost burden.",
+      "source_text_sha256": "35e8d3bb27133b409f61b3564d14d452a2279d4e6b9ae747ac2fa017f735016b",
+      "source_url": "https://economictimes.indiatimes.com/industry/services/retail/indian-companies-take-guard-against-rupees-strikes-fast-track-exports-deepen-localisation-extend-currency-hedging-timelines/articleshow/131358171.cms"
+    },
+    {
+      "query_id": "a8-temporal-09",
+      "passage_id": "economic_times-d4ab1ecc281f974ecb33#p6",
+      "decision": "relevant",
+      "evidence_span": "the hedging is done more prudently and for a longer-term horizon.",
+      "reason": "Direct quote explains longer hedges in response to rupee pressure.",
+      "source_text_sha256": "d89ca8369100fbcc92136270a0e88230aaca32f557d10960dcbb66c4f7acf0b7",
+      "source_url": "https://economictimes.indiatimes.com/industry/services/retail/indian-companies-take-guard-against-rupees-strikes-fast-track-exports-deepen-localisation-extend-currency-hedging-timelines/articleshow/131358171.cms"
+    },
+    {
+      "query_id": "a8-temporal-10",
+      "passage_id": "economic_times-eba05541432f0587451a#p3",
+      "decision": "relevant",
+      "evidence_span": "with the RBI bearing hedging costs, and banks can offer better returns to overseas depositors.",
+      "reason": "Explains how FCNR(B) measures were expected to mobilise foreign capital.",
+      "source_text_sha256": "d5e91f8254afe4faeaffbd90a5cdec89921adf504864cdcf57a3b81c5ea679d6",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/policy/rbis-measures-may-attract-usd-60-70-billion-foreign-capital-support-rupee-india-ratings/articleshow/131635200.cms"
+    },
+    {
+      "query_id": "a8-temporal-10",
+      "passage_id": "economic_times-eba05541432f0587451a#p4",
+      "decision": "relevant",
+      "evidence_span": "providing a meaningful buffer to the rupee while easing broader funding pressures",
+      "reason": "Identifies the expected currency/funding benefit; preserves the forecast as an expectation.",
+      "source_text_sha256": "66c8d6e323aed5a51d1d3c5f45523ef910c3715e9fbfc35863e4ece9b4a5705c",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/policy/rbis-measures-may-attract-usd-60-70-billion-foreign-capital-support-rupee-india-ratings/articleshow/131635200.cms"
+    },
+    {
+      "query_id": "a8-temporal-11",
+      "passage_id": "economic_times-03957d7c91f25d7dff09#p4",
+      "decision": "relevant",
+      "evidence_span": "Poor rainfall can also fuel food inflation",
+      "reason": "Directly connects deficient rainfall to food inflation and gives perishable examples.",
+      "source_text_sha256": "1de1b677167d644d5c0fbed17539d1266181f62230cb79d9eb3d3cf3b92f75b5",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/agriculture/weak-monsoon-threat-looms-food-inflation-fears-rise/articleshow/131753878.cms"
+    },
+    {
+      "query_id": "a8-temporal-12",
+      "passage_id": "mospi-06aa3b9c37ec2bad5137#p7",
+      "decision": "relevant",
+      "evidence_span": "Retail inflation based on Consumer Price Index in May, 2026 is 3.93%",
+      "reason": "Correct May headline release value.",
+      "source_text_sha256": "eed2ffe49da95ab05997ac2ce8d07c3b4ebf8cd4ef312216c91d035a7bf5c625",
+      "source_url": "https://mospi.gov.in/uploads/latestReleases/latest_release_1781259853555_04875571-19f2-4830-9cad-3a1bfd5992e1_Press_Release_of_CPI_for_May_2026.pdf"
+    },
+    {
+      "query_id": "a8-temporal-12",
+      "passage_id": "mospi-06aa3b9c37ec2bad5137#p8",
+      "decision": "relevant",
+      "evidence_span": "Year on year food inflation, based on Consumer Food Price Index, in May, 2026 is 4.78%",
+      "reason": "Correct May food release value.",
+      "source_text_sha256": "bbd3a2efec12bd56a5f9356e26b0ebfdb39c6f52b264c08dfa0c6bcad643e0f9",
+      "source_url": "https://mospi.gov.in/uploads/latestReleases/latest_release_1781259853555_04875571-19f2-4830-9cad-3a1bfd5992e1_Press_Release_of_CPI_for_May_2026.pdf"
+    },
+    {
+      "query_id": "a8-temporal-13",
+      "passage_id": "economic_times-53fbe85760a1ee289abd#p1",
+      "decision": "relevant",
+      "evidence_span": "Saudi Arabia cut its August crude oil prices for Asian buyers amid easing geopolitical tensions in West Asia",
+      "reason": "The paragraph explicitly links this price news to rupee strength and short covering.",
+      "source_text_sha256": "9213e599b834d203b001573f684ad9f0dcc4681efbae61584d0a44403ecbb3d7",
+      "source_url": "https://economictimes.indiatimes.com/markets/forex/forex-news/rupee-rallies-50-paise-as-cheaper-crude-lifts-sentiment/articleshow/132251012.cms"
+    },
+    {
+      "query_id": "a8-temporal-13",
+      "passage_id": "economic_times-53fbe85760a1ee289abd#p4",
+      "decision": "relevant",
+      "evidence_span": "Resumption of foreign portfolio investor (FPI) flows into Indian equities also helped stabilise the rupee.",
+      "reason": "Directly states the portfolio-flow contribution.",
+      "source_text_sha256": "c65740f0ff9fd6c517fcd2810cb7a2183210b9535f73281a312636876b76addf",
+      "source_url": "https://economictimes.indiatimes.com/markets/forex/forex-news/rupee-rallies-50-paise-as-cheaper-crude-lifts-sentiment/articleshow/132251012.cms"
+    },
+    {
+      "query_id": "a8-temporal-14",
+      "passage_id": "economic_times-e42c1614e79c76d44cd6#p1",
+      "decision": "relevant",
+      "evidence_span": "consumer inflation averaged 3.9% in April-June, compared with the RBI's forecast of 4.2%.",
+      "reason": "Explicitly says ANZ and Citi withdrew the August hike forecast after this downside inflation surprise.",
+      "source_text_sha256": "2edfd87123f35fd44616e4c639b7ccebd784292550201978ac8853c53bbda030",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/policy/softer-inflation-trips-rate-hike-forecasts-rbi-hold-more-likely/articleshow/132424461.cms"
+    },
+    {
+      "query_id": "a8-temporal-14",
+      "passage_id": "economic_times-e42c1614e79c76d44cd6#p2",
+      "decision": "relevant",
+      "evidence_span": "the central bank prioritises growth over inflation management.",
+      "reason": "Gives a reported policy-priority reason for the hold expectations and forecast withdrawal.",
+      "source_text_sha256": "d5d3fdfa4788a1ecded99a831a28b39e9a7acf65ff6b390c33aafd726f3cd969",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/policy/softer-inflation-trips-rate-hike-forecasts-rbi-hold-more-likely/articleshow/132424461.cms"
+    },
+    {
+      "query_id": "a8-temporal-15",
+      "passage_id": "economic_times-93fabb749518f15dca9c#p4",
+      "decision": "relevant",
+      "evidence_span": "pushed the rupee to a record low in May, depressing returns for foreign currency holders.",
+      "reason": "Links oil costs and selling to rupee depreciation and foreign-currency returns.",
+      "source_text_sha256": "efd3bf98cca6c899151faa1f0e5a802909dd9276e4532159079c8fb2ee2461e1",
+      "source_url": "https://economictimes.indiatimes.com/markets/us-stocks/news/global-funds-revisit-indian-stocks-as-oil-rupee-risks-recede/articleshow/132103821.cms"
+    },
+    {
+      "query_id": "a8-temporal-15",
+      "passage_id": "economic_times-93fabb749518f15dca9c#p5",
+      "decision": "relevant",
+      "evidence_span": "Overseas investors cited stretched valuations alongside FX and oil risks for reallocating capital elsewhere.",
+      "reason": "Explicitly states why foreign investors reallocated.",
+      "source_text_sha256": "036c3c3e0c1d54fe80289f8e54273de7a6cd6553d548ab15581f634dd6c92406",
+      "source_url": "https://economictimes.indiatimes.com/markets/us-stocks/news/global-funds-revisit-indian-stocks-as-oil-rupee-risks-recede/articleshow/132103821.cms"
+    },
+    {
+      "query_id": "a8-temporal-16",
+      "passage_id": "economic_times-f5617819f84c7a577ae6#p3",
+      "decision": "relevant",
+      "evidence_span": "He also flagged risks from fresh Trump tariffs.",
+      "reason": "A direct partial answer about the governor's trade-risk warning.",
+      "source_text_sha256": "f16ab7317602fb6249215e84133f188b83da2be42dc0b8548c9fe932d762b00c",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/rbis-rate-gdp-inflation-verdict-comes-with-a-stark-warning-mpc-meeting-rbi-repo-rate-rbi-measures-on-war-gdp-inflation-rbi-warning-on-war-measures-amid-iran-us/articleshow/132889324.cms"
+    },
+    {
+      "query_id": "a8-temporal-16",
+      "passage_id": "economic_times-f5617819f84c7a577ae6#p5",
+      "decision": "relevant",
+      "evidence_span": "disrupting key trade routes and supply chains, amplifying market volatility and denting business sentiment.",
+      "reason": "Direct statement of the supply-chain/trade-route warning.",
+      "source_text_sha256": "d7a5f4955d326a773fbf5a43a0aea8e46ae41e850a53d60452d30b73ccd5a85e",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/rbis-rate-gdp-inflation-verdict-comes-with-a-stark-warning-mpc-meeting-rbi-repo-rate-rbi-measures-on-war-gdp-inflation-rbi-warning-on-war-measures-amid-iran-us/articleshow/132889324.cms"
+    },
+    {
+      "query_id": "a8-temporal-16",
+      "passage_id": "economic_times-f5617819f84c7a577ae6#p6",
+      "decision": "relevant",
+      "evidence_span": "Trade uncertainty lingered as the US imposed fresh tariffs",
+      "reason": "Direct statement of the new tariff and global outlook risk.",
+      "source_text_sha256": "0dc53d734db72a52f7dd34255e1ccedfa110ed2883dfdbf9a17c225786ce8554",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/rbis-rate-gdp-inflation-verdict-comes-with-a-stark-warning-mpc-meeting-rbi-repo-rate-rbi-measures-on-war-gdp-inflation-rbi-warning-on-war-measures-amid-iran-us/articleshow/132889324.cms"
+    },
+    {
+      "query_id": "a8-temporal-17",
+      "passage_id": "economic_times-b8c7707dba3c6a2ff9a7#p1",
+      "decision": "relevant",
+      "evidence_span": "supported by the depreciation of the Indian rupee and higher prices amid supply disruptions.",
+      "reason": "Directly explains exporters' April-June revenue growth.",
+      "source_text_sha256": "51fb6eda388b8e035a9fde6edd46987935fd876fd7c76f189f0b48dc7c07e32d",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/rupee-price-tailwinds-for-indian-exporters-may-fade-in-h2fy27-nuvama/articleshow/133327054.cms"
+    },
+    {
+      "query_id": "a8-temporal-17",
+      "passage_id": "economic_times-b8c7707dba3c6a2ff9a7#p2",
+      "decision": "relevant",
+      "evidence_span": "INR depreciation along with high prices owing to supply shock have supported the top line.",
+      "reason": "Direct quoted revenue mechanism; later fading remains a forecast.",
+      "source_text_sha256": "ffd7340d8c2420ca5d4b6b248a64864647c4ab1b2722556990dca780d30d21aa",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/rupee-price-tailwinds-for-indian-exporters-may-fade-in-h2fy27-nuvama/articleshow/133327054.cms"
+    },
+    {
+      "query_id": "a8-temporal-17",
+      "passage_id": "economic_times-b8c7707dba3c6a2ff9a7#p3",
+      "decision": "relevant",
+      "evidence_span": "Nuvama attributed the acceleration mainly to prices and depreciation of the rupee.",
+      "reason": "Names the drivers of the stated first-quarter revenue acceleration.",
+      "source_text_sha256": "a9472416f6bba66037b736c9c75f8e853da2bdd8047add124469c390a5ca8477",
+      "source_url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/rupee-price-tailwinds-for-indian-exporters-may-fade-in-h2fy27-nuvama/articleshow/133327054.cms"
+    },
+    {
+      "query_id": "a8-temporal-18",
+      "passage_id": "mospi-5cc04c551825955916a3#p6",
+      "decision": "relevant",
+      "evidence_span": "Retail inflation based on Consumer Price Index in July, 2026 is 4.45%",
+      "reason": "Correct July headline release value.",
+      "source_text_sha256": "bf8265e9744f027550878c80d7824be089e5852338200ec65176a0db14080e6e",
+      "source_url": "https://mospi.gov.in/uploads/latestReleases/latest_release_1786529680747_3113661d-1a2b-4b9a-af06-b340193ef9a0_Press_Release_CPI_July_2026.pdf"
+    },
+    {
+      "query_id": "a8-temporal-18",
+      "passage_id": "mospi-5cc04c551825955916a3#p7",
+      "decision": "relevant",
+      "evidence_span": "Year on year food inflation, based on Consumer Food Price Index, in July, 2026 is 5.52%",
+      "reason": "Correct July food release value.",
+      "source_text_sha256": "bb76ca94d3700951ab8194afe461835d5f64e396d7454a8dc31b3d185543bd51",
+      "source_url": "https://mospi.gov.in/uploads/latestReleases/latest_release_1786529680747_3113661d-1a2b-4b9a-af06-b340193ef9a0_Press_Release_CPI_July_2026.pdf"
+    },
+    {
+      "query_id": "a8-temporal-19",
+      "passage_id": "businessline-cb14e11b088b37ebeb00#p0",
+      "decision": "relevant",
+      "evidence_span": "expensive imported LNG and weak fuel marketing margins squeeze downstream profitability",
+      "reason": "Explicitly links energy input costs and downstream margins.",
+      "source_text_sha256": "07bcd79719a1485a0364983f817305bfe02fad65f16d483f0df44138b889de24",
+      "source_url": "https://www.thehindubusinessline.com/markets/commodities/indias-oil-and-gas-sector-to-remain-under-pressure-as-crude-lng-costs-rise/article71437678.ece"
+    },
+    {
+      "query_id": "a8-temporal-19",
+      "passage_id": "businessline-cb14e11b088b37ebeb00#p3",
+      "decision": "relevant",
+      "evidence_span": "the benefit is being increasingly offset by higher crude costs and marketing losses.",
+      "reason": "Explains the offset to strong refining spreads.",
+      "source_text_sha256": "67d63511061887026e63dd63ef63b97479c2916e9b4bf1a6f07a1761bb70e7d7",
+      "source_url": "https://www.thehindubusinessline.com/markets/commodities/indias-oil-and-gas-sector-to-remain-under-pressure-as-crude-lng-costs-rise/article71437678.ece"
+    },
+    {
+      "query_id": "a8-temporal-19",
+      "passage_id": "businessline-cb14e11b088b37ebeb00#p5",
+      "decision": "relevant",
+      "evidence_span": "higher LNG prices beginning to affect the cost structure of gas-consuming businesses.",
+      "reason": "States the LNG cost pressure and expected effect; not a causal estimate.",
+      "source_text_sha256": "06255ad2206db084153ac64a9e7e46402c392f6ef9624c5318e5f8ae5c0114ee",
+      "source_url": "https://www.thehindubusinessline.com/markets/commodities/indias-oil-and-gas-sector-to-remain-under-pressure-as-crude-lng-costs-rise/article71437678.ece"
+    },
+    {
+      "query_id": "a8-temporal-20",
+      "passage_id": "economic_times-884d2e7bb89039d53473#p1",
+      "decision": "relevant",
+      "evidence_span": "selling dollars through government-owned banks to prevent further weakening of the rupee beyond the 96 level.",
+      "reason": "States the contemporaneous RBI intervention reported by traders.",
+      "source_text_sha256": "e64ebfd7c1f2acc362f3e47d9ed99d34efe73c625a657472f2e2cb43d2911d54",
+      "source_url": "https://economictimes.indiatimes.com/markets/forex/forex-news/rupee-falls-22-paise-as-crude-dollar-demand-rise/articleshow/134462424.cms"
+    },
+    {
+      "query_id": "a8-temporal-20",
+      "passage_id": "economic_times-884d2e7bb89039d53473#p2",
+      "decision": "relevant",
+      "evidence_span": "the local currency continued to be under pressure amid a surge in global bond yields.",
+      "reason": "States yield pressure and the reported inflation/Fed-hike expectations.",
+      "source_text_sha256": "dafc308155a9835b08b9520caba824c6958bbc4f395e00a940d847504d877af8",
+      "source_url": "https://economictimes.indiatimes.com/markets/forex/forex-news/rupee-falls-22-paise-as-crude-dollar-demand-rise/articleshow/134462424.cms"
+    },
+    {
+      "query_id": "a8-temporal-20",
+      "passage_id": "economic_times-884d2e7bb89039d53473#p3",
+      "decision": "relevant",
+      "evidence_span": "A rebound in crude oil prices, elevated bond yields and rising expectations of higher interest rates",
+      "reason": "Directly names the three reported currency headwinds.",
+      "source_text_sha256": "5f337697d4ab0e77f0e33be1a510de1cc03572ce1eddca6f1d8976b78b005617",
+      "source_url": "https://economictimes.indiatimes.com/markets/forex/forex-news/rupee-falls-22-paise-as-crude-dollar-demand-rise/articleshow/134462424.cms"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "status": "stopped after failed source audit; outputs excluded from retrieval labels and decisions",
+  "method": "automated local language-model evidence review; not independent human annotation",
+  "complete": false,
+  "planned_batches": 73,
+  "completed_batches": 11,
+  "items_classified": 313,
+  "decisions": {
+    "relevant": 91,
+    "uncertain": 73,
+    "irrelevant": 149
+  },
+  "parse_invalid_completed_batches": 0,
+  "model_calls_with_completed_usage": 11,
+  "prompt_tokens": 46463,
+  "completion_tokens": 5574,
+  "completed_model_call_wall_s": 812.8287512511015,
+  "in_flight_interruption_usage": "not measured; no fabricated usage estimate",
+  "packet_sha256": "1cd044b3801589b332b5e2e62e5a7add9313f48e3942777f18811d2812297f65",
+  "corpus_sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+  "model": "mlx-community/Qwen3-8B-4bit",
+  "revision": "545dc4251c05440727734bcd94334791f6ab0192",
+  "audit_method": "Codex inspected full question and full source paragraphs; purposive failure examples, not a representative accuracy sample",
+  "failed_examples": [
+    {
+      "query_id": "a8-temporal-01",
+      "passage_id": "economic_times-852dc1785e8e1d3ce1ae#p15",
+      "reason": "States import dependence, but no fiscal/external-balance or rupee mechanism."
+    },
+    {
+      "query_id": "a8-temporal-01",
+      "passage_id": "mint-820a071eb59246e8f4e4#p9",
+      "reason": "Only states the currency trading range and pressure; does not explain the requested mechanism."
+    },
+    {
+      "query_id": "a8-temporal-01",
+      "passage_id": "economic_times-3819edd1d8edd1294e59#p3",
+      "reason": "Global oil-price/inflation background; no direct answer about India fiscal/external balances or rupee."
+    }
+  ],
+  "conclusion": "Formatting and exact-substring validation do not establish relevance. Broad background positives make this classifier unsuitable for accepting labels.",
+  "human_review_files_changed": false,
+  "independent_human_review": false,
+  "research_acceptance": false,
+  "raw_batches": "data/interim/automated_relevance_v3_20261025_v3",
+  "batch_sha256": {
+    "batch_0000.json": "999e03bddd8f23fedcf3d6c1e94b3af2714fc55b29ae0d5dce1f3b28adcb5d2d",
+    "batch_0001.json": "fbf24d5ade3425ffb7c45830eb9df72b2257823830fb68f20e26da63ee69c07d",
+    "batch_0002.json": "84bc7a6c9725fa3e9b0dbb68bf8a58a0abecb40c93ad57a77c60a2a41282ce39",
+    "batch_0003.json": "f8fa33df995e6e97bd5ec845d0754918db65de3f317e2e9b5a1379e7a8c206f4",
+    "batch_0004.json": "62e1da045a2fc18aaa7173c39534464f5cd70100de7d80e7c05786bec340babe",
+    "batch_0005.json": "7d1f33dd8a6ace63797a1b533b5c766da0e06885aecf909fe4eab46f96a54e72",
+    "batch_0006.json": "7ba97e779b677a98dcf5e26225d50dd1096f54910752eaf2d15b0ba1c4404f00",
+    "batch_0007.json": "249cf25663b4e6a83a3a06913679a67237e3617cf941010f93a4296ef1a48cc8",
+    "batch_0008.json": "a871e43dec45eddb686ac6d4e03378c7718f5a2e31b47ed29b862dd8eab5f5bd",
+    "batch_0009.json": "bb216e425f78fcb0c5868356255f2abfd652f2db416c7594cc7a18594f9f0266",
+    "batch_0010.json": "d9c00f543d0194f5d255e6eb8cb8fcce744c4c5df1ac48dc2ce80487418e86f3"
+  },
+  "previous_failed_attempts": [
+    {
+      "folder": "data/interim/automated_relevance_v3_20261025",
+      "batches": 2,
+      "prompt_tokens": 8519,
+      "completion_tokens": 1324,
+      "model_call_wall_s": 127.82019466592465,
+      "status": "invalid output; excluded"
+    },
+    {
+      "folder": "data/interim/automated_relevance_v3_20261025_v2",
+      "batches": 1,
+      "prompt_tokens": 4211,
+      "completion_tokens": 58,
+      "model_call_wall_s": 29.313641916960478,
+      "status": "invalid output; excluded"
+    }
+  ]
+}

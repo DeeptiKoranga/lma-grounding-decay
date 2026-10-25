@@ -1,4 +1,4 @@
-# Integrated development pipeline — 23 October 2026
+# Integrated development pipeline — updated 25 October 2026
 
 Current Track A delivery is in `reports/track_a_progress.md`. The active root
 corpus is repaired v3 (1,177 documents, 28,391 passages). All six series contain
@@ -6,7 +6,16 @@ corpus is repaired v3 (1,177 documents, 28,391 passages). All six series contain
 retains archived v1; audits/review preparation must explicitly select
 `data/interim/frozen_v1_20261023/articles.jsonl`. Full fresh-source B0/B1/B2/M
 reproduction now matches all 24 original graphs. Independent research acceptance
-remains open. Current checks: 586 tests, Ruff and Black pass.
+remains open. Current checks: 620 tests, Ruff and Black pass.
+
+25 October update: **620 tests pass**, with Ruff and Black clean. The original
+161-observation historical store remains unchanged. A separate 317-observation
+snapshot provides later-captured Brent daily closes and monthly basket/yield/FPI
+histories; real read-layer checks hide these backfills at September cutoffs.
+The source-audited 37-seed/20-question retrieval rerun remains a provisional
+diagnostic and does not change shared run settings or human acceptance. See
+`reports/retrospective_series_read_validation_20261025.json` and
+`reports/pilot_retriever_v3_audited_seeds_20261025.md`.
 
 The software path now connects corpus/retrieval, model generation, extraction,
 verification, tools, controller, condition configs, run logging and evaluation.
@@ -104,10 +113,13 @@ current verification is recorded in `reports/track_a_validation.json`.
 2. Corpus acceptance: RBI coverage, publisher balance, broader extraction review
    and reproduction terms remain incomplete. The saved corpus is a convenience
    collection with integrity checks, not a representative accepted sample.
-3. Series and episodes: all six files now have observations, but Brent, benchmark
+3. Series and episodes: all six historical files have observations, but Brent, benchmark
    yields, FPI and Indian basket have sparse histories with explicit measurement
    limitations. Eight
-   anchor episodes have not been independently confirmed from complete series.
+   anchor episodes have not been independently confirmed from complete original-vintage series.
+   The separate October-captured backfills cover all seven months with explicit
+   measurement differences; they cannot repair historical availability or daily
+   resolution gaps automatically.
 4. Annotation: the six new queries span six months and are source-backed, but
    remain candidates. They do not replace the planned 30-query split, six
    reviewer gold graphs, ten annotated test queries, independent support labels,

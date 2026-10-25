@@ -1,4 +1,4 @@
-# Mid-submission working draft — 23 October 2026
+# Mid-submission working draft — 25 October 2026
 
 **Status: implementation checkpoint; research results and team acceptance pending.**
 This is a working draft for the 30 October submission, not a finished report or
@@ -12,7 +12,10 @@ development corpus contains 1,177 documents and 28,391 passages. Its all-month
 series now have data, with partial histories. Existing 42-graph results and the
 24-graph fresh reproduction retain archived v1. Do not merge their corpus
 versions or present unreviewed diagnostics as research scores. Current local
-checks: **586 tests, Ruff and Black pass**.
+checks: **620 tests, Ruff and Black pass**. A separate 317-observation retrospective
+snapshot now covers all seven months for four previously sparse series, with
+October availability and explicit measurement differences. It is excluded from
+the historical runs.
 
 ## What is built
 
@@ -56,12 +59,19 @@ reviewer has not been selected.
 
 ## Evidence available now
 
-- Current checkout: 586 tests pass; Ruff and Black pass. Fresh-clone checks
+- Current checkout: 620 tests pass; Ruff and Black pass. Fresh-clone checks
   and their source commits are recorded in `reports/track_a_validation.json`.
 - Current v3 retrieval comparison on 20 unreviewed March–September questions:
   Recall@10 is 0.4333 BM25, 0.5167 alias BM25, 0.6000 dense, 0.5833 hybrid and
   0.7667 dense plus reranking. These incomplete machine seeds cannot settle
   D-02/D-03. Historical March results remain separate.
+- A separate Codex source audit retained 37 of the 43 seeds as direct answers,
+  rejected four background/outcome-only passages and left two uncertain. The
+  rerun on the same 20 questions gave Recall@10 of 0.4333 BM25, 0.4917 alias,
+  0.6000 dense, 0.5583 hybrid and 0.7667 dense plus reranking. This is a
+  development sensitivity check, not independent human annotation or full-pool
+  acceptance. The attempted local Qwen pool screen was rejected after source
+  inspection; its labels were not used.
 - The model chose the expected next tool on 5/40 scripted states (12.5%);
   34/40 calls (85%) passed schema/cutoff checks. This weak synthetic result
   keeps model/prompt selection open; it does not evaluate the executed
@@ -74,6 +84,14 @@ reviewer has not been selected.
   news vintages, not complete official histories. Units, timing and benchmark
   identities are recorded; no missing value is filled. Unverified dynamic CDSL
   and undated FBIL candidates remain excluded.
+- A separate retrospective snapshot contains 317 observations: original CPI 7
+  and FX 141, Brent vendor continuous financial-futures daily closes 148, and
+  monthly PPAC basket, OECD/FRED main ten-year yield and CDSL FPI seven each.
+  The new histories cover March–September but have verified October capture
+  dates, not invented historical release dates. An offline replay reproduces
+  all six CSV hashes; the read layer excludes every new backfill at September
+  cutoffs. Monthly values and different Brent/yield definitions limit episode
+  confirmation. `reports/series_coverage_20261025.png` visualizes both stores.
 
 The seven-condition run completed all 42 graphs and 227 edges. It logged 87
 model calls and 188 tool calls; graph and recorded-trace checks pass. Fifteen
@@ -100,8 +118,11 @@ this development assembly is not a single-version frozen sweep.
 OEA supplies some official coverage as a recorded source-list deviation. The
 Indian basket is monthly and partial; it cannot confirm every daily episode.
 Brent, identified benchmark 10-year yields and one FPI observation are now
-present as sparse news vintages; complete histories and episode confirmation
-remain missing. The local MLX run replaces no claimed Kaggle execution: the notebook is
+present as sparse news vintages. Later-captured daily/monthly snapshots are now
+available separately; complete original-vintage histories and episode confirmation
+remain missing. Business Standard remains inaccessible under its robots policy,
+and the RBI Bulletin alternative returned a bot challenge rather than source
+content. These checks add no publisher/official coverage. The local MLX run replaces no claimed Kaggle execution: the notebook is
 an unexecuted handoff template and no Kaggle GPU hours are claimed. The HTTP
 adapters are implemented but not exercised as a model-comparison result. No paid
 API request was made.
@@ -116,7 +137,7 @@ TA decisions. This draft leaves those decisions open.
 | Risk | Current evidence | Next action and acceptance criterion |
 |---|---|---|
 | Annotation bottleneck | Reviewer not assigned; all packet attestations blank | Assign reviewers; correct prose, then complete blinded support labels and an independently double-annotated subset |
-| Incomplete temporal/financial grounding | Sparse Brent/yield/FPI/basket histories; unconfirmed episodes | Acquire the exact required definitions/vintages, then confirm or drop/redate each anchor |
+| Incomplete temporal/financial grounding | Original vintages remain sparse; separate retrospective histories have October availability and some definition/frequency differences | Validate exact episode measurements and original availability, then confirm or drop/redate each anchor |
 | Selection bias | All-month machine-curated pilot; concentrated sources | Broaden reviewed pairs and source/extraction checks before accepting model/retriever settings |
 | Verifier abstention hides lost coverage | Some edges can remain inferred or unchecked at budget | Review reference graphs and report recall guard alongside UER; retain null denominators |
 | Quotation errors in baselines | Exact-span failures in actual generated outputs | Preserve them in review and report structural counts separately from semantic judgments |
