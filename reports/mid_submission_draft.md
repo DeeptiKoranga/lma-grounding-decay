@@ -15,13 +15,20 @@ These are single Codex judgments with prior exposure to results, not independent
 human research scores. The new human-review packet is blank.
 
 The current checkout and a new clean environment with optional PDF/extraction
-dependencies pass 630 tests. A committed-source reparse reproduces all corpus
+dependencies pass 637 tests. The earlier committed-source reparse reproduces all corpus
 and archive hashes. All six series retain 161 original observations; the
 317-observation October snapshot is available only for retrospective checks.
 Original-vintage gaps, inaccessible publishers and source permissions are
 explicit limitations. Existing 42-graph outputs and the 24-graph reproduction
 retain archived v1; they are not v7 experiments. Final support/UER figures
 still require the separate experiment-review work.
+
+The subsequent official-source audit checks all 61 retained PDF file versions
+and seven SEBI annexures. Five dated total-FPI candidates remain separate
+because they include mutual-fund investment beyond the existing series. Dated
+primary announcements now support April's domestic ATF announcement and the
+August RBI meeting; this supplies Track B evidence, not independent anchor
+acceptance. See `reports/track_a_followup_20261026.json`.
 
 ## What is built
 
@@ -65,7 +72,7 @@ reviewer has not been selected.
 
 ## Evidence available now
 
-- Current checkout: 630 tests pass; Ruff and Black pass. Fresh-clone checks
+- Current checkout: 637 tests pass; Ruff and Black pass. Fresh-clone checks
   and their source commits are recorded in `reports/track_a_clean_reproduction_20261026.json`.
 - Historical v3 retrieval comparison on 20 March–September questions:
   Recall@10 is 0.4333 BM25, 0.5167 alias BM25, 0.6000 dense, 0.5833 hybrid and

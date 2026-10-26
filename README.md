@@ -24,7 +24,7 @@ Codex review and development diagnostics, not independent human research scores.
 All six macro series retain their 161 dated original observations. A separate
 317-observation retrospective snapshot remains excluded at historical cutoffs.
 Source gaps, permissions and anchor limitations are explicitly documented.
-The clean setup passes **630 tests** after optional PDF/extraction dependencies
+The current suite passes **637 tests** after optional PDF/extraction dependencies
 are installed; committed-source reparse reproduces the archive hash.
 
 The new independent-review workspace is
@@ -33,6 +33,13 @@ attestations are blank. Research acceptance remains pending. Earlier v1 runs
 and the v3 review are preserved with their original corpus bindings. See
 [Track A delivery](reports/track_a_progress.md) and
 [reproduction instructions](docs/reproduction.md).
+
+
+The follow-up audit checks every retained official PDF version and seven SEBI
+annexures. Five total-FPI candidates remain separate because their asset coverage
+differs from the current series. Dated primary announcements now support the
+April ATF announcement and August RBI meeting; final anchor acceptance remains
+with Track B. See [the follow-up record](reports/track_a_followup_20261026.json).
 
 ## What this is
 
@@ -62,7 +69,7 @@ remain required. All six macro series are populated; basket, Brent, benchmark yi
 coverage remain partial and do not confirm the planned anchor episodes.
 
 The 23 October local integration completed all 42 graphs across six unreviewed
-v1 candidates; current checks pass 630 tests. The separate synthetic tool-choice probe succeeded
+v1 candidates; current checks pass 637 tests. The separate synthetic tool-choice probe succeeded
 on only 5/40 expected actions, so model selection remains open. Execution and
 structural validity do not establish research performance. See
 [the validation and remaining gates](reports/integration_status.md).

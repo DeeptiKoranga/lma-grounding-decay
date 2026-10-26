@@ -163,3 +163,25 @@ core/PDF environment and source checkout; retrieval/MLX weights and their heavy
 runtimes are reused, and other machines/Kaggle are not certified. Final corpus
 and archive identity and the exact setup/replay logs are recorded in
 `reports/track_a_clean_reproduction_20261026.json`.
+
+## 26 October additional official-source audit
+
+The follow-up acquired the public SEBI listing, September bulletin and seven
+annexures. Four annexures pass checksum, table-identity and file-version checks;
+three are excluded (one known later file version and two invalid downloaded ZIP
+copies). Five April–August total-FPI candidates have native USD values and
+conservative publication dates. They include a broader investment universe and
+remain outside the canonical series; no FX conversion or missing value is
+invented. The primary ATF and August RBI web checks provide episode facts but
+no new raw originals or corpus additions. Robots HTTP 403/418 stopped those
+collectors. All 61 retained official PDFs pass the known-later-metadata screen;
+this does not establish unchanged historical bytes.
+
+At source `645b999`, all **637 tests** pass locally and in the existing clean
+checkout/environment, with Ruff/Black clean. The seven added tests check table
+identity, native currency, publication/version timing, arithmetic, formula-error
+values, future observations and incomplete ZIP downloads. A fresh-source replay
+of the SEBI audit reproduces the report hash exactly. No new environment,
+heavy model run, paid API, Kaggle execution or independent human review occurred.
+Acquisition and review wall times were not instrumented; none are estimated.
+See `reports/track_a_followup_validation_20261026.json`.

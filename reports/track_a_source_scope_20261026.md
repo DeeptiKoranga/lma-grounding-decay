@@ -63,3 +63,16 @@ text evidence corpus. Lifestyle/entertainment pages and embedded related-story
 links are also excluded. The original v3 corpus and completed review remain
 available as immutable historical inputs; changed passages need new index and
 review identities.
+
+## Follow-up primary-source findings
+
+The August 5 RBI statement was readable through the web tool and is cited in
+`reports/track_a_followup_20261026.json`. The bounded collector still stopped at
+robots HTTP 418; no RBI source original was admitted or permission inferred.
+The dated April 1 PIB ATF announcement was also readable, while the collector
+stopped at robots HTTP 403. These checks support specific episode facts and do
+not remove the corpus acquisition shortfalls. Seven public SEBI annexures and
+one bulletin were acquired with robots checks; original assets remain local.
+Source terms and the broader total-FPI definition require separate treatment
+from the existing series and historical runs. No external messages or source
+permission requests were sent.

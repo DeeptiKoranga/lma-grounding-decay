@@ -20,6 +20,46 @@ replaces the 25 October status, preserved as `track_a_progress_20261025.md`.
 | Reproduction/integration | 630 tests pass with Ruff/Black clean in the working checkout and a fresh environment with optional PDF/extraction packages. Committed source rebuilds the final corpus/archive from checksummed local originals. Saved-index reload uses two real query embeddings. | Core/PDF dependencies were installed into a new environment from local package cache. Heavy retrieval models/runtime and original data caches were reused; other machines and Kaggle are untested. The earlier 24/24 graph reproduction remains v1. |
 | Reports, figures and handoff | Current corpus/series figures, selection, provenance, source scope, compute record, reproduction guide and mid-submission draft updated. New 82-file human-review workspace contains 73 sources/originals and all 2,035 candidates; all forms and attestations blank. | All 83 files in the original v3 delivery are unchanged. Actual blank corpus/relevance exports fail without output. No final UER, reference recall, agreement or human acceptance score is produced. |
 
+## Additional source and acceptance work — 26 October follow-up
+
+The user requested that the remaining work be handled without arranging another
+reviewer. The existing development review remains complete. An assistant cannot
+supply the independent human identity/blinding required by the study protocol;
+the human forms and research acceptance therefore remain blank.
+
+Further primary-source work is now complete:
+
+- All 61 retained official PDFs were checked for file creation/modification dates
+  later than their declared publication. All have comparable metadata; no known
+  later-version conflict was found. This detects known conflicts, not unknown
+  historical edits or full extraction correctness.
+- The dated [PIB announcement](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2247895&lang=2&reg=3)
+  supports the April 1 domestic ATF announcement and its limited 25 percent
+  increase. It does not provide a city-specific daily price series.
+- The [August 5 RBI statement](https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=63288)
+  confirms the August 3–5 meeting and unchanged 5.25 percent repo rate. Primary
+  content was read through the web tool; the collector remains blocked and no
+  new RBI original was added to the corpus. Track B anchor acceptance is open.
+- Seven public SEBI annexures were acquired. Four pass the file/version/table
+  checks, yielding five distinct April–August total-FPI candidates with native
+  USD values and conservative publication dates. The August annexure postdates
+  its listed release and is excluded; two other downloaded copies are invalid
+  ZIP files. The total includes mutual-fund investment and cannot be mixed with
+  the current equity-plus-debt series. All five candidates and their source
+  cells are recorded separately; canonical series remain at 161 observations.
+
+The follow-up implementation adds seven meaningful publication, table identity,
+unit, arithmetic, future-date and corrupt-download checks. Current local and
+fresh-checkout suites pass **637 tests**. The earlier 630-test delivery and
+source-rebuild receipts remain unchanged historical evidence.
+
+See `reports/track_a_followup_20261026.json`,
+`reports/sebi_fpi_vintage_audit_20261026.json`,
+`reports/official_pdf_version_audit_20261026.json` and
+`reports/track_a_followup_validation_20261026.json`. Source gaps, permissions,
+independent human acceptance and complete original-date histories remain
+requirements where the evidence above does not satisfy them.
+
 ## Final corpus and experiment boundaries
 
 Active: `data/processed/`, **v7-narrative-development**, corpus SHA-256

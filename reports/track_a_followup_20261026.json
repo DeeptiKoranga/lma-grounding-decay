@@ -1,0 +1,171 @@
+{
+  "checked_on": "2026-10-26",
+  "reviewer": "Codex",
+  "independent_human_review": false,
+  "research_anchor_acceptance": false,
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "corpus_changed": false,
+  "canonical_series_changed": false,
+  "primary_web_checks": [
+    {
+      "episode": "April ATF price increase",
+      "status": "announcement supported by dated primary source; Track B acceptance pending",
+      "source_url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2247895&lang=2&reg=3",
+      "published_on": "2026-04-01",
+      "finding": "PIB reports a limited 25 percent ATF increase for domestic scheduled carriers on domestic routes, with the announcement made that morning.",
+      "limits": "This is the announcement and its scope, not a city-specific daily rupee-per-kilolitre price history. Collector stopped at robots HTTP 403; no original source body added to the corpus.",
+      "raw_original_archived": false
+    },
+    {
+      "episode": "August RBI meeting",
+      "status": "meeting and decision supported by dated primary statement; Track B acceptance pending",
+      "source_url": "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=63288",
+      "published_on": "2026-08-05",
+      "meeting_start": "2026-08-03",
+      "meeting_end": "2026-08-05",
+      "repo_rate_percent": 5.25,
+      "decision": "unchanged; neutral stance",
+      "limits": "Primary statement read through the web tool. Collector stopped at robots HTTP 418 and the linked PDF returned a challenge. No RBI original was admitted to the frozen corpus.",
+      "raw_original_archived": false
+    }
+  ],
+  "acquisition_checks": [
+    {
+      "url": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2247895&lang=2&reg=3",
+      "checked_at": "2026-10-26T15:31:27.697114+00:00",
+      "status": "unavailable; no bypass",
+      "reason": "robots.txt unavailable (HTTP 403); collection stopped"
+    },
+    {
+      "key": "rbi_august_statement",
+      "url": "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=63288",
+      "checked_at": "2026-10-26T15:27:06.380160+00:00",
+      "status": "unavailable; no bypass",
+      "reason": "robots.txt unavailable (HTTP 418); collection stopped"
+    },
+    {
+      "key": "rbi_june_statement",
+      "url": "https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=62864",
+      "checked_at": "2026-10-26T15:27:06.627907+00:00",
+      "status": "unavailable; no bypass",
+      "reason": "robots.txt unavailable (HTTP 418); collection stopped"
+    },
+    {
+      "key": "sebi_annexure_1",
+      "url": "https://www.sebi.gov.in/sebi_data/commondocs/sep-2026/SEBI%20Bulletin%20-%20September%202026_p.xlsx",
+      "checked_at": "2026-10-26T15:27:52.555270+00:00",
+      "status": "acquired; inspection required",
+      "path": "data/raw/track_a_followup_20261026/sebi_annexure_1.xlsx",
+      "fetched_url": "https://www.sebi.gov.in/sebi_data/commondocs/sep-2026/SEBI%20Bulletin%20-%20September%202026_p.xlsx",
+      "sha256": "173271665870bea65c365da390efd67a38685097b89c44808fc078ba89070fdc",
+      "bytes": 6577051,
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    },
+    {
+      "key": "sebi_annexure_2",
+      "url": "https://www.sebi.gov.in/sebi_data/commondocs/sep-2026/Bulletins%20Aug-26%20I_p.xlsx",
+      "checked_at": "2026-10-26T15:28:16.861102+00:00",
+      "status": "acquired; inspection required",
+      "path": "data/raw/track_a_followup_20261026/sebi_annexure_2.xlsx",
+      "fetched_url": "https://www.sebi.gov.in/sebi_data/commondocs/sep-2026/Bulletins%20Aug-26%20I_p.xlsx",
+      "sha256": "f19a3b2019d5fae430826bfcf66f12fb23ad99374d72b5446c2520a06b32901f",
+      "bytes": 6170934,
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    },
+    {
+      "key": "sebi_annexure_3",
+      "url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2026/Monthly%20SEBI%20Bulletin%2027.07.2026_p.xlsx",
+      "checked_at": "2026-10-26T15:28:33.260999+00:00",
+      "status": "acquired; inspection required",
+      "path": "data/raw/track_a_followup_20261026/sebi_annexure_3.xlsx",
+      "fetched_url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2026/Monthly%20SEBI%20Bulletin%2027.07.2026_p.xlsx",
+      "sha256": "944e0bf1b8eadc7eb9b7b50658fd1ecba43cd8a57bd6c8ae6532e9d1de6c9740",
+      "bytes": 371758,
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    },
+    {
+      "key": "sebi_annexure_4",
+      "url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2026/Monthly%20SEBI%20Bulletin%20-%2003.07_p.xlsx",
+      "checked_at": "2026-10-26T15:28:33.972719+00:00",
+      "status": "acquired; inspection required",
+      "path": "data/raw/track_a_followup_20261026/sebi_annexure_4.xlsx",
+      "fetched_url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2026/Monthly%20SEBI%20Bulletin%20-%2003.07_p.xlsx",
+      "sha256": "e9b9a74226b09f9446b43e7eb116a02c3300d08c5fbdb570eccae022cad13a62",
+      "bytes": 361249,
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    },
+    {
+      "key": "sebi_annexure_5",
+      "url": "https://www.sebi.gov.in/sebi_data/commondocs/jun-2026/Monthly%20SEBI%20Bulletin%2012.06_p.xlsx",
+      "checked_at": "2026-10-26T15:28:36.089866+00:00",
+      "status": "acquired; inspection required",
+      "path": "data/raw/track_a_followup_20261026/sebi_annexure_5.xlsx",
+      "fetched_url": "https://www.sebi.gov.in/sebi_data/commondocs/jun-2026/Monthly%20SEBI%20Bulletin%2012.06_p.xlsx",
+      "sha256": "9337b40e182ef2268a95dbe5d3c18753c270ed5e78778c19a5fd641773527e7a",
+      "bytes": 4555198,
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    },
+    {
+      "key": "sebi_annexure_6",
+      "url": "https://www.sebi.gov.in/sebi_data/commondocs/apr-2026/Annexure%20Tables-30.04.2026_p.xlsx",
+      "checked_at": "2026-10-26T15:28:48.986770+00:00",
+      "status": "acquired; inspection required",
+      "path": "data/raw/track_a_followup_20261026/sebi_annexure_6.xlsx",
+      "fetched_url": "https://www.sebi.gov.in/sebi_data/commondocs/apr-2026/Annexure%20Tables-30.04.2026_p.xlsx",
+      "sha256": "e87efab477115c540859b714043ca88b35f0cd2610bee13bdbb4cd098a4ff697",
+      "bytes": 4271902,
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    },
+    {
+      "key": "sebi_annexure_7",
+      "url": "https://www.sebi.gov.in/sebi_data/commondocs/mar-2026/Annexure%20Tables%20March%202026_p.xlsx",
+      "checked_at": "2026-10-26T15:29:06.172192+00:00",
+      "status": "acquired; inspection required",
+      "path": "data/raw/track_a_followup_20261026/sebi_annexure_7.xlsx",
+      "fetched_url": "https://www.sebi.gov.in/sebi_data/commondocs/mar-2026/Annexure%20Tables%20March%202026_p.xlsx",
+      "sha256": "4e884822ab1adf88e60fd97e6fa4849887e38fdb7fedcea642ce866bf9ae1a24",
+      "bytes": 3238301,
+      "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    },
+    {
+      "key": "sebi_listing",
+      "url": "https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes&sid=4&ssid=80",
+      "checked_at": "2026-10-26T15:26:56.001191+00:00",
+      "status": "acquired; inspection required",
+      "fetched_url": "https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes&sid=4&ssid=80",
+      "path": "data/raw/track_a_followup_20261026/sebi_listing.html",
+      "content_type": "text/html",
+      "bytes": 47722,
+      "sha256": "75d01dd7b7e7d46937a43820ed01e19d520f43bccc47b198058655d0c982eef7"
+    },
+    {
+      "key": "sebi_september",
+      "url": "https://www.sebi.gov.in/reports-and-statistics/publications/sep-2026/sebi-bulletin-september-2026_104675.html",
+      "checked_at": "2026-10-26T15:26:58.485995+00:00",
+      "status": "acquired; inspection required",
+      "fetched_url": "https://www.sebi.gov.in/reports-and-statistics/publications/sep-2026/sebi-bulletin-september-2026_104675.html",
+      "path": "data/raw/track_a_followup_20261026/sebi_september.html",
+      "content_type": "text/html",
+      "bytes": 9046,
+      "sha256": "19bf1c0fbe7e1cf23b7ee710a793e56ff9adc20254be20e1cf8fa2c2a1e24414"
+    },
+    {
+      "key": "sebi_september_bulletin",
+      "url": "https://www.sebi.gov.in/sebi_data/attachdocs/sep-2026/1790161152660.pdf",
+      "checked_at": "2026-10-26T15:27:00.300254+00:00",
+      "status": "acquired; inspection required",
+      "fetched_url": "https://www.sebi.gov.in/sebi_data/attachdocs/sep-2026/1790161152660.pdf",
+      "path": "data/raw/track_a_followup_20261026/sebi_september_bulletin.pdf",
+      "content_type": "application/pdf",
+      "bytes": 1156265,
+      "sha256": "a441c650adccbd6fc9430ce5c020b3185a533bbae871db26ac998a231aa9c541"
+    }
+  ],
+  "sebi_audit": "reports/sebi_fpi_vintage_audit_20261026.json",
+  "sebi_audit_sha256": "1510d165e0bfcac8aa8e19555a8084aa421d7b6efe508fcd5158762f736bd01a",
+  "official_version_audit": "reports/official_pdf_version_audit_20261026.json",
+  "official_version_audit_sha256": "31d63feac72b44af5e83d3b3204e86b873726b14a15d5789694fb457117e4730",
+  "unchanged_human_review_delivery": "reports/track_a_reviewer_delivery_v7_20261026.json",
+  "no_permission_or_external_messages_sent": true,
+  "no_human_receipt_created": true
+}

@@ -7,7 +7,7 @@ pending. Dense retrieval is selected for development, with Recall@10 0.4259 and
 0.5296 after top-50 reranking. See `reports/track_a_progress.md`.
 
 The current checkout and clean environment with optional PDF/extraction
-packages pass **630 tests**, Ruff and Black. A clean-source reparse reproduces
+packages pass **637 tests**, Ruff and Black. The earlier clean-source reparse reproduces
 the v7 corpus/archive hashes. Historical tools retain 161 original series
 observations; the separate 317-observation October snapshot is excluded at
 March–September cutoffs. New review delivery contains wholly blank human

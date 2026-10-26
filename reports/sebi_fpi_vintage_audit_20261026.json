@@ -1,0 +1,240 @@
+{
+  "checked_on": "2026-10-26",
+  "definition": "SEBI/NSDL published total FPI net investment, including mutual-fund investment; not the canonical equity-plus-debt news measure.",
+  "definition_source": "SEBI September 2026 Bulletin, PDF page 13 footnote 4 and page 14 chart legend.",
+  "definition_source_url": "https://www.sebi.gov.in/sebi_data/attachdocs/sep-2026/1790161152660.pdf",
+  "listing": {
+    "key": "sebi_listing",
+    "url": "https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes&sid=4&ssid=80",
+    "checked_at": "2026-10-26T15:26:56.001191+00:00",
+    "status": "acquired; inspection required",
+    "fetched_url": "https://www.sebi.gov.in/sebiweb/home/HomeAction.do?doListing=yes&sid=4&ssid=80",
+    "path": "data/raw/track_a_followup_20261026/sebi_listing.html",
+    "content_type": "text/html",
+    "bytes": 47722,
+    "sha256": "75d01dd7b7e7d46937a43820ed01e19d520f43bccc47b198058655d0c982eef7"
+  },
+  "sources": [
+    {
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/sep-2026/SEBI%20Bulletin%20-%20September%202026_p.xlsx",
+      "published_on": "2026-09-23",
+      "sha256": "173271665870bea65c365da390efd67a38685097b89c44808fc078ba89070fdc",
+      "status": "valid dated total-series candidate; different universe",
+      "sheet": "56",
+      "title": "Table 56: Trends in Foreign Portfolio Investment",
+      "file_modified_on": "2026-09-22",
+      "rows": [
+        {
+          "on": "2026-04-30",
+          "value": "-7559.2",
+          "available_on": "2026-09-23",
+          "unit": "USD million, net",
+          "sheet": "56",
+          "cell": "E6",
+          "net_investment_inr_crore": "-70884.98"
+        },
+        {
+          "on": "2026-05-31",
+          "value": "-3083.44",
+          "available_on": "2026-09-23",
+          "unit": "USD million, net",
+          "sheet": "56",
+          "cell": "E7",
+          "net_investment_inr_crore": "-29483.96"
+        },
+        {
+          "on": "2026-06-30",
+          "value": "531.36",
+          "available_on": "2026-09-23",
+          "unit": "USD million, net",
+          "sheet": "56",
+          "cell": "E8",
+          "net_investment_inr_crore": "4668.8599999999997"
+        },
+        {
+          "on": "2026-07-31",
+          "value": "4193.66",
+          "available_on": "2026-09-23",
+          "unit": "USD million, net",
+          "sheet": "56",
+          "cell": "E9",
+          "net_investment_inr_crore": "40030.730000000003"
+        },
+        {
+          "on": "2026-08-31",
+          "value": "2671.35",
+          "available_on": "2026-09-23",
+          "unit": "USD million, net",
+          "sheet": "56",
+          "cell": "E10",
+          "net_investment_inr_crore": "25491.55"
+        }
+      ]
+    },
+    {
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/sep-2026/Bulletins%20Aug-26%20I_p.xlsx",
+      "published_on": "2026-08-27",
+      "sha256": "f19a3b2019d5fae430826bfcf66f12fb23ad99374d72b5446c2520a06b32901f",
+      "status": "excluded",
+      "reason": "file version postdates listed publication; no backdating"
+    },
+    {
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2026/Monthly%20SEBI%20Bulletin%2027.07.2026_p.xlsx",
+      "published_on": "2026-07-27",
+      "sha256": "944e0bf1b8eadc7eb9b7b50658fd1ecba43cd8a57bd6c8ae6532e9d1de6c9740",
+      "status": "valid dated total-series candidate; different universe",
+      "sheet": "56",
+      "title": "Table 56: Trends in Foreign Portfolio Investment",
+      "file_modified_on": "2026-07-27",
+      "rows": [
+        {
+          "on": "2026-04-30",
+          "value": "-7559.2",
+          "available_on": "2026-07-27",
+          "unit": "USD million, net",
+          "sheet": "56",
+          "cell": "E6",
+          "net_investment_inr_crore": "-70884.98"
+        },
+        {
+          "on": "2026-05-31",
+          "value": "-3083.44",
+          "available_on": "2026-07-27",
+          "unit": "USD million, net",
+          "sheet": "56",
+          "cell": "E7",
+          "net_investment_inr_crore": "-29483.96"
+        },
+        {
+          "on": "2026-06-30",
+          "value": "531.36",
+          "available_on": "2026-07-27",
+          "unit": "USD million, net",
+          "sheet": "56",
+          "cell": "E8",
+          "net_investment_inr_crore": "4668.8599999999997"
+        }
+      ]
+    },
+    {
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2026/Monthly%20SEBI%20Bulletin%20-%2003.07_p.xlsx",
+      "published_on": "2026-07-03",
+      "sha256": "e9b9a74226b09f9446b43e7eb116a02c3300d08c5fbdb570eccae022cad13a62",
+      "status": "valid dated total-series candidate; different universe",
+      "sheet": "56",
+      "title": "Table 56: Trends in Foreign Portfolio Investment",
+      "file_modified_on": "2026-07-03",
+      "rows": [
+        {
+          "on": "2026-04-30",
+          "value": "-7559.2",
+          "available_on": "2026-07-03",
+          "unit": "USD million, net",
+          "sheet": "56",
+          "cell": "E6",
+          "net_investment_inr_crore": "-70884.98"
+        },
+        {
+          "on": "2026-05-31",
+          "value": "-3083.44",
+          "available_on": "2026-07-03",
+          "unit": "USD million, net",
+          "sheet": "56",
+          "cell": "E7",
+          "net_investment_inr_crore": "-29483.96"
+        }
+      ]
+    },
+    {
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/jun-2026/Monthly%20SEBI%20Bulletin%2012.06_p.xlsx",
+      "published_on": "2026-06-12",
+      "sha256": "9337b40e182ef2268a95dbe5d3c18753c270ed5e78778c19a5fd641773527e7a",
+      "status": "excluded",
+      "reason": "File is not a zip file"
+    },
+    {
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/apr-2026/Annexure%20Tables-30.04.2026_p.xlsx",
+      "published_on": "2026-04-30",
+      "sha256": "e87efab477115c540859b714043ca88b35f0cd2610bee13bdbb4cd098a4ff697",
+      "status": "excluded",
+      "reason": "File is not a zip file"
+    },
+    {
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/mar-2026/Annexure%20Tables%20March%202026_p.xlsx",
+      "published_on": "2026-03-27",
+      "sha256": "4e884822ab1adf88e60fd97e6fa4849887e38fdb7fedcea642ce866bf9ae1a24",
+      "status": "valid dated total-series candidate; different universe",
+      "sheet": "49 ",
+      "title": "Table 49: Trends in Foreign Portfolio Investment",
+      "file_modified_on": "2026-03-25",
+      "rows": []
+    }
+  ],
+  "earliest_valid_captured_vintages": [
+    {
+      "on": "2026-04-30",
+      "value": "-7559.2",
+      "available_on": "2026-07-03",
+      "unit": "USD million, net",
+      "sheet": "56",
+      "cell": "E6",
+      "net_investment_inr_crore": "-70884.98",
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2026/Monthly%20SEBI%20Bulletin%20-%2003.07_p.xlsx",
+      "source_sha256": "e9b9a74226b09f9446b43e7eb116a02c3300d08c5fbdb570eccae022cad13a62"
+    },
+    {
+      "on": "2026-05-31",
+      "value": "-3083.44",
+      "available_on": "2026-07-03",
+      "unit": "USD million, net",
+      "sheet": "56",
+      "cell": "E7",
+      "net_investment_inr_crore": "-29483.96",
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2026/Monthly%20SEBI%20Bulletin%20-%2003.07_p.xlsx",
+      "source_sha256": "e9b9a74226b09f9446b43e7eb116a02c3300d08c5fbdb570eccae022cad13a62"
+    },
+    {
+      "on": "2026-06-30",
+      "value": "531.36",
+      "available_on": "2026-07-27",
+      "unit": "USD million, net",
+      "sheet": "56",
+      "cell": "E8",
+      "net_investment_inr_crore": "4668.8599999999997",
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/jul-2026/Monthly%20SEBI%20Bulletin%2027.07.2026_p.xlsx",
+      "source_sha256": "944e0bf1b8eadc7eb9b7b50658fd1ecba43cd8a57bd6c8ae6532e9d1de6c9740"
+    },
+    {
+      "on": "2026-07-31",
+      "value": "4193.66",
+      "available_on": "2026-09-23",
+      "unit": "USD million, net",
+      "sheet": "56",
+      "cell": "E9",
+      "net_investment_inr_crore": "40030.730000000003",
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/sep-2026/SEBI%20Bulletin%20-%20September%202026_p.xlsx",
+      "source_sha256": "173271665870bea65c365da390efd67a38685097b89c44808fc078ba89070fdc"
+    },
+    {
+      "on": "2026-08-31",
+      "value": "2671.35",
+      "available_on": "2026-09-23",
+      "unit": "USD million, net",
+      "sheet": "56",
+      "cell": "E10",
+      "net_investment_inr_crore": "25491.55",
+      "source_url": "https://www.sebi.gov.in/sebi_data/commondocs/sep-2026/SEBI%20Bulletin%20-%20September%202026_p.xlsx",
+      "source_sha256": "173271665870bea65c365da390efd67a38685097b89c44808fc078ba89070fdc"
+    }
+  ],
+  "canonical_observations_added": 0,
+  "canonical_series_changed": false,
+  "raw_assets_redistributed": false,
+  "research_acceptance": false,
+  "limitations": [
+    "The broader universe cannot be mixed with the existing equity-plus-debt series.",
+    "Listing dates and file metadata detect known later versions; unchanged historical bytes are not independently certified.",
+    "Monthly data cannot confirm a daily anchor or imply a causal edge.",
+    "No corrupted workbook, formula error, missing month or later file version becomes a zero or an earlier observation."
+  ]
+}

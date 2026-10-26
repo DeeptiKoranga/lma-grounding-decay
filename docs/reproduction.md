@@ -476,3 +476,30 @@ hashes and blank human forms. It certifies integrity, not semantic correctness,
 independence, source permissions or research acceptance. Fresh setup, source
 replay and runtime details are in `reports/track_a_clean_reproduction_20261026.json`;
 the final integrity result is `reports/track_a_validation_20261026.json`.
+
+## Follow-up official source audit — 26 October
+
+With the separately cached public SEBI listing and seven annexures, audit
+source hashes, dynamic FPI table identity, native USD labels, arithmetic and
+publication/file-version dates:
+
+```sh
+python3 scripts/audit_sebi_fpi.py \
+  --raw data/raw/track_a_followup_20261026 \
+  --output /private/tmp/sebi_fpi_vintage_recheck.json
+```
+
+The actual source read used the bundled Python runtime. The importer itself
+uses only Python standard-library ZIP/XML support; it does not need a workbook
+application or execute macros/formulas. Table ordinals change between issues,
+so the title and native USD column are validated. Known later versions and
+invalid downloaded copies are excluded. Missing or formula-error values never
+become zero. These are broader total-FPI candidates (including mutual funds),
+kept outside the existing canonical series. No corpus, index, pair, human
+judgment or previous experiment payload is changed by this command.
+
+The primary ATF/August MPC web checks, collector failures and all-61-official-PDF
+metadata audit are recorded in `reports/track_a_followup_20261026.json`. Web
+readability does not imply acquisition of a checksummed original for the corpus.
+Current 637-test local/fresh checks are separate from the earlier 630-test
+rebuild receipt; see `reports/track_a_followup_validation_20261026.json`.
