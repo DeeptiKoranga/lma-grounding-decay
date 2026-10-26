@@ -23,6 +23,7 @@ MACRO_TOPIC = re.compile(
     re.IGNORECASE,
 )
 PERSONAL_PATH = re.compile(r"/(?:wealth|personal-finance|mutual-funds|etwealth)/", re.IGNORECASE)
+LIFESTYLE_PATH = re.compile(r"/magazines/panache/", re.IGNORECASE)
 SPONSORED = re.compile(
     r"\b(?:published by ET Spotlight|generated and published by ET Spotlight|"
     r"sponsored content|brand post|paid promotion|advertorial|"
@@ -38,6 +39,10 @@ def rejection_reason(document: Document) -> str | None:
         return None
     if PERSONAL_PATH.search(urlsplit(document.url).path):
         return "topic screen: personal-finance section outside macro-news acquisition scope"
+    if LIFESTYLE_PATH.search(urlsplit(document.url).path):
+        return "topic screen: lifestyle/entertainment section outside macro-news acquisition scope"
+    if re.match(r"^In\s+Graphics\s*:", document.title, re.IGNORECASE):
+        return "evidence screen: image-led article requires separate visual transcription; text-only copy excluded"
     if SPONSORED.search(document.text):
         return "topic screen: explicitly labelled sponsored/promotional copy"
     # A late navigation recommendation mentioning RBI/oil cannot admit a page.

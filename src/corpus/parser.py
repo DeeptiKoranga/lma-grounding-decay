@@ -28,6 +28,18 @@ def is_navigation_paragraph(text: str) -> bool:
     return bool(re.match(r"^\s*(?:also\s+read|read\s+more)\s*[:|]", text, re.IGNORECASE))
 
 
+def is_publisher_promotion(text: str) -> bool:
+    return bool(
+        re.match(
+            r"^\s*(?:More stories like this are available on bloomberg\.com|"
+            r"Subscribe Now\s*$|Elevate your knowledge with|"
+            r"Unlock exclusive stories|Get access to exclusive stories)",
+            text,
+            re.IGNORECASE,
+        )
+    )
+
+
 def _body_key(value: str) -> str:
     # ET removes quotation marks in JSON-LD while retaining them in its visible
     # article. This is a comparison key only; archived evidence stays verbatim.
@@ -107,6 +119,8 @@ class VisibleArticleBlocks(HTMLParser):
         self.paragraphs = []
         self.started = False
         self.finished = False
+        self.related_links = []
+        self._related_parts = None
 
     def flush(self):
         text = " ".join("".join(self.parts).split())
@@ -123,6 +137,9 @@ class VisibleArticleBlocks(HTMLParser):
             return
         if self.finished:
             return
+        if tag == "a" and attrs.get("data-type") == "tilCustomLink":
+            self.flush()
+            self._related_parts = []
         skipped = self.stack[-1][1] if self.stack else False
         if tag in self.BREAKS and not skipped:
             self.flush()
@@ -130,7 +147,9 @@ class VisibleArticleBlocks(HTMLParser):
             re.search(r"display\s*:\s*none|visibility\s*:\s*hidden", attrs.get("style", ""), re.I)
         )
         if tag not in self.VOID:
-            self.stack.append((tag, skipped or hidden or tag in self.SKIP))
+            self.stack.append(
+                (tag, skipped or hidden or tag in self.SKIP or self._related_parts is not None)
+            )
 
     def handle_endtag(self, tag):
         if not self.stack or self.finished:
@@ -138,6 +157,9 @@ class VisibleArticleBlocks(HTMLParser):
         matches = [i for i, (name, _) in enumerate(self.stack) if name == tag]
         if not matches:
             return
+        if tag == "a" and self._related_parts is not None:
+            self.related_links.append(" ".join("".join(self._related_parts).split()))
+            self._related_parts = None
         if tag in self.BREAKS and not self.stack[-1][1]:
             self.flush()
         self.stack = self.stack[: matches[-1]]
@@ -146,6 +168,8 @@ class VisibleArticleBlocks(HTMLParser):
             self.finished = True
 
     def handle_data(self, data):
+        if self._related_parts is not None:
+            self._related_parts.append(data)
         if self.stack and not self.stack[-1][1]:
             self.parts.append(data)
 
@@ -314,6 +338,8 @@ def parse_html(
         if source == "economic_times":
             visible = VisibleArticleBlocks()
             visible.feed(html)
+            related_keys = {_body_key(p) for p in visible.related_links}
+            paragraphs = [p for p in paragraphs if _body_key(p) not in related_keys]
             blocks = [
                 p
                 for p in visible.paragraphs
@@ -321,6 +347,8 @@ def parse_html(
             ]
             joined = _body_key(normalise_paragraphs(blocks))
             narrative_body = body
+            for key in related_keys:
+                narrative_body = narrative_body.replace(key, "")
             for paragraph in visible.paragraphs:
                 if is_navigation_paragraph(paragraph):
                     narrative_body = narrative_body.replace(_body_key(paragraph), "")
@@ -347,6 +375,7 @@ def parse_html(
         p
         for p in paragraphs
         if not is_navigation_paragraph(p)
+        and not is_publisher_promotion(p)
         and not p.strip()
         .lstrip("(")
         .startswith(

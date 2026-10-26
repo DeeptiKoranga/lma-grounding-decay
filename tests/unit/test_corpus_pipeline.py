@@ -221,6 +221,36 @@ def test_mint_brand_suffix_cannot_disable_body_guard_or_admit_author_bio(monkeyp
     assert doc.text == BODY
 
 
+def test_declared_body_cannot_admit_a_custom_related_story_link(monkeypatch):
+    related = "India exports goods under a new trade agreement"
+    record = {
+        "@type": "NewsArticle",
+        "headline": "Crude and rupee",
+        "datePublished": "2026-03-12",
+        "articleBody": BODY + related,
+    }
+    html = article_html(extra=f'<script type="application/ld+json">{json.dumps(record)}</script>')
+    html = html.replace(
+        "<article>",
+        f'<div class="artText">{BODY}<br><a data-type="tilCustomLink" '
+        f'href="/different-story">{related}</a></div><article>',
+    )
+    monkeypatch.setitem(
+        sys.modules, "trafilatura", SimpleNamespace(extract=lambda *a, **k: BODY + "\n" + related)
+    )
+    doc = parse_html(html, source="economic_times", url="https://example.com/a")
+    assert doc.text == BODY
+
+
+def test_publisher_promotion_is_not_evidence_without_a_declared_body(monkeypatch):
+    promotion = "More stories like this are available on bloomberg.com"
+    monkeypatch.setitem(
+        sys.modules, "trafilatura", SimpleNamespace(extract=lambda *a, **k: BODY + "\n" + promotion)
+    )
+    doc = parse_html(article_html(), source="businessline", url="https://example.com/a")
+    assert doc.text == BODY
+
+
 def test_rebuild_pipeline_only_uses_accepted_payloads(tmp_path, monkeypatch):
     monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2]))
     from scripts.fetch.client import Response

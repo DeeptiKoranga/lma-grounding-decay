@@ -61,6 +61,17 @@ def test_political_cpi_and_explicit_company_release_are_not_macro_news():
             "A party treasurer disputed control of party bank accounts.",
         )
     )
+
+
+def test_lifestyle_rupee_and_untranscribed_graphic_are_excluded():
+    item = doc("Actor charges zero rupee", "A film actor waived a fee.")
+    item = item.model_copy(
+        update={"url": "https://economictimes.indiatimes.com/magazines/panache/a"}
+    )
+    assert "lifestyle" in rejection_reason(item)
+    assert "visual transcription" in rejection_reason(
+        doc("In Graphics: Kitchen basket inflation is back", "Inflation is increasing.")
+    )
     assert (
         rejection_reason(doc("Consumer Price Index CPI rises", "Consumer inflation increased."))
         is None
