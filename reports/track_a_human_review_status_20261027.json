@@ -3,12 +3,11 @@
   "reported_by": "user",
   "statement": "i did human expert review... it was as expected",
   "review_completion_reported": true,
-  "status": "User confirms completing both Track A corpus/retrieval review and review of experiment results; supporting records await reconciliation.",
+  "status": "User reports completing Track A review only; completed corpus/retrieval records await reconciliation.",
   "reviewer_name": null,
   "reviewed_on": null,
   "review_scope": [
-    "Track A corpus and retrieval judgments",
-    "Experiment results testing the hypothesis"
+    "Track A work only: corpus and retrieval review"
   ],
   "independent_review": null,
   "blinded_to_prior_labels_or_results": null,
@@ -34,10 +33,13 @@
   "research_acceptance": false,
   "source_permissions_changed": false,
   "series_coverage_changed": false,
-  "next_action": "Reconcile the completed records with the reviewed packet/run versions; retain the reviewer\u2019s actual decisions, date and attestations; validate supporting labels and numerical results before generating acceptance receipts or final scores. Scope is confirmed and need not be asked again.",
+  "next_action": "Reconcile the completed Track A corpus/retrieval records with their packet versions and retain the reviewer\u2019s actual decisions, date and attestations before generating Track A acceptance receipts. Experiment support review and main hypothesis findings remain separate, unfinished work. Review scope is Track A only and need not be asked again.",
   "scope_confirmed_by_user": true,
-  "scope_confirmation": "both",
-  "reported_experiment_outcome": "it went as per hypothesis as expected",
+  "scope_confirmation": "no i mean i only did whatever was in track a",
   "numerical_hypothesis_results_imported": false,
-  "reviewed_packet_version_verified": false
+  "reviewed_packet_version_verified": false,
+  "scope_correction": "The assistant previously interpreted \u201cboth\u201d as including experiment-result review. The user corrected that interpretation: the review covers Track A only.",
+  "reported_track_a_outcome": "as expected",
+  "experiment_results_review_reported": false,
+  "main_hypothesis_outcome_reported": false
 }

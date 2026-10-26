@@ -18,12 +18,12 @@ settings. No historical run is relabelled as a v7 experiment. Independent human
 support/reference labels, corrected baselines, accepted anchors and final UER
 remain separate research requirements.
 
-The user now confirms completing both Track A corpus/retrieval review and
-review of experiment results, reporting an outcome consistent with the
-hypothesis. Scope is confirmed; completed records, numerical findings and
-review attestations still need reconciliation. This does not change the
-provenance of the existing scores or create missing labels. See
-`reports/track_a_human_review_status_20261027.json`.
+The user reports completing Track A review only, covering corpus/retrieval
+work with the expected outcome. The earlier assistant interpretation that the
+review also covered experiment results was incorrect. Completed Track A records
+and attestations await reconciliation; experiment support review and main
+hypothesis findings remain separate. Existing score provenance and labels are
+unchanged. See `reports/track_a_human_review_status_20261027.json`.
 
 ## Implemented and checked
 

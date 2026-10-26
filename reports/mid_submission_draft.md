@@ -22,7 +22,7 @@ and archive hashes. All six series retain 161 original observations; the
 Original-vintage gaps, inaccessible publishers and source permissions are
 explicit limitations. Existing 42-graph outputs and the 24-graph reproduction
 retain archived v1; they are not v7 experiments. Final support/UER figures
-still require reconciliation of the completed experiment-review records.
+still require the separate experiment-review work and supporting records.
 
 The subsequent official-source audit checks all 61 retained PDF file versions
 and seven SEBI annexures. Five dated total-FPI candidates remain separate
@@ -33,13 +33,15 @@ acceptance. See `reports/track_a_followup_20261026.json`.
 
 ## Human review report — 27 October
 
-The user confirms completing both the corpus/retrieval review and review of
-experiment results, and reports that the outcome matched the hypothesis. This
-is a user-reported qualitative conclusion. Completed review records, reviewed
-packet/run versions, numerical results and review attestations have not yet
-been reconciled with this checkout. Existing metrics retain their documented
-provenance. No hypothesis effect size, significance test, agreement value or
-final human-reviewed score is inferred from this summary. See
+The user reports completing the Track A corpus/retrieval review with the
+expected outcome, and clarifies that the review covers Track A only. An earlier
+assistant interpretation that it included experiment-result review was incorrect.
+This is not evidence that the main hypothesis was tested or supported.
+
+Completed Track A records, packet versions, review date and attestations await
+reconciliation with this checkout. Existing metrics retain their documented
+provenance. Experiment support review, baseline corrections, reference labels
+and numerical hypothesis analysis remain separate requirements. See
 `reports/track_a_human_review_status_20261027.json`.
 
 ## What is built
@@ -79,8 +81,8 @@ review rather than being silently repaired before comparison.
 Human correction, blinded support scoring, reference recall, agreement,
 challenge generation, query-paired bootstrap and reviewed-only UER figures are
 implemented. Missing labels and zero denominators cannot become successful
-research scores. The guide and local review page are ready; the user-reported
-completed review awaits its supporting records and attestations.
+research scores. The guide and local review page are ready. The user-reported
+completed review covers Track A; experiment support review remains separate.
 
 ## Evidence available now
 
@@ -161,7 +163,7 @@ TA decisions. This draft leaves those decisions open.
 
 | Risk | Current evidence | Next action and acceptance criterion |
 |---|---|---|
-| Review records pending | User reports both reviews complete; saved decisions and attestations await reconciliation | Import actual records, reconcile versions and corrections, and verify required blinded support/reference labels and double annotation |
+| Review records pending | Track A review reported complete; saved Track A records await reconciliation; experiment review remains separate | Import Track A decisions and attestations; complete the required experiment support/reference review and double annotation |
 | Incomplete temporal/financial grounding | Original vintages remain sparse; separate retrospective histories have October availability and some definition/frequency differences | Validate exact episode measurements and original availability, then confirm or drop/redate each anchor |
 | Selection bias | All-month machine-curated pilot; concentrated sources | Broaden reviewed pairs and source/extraction checks before accepting model/retriever settings |
 | Verifier abstention hides lost coverage | Some edges can remain inferred or unchecked at budget | Review reference graphs and report recall guard alongside UER; retain null denominators |
