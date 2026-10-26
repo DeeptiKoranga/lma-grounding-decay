@@ -1,0 +1,35 @@
+{
+  "reported_on": "2026-10-27",
+  "reported_by": "user",
+  "statement": "i did human expert review... it was as expected",
+  "review_completion_reported": true,
+  "status": "Human expert review reported complete; scope, completed records and attestations await reconciliation.",
+  "reviewer_name": null,
+  "reviewed_on": null,
+  "review_scope": null,
+  "independent_review": null,
+  "blinded_to_prior_labels_or_results": null,
+  "corrections": null,
+  "completed_judgment_files_located": false,
+  "current_delivery_packets_for_matching": {
+    "corpus": {
+      "path": "data/interim/track_a_review_delivery_v7_20261026/01_corpus/packet.json",
+      "sha256": "34b12fde75c41a4c7ccdcb8edc67b342e29288ce95353f68315658015e817d3c"
+    },
+    "retrieval": {
+      "path": "data/interim/track_a_review_delivery_v7_20261026/02_relevance/packet.json",
+      "sha256": "37deb84d2f53f3ace7167153542b155f5f20f011c871f1656749a58996ba41ec"
+    }
+  },
+  "current_delivery_forms_at_check": {
+    "corpus_checks_completed": 0,
+    "retrieval_query_checks_completed": 0,
+    "relevance_judgments_completed": 0
+  },
+  "item_decisions_imported": false,
+  "human_receipts_generated": false,
+  "research_acceptance": false,
+  "source_permissions_changed": false,
+  "series_coverage_changed": false,
+  "next_action": "Match the actual completed review to its packet, retain the reviewer\u2019s own decisions and attestations, validate it, and apply any corrections. Do not infer item-level agreement or blinding from the summary statement."
+}
