@@ -33,7 +33,7 @@
   "research_acceptance": false,
   "source_permissions_changed": false,
   "series_coverage_changed": false,
-  "next_action": "Retain these intended files with their declared draft provenance. They do not supply independent human acceptance or explicit reduced-scope approval; final research receipts require actual completed decisions and truthful reviewer declarations. Source permissions and original-vintage series requirements remain separate.",
+  "next_action": "Retain the supplied assessment records and truthful development-label provenance. Formal independent research receipts still require actual reviewer decisions and truthful identity/date/independence/blinding declarations. The reduced source/PDF scope and sparse six-series coverage have been adopted separately for the scoped mid-submission development handoff; this does not grant publisher permission or confirm missing anchors.",
   "scope_confirmed_by_user": true,
   "scope_confirmation": "no i mean i only did whatever was in track a",
   "numerical_hypothesis_results_imported": false,
@@ -62,5 +62,9 @@
   },
   "wording_revision_report": "reports/track_a_submission_wording_revision_20261027.json",
   "wording_revision_sha256": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4",
-  "current_user_files_role": "Track A assessment materials; automated development-label provenance and incomplete review declarations preserved."
+  "current_user_files_role": "Track A assessment materials; automated development-label provenance and incomplete review declarations preserved.",
+  "mid_submission_scope_disposition": "reports/track_a_mid_submission_scope_20261027.json",
+  "mid_submission_scope_disposition_sha256": "395d55c1d0fba537539ffa07341a02285efc1632e101b9798aaff5c7b45b36e3",
+  "scoped_development_handoff_complete": true,
+  "formal_independent_acceptance_complete": false
 }

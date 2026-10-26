@@ -1,0 +1,66 @@
+{
+  "executed_on": "2026-10-27",
+  "source_commit_before_documentation_changes": "d2c394d49ae283f6cc22a4155b74a3d9ba33d111",
+  "status": "Scoped development delivery integrity passed; formal research acceptance incomplete.",
+  "integrity_rerun": {
+    "command": "PYTHONPATH=src .venv/bin/python -m scripts.validate_track_a_delivery --output /private/tmp/track_a_closeout_integrity_20261027.json",
+    "output_sha256": "39875b68a622131d16fd5d2e4816e2ae67be962f8d88b123f20658c5dbeb1904",
+    "date_note": "The unchanged validator emits its original 2026-10-26 checked_on constant; this wrapper records the actual 2026-10-27 execution date.",
+    "result": {
+      "checked_on": "2026-10-26",
+      "status": "development-delivery integrity passed; research acceptance pending",
+      "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+      "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+      "documents": 1156,
+      "passages": 16472,
+      "pooled_judgments": 2035,
+      "judgment_counts": {
+        "irrelevant": 1840,
+        "relevant": 195
+      },
+      "all_offsets_exact": true,
+      "all_positive_spans_valid": true,
+      "all_review_candidates_date_eligible": true,
+      "all_index_bytes_verified": true,
+      "new_review_workspace_files_verified": 82,
+      "old_review_workspace_files_unchanged": 83,
+      "human_judgments_and_attestations_blank": true,
+      "canonical_observations": 161,
+      "retrospective_observations": 317,
+      "series_bytes_unchanged": true,
+      "research_acceptance": false
+    }
+  },
+  "supplied_file_hashes": {
+    "corpus_judgments.json": "0ee05e2611f1b6cb56fa7488fc8ecf745f0bcc52eb959bf208bc1035d277081b",
+    "provenance.json": "4e28b3f2cb1716dd4971e8b98614f1a1438abb84e6deac8d16e9d5cd458351dd",
+    "relevance_judgments.json": "eaddc87c6a1c9721142aecd797391a575e483b62961d1abbf28a136fd8cf9f42",
+    "review_notes.md": "3b5e8176e54c2b3b5f382e27a0fb131893c899e32b556da151643cef93fcf8be"
+  },
+  "supplied_and_archived_hashes_verified": true,
+  "provenance_input_hashes_verified": 5,
+  "provenance_output_hashes_verified": 3,
+  "both_judgment_schemas_and_packet_bindings_valid": true,
+  "corpus_items": 73,
+  "query_rows": 20,
+  "candidate_decisions_identical_to_development_review": 2035,
+  "positive_spans_identical_to_development_review": 195,
+  "reviewer_fields_still_empty": true,
+  "review_dates_still_unset": true,
+  "independence_blinding_acceptance_still_false": true,
+  "actual_export_rejections": {
+    "corpus": "independent reviewer must be named and differ from curator",
+    "relevance": "4 validation errors for ReviewReceipt\nreviewer\n  String should have at least 1 character [type=string_too_short, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_too_short\nreviewed_on\n  Input should be a valid date [type=date_type, input_value=None, input_type=NoneType]\n    For further information visit https://errors.pydantic.dev/2.14/v/date_type\nindependent_review\n  Input should be True [type=literal_error, input_value=False, input_type=bool]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error\nblinded_to_results\n  Input should be True [type=literal_error, input_value=False, input_type=bool]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
+  },
+  "no_receipt_output_created": true,
+  "supplied_files_changed_by_closeout": false,
+  "payload_series_or_scoring_code_changed": false,
+  "last_code_validation": {
+    "report": "reports/track_a_followup_validation_20261026.json",
+    "sha256": "07f86d6b65848cf2f64b202c3f68cb515ed20eaf210e25b0e7d502d663c16640",
+    "working_tests": 637,
+    "fresh_environment_tests": 637,
+    "full_suite_rerun_for_documentation_only_closeout": false
+  },
+  "research_acceptance": false
+}

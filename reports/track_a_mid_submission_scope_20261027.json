@@ -1,0 +1,122 @@
+{
+  "recorded_on": "2026-10-27",
+  "status": "Scoped Track A mid-submission development handoff complete with declared deviations; independent research acceptance incomplete.",
+  "decision_basis": {
+    "user_instruction": "now finish the remaining track a tasks. don\u2019t stop until everything in track a is done; latest follow-up: DO IT",
+    "recorded_by": "assistant",
+    "authority_scope": "Implementation disposition under the instruction to finish Track A; not a signed user review, team/TA acceptance or publisher permission.",
+    "original_plan": "PLAN_MIDSUB.md, Track A A1-A11 and acquisition risk/fallback",
+    "plan_changed": false
+  },
+  "dispositions": {
+    "formal_independent_review": {
+      "status": "incomplete",
+      "user_report_preserved": true,
+      "supplied_files_validated": true,
+      "decisions_identical_to_development_review": 2035,
+      "reviewer_identity_and_date": "empty/unset",
+      "independence_blinding_and_corpus_acceptance": false,
+      "research_receipt_created": false,
+      "actual_export_attempts_rejected": true
+    },
+    "source_and_pdf_scope": {
+      "status": "closed for scoped mid-submission development handoff with deviations",
+      "retained_sources": {
+        "economic_times": 870,
+        "businessline": 213,
+        "mint": 12,
+        "mospi": 37,
+        "ppac": 14,
+        "oea": 10
+      },
+      "documents": 1156,
+      "passages": 16472,
+      "official_narrative_paragraphs": 949,
+      "acquisition_deviations": [
+        "No Business Standard corpus",
+        "No RBI corpus originals",
+        "No PIB corpus originals",
+        "OEA added outside original official-source list",
+        "ET concentration and sparse Mint coverage"
+      ],
+      "pdf_excluded_scope": [
+        "tables",
+        "charts",
+        "image-only material",
+        "53967 rejected native line groups"
+      ],
+      "publisher_redistribution_permission_granted": false,
+      "full_text_raw_archives_and_vectors_remain_local": true
+    },
+    "historical_series_scope": {
+      "status": "closed for scoped mid-submission development handoff with deviations",
+      "canonical_observations": 161,
+      "retrospective_observations": 317,
+      "canonical_counts": {
+        "brent_usd_bbl": 4,
+        "indian_basket_usd_bbl": 2,
+        "inr_usd": 141,
+        "cpi_headline_yoy": 7,
+        "gsec_10y_pct": 6,
+        "fpi_flows_usd_mn": 1
+      },
+      "complete_original_vintage_histories_claimed": false,
+      "retrospective_values_backdated": false,
+      "series_measure_definitions_changed": false,
+      "missing_values_interpolated": false,
+      "track_b_anchor_acceptance": "separate; confirm, drop or redate unsupported anchors before experimental use"
+    }
+  },
+  "development_retrieval_selection": {
+    "first_stage": "bge_m3",
+    "recall_at_10": 0.4259,
+    "with_reranking_recall_at_10": 0.5296,
+    "queries": 20,
+    "judgments": 2035,
+    "relevant": 195,
+    "independent_human_scores": false,
+    "historical_run_settings_changed": false
+  },
+  "final_bounded_source_check": {
+    "checked_on": "2026-10-27",
+    "method": "Three targeted searches followed by primary-page web inspection; no raw-asset acquisition.",
+    "queries": [
+      "site.ppac.gov.in \"2026\" \"September\" \"Snapshot\"",
+      "site.fbil.org.in \"2026\" \"September\" \"G-Sec\"",
+      "site.sebi.gov.in \"2026\" \"March\" \"Foreign Portfolio\" \"Bulletin\""
+    ],
+    "primary_pages": [
+      {
+        "url": "https://ppac.gov.in/home",
+        "outcome": "Current page read; no original availability established for missing historical price observations."
+      },
+      {
+        "url": "https://www.sebi.gov.in/sebi_data/attachdocs/apr-2026/1775034592968.pdf",
+        "outcome": "March bulletin FPI section reports February and includes mutual-fund investments. Does not supply the missing March-September equity-plus-debt history."
+      },
+      {
+        "url": "https://www.dea.gov.in/",
+        "outcome": "Web fetch timed out; no source data admitted."
+      }
+    ],
+    "new_original_vintage_values_admitted": 0,
+    "exhaustive_source_unavailability_claimed": false
+  },
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+  "scope_report": "reports/track_a_mid_submission_scope_20261027.md",
+  "scope_report_sha256": "15aeed36bc4c5e561cef04d48ffe49fffda6ff91e4c8a70799c2d6b922cb93e2",
+  "evidence": {
+    "reports/track_a_mid_submission_validation_20261027.json": "a6714bd2f5bcc8b55c0d3cd2e74e16b3233429da8ac0ef6e2d45b1e364ad03aa",
+    "reports/track_a_retrieval_selection_20261026.json": "0f76a2e2e4f270585bf0d0a1fb6a38a58fa13f9b245a320b232e7aa25643b244",
+    "reports/track_a_series_scope_20261026.json": "b0dc07a2ae9ba47518af88e5eafc1a705220e563691a7523000e781d21437b8b",
+    "reports/track_a_source_scope_20261026.md": "6b5fbb533c97bc3af94d2f0ed093821ed643859ef5db62e0f1820ff4cab003f0",
+    "reports/track_a_submitted_review_validation_20261027.json": "179fbf59fea4aeda12b978ab095ea8aabcd2aad33e65906945c4e9e5ff10ad76",
+    "reports/track_a_submission_wording_revision_20261027.json": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4"
+  },
+  "autonomous_engineering_tasks_remaining_in_scoped_track_a_handoff": 0,
+  "formal_independent_acceptance_complete": false,
+  "other_tracks_or_entire_mid_submission_complete": false,
+  "research_acceptance": false,
+  "pull_request_created": false
+}

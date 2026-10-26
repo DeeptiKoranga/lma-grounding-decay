@@ -6,6 +6,12 @@ an accepted experimental freeze. The study asks whether unsupported established
 edges increase with distance from an anchor, and whether targeted verification
 and retrieval reduce that rate without losing supported reference edges.
 
+Track A's scoped development handoff is complete under the 27 October closeout
+in `reports/track_a_mid_submission_scope_20261027.md`. For the mid-submission it
+delivers the acquired source mix, narrative-only PDF index and sparse six-series
+store with explicit deviations. This closes the development-scope disposition;
+it does not grant independent review, publisher permission or anchor acceptance.
+
 Track A's current delivery is recorded in `reports/track_a_progress.md`: an
 active v7 narrative development corpus of 1,156 documents and 16,472 passages,
 a rebuilt dense index, and complete source judgments for the 2,035-item new
@@ -43,9 +49,11 @@ The actual acceptance exporters reject these records. They are preserved as
 submitted drafts and do not supply independent human labels or accepted scores.
 
 The user's completion report is retained separately from this artifact finding.
-Source scope/permissions, original-date histories and experiment support review
-remain separate requirements. No main hypothesis result follows from these
-files. See `reports/track_a_submitted_review_validation_20261027.json` and
+The reduced source/PDF scope and sparse original-date coverage are now adopted
+for the scoped mid-submission handoff. Publisher permissions, fuller histories
+where needed for anchors, and experiment support review remain separate
+requirements. No main hypothesis result follows from these files. See
+`reports/track_a_submitted_review_validation_20261027.json` and
 `reports/track_a_human_review_status_20261027.json`.
 
 ## What is built
@@ -167,6 +175,7 @@ TA decisions. This draft leaves those decisions open.
 
 | Risk | Current evidence | Next action and acceptance criterion |
 |---|---|---|
+| Scoped data delivery | Track A adopts the acquired sources, narrative PDFs and sparse six-series store for the mid-submission | Report these deviations; retain redistribution limits and require dated evidence before accepting an unsupported anchor |
 | Review acceptance pending | Intended Track A files validate as generated drafts; independent reviewer declarations are incomplete | Retain draft provenance and obtain actual completed reviewer records; experiment support/reference review and double annotation remain separate |
 | Incomplete temporal/financial grounding | Original vintages remain sparse; separate retrospective histories have October availability and some definition/frequency differences | Validate exact episode measurements and original availability, then confirm or drop/redate each anchor |
 | Selection bias | All-month machine-curated pilot; concentrated sources | Broaden reviewed pairs and source/extraction checks before accepting model/retriever settings |

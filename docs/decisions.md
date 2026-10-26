@@ -6,7 +6,16 @@ the evidence that closes it**: write the number, link the report, and date it.
 
 Status is one of `open` · `resolved` · `deferred`.
 
-Last reviewed: **26 Oct 2026** (Track A development selection; research acceptance remains open).
+Last reviewed: **27 Oct 2026** (Track A mid-submission scope closed with deviations;
+development selections complete, independent research acceptance remains open).
+
+The [Track A closeout](../reports/track_a_mid_submission_scope_20261027.md)
+adopts the acquired source mix, narrative-only PDF extraction and sparse
+original-vintage six-series store for the development handoff. This is an
+implementation disposition under the user's instruction to finish Track A;
+it is not TA/team acceptance, a publisher licence or a research-review receipt.
+The original proposal and export gates remain unchanged. D-02/D-03 below retain
+separate development selections and outstanding research acceptance.
 
 ---
 

@@ -1,5 +1,11 @@
 # Integrated development pipeline — updated 27 October 2026
 
+The scoped Track A development handoff is closed under
+`reports/track_a_mid_submission_scope_20261027.md`. Reduced publisher coverage,
+narrative-only PDFs and sparse original-vintage series are documented delivery
+deviations. Formal independent review and the research gates below remain open;
+this does not close the other tracks or the full mid-submission.
+
 Current Track A delivery: **v7 narrative development**, 1,156 documents and
 16,472 passages, with a rebuilt pinned dense index. The new 2,035-item source
 review is complete (195 relevant, 1,840 irrelevant); independent acceptance is

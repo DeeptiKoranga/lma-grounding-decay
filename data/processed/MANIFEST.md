@@ -53,6 +53,12 @@ Macro series confirm observed moves only; they are never evidence for causal edg
 
 ## Scoped Track A delivery — 26 October 2026
 
+The 27 October mid-submission closeout adopts this source mix and narrative PDF
+scope as explicit development-delivery deviations. See
+`reports/track_a_mid_submission_scope_20261027.md`. This manifest addendum does
+not alter the frozen corpus/archive bytes or grant research/redistribution
+acceptance.
+
 Development corpus only; research acceptance remains pending. The original v1
 experiments and v3 human-review packet remain bound to their original snapshots.
 

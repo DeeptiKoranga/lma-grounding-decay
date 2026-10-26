@@ -1,5 +1,10 @@
 # Track A acquisition and source-use scope — 26 October 2026
 
+**27 October disposition:** this acquired mix and narrative-only extraction
+scope are adopted for the scoped mid-submission development handoff, with the
+shortfalls below retained as deviations. No team/TA acceptance or publisher
+permission is inferred. See `track_a_mid_submission_scope_20261027.md`.
+
 This mid-submission checkpoint uses the sources actually acquired and records
 the missing publishers as a deviation. It does not claim complete publisher
 coverage or permission to distribute the text corpus.

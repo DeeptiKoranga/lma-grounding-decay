@@ -4,8 +4,12 @@ The remaining local engineering, corpus repair, development review, indexing,
 retrieval comparison and reproduction work is complete. The final v7 delivery
 has **1,156 documents and 16,472 passages**, **2,035 completed development
 judgments**, a matching dense index and a new independent-review workspace.
-**Research acceptance remains pending**: no independent human review, source
-permission or original-vintage episode confirmation is invented. This report
+The **scoped mid-submission development handoff is closed** under the
+[27 October scope disposition](track_a_mid_submission_scope_20261027.md): the
+available source mix, narrative-only PDFs and sparse historical series are
+delivered with explicit deviations. **Research acceptance remains pending**:
+no independent human review, source permission or original-vintage episode
+confirmation is invented. This report
 replaces the 25 October status, preserved as `track_a_progress_20261025.md`.
 
 ## Human expert review update — 27 October
@@ -31,7 +35,8 @@ Both actual acceptance exports reject the files without creating output.
 This preserves the user's report of completed review, but the supplied records
 do not establish independent human acceptance. No draft decisions are relabelled
 as human judgments, and no source/PDF scope approval or publisher permission is
-inferred. The original 82-file v7 delivery remains unchanged.
+inferred from the review files. The later development-scope disposition is
+recorded separately; the original 82-file v7 delivery remains unchanged.
 
 See `reports/track_a_human_review_status_20261027.json` and
 `reports/track_a_submitted_review_validation_20261027.json`. The originally supplied versions are preserved. A later user-requested wording
@@ -129,22 +134,26 @@ index identity, complete judgment coverage/text hashes/evidence spans, dates,
 all new and original workspace hashes, series hashes and blank human forms.
 It checks integrity; it does not certify semantic correctness or independence.
 
-## Remaining external research requirements
+## Mid-submission closure and remaining research acceptance
 
-1. The intended submitted records are generated drafts, not completed
-   independent-review exports. Actual reviewer decisions/date/independence and
-   blinding declarations are required before Track A research receipts or final
-   D-02/D-03 acceptance. Experiment review remains separate work.
-2. Source permissions and the reduced source/PDF scope require the appropriate
-   project acceptance. Publisher policy inspection grants no permission. Full
-   text, indexes, source originals and corpus archives remain local.
-3. Original-date histories or an explicit research-scope decision are needed for
-   missing series coverage and anchor confirmation. Retrospective proxies stay
-   separate; no missing values or original publication dates are invented.
+The [27 October closeout](track_a_mid_submission_scope_20261027.md) adopts the
+reduced source/PDF scope and sparse six-series coverage for this development
+handoff. These two disposition tasks are closed with explicit deviations;
+complete acquisition or historical coverage is not claimed. No further
+autonomous Track A engineering task remains within that scope.
 
-No further engineering blocker is hidden by these limits. The broader study
-still has Track B/C annotation, model/TA decisions and final-result work.
-No pull request or research issue closure is part of this delivery.
+Formal independent review remains incomplete. Actual reviewer records and
+truthful date/independence/blinding declarations are required before Track A
+research receipts or final D-02/D-03 acceptance. The user's reported review is
+preserved, but the submitted declarations do not meet that gate.
+
+Publisher permission remains necessary before any sharing that requires it.
+Full text, indexes, source originals and archives remain local. Later research
+requiring complete series or confirmed anchors needs the missing dated evidence;
+Track B must confirm, drop or redate unsupported anchors. Retrospective proxies
+remain separate. The broader study still has Track B/C annotation, model/TA
+decisions and final-result work. No pull request or research issue closure is
+part of this delivery.
 
 ## Key records
 

@@ -7,7 +7,12 @@ Deepti Koranga (2025204033).
 
 ---
 
-## Latest Track A delivery — 26 October 2026
+## Latest Track A delivery — 27 October 2026
+
+The scoped Track A mid-submission development handoff is complete. The
+[closeout](reports/track_a_mid_submission_scope_20261027.md) records the reduced
+source/PDF scope and sparse historical-series coverage as delivery deviations.
+Formal independent research acceptance remains incomplete.
 
 The active **v7 narrative development** corpus contains **1,156 documents and
 16,472 passages**. Missing article text, author biographies, embedded related

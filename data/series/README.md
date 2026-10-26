@@ -1,5 +1,12 @@
 # Macro series store (Track A, A10)
 
+**Mid-submission disposition — 27 October:** deliver the current 161
+original-vintage observations and read layer with sparse coverage explicitly
+declared. The separately dated 317-observation snapshot remains retrospective.
+This closes the A10 development handoff; it does not confirm missing anchors or
+make the histories complete. See
+`reports/track_a_mid_submission_scope_20261027.md`.
+
 The importer and date-aware read layer are implemented. **All six required series
 now have observations, with explicitly sparse coverage.** CPI and FX use official
 sources; Indian basket has two official monthly averages. Brent, benchmark yield
