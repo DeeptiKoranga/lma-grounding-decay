@@ -10,13 +10,15 @@ replaces the 25 October status, preserved as `track_a_progress_20261025.md`.
 
 ## Human expert review update — 27 October
 
-The user reports completing the human expert review, with the outcome described
-as “as expected.” This is recorded as a completion report. The exact reviewed
-packet/scope, completion date, item decisions and independence/blinding details
-are awaiting reconciliation. The currently saved v7 delivery forms are still
-blank, so no item-level decisions or research acceptance receipt has been
-created from the summary statement. The date above is the report date; the
-actual review date has not been supplied.
+The user confirms completing both the Track A corpus/retrieval review and the
+review of experiment results, and describes the experiment outcome as “as per
+hypothesis as expected.” Review scope is now confirmed. This records the user's
+completion report and qualitative conclusion. The reviewed packet/run versions,
+completion date, item decisions, numerical results and independence/blinding
+details still await reconciliation with the supporting records. The saved v7
+delivery forms are blank; no item-level decisions, numerical findings or research
+acceptance receipt have been generated from the summary. The date above is the
+report date; the actual review date has not been supplied.
 
 See `reports/track_a_human_review_status_20261027.json`. On receipt of the
 completed records, match their packet hashes, validate decisions and evidence
@@ -113,10 +115,10 @@ It checks integrity; it does not certify semantic correctness or independence.
 
 ## Remaining external research requirements
 
-1. Human expert review is now reported complete by the user. Reconcile its scope,
-   saved decisions and independence/blinding details before generating research
-   receipts or final D-02/D-03 acceptance. The completion report alone does not
-   specify whether both the corpus and retrieval packets were reviewed.
+1. The user confirms completing both Track A corpus/retrieval review and review
+   of experiment results. Reconcile the completed records, packet/run versions
+   and independence/blinding details before generating research receipts, final
+   D-02/D-03 acceptance or numerical hypothesis findings.
 2. Source permissions and the reduced source/PDF scope require the appropriate
    project acceptance. Publisher policy inspection grants no permission. Full
    text, indexes, source originals and corpus archives remain local.

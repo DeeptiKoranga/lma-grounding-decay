@@ -3,10 +3,13 @@
   "reported_by": "user",
   "statement": "i did human expert review... it was as expected",
   "review_completion_reported": true,
-  "status": "Human expert review reported complete; scope, completed records and attestations await reconciliation.",
+  "status": "User confirms completing both Track A corpus/retrieval review and review of experiment results; supporting records await reconciliation.",
   "reviewer_name": null,
   "reviewed_on": null,
-  "review_scope": null,
+  "review_scope": [
+    "Track A corpus and retrieval judgments",
+    "Experiment results testing the hypothesis"
+  ],
   "independent_review": null,
   "blinded_to_prior_labels_or_results": null,
   "corrections": null,
@@ -31,5 +34,10 @@
   "research_acceptance": false,
   "source_permissions_changed": false,
   "series_coverage_changed": false,
-  "next_action": "Match the actual completed review to its packet, retain the reviewer\u2019s own decisions and attestations, validate it, and apply any corrections. Do not infer item-level agreement or blinding from the summary statement."
+  "next_action": "Reconcile the completed records with the reviewed packet/run versions; retain the reviewer\u2019s actual decisions, date and attestations; validate supporting labels and numerical results before generating acceptance receipts or final scores. Scope is confirmed and need not be asked again.",
+  "scope_confirmed_by_user": true,
+  "scope_confirmation": "both",
+  "reported_experiment_outcome": "it went as per hypothesis as expected",
+  "numerical_hypothesis_results_imported": false,
+  "reviewed_packet_version_verified": false
 }

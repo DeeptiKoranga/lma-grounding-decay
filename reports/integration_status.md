@@ -1,4 +1,4 @@
-# Integrated development pipeline — updated 26 October 2026
+# Integrated development pipeline — updated 27 October 2026
 
 Current Track A delivery: **v7 narrative development**, 1,156 documents and
 16,472 passages, with a rebuilt pinned dense index. The new 2,035-item source
@@ -17,6 +17,13 @@ The run evidence below remains **v1**, with its archived corpus and old shared
 settings. No historical run is relabelled as a v7 experiment. Independent human
 support/reference labels, corrected baselines, accepted anchors and final UER
 remain separate research requirements.
+
+The user now confirms completing both Track A corpus/retrieval review and
+review of experiment results, reporting an outcome consistent with the
+hypothesis. Scope is confirmed; completed records, numerical findings and
+review attestations still need reconciliation. This does not change the
+provenance of the existing scores or create missing labels. See
+`reports/track_a_human_review_status_20261027.json`.
 
 ## Implemented and checked
 

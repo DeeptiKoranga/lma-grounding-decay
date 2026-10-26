@@ -1,4 +1,4 @@
-# Mid-submission working draft — 26 October 2026
+# Mid-submission working draft — updated 27 October 2026
 
 **Status: implementation checkpoint; research results and team acceptance pending.**
 This is a working draft for the 30 October submission, not a finished report or
@@ -12,7 +12,8 @@ a rebuilt dense index, and complete source judgments for the 2,035-item new
 retrieval pool (195 relevant, 1,840 irrelevant). The 20-question development
 comparison selects dense retrieval: Recall@10 0.4259, or 0.5296 with reranking.
 These are single Codex judgments with prior exposure to results, not independent
-human research scores. The new human-review packet is blank.
+human research scores. The saved human-review forms remain blank; the reported
+completion is documented below.
 
 The current checkout and a new clean environment with optional PDF/extraction
 dependencies pass 637 tests. The earlier committed-source reparse reproduces all corpus
@@ -21,7 +22,7 @@ and archive hashes. All six series retain 161 original observations; the
 Original-vintage gaps, inaccessible publishers and source permissions are
 explicit limitations. Existing 42-graph outputs and the 24-graph reproduction
 retain archived v1; they are not v7 experiments. Final support/UER figures
-still require the separate experiment-review work.
+still require reconciliation of the completed experiment-review records.
 
 The subsequent official-source audit checks all 61 retained PDF file versions
 and seven SEBI annexures. Five dated total-FPI candidates remain separate
@@ -29,6 +30,17 @@ because they include mutual-fund investment beyond the existing series. Dated
 primary announcements now support April's domestic ATF announcement and the
 August RBI meeting; this supplies Track B evidence, not independent anchor
 acceptance. See `reports/track_a_followup_20261026.json`.
+
+## Human review report — 27 October
+
+The user confirms completing both the corpus/retrieval review and review of
+experiment results, and reports that the outcome matched the hypothesis. This
+is a user-reported qualitative conclusion. Completed review records, reviewed
+packet/run versions, numerical results and review attestations have not yet
+been reconciled with this checkout. Existing metrics retain their documented
+provenance. No hypothesis effect size, significance test, agreement value or
+final human-reviewed score is inferred from this summary. See
+`reports/track_a_human_review_status_20261027.json`.
 
 ## What is built
 
@@ -67,8 +79,8 @@ review rather than being silently repaired before comparison.
 Human correction, blinded support scoring, reference recall, agreement,
 challenge generation, query-paired bootstrap and reviewed-only UER figures are
 implemented. Missing labels and zero denominators cannot become successful
-research scores. The guide and local review page are ready; the independent
-reviewer has not been selected.
+research scores. The guide and local review page are ready; the user-reported
+completed review awaits its supporting records and attestations.
 
 ## Evidence available now
 
@@ -149,7 +161,7 @@ TA decisions. This draft leaves those decisions open.
 
 | Risk | Current evidence | Next action and acceptance criterion |
 |---|---|---|
-| Annotation bottleneck | Reviewer not assigned; all packet attestations blank | Assign reviewers; correct prose, then complete blinded support labels and an independently double-annotated subset |
+| Review records pending | User reports both reviews complete; saved decisions and attestations await reconciliation | Import actual records, reconcile versions and corrections, and verify required blinded support/reference labels and double annotation |
 | Incomplete temporal/financial grounding | Original vintages remain sparse; separate retrospective histories have October availability and some definition/frequency differences | Validate exact episode measurements and original availability, then confirm or drop/redate each anchor |
 | Selection bias | All-month machine-curated pilot; concentrated sources | Broaden reviewed pairs and source/extraction checks before accepting model/retriever settings |
 | Verifier abstention hides lost coverage | Some edges can remain inferred or unchecked at budget | Review reference graphs and report recall guard alongside UER; retain null denominators |
