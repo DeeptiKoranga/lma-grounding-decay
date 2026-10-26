@@ -276,6 +276,20 @@ def test_custom_link_is_removed_before_a_backend_can_merge_it_into_prose(monkeyp
     assert doc.text.split("\n\n") == [BODY, ending]
 
 
+def test_custom_link_filter_preserves_all_other_html_including_bare_ampersands():
+    from corpus.parser import CustomLinkFilter
+
+    anchor = '<a data-type="tilCustomLink" href="/other"><span>Other headline</span></a>'
+    html = (
+        "<!DOCTYPE html>\n<P>S&P/ASX &amp; oil &#8377 without rewriting.</P>"
+        + anchor
+        + '<script>{"articleBody":"S&P/ASX"}</script>'
+    )
+    cleaned = CustomLinkFilter()
+    cleaned.feed(html)
+    assert "".join(cleaned.output) == html.replace(anchor, "<br>")
+
+
 def test_rebuild_pipeline_only_uses_accepted_payloads(tmp_path, monkeypatch):
     monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2]))
     from scripts.fetch.client import Response

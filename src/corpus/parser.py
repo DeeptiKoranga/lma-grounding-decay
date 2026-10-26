@@ -175,51 +175,47 @@ class VisibleArticleBlocks(HTMLParser):
 
 
 class CustomLinkFilter(HTMLParser):
-    """Remove marked recommendation anchors before the extraction backend.
-
-    Keep metadata/scripts verbatim. Only the visible custom-link element is
-    removed; a break prevents the surrounding paragraphs being concatenated.
-    """
+    """Remove only marked recommendation byte ranges; preserve other HTML verbatim."""
 
     def __init__(self):
         super().__init__(convert_charrefs=False)
         self.output = []
-        self.skipping = False
+        self._source = ""
+        self._line_starts = []
+        self._start = None
+        self._ranges = []
+
+    def _position(self):
+        line, column = self.getpos()
+        return self._line_starts[line - 1] + column
+
+    def feed(self, source):
+        if self._source:
+            raise ValueError("custom-link filtering requires one complete HTML payload")
+        self._source = source
+        self._line_starts = [0] + [m.end() for m in re.finditer("\n", source)]
+        super().feed(source)
+        if self._start is not None:
+            raise ParseError("unclosed recommendation anchor; source needs inspection")
+        cursor = 0
+        for start, end in self._ranges:
+            self.output.extend([source[cursor:start], "<br>"])
+            cursor = end
+        self.output.append(source[cursor:])
 
     def handle_starttag(self, tag, attrs):
         if tag == "a" and dict(attrs).get("data-type") == "tilCustomLink":
-            self.skipping = True
-            self.output.append("<br>")
-        elif not self.skipping:
-            self.output.append(self.get_starttag_text())
+            if self._start is not None:
+                raise ParseError("nested recommendation anchors")
+            self._start = self._position()
 
     def handle_endtag(self, tag):
-        if self.skipping:
-            if tag == "a":
-                self.skipping = False
-                self.output.append("<br>")
-        else:
-            self.output.append(f"</{tag}>")
-
-    def handle_data(self, data):
-        if not self.skipping:
-            self.output.append(data)
-
-    def handle_entityref(self, name):
-        if not self.skipping:
-            self.output.append(f"&{name};")
-
-    def handle_charref(self, name):
-        if not self.skipping:
-            self.output.append(f"&#{name};")
-
-    def handle_comment(self, data):
-        if not self.skipping:
-            self.output.append(f"<!--{data}-->")
-
-    def handle_decl(self, decl):
-        if not self.skipping:
-            self.output.append(f"<!{decl}>")
+        if tag == "a" and self._start is not None:
+            end = self._source.find(">", self._position())
+            if end < 0:
+                raise ParseError("incomplete recommendation end tag")
+            self._ranges.append((self._start, end + 1))
+            self._start = None
 
 
 def _headline_key(value: str, source: str) -> str:
