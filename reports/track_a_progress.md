@@ -1,155 +1,93 @@
-# Track A delivery status — 25 October 2026
+# Track A delivery status — 26 October 2026
 
-The local corpus, retrieval and series implementation is delivered and verified.
-**Track A research acceptance is still incomplete.** Independent reviewers are
-unassigned, required source balance is not met, and original point-in-time series remain sparse.
-This report replaces the older continuation status; it does not close research
-issues or record team/TA approval.
+The remaining local engineering, corpus repair, development review, indexing,
+retrieval comparison and reproduction work is complete. The final v7 delivery
+has **1,156 documents and 16,472 passages**, **2,035 completed development
+judgments**, a matching dense index and a new independent-review workspace.
+**Research acceptance remains pending**: no independent human review, source
+permission or original-vintage episode confirmation is invented. This report
+replaces the 25 October status, preserved as `track_a_progress_20261025.md`.
 
-## Delivered locally
+## Delivered
 
-| Work | Current evidence | Remaining acceptance requirement |
+| Track A task | Final evidence | Scope and acceptance limit |
 |---|---|---|
-| News/official collection (A1–A2) | 1,177 retained documents: 1,116 news and 61 official, March–September. ET 889, BusinessLine 215, Mint 12; MoSPI 37, PPAC 14, OEA 10. Mint now covers all seven months. | Business Standard and RBI remain absent after access failures. ET dominates; Mint is sparse. OEA is a documented source-list deviation. |
-| Parsing, deduplication, freeze and offsets (A3–A5) | Repaired invisible-format-character matching and omitted visible article leads. Reparsed 1,112 original news caches; restored 1,572 paragraphs in retained documents. Removed explicit related links and six additional same-day near duplicates. All 28,391 passage offsets match saved parent text; reverse-input archive is identical. | The separate Codex review covers all 73 samples and identifies concrete HTML/PDF/scope defects. Independent acceptance is blank; the repair candidate is unpromoted. |
-| Lexical, dense, hybrid and date filtering (A6–A7, A11) | Plain/alias BM25, pinned BGE-M3, FAISS and RRF implemented. All 28,391 passages indexed. Saved index reloaded in a fresh process and searched at March and September cutoffs. Future documents are excluded before ranking. | Accepted corpus and retriever choice; broad aliases and source concentration remain limitations. |
-| Retrieval/reranking pilot (A8–A9, #45) | Real four-way comparison and pinned top-50 cross-encoder on 20 machine-curated questions across all seven months, with 43 unchanged seed texts. All 2,062 pooled items have a separate Codex review (182 relevant, 1,874 irrelevant, six uncertain); the original blinded human packet is unchanged. | Independent relevance judgments, corpus acceptance, D-02 and D-03. Smoke scores do not establish research performance. |
-| Macro-series store (A10) | Original store: CPI 7, FX 141, basket 2, Brent 4, benchmark yield 6, FPI 1; **161 observations unchanged**. Separate retrospective snapshot: **317 observations**, with March–September Brent daily closes and monthly basket/yield/FPI. Actual read-layer checks reject October snapshots at September cutoffs. | Original-vintage histories and anchor confirmation remain incomplete. Retrospective financial-futures closes and monthly main yields have different definitions from the dated news points. Monthly values cannot confirm daily episode dates. |
-| Integration and reproduction (#33, #50) | All six development candidates rerun from fresh-clone source for B0/B1/B2/M: **24/24 canonical graphs match** the earlier v1 checkpoint. Prompt/model/tool/budget/corpus logs checked. Corpus binding now rejects v3 text for old v1 runs. | These are unreviewed candidates and reused local weights/runtime. Other team machines, Kaggle and accepted gold remain untested. |
-| Figures/report (#46) | Source-by-month and series-coverage PNG/SVG, retrieval comparisons, provenance, computation and review handoff are saved. | Final UER, reference recall and strength figures require independent labels and corrected baseline graphs. |
+| A1–A2 collection | 1,095 news: ET 870, BusinessLine 213, Mint 12. Official: MoSPI 37, PPAC 14, OEA 10. All seven months represented. | The documented mid-submission fallback retains the acquired source mix. Business Standard/RBI remain unavailable; ET concentration, sparse Mint and OEA deviation remain explicit. |
+| A3–A5 extraction, scope, deduplication and freeze | Missing ET bodies recovered, Mint biographies/promotions removed, 21 unsuitable news documents excluded. All 870 ET originals checked: 105 marked custom links removed, no long related-link titles retained; untouched HTML preserved. Exact parent offsets and reverse-input archive checked. | Official PDFs are narrative-only: 949 paragraphs from 61 documents. Tables, charts, image-only material and 53,967 rejected native line groups remain outside the index. Source originals and layout audits stay local. No exhaustive table transcription or independent extraction certification is claimed. |
+| A6–A7/A11 retrieval and dates | Plain/alias BM25, pinned BGE-M3, FAISS, RRF and pre-ranking date eligibility implemented. Final 16,472-passage index matches the corpus; fresh-process reload and two actual query embeddings/searches pass March/September cutoffs. | Model/preprocessing identity and exact title+text hashes govern vector reuse. Old v1 outputs and v3 review packets retain their original bindings. |
+| A8–A9 development comparison | All six old uncertain items adjudicated as insufficient standalone evidence. Complete final pool: 195 relevant, 1,840 irrelevant, zero uncertain across 20 queries. All prior positives accounted for; final pool adds no candidates beyond the fully read v5 pool. Dense selected by the declared 0.03 rule; Recall@10 0.4259, rising to 0.5296 with reranking. | Single Codex review with prior results exposure. This settles the development configuration only. D-02/D-03 research acceptance requires independent review; reranker end-to-end benefit is unproven and full-scale B1-R remains deferred. |
+| A10 series and episode support | All six canonical files retain 161 original-vintage observations. Separate 317-observation retrospective snapshot, exact hashes and date exclusions revalidated. Source/measure/episode feasibility audit complete; stricter source checks admitted no additional original-date values. | October captures cannot become March–September evidence. Daily benchmark yield, Brent/basket/FPI histories remain sparse. ATF and RBI policy episodes require the corresponding dated measures/statements; Track B owns anchor acceptance. |
+| Reproduction/integration | 630 tests pass with Ruff/Black clean in the working checkout and a fresh environment with optional PDF/extraction packages. Committed source rebuilds the final corpus/archive from checksummed local originals. Saved-index reload uses two real query embeddings. | Core/PDF dependencies were installed into a new environment from local package cache. Heavy retrieval models/runtime and original data caches were reused; other machines and Kaggle are untested. The earlier 24/24 graph reproduction remains v1. |
+| Reports, figures and handoff | Current corpus/series figures, selection, provenance, source scope, compute record, reproduction guide and mid-submission draft updated. New 82-file human-review workspace contains 73 sources/originals and all 2,035 candidates; all forms and attestations blank. | All 83 files in the original v3 delivery are unchanged. Actual blank corpus/relevance exports fail without output. No final UER, reference recall, agreement or human acceptance score is produced. |
 
-## Corpus and experiment versions
+## Final corpus and experiment boundaries
 
-`data/processed/` is now **v3 development**, not a research-accepted freeze:
-`1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164`.
-The full candidate snapshot also remains under `data/interim/corpus_v3_20261023/snapshot/`.
+Active: `data/processed/`, **v7-narrative-development**, corpus SHA-256
+`25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496`;
+archive SHA-256
+`88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037`.
+The active manifest records the narrative extraction scope. The final dense index
+is `data/interim/corpus_v7_index_20261026/bge_m3_vectors.json`.
 
-The earlier 42-graph seven-condition assembly and the fresh 24-graph reproduction
-use **v1**, preserved at `data/interim/frozen_v1_20261023/`, corpus SHA
-`7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3`.
-Their original three series are preserved separately at
-`data/interim/fresh_reproduction_inputs_20261023/series/`.
-Never pool these outputs with new v3 experiments or attach v3 passages to their
-review packets. Run audit and both review preparers enforce recorded hashes.
-The intermediate v2 corpus and its older review packet are historical checkpoints.
+The reviewed v3 snapshot is archived at `data/interim/frozen_v3_20261026/`,
+SHA `1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164`.
+Its 25 October review, index and original reviewer packet remain historical.
+Intermediate v4/v5/v6 candidates are preserved and identified in
+`reports/corpus_versions.json`. They are not mixed into final comparisons.
 
-## Retrieval evidence and review
+The earlier 42-graph assembly and 24-graph fresh-source reproduction use v1,
+SHA `7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3`,
+at `data/interim/frozen_v1_20261023/`, with the preserved original three-series
+inputs. They are unreviewed development runs, not v7 experiments or accepted
+gold. Corrected baseline graphs, independent support/reference labels and
+final UER belong to the remaining study work across tracks.
 
-`reports/pilot_retriever.md` and `reports/pilot_retriever_v3_development.md`
-now describe v3. First-stage Recall@10 on **incomplete machine seeds** is 0.4333
-for BM25, 0.5167 for alias BM25, 0.6000 for BGE-M3 and 0.5833 for hybrid RRF;
-dense plus reranking gives 0.7667. These are development diagnostics, not accepted
-relevance scores. They do not justify resolving D-02/D-03 or switching the
-shared development first stage from plain BM25. The old March comparison is
-preserved as `reports/pilot_retriever_march_20261022.md`.
+## Independent review handoff
 
-Current packet: `data/interim/retrieval_review_temporal_v4/`. Its 20 questions
-have three cutoffs per month March–August and two in September. All 43 seed texts
-and every four-way pooled candidate are retained. Scores, ranks, origins and
-seed flags are hidden. All judgments and attestations are blank; an actual blank
-export was rejected without producing output. Corpus review must precede final
-relevance acceptance. See `reports/retrieval_v3_review_readiness.json`.
+Open `data/interim/track_a_review_delivery_v7_20261026/START_HERE.md` and read
+`SCOPE.md` first. The corpus page includes 73 deterministic source/month samples
+and all 73 checksummed originals. The relevance page includes 20 questions and
+2,035 candidates without scores, ranks or seed flags. Forms and human identity,
+date, independence, blinding and acceptance attestations remain wholly blank.
+Do not copy the separate Codex review into those forms.
 
-## Verification and handoff
+The final integrity validator checks corpus/archive bytes, every passage offset,
+index identity, complete judgment coverage/text hashes/evidence spans, dates,
+all new and original workspace hashes, series hashes and blank human forms.
+It checks integrity; it does not certify semantic correctness or independence.
 
-Latest local checks: **623 tests passed**, Ruff and Black passed. The earlier clean clone at `57c0480` passed **584 tests with two optional PDF
-skips**; current review-workflow validation is recorded in
-`reports/track_a_review_validation.json` (598 passed and two optional PDF skips
-at source `80a6d7a`). The real saved-index
-reload passed; all 24 fresh graphs match. Fifteen quotation failures in the
-original seven-condition baseline/ablation outputs remain visible for independent
-correction; exact reproduction does not validate their support. No UER, human
-agreement or reference recall is claimed.
+## Remaining external research requirements
 
-The 25 October clean clone of source `a27e8e0` passed **618 tests with two optional
-PDF skips**, with Ruff/Black clean and imports verified from the new checkout.
-It validated all tracked snapshot files without raw caches. This reused the
-core environment and does not certify a fresh heavy install or other machines.
-Current evidence is in `reports/track_a_validation_20261025.json`.
+1. An actual independent human must accept the declared corpus sample/scope and
+   complete blinded query/relevance review before research receipts or final
+   D-02/D-03 acceptance can be generated.
+2. Source permissions and the reduced source/PDF scope require the appropriate
+   project acceptance. Publisher policy inspection grants no permission. Full
+   text, indexes, source originals and corpus archives remain local.
+3. Original-date histories or an explicit research-scope decision are needed for
+   missing series coverage and anchor confirmation. Retrospective proxies stay
+   separate; no missing values or original publication dates are invented.
 
-Key records:
+No further engineering blocker is hidden by these limits. The broader study
+still has Track B/C annotation, model/TA decisions and final-result work.
+No pull request or research issue closure is part of this delivery.
 
-- `reports/corpus_v3_audit.json`, `reports/corpus_v3_extraction_qa.json`,
-  `reports/corpus_versions.json`, `data/processed/MANIFEST.md`.
-- `reports/retrieval_v3_saved_index_validation.json`,
-  `reports/retrieval_v3_review_readiness.json`, `reports/retriever_temporal_v3_migration.json`.
-- `data/series/README.md`, `reports/news_series_v3_acquisition.json`,
-  `reports/series_store_validation.json`.
-- `reports/fresh_full_development_reproduction.json`,
-  `reports/fresh_full_development_logs.json`, `reports/corpus_binding_validation.json`.
-- `reports/review_handoff.md`, `docs/reproduction.md`, `reports/compute_log.md`.
+## Key records
 
-The earlier work through `c01d222` is on GitHub branch `varun`. The 25 October
-data/source additions are committed locally at `a27e8e0` and documented below.
-They have not been pushed. No pull request, issue closure, teammate
-acceptance or research signoff is implied by the development delivery.
-
-## Ready-to-use independent review workspace
-
-Open `data/interim/track_a_review_delivery_20261023/START_HERE.md`.
-`01_corpus/Review.html` contains the 73 sampled documents and all 73 checksummed
-cached originals. `02_relevance/Review.html` contains the unchanged blinded
-20-question, 2,062-passage packet. Both pages work locally, keep attestations
-blank, and save/resume reviewer progress. The actual browser download and resume
-were checked without adding any human judgments.
-
-`corpus.review` now validates extraction sample acceptance against corpus,
-parent, packet and judgment hashes. Missing, rejected, duplicate, stale or
-non-independent review fails before a receipt is created. Acceptance covers the
-specified sample; it does not certify source balance, all documents or sharing
-rights. The relevance exporter retains its separate complete/blinded review gate.
-Commands are in `docs/reproduction.md`.
-
-The 23 October checks admitted no new data; their historical record remains
-`reports/track_a_remaining_source_gaps.json`. On 25 October, public Yahoo,
-FRED/OECD, PPAC and existing CDSL caches supplied the separate retrospective
-histories. New Business Standard/RBI/FBIL checks remain unsuccessful, documented
-in `reports/track_a_source_gaps_20261025.json`. No reviewer was assigned and no
-human receipt was created.
-
-## 25 October source audit and backfills
-
-The 43 existing retrieval seeds were checked directly against their fixed
-questions and isolated source paragraphs. The separate Codex audit retained
-**37 relevant**, rejected **four irrelevant** and left **two uncertain** seeds.
-Every question retains evidence; exact spans and reasons are in
-`reports/retriever_seed_audit_20261025.json`. This is development curation, not
-independent human review or full-pool relevance acceptance. The original pairs,
-corpus, review packet and human judgments are unchanged. The follow-up pilot is
-`reports/pilot_retriever_v3_audited_seeds_20261025.md`; D-02/D-03 remain open.
-The recorded CPU/FAISS rerun took 145.04 seconds with the saved v3 index. Recall@10
-was 0.4333 BM25, 0.4917 alias BM25, 0.6000 dense and 0.5583 hybrid; dense plus
-top-50 reranking reached 0.7667. Dense remains the provisional simplest option
-within 0.03 of the best. Seed curation is incomplete pool coverage and supplies
-no human receipt; the existing shared development runs/settings are preserved.
-
-The local Qwen classifier was stopped after 11 completed batches/313 items:
-source inspection found it accepting generic background as direct answers.
-All its outputs are excluded from pilot labels. Formatting and verbatim spans
-alone cannot establish relevance. Actual usage, failed attempts and source-audit
-examples are in `reports/relevance_screen_failure_audit_20261025.json`.
-
-The new retrospective store and actual date-filter checks are documented in
-`data/series/retrospective_20261025/README.md`,
-`reports/retrospective_series_acquisition_20261025.json` and
-`reports/retrospective_series_read_validation_20261025.json`.
-An offline replay into a fresh directory reproduced all six CSV hashes. The
-coverage figure `reports/series_coverage_20261025.png` was visually checked.
-
-## Completed source and pooled relevance review
-
-The [25 October source review](track_a_source_review_20261025.md) records every
-corpus-sample finding and every pooled passage judgment. All 40 sampled article
-texts were read; 33 PDF covers/native extractions were inspected, with selected
-layout checks. It does not claim exhaustive PDF-cell validation or human
-independence. All 20 questions retain positive evidence, and uncertain judgments
-remain unresolved rather than becoming negatives.
-
-The separate repair candidate has 1,159 documents and 29,595 passages: 643 retained
-documents changed and 18 unsuitable documents excluded. All known omitted ET
-sample bodies and five Mint biographies are addressed. PDF context, infographic
-content, residual recommendations/topic false positives, source terms and dated
-source adequacy still prevent corpus acceptance. Active v3, its index, v1 runs
-and all 83 original reviewer-delivery files remain unchanged. No new scores,
-human receipt, D-02/D-03 closure, push or PR is implied. The current local suite
-passes 623 tests with Ruff/Black clean.
+- `reports/track_a_validation_20261026.json`,
+  `reports/track_a_clean_reproduction_20261026.json`.
+- `reports/corpus_v7_build_20261026.json`,
+  `reports/corpus_v7_navigation_qa_20261026.json`,
+  `reports/corpus_v7_index_20261026.json`,
+  `reports/retrieval_v7_saved_index_validation_20261026.json`.
+- `reports/relevance_adjudication_20261026.json`,
+  `reports/retriever_v5_full_review_20261026.json`,
+  `reports/retriever_v7_full_review_20261026.json`,
+  `reports/track_a_retrieval_selection_20261026.json`,
+  `reports/pilot_retriever_v7_20261026.md`.
+- `reports/track_a_source_scope_20261026.md`,
+  `reports/track_a_series_scope_20261026.json`,
+  `reports/retrospective_series_read_validation_20261026.json`.
+- `reports/track_a_reviewer_delivery_v7_20261026.json`,
+  `reports/corpus_versions.json`, `data/processed/MANIFEST.md`,
+  `docs/reproduction.md`, `docs/decisions.md`, `reports/compute_log.md`.

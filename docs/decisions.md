@@ -6,7 +6,7 @@ the evidence that closes it**: write the number, link the report, and date it.
 
 Status is one of `open` · `resolved` · `deferred`.
 
-Last reviewed: **19 Oct 2026** (Phase 0).
+Last reviewed: **26 Oct 2026** (Track A development selection; research acceptance remains open).
 
 ---
 
@@ -36,7 +36,8 @@ Last reviewed: **19 Oct 2026** (Phase 0).
 | **Owner / due** | A · by Sat 24 Oct |
 | **Evidence** | `reports/pilot_retriever.md` |
 | **Blocks** | B1, B1-R and every agent condition share one first-stage retriever (proposal §11). |
-| **Resolution** | *(unresolved)* |
+| **Development selection — 26 Oct** | BGE-M3: Recall@10 0.4259 versus 0.3518 plain BM25, 0.3551 alias BM25 and 0.4161 hybrid. Selected by the declared 0.03 rule on 20 queries/2,035 pooled judgments (195 relevant). Single Codex review with previous results exposure; no independent receipt. See `reports/track_a_retrieval_selection_20261026.json`. Archived v1 run settings stay unchanged. |
+| **Resolution** | Independent corpus/relevance acceptance remains open. |
 
 ### D-03 — Does the cross-encoder reranker earn its place? `[needs pilot]`
 
@@ -49,7 +50,8 @@ Last reviewed: **19 Oct 2026** (Phase 0).
 | **Owner / due** | A · retrieval numbers by Sat 24 Oct; end-to-end deferred past 30 Oct |
 | **Evidence** | `reports/pilot_retriever.md` |
 | **Note** | B1-R at full scale is explicitly deferred past the mid-submission (PLAN_MIDSUB.md §3). |
-| **Resolution** | *(unresolved)* |
+| **Development selection — 26 Oct** | Retain the pinned top-50 cross-encoder for B1-R development: Recall@10 0.5296 versus dense 0.4259, a 0.1037 gain. Same complete development pool as D-02; no independent receipt or end-to-end benefit established. |
+| **Resolution** | Independent research acceptance remains open; full end-to-end comparison remains deferred as planned. |
 
 ### D-04 — Are the eight anchor episodes real? `[needs pilot]`
 

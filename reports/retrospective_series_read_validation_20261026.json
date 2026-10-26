@@ -1,0 +1,70 @@
+{
+  "status": "passed; read-layer and source-byte validation, not research acceptance",
+  "canonical": "data/series",
+  "snapshot": "data/series/retrospective_20261025",
+  "canonical_observations": 161,
+  "snapshot_observations": 317,
+  "checks": {
+    "brent_usd_bbl_hidden_at_september_cutoff": true,
+    "brent_usd_bbl_covers_all_seven_months_after_capture": true,
+    "indian_basket_usd_bbl_hidden_at_september_cutoff": true,
+    "indian_basket_usd_bbl_covers_all_seven_months_after_capture": true,
+    "inr_usd_unchanged": true,
+    "cpi_headline_yoy_unchanged": true,
+    "gsec_10y_pct_hidden_at_september_cutoff": true,
+    "gsec_10y_pct_covers_all_seven_months_after_capture": true,
+    "fpi_flows_usd_mn_hidden_at_september_cutoff": true,
+    "fpi_flows_usd_mn_covers_all_seven_months_after_capture": true,
+    "default_store_ignores_nested_snapshot": true,
+    "all_default_csv_hashes_unchanged": true
+  },
+  "series": {
+    "brent_usd_bbl": {
+      "stored_observations": 148,
+      "visible_at_september_30": 0,
+      "visible_at_october_25": 148,
+      "move_at_october_25": "up",
+      "sha256": "3b2352af4b73a0d3f899c3fa4a17e9d5f20fd22575fda0ec1013afd04143fcf8"
+    },
+    "indian_basket_usd_bbl": {
+      "stored_observations": 7,
+      "visible_at_september_30": 0,
+      "visible_at_october_25": 7,
+      "move_at_october_25": "up",
+      "sha256": "4de40cba1acd377f5b02758c5eeb3fd1adf478a7c18db50e9ae353ef946dee09"
+    },
+    "inr_usd": {
+      "stored_observations": 141,
+      "visible_at_september_30": 141,
+      "visible_at_october_25": 141,
+      "move_at_october_25": "up",
+      "sha256": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c"
+    },
+    "cpi_headline_yoy": {
+      "stored_observations": 7,
+      "visible_at_september_30": 6,
+      "visible_at_october_25": 6,
+      "move_at_october_25": "up",
+      "sha256": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb"
+    },
+    "gsec_10y_pct": {
+      "stored_observations": 7,
+      "visible_at_september_30": 0,
+      "visible_at_october_25": 7,
+      "move_at_october_25": "up",
+      "sha256": "08a7845fbf97f448cdb158eec60a93748ac8b2d324ee1b477867a64b4e5034d9"
+    },
+    "fpi_flows_usd_mn": {
+      "stored_observations": 7,
+      "visible_at_september_30": 0,
+      "visible_at_october_25": 7,
+      "move_at_october_25": "up",
+      "sha256": "f32161adf9f2e8f668524cd8b4896d2b4c58404556d413b7f421294880c44c9d"
+    }
+  },
+  "limits": [
+    "Monthly observations do not validate daily episode dates.",
+    "Capture dates establish known availability, not original publication dates.",
+    "Brent vendor continuous closes and monthly main bond yields differ from the sparse news definitions."
+  ]
+}

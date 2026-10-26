@@ -124,3 +124,42 @@ clean; the original 83 reviewer-delivery files retain their hashes. The final
 local check log is `/private/tmp/lma-source-review-final-checks-20261025.log`.
 Review and extraction phase wall times were not instrumented and are not
 invented here. Findings and limits: `reports/track_a_source_review_20261025.md`.
+
+## 26 October final Track A development delivery
+
+All durations below are measured CPU phase wall times, not GPU-active time.
+They reuse checksummed raw data and locally cached pinned models; index/pilot
+phases exclude earlier downloads, installation, parsing and review. No paid API
+request or Kaggle run occurred. Failed/intermediate attempts remain preserved.
+Uninstrumented parsing/review and interrupted encoding time is not estimated.
+
+| Phase | Actual phase wall seconds | Inputs/result |
+|---|---:|---|
+| v5 scoped dense index | 298.34 | 16,473 passages; 13,664 exact title+text inputs reused, 2,809 new inputs encoded |
+| v5 migrated-positive pilot | 147.33 | 178 distinct positive judgments on 20 queries; not the final relevance pool |
+| v5 full-pool pilot | 148.91 | 2,035 reviewed items / 195 relevant judgments |
+| v5 fresh-process index reload | 12.73 | Two real query embeddings with March/September cutoffs |
+| v6 intermediate index | 36.21 | 16,472 passages; 16,434 reused, 38 newly encoded |
+| v6 intermediate pilot | 140.21 | Same 195 positive judgments; preserved as intermediate evidence |
+| v6 fresh-process index reload | 12.91 | Two real queries; intermediate corpus identity retained |
+| Final v7 index | 38.55 | 16,472 passages; 16,440 exact inputs reused, 32 newly encoded |
+| Final v7 four-way plus reranker pilot | 135.28 | Same 20-query/195-positive file; final corpus identity |
+| Final v7 fresh-process index reload | 12.94 | Two real query embeddings; every saved passage matches v7 and hits satisfy cutoffs |
+
+The full v5 source review transferred 1,626 judgments and read all 409 new full
+passages, yielding 195 relevant and 1,840 irrelevant. All 2,035 judgments transfer
+to the final v7 pool by source identity/full normalized text with no novel
+candidates. Earlier six uncertain v3 items were explicitly adjudicated against
+standalone evidence; they were not converted by default or imported from the
+rejected Qwen classifier. Prior v3 reviews/labels and all 83 original reviewer
+files remain unchanged. Review is by Codex with prior results exposure and
+creates no independent human receipt.
+
+A fresh clone at `c0324cd` used a newly created Python 3.12 environment, installing
+core/dev and optional PyMuPDF/trafilatura dependencies offline from local package
+cache. All 630 tests and Ruff/Black pass. Its committed source replays extraction
+from archived v3 and local raw originals into a fresh output. This checks a new
+core/PDF environment and source checkout; retrieval/MLX weights and their heavy
+runtimes are reused, and other machines/Kaggle are not certified. Final corpus
+and archive identity and the exact setup/replay logs are recorded in
+`reports/track_a_clean_reproduction_20261026.json`.

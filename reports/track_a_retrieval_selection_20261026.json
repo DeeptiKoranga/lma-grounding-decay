@@ -1,0 +1,60 @@
+{
+  "decision_date": "2026-10-26",
+  "status": "development configuration selected; independent research acceptance pending",
+  "first_stage": "bge_m3",
+  "rule": "Simplest first-stage configuration within 0.03 macro Recall@10 of the best, in order bm25, bm25_alias, bge_m3, hybrid_rrf. Reranking is a separate comparison.",
+  "first_stage_metrics": {
+    "bm25": {
+      "recall_at_5": 0.2405,
+      "recall_at_10": 0.3518,
+      "mrr_at_50": 0.4555
+    },
+    "bm25_alias": {
+      "recall_at_5": 0.2211,
+      "recall_at_10": 0.3551,
+      "mrr_at_50": 0.5787
+    },
+    "bge_m3": {
+      "recall_at_5": 0.3327,
+      "recall_at_10": 0.4259,
+      "mrr_at_50": 0.6981
+    },
+    "hybrid_rrf": {
+      "recall_at_5": 0.2958,
+      "recall_at_10": 0.4161,
+      "mrr_at_50": 0.6663
+    }
+  },
+  "reranker": {
+    "model": "BAAI/bge-reranker-v2-m3",
+    "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+    "top_k_candidates": 50,
+    "recall_at_5": 0.4072,
+    "recall_at_10": 0.5296,
+    "mrr_at_50": 0.7101,
+    "recall_at_10_gain": 0.1037,
+    "disposition": "Retain for the B1-R development comparison; end-to-end research benefit not established."
+  },
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "pairs_sha256": "7ef70e5e65dcedc1e511673fa5ec4eab4ea1709564159c3f70e507547e609438",
+  "report_sha256": "3f3b4169ff838d7b37d6241eb899f8a57d8130e078baa871338608ae880b63b1",
+  "metrics_precision": "Rounded to four decimals as emitted in the pilot table. Selection is the actual runner outcome.",
+  "queries": 20,
+  "pool_judgments": 2035,
+  "relevant_judgments": 195,
+  "label_provenance": "Single Codex source review; prior exposure to results; no human/blinding attestation.",
+  "research_acceptance": false,
+  "shared_historical_run_settings_changed": false,
+  "default_for_new_track_a_reproduction": {
+    "corpus": "data/processed/articles.jsonl",
+    "config": "bge_m3",
+    "dense_backend": "faiss",
+    "dense_index": "data/interim/corpus_v7_index_20261026/bge_m3_vectors.json",
+    "embedding_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+    "device": "cpu",
+    "max_length": 1024
+  },
+  "report": "reports/pilot_retriever_v7_20261026.md",
+  "pairs": "reports/retriever_v7_pairs_20261026.jsonl",
+  "review": "reports/retriever_v7_full_review_20261026.json"
+}

@@ -1,37 +1,22 @@
-# Integrated development pipeline — updated 25 October 2026
+# Integrated development pipeline — updated 26 October 2026
 
-Current Track A delivery is in `reports/track_a_progress.md`. The active root
-corpus is repaired v3 (1,177 documents, 28,391 passages). All six series contain
-161 total observations, with sparse histories. The 42-graph assembly below
-retains archived v1; audits/review preparation must explicitly select
-`data/interim/frozen_v1_20261023/articles.jsonl`. Full fresh-source B0/B1/B2/M
-reproduction now matches all 24 original graphs. Independent research acceptance
-remains open. Current checks: 623 tests, Ruff and Black pass.
+Current Track A delivery: **v7 narrative development**, 1,156 documents and
+16,472 passages, with a rebuilt pinned dense index. The new 2,035-item source
+review is complete (195 relevant, 1,840 irrelevant); independent acceptance is
+pending. Dense retrieval is selected for development, with Recall@10 0.4259 and
+0.5296 after top-50 reranking. See `reports/track_a_progress.md`.
 
-25 October update: **623 tests pass**, with Ruff and Black clean. The original
-161-observation historical store remains unchanged. A separate 317-observation
-snapshot provides later-captured Brent daily closes and monthly basket/yield/FPI
-histories; real read-layer checks hide these backfills at September cutoffs.
-The source-audited 37-seed/20-question retrieval rerun remains a provisional
-diagnostic and does not change shared run settings or human acceptance. See
-`reports/retrospective_series_read_validation_20261025.json` and
-`reports/pilot_retriever_v3_audited_seeds_20261025.md`.
+The current checkout and clean environment with optional PDF/extraction
+packages pass **630 tests**, Ruff and Black. A clean-source reparse reproduces
+the v7 corpus/archive hashes. Historical tools retain 161 original series
+observations; the separate 317-observation October snapshot is excluded at
+March–September cutoffs. New review delivery contains wholly blank human
+judgments; the gates reject blank exports.
 
-The software path now connects corpus/retrieval, model generation, extraction,
-verification, tools, controller, condition configs, run logging and evaluation.
-Research completion is **not** established by this implementation checkpoint.
-
-Earlier counts in the following run sections describe the preceding v1
-integration checkpoint. Current Track A versions and evidence are recorded in
-the delivery report above. A corpus/retriever change requires new experiments
-and corresponding review packets.
-
-The [completed 25 October source review](track_a_source_review_20261025.md) covers
-73 samples and all 2,062 pooled judgments (182 relevant, 1,874 irrelevant, six
-uncertain). Its 1,159-document repair candidate is unpromoted. PDF context and
-residual scope defects remain; original v3, v1 experiments and independent human
-review files are unchanged. This is Codex development review, with no independent
-acceptance or final research metrics.
+The run evidence below remains **v1**, with its archived corpus and old shared
+settings. No historical run is relabelled as a v7 experiment. Independent human
+support/reference labels, corrected baselines, accepted anchors and final UER
+remain separate research requirements.
 
 ## Implemented and checked
 
@@ -111,7 +96,7 @@ excluding run IDs. It reused the heavy runtime and corpus, and is not a full
 frozen-gold reproduction. See `reports/capability_diagnostics.json`,
 `reports/fresh_clone_validation.json` and `reports/compute_log.md`.
 The earlier software gate was 547 tests (545 plus two skips in the core clone);
-current verification is recorded in `reports/track_a_validation.json`.
+current verification is recorded in `reports/track_a_validation_20261026.json`.
 
 ## Research gates still open
 
@@ -131,9 +116,10 @@ current verification is recorded in `reports/track_a_validation.json`.
    remain candidates. They do not replace the planned 30-query split, six
    reviewer gold graphs, ten annotated test queries, independent support labels,
    double annotation/kappa or the public-dataset strength/direction checks.
-5. Retriever/reranker acceptance: the current v3 blinded 2,062-item pool covers
-   20 questions across March–September. Its human judgments are blank; the older
-   March/v2 pools remain historical. D-02/D-03 remain open.
+5. Retriever/reranker acceptance: the current v7 2,035-item pool covers 20
+   questions across March–September. Development judgments and dense/reranker
+   selection are complete; independent human judgments remain blank. The old
+   v3 pool is preserved. D-02/D-03 research acceptance remains open.
 6. Results: human correction of baseline extraction and blinded support review
    are required before reporting UER or strength inflation. The recall guard
    also needs independently reviewed reference graphs. No zero-denominator

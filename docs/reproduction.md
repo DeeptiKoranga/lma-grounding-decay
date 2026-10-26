@@ -1,6 +1,6 @@
 # Reproduce the integrated development pipeline
 
-Updated 25 October 2026. Unit checks and development runs are distinct from a
+Updated 26 October 2026. Unit checks and development runs are distinct from a
 reviewed research experiment. Corpus acceptance, independent annotations, model
 selection, complete series histories and anchor confirmation remain open; see
 `reports/track_a_progress.md`.
@@ -34,8 +34,8 @@ exact revision and `local_dir='data/raw/generator/qwen3-8b-4bit'`. Model Python
 code is not downloaded or executed. The isolated runtime avoids changing the
 core environment when local inference requires different packages.
 
-The first stage is plain BM25 for these development runs; D-02/D-03 are not
-resolved. B1-R uses the same BM25 candidates plus the pinned existing BGE
+The first stage was plain BM25 for the archived v1 development runs. D-02/D-03
+research acceptance remains open. B1-R uses the same BM25 candidates plus the pinned existing BGE
 cross-encoder, revision `953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e`, from the
 local Hugging Face cache. The worker runs in `.venv` and releases its memory when
 it exits. No reranker download occurs during a development sweep.
@@ -292,14 +292,15 @@ candidates and B0/B1/B2/M; all 24 canonical graphs match after dropping only
 `run_id`. It reused weights/runtime and does not certify other machines or
 Kaggle. A new v3 experiment needs new logs and review packets.
 
-## Local independent-review workspace
+## Historical v3 independent-review workspace
 
-Build a new reviewer folder from the current v3 snapshot and existing blank
+Build a new reviewer folder from the preserved v3 snapshot and existing blank
 sample/relevance packets. This operation is local and copies no seeds, ranks,
 scores or private condition mapping into reviewer materials:
 
 ```sh
 PYTHONPATH=src .venv/bin/python -m scripts.prepare_track_a_review \
+  --snapshot data/interim/frozen_v3_20261026 \
   --output data/interim/track_a_review_recheck \
   --report reports/track_a_review_recheck.json
 ```
@@ -312,7 +313,7 @@ identity/date/independence/acceptance record, validate that file:
 
 ```sh
 PYTHONPATH=src .venv/bin/python -m corpus.review export \
-  --snapshot data/processed \
+  --snapshot data/interim/frozen_v3_20261026 \
   --packet data/interim/track_a_review_delivery_20261023/01_corpus/packet.json \
   --judgments /path/to/completed_corpus_judgments.json \
   --output data/interim/corpus_sample_v3_accepted
@@ -333,7 +334,7 @@ validation. The following requires their complete real judgments, including all
 PYTHONPATH=src .venv/bin/python -m retrieval.review export \
   --packet data/interim/track_a_review_delivery_20261023/02_relevance/packet.json \
   --judgments /path/to/completed_relevance_judgments.json \
-  --corpus data/processed/articles.jsonl \
+  --corpus data/interim/frozen_v3_20261026/articles.jsonl \
   --output data/interim/retrieval_v3_accepted
 ```
 
@@ -351,6 +352,7 @@ originals and unchanged independent-review files with the local source caches:
 
 ```sh
 PYTHONPATH=src .venv/bin/python -m scripts.validate_source_review \
+  --snapshot data/interim/frozen_v3_20261026 \
   --output /private/tmp/track_a_source_review_recheck.json
 ```
 
@@ -363,13 +365,114 @@ The HTML repairs can be replayed offline into a fresh candidate directory:
 
 ```sh
 PYTHONPATH=src .venv/bin/python -m scripts.apply_source_review \
+  --snapshot data/interim/frozen_v3_20261026 \
   --output data/interim/corpus_source_review_recheck \
   --report /private/tmp/corpus_source_review_recheck.json
 ```
 
 This needs all original news caches and the optional extraction dependencies.
 It checks raw checksums, publication identity, every passage offset and a
-reverse-order freeze. It preserves active v3 and cannot promote the candidate
-or migrate its index/review identities. The recorded candidate has 1,159
-documents and 29,595 passages; its hash is in the repair report. PDF layout,
-infographic content, residual recommendations/scope and acceptance remain open.
+reverse-order freeze. It preserves archived v3 and cannot promote the candidate or migrate index/review
+identities. The historical 25 October v4 candidate had 1,159 documents and 29,595
+passages. Replaying with the current parser creates a new candidate; it does not
+reproduce historical parser bytes. Use the finalizer below for the current
+narrative PDF scope and final v7 payload.
+
+## Current v7 Track A delivery — 26 October
+
+Active corpus: `data/processed/articles.jsonl`, SHA
+`25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496`.
+Its manifest declares narrative-only PDF scope. Originals and table/fragment
+layout audits stay local. The old v3 snapshot is preserved at
+`data/interim/frozen_v3_20261026/`; v1 experiments still require their own corpus.
+Source policies and series limitations are in
+`reports/track_a_source_scope_20261026.md` and
+`reports/track_a_series_scope_20261026.json`.
+
+Rebuild a new candidate from preserved v3 inputs and checksummed raw caches:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.finalize_track_a_corpus \
+  --snapshot data/interim/frozen_v3_20261026 \
+  --output data/interim/v7_rebuild \
+  --report /private/tmp/v7_rebuild.json \
+  --version v7-narrative-development
+```
+
+The corpus/archive payload hashes are reproducible. The active manifest also
+contains the delivery scope note. This does not grant redistribution rights or
+certify research acceptance. PDF/extraction versions used were PyMuPDF 2.0 and
+trafilatura 2.3.1. The final parser removes marked related links by character
+ranges before extraction and preserves all other HTML unchanged.
+
+The saved index is
+`data/interim/corpus_v7_index_20261026/bge_m3_vectors.json`.
+Use a fresh output path for an offline rebuild. Only exact title+text hashes
+with the same model/preprocessing identity may reuse vectors:
+
+```sh
+HF_HOME="$PWD/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src \
+.venv/bin/python -m scripts.build_track_a_index \
+  --corpus data/processed/articles.jsonl \
+  --output data/interim/v7_index_rebuild \
+  --seed data/interim/corpus_v7_index_20261026/bge_m3_checkpoint.json \
+  --report /private/tmp/v7_index_rebuild.json
+```
+
+The completed pool review is `reports/retriever_v7_full_review_20261026.json`.
+Exact spans refer to `data/interim/retrieval_v7_review_20261026/packet.json`.
+The 195 positive query/passage judgments are grouped into 20 queries in
+`reports/retriever_v7_pairs_20261026.jsonl`. Replay the real comparison:
+
+```sh
+HF_HOME="$PWD/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src \
+.venv/bin/python -m retrieval.pilot_runner \
+  --pairs reports/retriever_v7_pairs_20261026.jsonl \
+  --corpus data/processed/articles.jsonl --smoke \
+  --dense-index data/interim/corpus_v7_index_20261026/bge_m3_vectors.json \
+  --dense-backend faiss --device cpu --embedding-batch-size 8 \
+  --max-length 1024 --local-files-only \
+  --embedding-revision 5617a9f61b028005a4858fdac845db406aefb181 \
+  --rerank --reranker-revision 953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e \
+  --output /private/tmp/v7_pilot_replay.md
+```
+
+`--smoke` is intentional: complete development-pool labels do not carry
+independent human acceptance. The development selection is recorded in
+`reports/track_a_retrieval_selection_20261026.json`. It does not change archived
+v1 runs or establish end-to-end research benefit.
+
+Independent review uses
+`data/interim/track_a_review_delivery_v7_20261026/START_HERE.md`.
+Read `SCOPE.md`; review the 73 source samples and 2,035 pooled candidates.
+Supply actual independent judgments/attestations. The old v3 packet and all
+83 files remain unchanged; neither its receipt nor Codex judgments can be used
+as independent acceptance for new text. The new 82-file delivery has blank forms.
+To rebuild it into a new directory:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.prepare_track_a_review \
+  --snapshot data/processed \
+  --sample data/interim/corpus_v7_20261026/extraction_judgments.json \
+  --retrieval data/interim/retrieval_v7_review_20261026 \
+  --output data/interim/track_a_review_v7_recheck \
+  --report /private/tmp/track_a_review_v7_recheck.json
+```
+
+Use the corpus/relevance export commands above with the v7 delivery paths and
+`data/processed` as the snapshot. Export only genuine completed human forms.
+The actual blank exports were rejected before creating any output.
+
+With the local payloads, vectors, review workspaces and series present, check
+all final development bindings:
+
+```sh
+PYTHONPATH=src .venv/bin/python -m scripts.validate_track_a_delivery \
+  --output /private/tmp/track_a_delivery_recheck.json
+```
+
+This checks bytes, offsets, label coverage/spans, dates, index identity, series
+hashes and blank human forms. It certifies integrity, not semantic correctness,
+independence, source permissions or research acceptance. Fresh setup, source
+replay and runtime details are in `reports/track_a_clean_reproduction_20261026.json`;
+the final integrity result is `reports/track_a_validation_20261026.json`.

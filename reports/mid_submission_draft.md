@@ -1,4 +1,4 @@
-# Mid-submission working draft — 25 October 2026
+# Mid-submission working draft — 26 October 2026
 
 **Status: implementation checkpoint; research results and team acceptance pending.**
 This is a working draft for the 30 October submission, not a finished report or
@@ -6,29 +6,27 @@ an accepted experimental freeze. The study asks whether unsupported established
 edges increase with distance from an anchor, and whether targeted verification
 and retrieval reduce that rate without losing supported reference edges.
 
-Track A delivery is recorded in `reports/track_a_progress.md`. The repaired v3
-development corpus contains 1,177 documents and 28,391 passages. Its all-month
-20-question comparison and 2,062-item blank review packet are ready. All six
-series now have data, with partial histories. Existing 42-graph results and the
-24-graph fresh reproduction retain archived v1. Do not merge their corpus
-versions or present unreviewed diagnostics as research scores. Current local
-checks: **623 tests, Ruff and Black pass**. A separate 317-observation retrospective
-snapshot now covers all seven months for four previously sparse series, with
-October availability and explicit measurement differences. It is excluded from
-the historical runs.
+Track A's current delivery is recorded in `reports/track_a_progress.md`: an
+active v7 narrative development corpus of 1,156 documents and 16,472 passages,
+a rebuilt dense index, and complete source judgments for the 2,035-item new
+retrieval pool (195 relevant, 1,840 irrelevant). The 20-question development
+comparison selects dense retrieval: Recall@10 0.4259, or 0.5296 with reranking.
+These are single Codex judgments with prior exposure to results, not independent
+human research scores. The new human-review packet is blank.
 
-The separate [completed source review](track_a_source_review_20261025.md) covers
-73 corpus samples and all 2,062 query–passage judgments. It records 182 relevant,
-1,874 irrelevant and six uncertain decisions. Extraction/scope defects were
-repaired in an unpromoted 1,159-document candidate; PDF context and residual
-issues remain. The reviewer is Codex with prior exposure to results; this
-supplies development evidence and does not complete independent human
-acceptance or provide final research scores.
+The current checkout and a new clean environment with optional PDF/extraction
+dependencies pass 630 tests. A committed-source reparse reproduces all corpus
+and archive hashes. All six series retain 161 original observations; the
+317-observation October snapshot is available only for retrospective checks.
+Original-vintage gaps, inaccessible publishers and source permissions are
+explicit limitations. Existing 42-graph outputs and the 24-graph reproduction
+retain archived v1; they are not v7 experiments. Final support/UER figures
+still require the separate experiment-review work.
 
 ## What is built
 
-The current development corpus contains 1,177 documents (1,116 news, 61 official)
-and 28,391 passages spanning March–September 2026. Frozen passage offsets, corpus identity
+The current development corpus contains 1,156 documents (1,095 news, 61 official)
+and 16,472 passages spanning March–September 2026. Frozen passage offsets, corpus identity
 and publication cutoffs are checked. Plain/alias BM25, pinned BGE-M3 dense and
 hybrid retrieval, FAISS and the pinned cross-encoder have real cached-model
 execution evidence. The corpus remains concentrated in Economic Times and
@@ -67,9 +65,9 @@ reviewer has not been selected.
 
 ## Evidence available now
 
-- Current checkout: 623 tests pass; Ruff and Black pass. Fresh-clone checks
-  and their source commits are recorded in `reports/track_a_validation.json`.
-- Current v3 retrieval comparison on 20 unreviewed March–September questions:
+- Current checkout: 630 tests pass; Ruff and Black pass. Fresh-clone checks
+  and their source commits are recorded in `reports/track_a_clean_reproduction_20261026.json`.
+- Historical v3 retrieval comparison on 20 March–September questions:
   Recall@10 is 0.4333 BM25, 0.5167 alias BM25, 0.6000 dense, 0.5833 hybrid and
   0.7667 dense plus reranking. These incomplete machine seeds cannot settle
   D-02/D-03. Historical March results remain separate.

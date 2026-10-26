@@ -1,0 +1,42 @@
+{
+  "corpus_sha256": "4305ea307372bbe3d306bb79d7de555e7e0a274643ebc65f6d2b7a37071b243b",
+  "saved_passages": 16472,
+  "all_index_passages_match": true,
+  "new_process_reload": true,
+  "real_query_embeddings": 2,
+  "checks": [
+    {
+      "cutoff": "2026-03-12",
+      "hits": [
+        "businessline-17ada433751a4c30c372#p5",
+        "businessline-dfee03edb7e80dc990ee#p8",
+        "economic_times-3f30d09d4b97d2eee973#p11",
+        "mint-820a071eb59246e8f4e4#p3",
+        "economic_times-457b7f0a3909efb34c1e#p8",
+        "economic_times-f7be371bcfa00364b435#p6",
+        "economic_times-6a4582bc53bfe30b98f6#p5",
+        "economic_times-06792e8eee60047ae045#p8",
+        "economic_times-aeef41c48e7583bc45de#p4",
+        "economic_times-457b7f0a3909efb34c1e#p2"
+      ],
+      "eligible_dates": true
+    },
+    {
+      "cutoff": "2026-09-24",
+      "hits": [
+        "economic_times-e5f839881ab4bba63ecb#p7",
+        "economic_times-3a707a326e6535b58058#p12",
+        "economic_times-3a79fca418f77885a8bf#p3",
+        "economic_times-1540e97ce8f488a13da0#p16",
+        "economic_times-c6c67f614f4281de7b1d#p3",
+        "economic_times-d5e3288a7e93bbc5dbaa#p7",
+        "economic_times-a9f1fc9881d89b8caac0#p4",
+        "economic_times-4a6a685476c2dd8a9176#p2",
+        "economic_times-8ba1b3dfcd6f5c6744ba#p7",
+        "economic_times-1540e97ce8f488a13da0#p1"
+      ],
+      "eligible_dates": true
+    }
+  ],
+  "phase_wall_s": 12.91
+}

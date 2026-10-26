@@ -1,5 +1,5 @@
 {
-  "current_development": "v3",
+  "current_development": "v7-narrative-development",
   "research_accepted": false,
   "v1": {
     "path": "data/interim/frozen_v1_20261023",
@@ -12,10 +12,36 @@
     "use": "Superseded candidate; earlier temporal review packet preserved."
   },
   "v3": {
-    "path": "data/processed",
+    "path": "data/interim/frozen_v3_20261026",
     "sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
-    "use": "Current repaired development corpus; independent relevance/extraction acceptance pending."
+    "use": "Preserved input for the 25 October source review, old dense index and temporal packet."
   },
-  "copied_bytes_identical_to_v3_candidate": true,
-  "original_files_preserved": true
+  "original_files_preserved": true,
+  "v4": {
+    "path": "data/interim/corpus_v4_source_review_20261025/snapshot",
+    "sha256": "9d76908d9fb46488f096700055af4d5ec734cf838e92a639517135ff6379e97e",
+    "use": "Historical HTML-only repair candidate; superseded by the scoped narrative delivery."
+  },
+  "v5": {
+    "path": "data/interim/frozen_v5_20261026",
+    "sha256": "24c925d01e6d3b5515962ff9b732341f76c5ee23a440bf6e011f8243ad46f9c6",
+    "documents": 1156,
+    "passages": 16473,
+    "use": "Intermediate narrative scope and complete 2,035-item development review, before the corpus-wide custom-link fix."
+  },
+  "v6": {
+    "path": "data/interim/frozen_v6_20261026",
+    "sha256": "4305ea307372bbe3d306bb79d7de555e7e0a274643ebc65f6d2b7a37071b243b",
+    "documents": 1156,
+    "passages": 16472,
+    "use": "Historical intermediate navigation fix; final v7 preserves untouched HTML exactly."
+  },
+  "v7": {
+    "path": "data/processed",
+    "sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+    "documents": 1156,
+    "passages": 16472,
+    "use": "Active narrative development delivery; independent human acceptance and source permissions pending."
+  },
+  "copied_bytes_identical_to_v7_candidate": true
 }
