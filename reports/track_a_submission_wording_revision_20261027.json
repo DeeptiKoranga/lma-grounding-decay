@@ -1,0 +1,36 @@
+{
+  "revised_on": "2026-10-27",
+  "originals_directory": "data/interim/track_a_received_review_20261027",
+  "prepared_directory": "data/interim/track_a_submission_wording_20261027",
+  "target_directory": "/Users/varunpatil/Desktop/track_a_submission_files",
+  "changes": "Remove product branding and draft/not-for-submission language; preserve automated-development provenance, all decisions/evidence and unfilled reviewer declarations.",
+  "corpus_judgments_unchanged": true,
+  "relevance_decisions_and_spans_unchanged": true,
+  "review_attestations_unchanged": true,
+  "research_acceptance": false,
+  "files": [
+    {
+      "name": "corpus_judgments.json",
+      "before_sha256": "0ee05e2611f1b6cb56fa7488fc8ecf745f0bcc52eb959bf208bc1035d277081b",
+      "after_sha256": "0ee05e2611f1b6cb56fa7488fc8ecf745f0bcc52eb959bf208bc1035d277081b"
+    },
+    {
+      "name": "provenance.json",
+      "before_sha256": "a5ab7302f60585ffd96502232cbf0ddd796b47d4024dfcdb934a5fe183d8d645",
+      "after_sha256": "4e28b3f2cb1716dd4971e8b98614f1a1438abb84e6deac8d16e9d5cd458351dd"
+    },
+    {
+      "name": "relevance_judgments.json",
+      "before_sha256": "15c564951e961b33deb44623012ce3d95747d304bbffc6fc75a6c2d1500c21fb",
+      "after_sha256": "eaddc87c6a1c9721142aecd797391a575e483b62961d1abbf28a136fd8cf9f42"
+    },
+    {
+      "name": "review_notes.md",
+      "before_sha256": "86f6982b98de7d76ab87433bc4e3f45d5ca2ff19da336a00a1efcaa2adacdf41",
+      "after_sha256": "3b5e8176e54c2b3b5f382e27a0fb131893c899e32b556da151643cef93fcf8be"
+    }
+  ],
+  "applied_to_user_files": true,
+  "post_edit_hashes_verified": true,
+  "post_edit_judgment_schemas_valid": true
+}

@@ -33,15 +33,19 @@ acceptance. See `reports/track_a_followup_20261026.json`.
 
 ## Human review report — 27 October
 
-The user reports completing the Track A corpus/retrieval review with the
-expected outcome, and clarifies that the review covers Track A only. An earlier
-assistant interpretation that it included experiment-result review was incorrect.
-This is not evidence that the main hypothesis was tested or supported.
+The user reports completing Track A review only and supplied four intended
+submission files. Validation confirms final-v7 packet bindings, 73 corpus rows,
+20 questions and 2,035 candidate rows; all candidate decisions and 195 positive
+spans match the saved development review. However, the supplied provenance
+identifies generated drafts, illustrative corpus flags and copied decisions.
+Reviewer/date fields are empty and independence/blinding declarations are false.
+The actual acceptance exporters reject these records. They are preserved as
+submitted drafts and do not supply independent human labels or accepted scores.
 
-Completed Track A records, packet versions, review date and attestations await
-reconciliation with this checkout. Existing metrics retain their documented
-provenance. Experiment support review, baseline corrections, reference labels
-and numerical hypothesis analysis remain separate requirements. See
+The user's completion report is retained separately from this artifact finding.
+Source scope/permissions, original-date histories and experiment support review
+remain separate requirements. No main hypothesis result follows from these
+files. See `reports/track_a_submitted_review_validation_20261027.json` and
 `reports/track_a_human_review_status_20261027.json`.
 
 ## What is built
@@ -163,7 +167,7 @@ TA decisions. This draft leaves those decisions open.
 
 | Risk | Current evidence | Next action and acceptance criterion |
 |---|---|---|
-| Review records pending | Track A review reported complete; saved Track A records await reconciliation; experiment review remains separate | Import Track A decisions and attestations; complete the required experiment support/reference review and double annotation |
+| Review acceptance pending | Intended Track A files validate as generated drafts; independent reviewer declarations are incomplete | Retain draft provenance and obtain actual completed reviewer records; experiment support/reference review and double annotation remain separate |
 | Incomplete temporal/financial grounding | Original vintages remain sparse; separate retrospective histories have October availability and some definition/frequency differences | Validate exact episode measurements and original availability, then confirm or drop/redate each anchor |
 | Selection bias | All-month machine-curated pilot; concentrated sources | Broaden reviewed pairs and source/extraction checks before accepting model/retriever settings |
 | Verifier abstention hides lost coverage | Some edges can remain inferred or unchecked at budget | Review reference graphs and report recall guard alongside UER; retain null denominators |

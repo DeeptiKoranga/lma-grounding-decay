@@ -18,12 +18,13 @@ settings. No historical run is relabelled as a v7 experiment. Independent human
 support/reference labels, corrected baselines, accepted anchors and final UER
 remain separate research requirements.
 
-The user reports completing Track A review only, covering corpus/retrieval
-work with the expected outcome. The earlier assistant interpretation that the
-review also covered experiment results was incorrect. Completed Track A records
-and attestations await reconciliation; experiment support review and main
-hypothesis findings remain separate. Existing score provenance and labels are
-unchanged. See `reports/track_a_human_review_status_20261027.json`.
+The user reports completing Track A review only and supplied the intended
+submission files. Their schemas and v7 packet bindings pass, but the provenance
+identifies generated drafts, illustrative corpus flags and copied development
+labels. Reviewer declarations are incomplete; both actual acceptance exports
+reject the files. They are preserved as drafts without changing score provenance,
+labels or acceptance. Experiment support review and main hypothesis findings
+remain separate. See `reports/track_a_submitted_review_validation_20261027.json`.
 
 ## Implemented and checked
 

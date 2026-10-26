@@ -3,7 +3,7 @@
   "reported_by": "user",
   "statement": "i did human expert review... it was as expected",
   "review_completion_reported": true,
-  "status": "User reports completing Track A review only; completed corpus/retrieval records await reconciliation.",
+  "status": "User-reported Track A review completion preserved; intended files received and validated as generated drafts, without independent human acceptance.",
   "reviewer_name": null,
   "reviewed_on": null,
   "review_scope": [
@@ -33,7 +33,7 @@
   "research_acceptance": false,
   "source_permissions_changed": false,
   "series_coverage_changed": false,
-  "next_action": "Reconcile the completed Track A corpus/retrieval records with their packet versions and retain the reviewer\u2019s actual decisions, date and attestations before generating Track A acceptance receipts. Experiment support review and main hypothesis findings remain separate, unfinished work. Review scope is Track A only and need not be asked again.",
+  "next_action": "Retain these intended files with their declared draft provenance. They do not supply independent human acceptance or explicit reduced-scope approval; final research receipts require actual completed decisions and truthful reviewer declarations. Source permissions and original-vintage series requirements remain separate.",
   "scope_confirmed_by_user": true,
   "scope_confirmation": "no i mean i only did whatever was in track a",
   "numerical_hypothesis_results_imported": false,
@@ -41,5 +41,26 @@
   "scope_correction": "The assistant previously interpreted \u201cboth\u201d as including experiment-result review. The user corrected that interpretation: the review covers Track A only.",
   "reported_track_a_outcome": "as expected",
   "experiment_results_review_reported": false,
-  "main_hypothesis_outcome_reported": false
+  "main_hypothesis_outcome_reported": false,
+  "submitted_files_received": true,
+  "intended_files_confirmed_by_user": true,
+  "draft_judgment_files_located": true,
+  "submitted_files_directory": "data/interim/track_a_received_review_20261027",
+  "submitted_files_classification": "generated draft with copied development labels and illustrative corpus flags",
+  "submission_validation_report": "reports/track_a_submitted_review_validation_20261027.json",
+  "submission_validation_sha256": "179fbf59fea4aeda12b978ab095ea8aabcd2aad33e65906945c4e9e5ff10ad76",
+  "draft_packet_bindings_verified": true,
+  "submitted_file_attestations": {
+    "corpus_reviewer_empty": true,
+    "corpus_review_date_unset": true,
+    "corpus_independent_review": false,
+    "corpus_accepted": false,
+    "relevance_reviewer_empty": true,
+    "relevance_review_date_unset": true,
+    "relevance_independent_review": false,
+    "relevance_blinded_to_results": false
+  },
+  "wording_revision_report": "reports/track_a_submission_wording_revision_20261027.json",
+  "wording_revision_sha256": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4",
+  "current_user_files_role": "Track A assessment materials; automated development-label provenance and incomplete review declarations preserved."
 }

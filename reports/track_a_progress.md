@@ -10,22 +10,36 @@ replaces the 25 October status, preserved as `track_a_progress_20261025.md`.
 
 ## Human expert review update — 27 October
 
-The user reports completing the Track A corpus/retrieval review with the
-expected outcome, and explicitly clarifies that the review covers Track A only.
-The assistant's earlier interpretation that “both” also meant review of the
-experiment results was incorrect and is superseded. No main hypothesis result,
-experiment support review or Track B/C review is claimed by this update.
+The user reports completing Track A review only, with the expected outcome.
+The earlier interpretation that the review included experiment results was
+incorrect; no main hypothesis or Track B/C conclusion is claimed here.
 
-Completed Track A records, exact packet versions, review date, item decisions
-and independence/blinding details still await reconciliation. The saved v7
-forms remain blank; no item-level decisions or acceptance receipt have been
-inferred from the summary. The date above is the report date; the actual review
-date has not been supplied.
+The user supplied `corpus_judgments.json`, `relevance_judgments.json`,
+`provenance.json` and `review_notes.md`, and confirmed these are the intended
+files. Exact copies are preserved at
+`data/interim/track_a_received_review_20261027/`. The files match the final v7
+packets, have valid schemas and cover 73 corpus items, 20 questions and 2,035
+candidates. All 2,035 decisions and 195 positive evidence spans exactly match
+the saved development review. The three supplied output hashes and all five
+referenced project-input hashes agree with the provenance record.
 
-See `reports/track_a_human_review_status_20261027.json`. On receipt of the
-completed records, match their packet hashes, validate decisions and evidence
-spans, apply any corrections and update the relevant acceptance status. Source
-permissions and original-date series gaps remain separate requirements.
+The provenance explicitly identifies generated draft files, illustrative
+favorable corpus checks and transferred development labels. Reviewer/date fields
+are empty, independence/blinding are false and final corpus acceptance is false.
+The notes likewise describe possible disposition subject to actual review.
+Both actual acceptance exports reject the files without creating output.
+This preserves the user's report of completed review, but the supplied records
+do not establish independent human acceptance. No draft decisions are relabelled
+as human judgments, and no source/PDF scope approval or publisher permission is
+inferred. The original 82-file v7 delivery remains unchanged.
+
+See `reports/track_a_human_review_status_20261027.json` and
+`reports/track_a_submitted_review_validation_20261027.json`. The originally supplied versions are preserved. A later user-requested wording
+revision removes product branding and draft/submission-status phrasing from the
+four Desktop files. All decisions, spans, automated-label provenance and review
+status fields remain unchanged; output hashes were updated and checked. See
+`reports/track_a_submission_wording_revision_20261027.json`. The corpus, series,
+indexes and existing scores remain unchanged.
 
 ## Delivered
 
@@ -117,10 +131,10 @@ It checks integrity; it does not certify semantic correctness or independence.
 
 ## Remaining external research requirements
 
-1. The user reports completing Track A review only. Reconcile completed
-   corpus/retrieval records, packet versions and independence/blinding details
-   before generating Track A research receipts or final D-02/D-03 acceptance.
-   Experiment review and main hypothesis findings remain separate work.
+1. The intended submitted records are generated drafts, not completed
+   independent-review exports. Actual reviewer decisions/date/independence and
+   blinding declarations are required before Track A research receipts or final
+   D-02/D-03 acceptance. Experiment review remains separate work.
 2. Source permissions and the reduced source/PDF scope require the appropriate
    project acceptance. Publisher policy inspection grants no permission. Full
    text, indexes, source originals and corpus archives remain local.

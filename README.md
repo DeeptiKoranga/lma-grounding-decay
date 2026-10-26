@@ -30,9 +30,10 @@ are installed; committed-source reparse reproduces the archive hash.
 The new independent-review workspace is
 `data/interim/track_a_review_delivery_v7_20261026/START_HERE.md`; its judgments and
 attestations are blank in the saved delivery. On 27 October the user reported
-completing the Track A corpus/retrieval review, with the expected outcome.
-The user clarified that this covers Track A only. Completed Track A records
-await reconciliation before formal acceptance; no experiment-result review or
+completing Track A review and supplied the intended files. Packet/schema checks
+pass, but their provenance identifies generated drafts with illustrative corpus
+flags and copied development decisions; reviewer declarations remain incomplete.
+Formal independent acceptance remains pending. No experiment-result review or
 main hypothesis conclusion is claimed. Earlier v1 runs and
 the v3 review retain their original corpus bindings. See
 [Track A delivery](reports/track_a_progress.md) and

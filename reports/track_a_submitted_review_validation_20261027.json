@@ -1,0 +1,81 @@
+{
+  "validated_on": "2026-10-27",
+  "status": "Packet/schema integrity passed; submitted files are generated drafts and do not establish independent human acceptance.",
+  "classification": "generated draft with copied development labels and illustrative corpus flags",
+  "files": [
+    {
+      "name": "corpus_judgments.json",
+      "source_path": "/Users/varunpatil/Desktop/track_a_submission_files/corpus_judgments.json",
+      "received_copy": "data/interim/track_a_received_review_20261027/corpus_judgments.json",
+      "sha256": "0ee05e2611f1b6cb56fa7488fc8ecf745f0bcc52eb959bf208bc1035d277081b",
+      "bytes": 39338
+    },
+    {
+      "name": "provenance.json",
+      "source_path": "/Users/varunpatil/Desktop/track_a_submission_files/provenance.json",
+      "received_copy": "data/interim/track_a_received_review_20261027/provenance.json",
+      "sha256": "a5ab7302f60585ffd96502232cbf0ddd796b47d4024dfcdb934a5fe183d8d645",
+      "bytes": 2422
+    },
+    {
+      "name": "relevance_judgments.json",
+      "source_path": "/Users/varunpatil/Desktop/track_a_submission_files/relevance_judgments.json",
+      "received_copy": "data/interim/track_a_received_review_20261027/relevance_judgments.json",
+      "sha256": "15c564951e961b33deb44623012ce3d95747d304bbffc6fc75a6c2d1500c21fb",
+      "bytes": 991434
+    },
+    {
+      "name": "review_notes.md",
+      "source_path": "/Users/varunpatil/Desktop/track_a_submission_files/review_notes.md",
+      "received_copy": "data/interim/track_a_received_review_20261027/review_notes.md",
+      "sha256": "86f6982b98de7d76ab87433bc4e3f45d5ca2ff19da336a00a1efcaa2adacdf41",
+      "bytes": 2970
+    }
+  ],
+  "provenance_declared_role": "Generated submission draft; not submitted independent human review",
+  "provenance_declared_generator": "Codex",
+  "provenance_declared_corpus_method": "Illustrative favorable values for all sampled documents; no new human source review performed",
+  "provenance_declared_relevance_method": "Exact transfer of saved Codex development decisions and evidence-character slices",
+  "supplied_output_hashes_verified": 3,
+  "project_input_hashes_verified": 5,
+  "unprovided_provenance_outputs": [
+    "README.md"
+  ],
+  "both_judgment_schemas_valid": true,
+  "both_packet_bindings_valid": true,
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "corpus_rows": 73,
+  "illustrative_true_corpus_flags": 219,
+  "query_rows": 20,
+  "candidate_rows": 2035,
+  "counts": {
+    "relevant": 195,
+    "irrelevant": 1840
+  },
+  "decisions_identical_to_saved_development_review": 2035,
+  "positive_spans_identical_to_saved_development_review": 195,
+  "reviewer_identity_empty": true,
+  "review_dates_unset": true,
+  "corpus_independent_review": false,
+  "corpus_accepted": false,
+  "relevance_independent_review": false,
+  "relevance_blinded_to_results": false,
+  "acceptance_export_rejections": {
+    "corpus": "independent reviewer must be named and differ from curator",
+    "relevance": "4 validation errors for ReviewReceipt\nreviewer\n  String should have at least 1 character [type=string_too_short, input_value='', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/string_too_short\nreviewed_on\n  Input should be a valid date [type=date_type, input_value=None, input_type=NoneType]\n    For further information visit https://errors.pydantic.dev/2.14/v/date_type\nindependent_review\n  Input should be True [type=literal_error, input_value=False, input_type=bool]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error\nblinded_to_results\n  Input should be True [type=literal_error, input_value=False, input_type=bool]\n    For further information visit https://errors.pydantic.dev/2.14/v/literal_error"
+  },
+  "acceptance_output_directories_absent": true,
+  "original_delivery_files_unchanged": 82,
+  "user_source_files_changed": true,
+  "human_judgments_imported": false,
+  "human_receipts_generated": false,
+  "research_acceptance": false,
+  "remaining_action": "Use actual completed human review records with the reviewer\u2019s own decisions and truthful date/independence/blinding details. Do not relabel these copied decisions or illustrative corpus checks as independent human judgments.",
+  "intended_files_confirmed_by_user": true,
+  "confirmation": "These are the intended files",
+  "scope": "Track A only; no experiment review or main hypothesis conclusion",
+  "source_files_changed_during_initial_validation": false,
+  "source_file_change_scope": "Subsequent user-requested branding/wording revision only; original supplied versions remain archived and judgments/evidence/attestations are unchanged.",
+  "subsequent_wording_revision": "reports/track_a_submission_wording_revision_20261027.json",
+  "subsequent_wording_revision_sha256": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4"
+}
