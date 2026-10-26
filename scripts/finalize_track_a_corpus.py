@@ -22,7 +22,7 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def build(snapshot, output, report):
+def build(snapshot, output, report, version="v5-narrative-development"):
     if output.exists() or report.exists():
         raise ValueError("choose fresh output paths; existing revisions are preserved")
     before = digest(snapshot / "articles.jsonl")
@@ -96,10 +96,8 @@ def build(snapshot, output, report):
                     "raw_sha256": meta["sha256"],
                 }
             )
-    frozen = freeze_corpus(documents, output / "snapshot", version="v5-narrative-development")
-    reverse = freeze_corpus(
-        list(reversed(documents)), output / "reverse", version="v5-narrative-development"
-    )
+    frozen = freeze_corpus(documents, output / "snapshot", version=version)
+    reverse = freeze_corpus(list(reversed(documents)), output / "reverse", version=version)
     assert frozen.archive_sha256 == reverse.archive_sha256
     parents = [
         Document.model_validate_json(line)
@@ -111,7 +109,7 @@ def build(snapshot, output, report):
     )
     assert digest(snapshot / "articles.jsonl") == before
     result = {
-        "version": "v5-narrative-development",
+        "version": version,
         "built_on": "2026-10-26",
         "status": "scoped development corpus; independent research acceptance pending",
         "research_acceptance": False,
@@ -154,8 +152,9 @@ def main():
     parser.add_argument("--snapshot", type=Path, default=Path("data/processed"))
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--report", type=Path, required=True)
+    parser.add_argument("--version", default="v5-narrative-development")
     args = parser.parse_args()
-    build(args.snapshot, args.output, args.report)
+    build(args.snapshot, args.output, args.report, args.version)
 
 
 if __name__ == "__main__":
