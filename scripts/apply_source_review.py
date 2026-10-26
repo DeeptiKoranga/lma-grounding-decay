@@ -23,6 +23,8 @@ def main():
     p.add_argument("--extra-raw", type=Path, default=Path("data/raw/track_a_continuation"))
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--report", type=Path, required=True)
+    p.add_argument("--version", default="v4-source-review-candidate")
+    p.add_argument("--reviewed-on", default="2026-10-25")
     a = p.parse_args()
     if a.output.exists() or a.report.exists():
         raise ValueError("retain existing candidates and choose fresh paths")
@@ -70,10 +72,8 @@ def main():
                     "raw_sha256": meta["sha256"],
                 }
             )
-    result = freeze_corpus(retained, a.output / "snapshot", version="v4-source-review-candidate")
-    reverse = freeze_corpus(
-        list(reversed(retained)), a.output / "reverse", version="v4-source-review-candidate"
-    )
+    result = freeze_corpus(retained, a.output / "snapshot", version=a.version)
+    reverse = freeze_corpus(list(reversed(retained)), a.output / "reverse", version=a.version)
     assert result.archive_sha256 == reverse.archive_sha256
     parents = {
         d.doc_id: d
@@ -89,9 +89,9 @@ def main():
     assert all(parents[v.doc_id].text[v.char_start : v.char_end] == v.text for v in passages)
     assert digest(a.snapshot / "articles.jsonl") == before
     report = {
-        "status": "repaired candidate only; reviewed v3, indexes, experiments and human records unchanged",
+        "status": f"{a.version} candidate; source snapshot, prior indexes, experiments and human records unchanged",
         "method": "Codex source review and checksum-bound reparse; not independent human acceptance",
-        "reviewed_on": "2026-10-25",
+        "reviewed_on": a.reviewed_on,
         "research_acceptance": False,
         "original_corpus_sha256": before,
         "candidate_corpus_sha256": digest(a.output / "snapshot/articles.jsonl"),

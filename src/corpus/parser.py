@@ -174,6 +174,54 @@ class VisibleArticleBlocks(HTMLParser):
             self.parts.append(data)
 
 
+class CustomLinkFilter(HTMLParser):
+    """Remove marked recommendation anchors before the extraction backend.
+
+    Keep metadata/scripts verbatim. Only the visible custom-link element is
+    removed; a break prevents the surrounding paragraphs being concatenated.
+    """
+
+    def __init__(self):
+        super().__init__(convert_charrefs=False)
+        self.output = []
+        self.skipping = False
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "a" and dict(attrs).get("data-type") == "tilCustomLink":
+            self.skipping = True
+            self.output.append("<br>")
+        elif not self.skipping:
+            self.output.append(self.get_starttag_text())
+
+    def handle_endtag(self, tag):
+        if self.skipping:
+            if tag == "a":
+                self.skipping = False
+                self.output.append("<br>")
+        else:
+            self.output.append(f"</{tag}>")
+
+    def handle_data(self, data):
+        if not self.skipping:
+            self.output.append(data)
+
+    def handle_entityref(self, name):
+        if not self.skipping:
+            self.output.append(f"&{name};")
+
+    def handle_charref(self, name):
+        if not self.skipping:
+            self.output.append(f"&#{name};")
+
+    def handle_comment(self, data):
+        if not self.skipping:
+            self.output.append(f"<!--{data}-->")
+
+    def handle_decl(self, decl):
+        if not self.skipping:
+            self.output.append(f"<!{decl}>")
+
+
 def _headline_key(value: str, source: str) -> str:
     if source == "mint":
         value = re.sub(r"\s*\|\s*(?:Mint|Stock Market News|Today News)\s*$", "", value)
@@ -267,6 +315,14 @@ def parse_html(
 ) -> Document:
     page = ArticleHTML()
     page.feed(html)
+    visible = None
+    extraction_html = html
+    if source == "economic_times":
+        visible = VisibleArticleBlocks()
+        visible.feed(html)
+        cleaner = CustomLinkFilter()
+        cleaner.feed(html)
+        extraction_html = "".join(cleaner.output)
     articles = []
     for script in page.jsonld:
         try:
@@ -312,7 +368,7 @@ def parse_html(
         extracted = None
     else:
         extracted = trafilatura.extract(
-            html, include_comments=False, include_tables=False, favor_precision=True
+            extraction_html, include_comments=False, include_tables=False, favor_precision=True
         )
     paragraphs = extracted.splitlines() if extracted else page.paragraphs
     # Some publisher pages place today's recommended-story summaries inside
@@ -332,13 +388,14 @@ def parse_html(
         raise ParseError("conflicting declared bodies for the same article")
     if bodies:
         body = next(iter(bodies))
+        related_keys = {_body_key(p) for p in visible.related_links} if visible else set()
+        for related in related_keys:
+            body = body.replace(related, "")
         paragraphs = [
             p for p in paragraphs if _body_key(p) in body and not is_navigation_paragraph(p)
         ]
         if source == "economic_times":
-            visible = VisibleArticleBlocks()
-            visible.feed(html)
-            related_keys = {_body_key(p) for p in visible.related_links}
+            assert visible is not None
             paragraphs = [p for p in paragraphs if _body_key(p) not in related_keys]
             blocks = [
                 p

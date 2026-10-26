@@ -251,6 +251,31 @@ def test_publisher_promotion_is_not_evidence_without_a_declared_body(monkeypatch
     assert doc.text == BODY
 
 
+def test_custom_link_is_removed_before_a_backend_can_merge_it_into_prose(monkeypatch):
+    related = "Unrelated trade headline repeated inside the publisher declared article body"
+    ending = "The central bank said it would monitor incoming data before making further policy decisions."
+    record = {
+        "@type": "NewsArticle",
+        "headline": "Crude and rupee",
+        "datePublished": "2026-03-12",
+        "articleBody": BODY + related + ending,
+    }
+    html = article_html(extra=f'<script type="application/ld+json">{json.dumps(record)}</script>')
+    html = html.replace(
+        "<article>",
+        f'<div class="artText">{BODY}<br><a data-type="tilCustomLink" href="/other"><span>{related}</span></a><br>{ending}</div><article>',
+    )
+
+    def extract(cleaned, **kwargs):
+        assert 'data-type="tilCustomLink"' not in cleaned
+        assert related in cleaned  # Original JSON-LD declaration remains intact.
+        return BODY + "\n" + ending
+
+    monkeypatch.setitem(sys.modules, "trafilatura", SimpleNamespace(extract=extract))
+    doc = parse_html(html, source="economic_times", url="https://example.com/a")
+    assert doc.text.split("\n\n") == [BODY, ending]
+
+
 def test_rebuild_pipeline_only_uses_accepted_payloads(tmp_path, monkeypatch):
     monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[2]))
     from scripts.fetch.client import Response
