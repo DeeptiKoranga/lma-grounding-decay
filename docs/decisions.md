@@ -163,6 +163,23 @@ separate development selections and outstanding research acceptance.
 | **Why** | Every headline number is sliced by hop. If hop labels drift, the central RQ1 claim is unmeasurable, and a shortest-path definition is the only one that is well defined when a node has two incoming chains. |
 | **Consequence** | Where two chains reach the same variable at different lengths, the shorter one sets the hop. Worth a sentence in the mid report. |
 
+### D-13 to D-17 — reserved
+
+Taken on the Track B verifier branches (`b/verifier-rules`, `b/mention-window`)
+and not yet merged here: span normalisation, mention scope, eligible-vs-supported,
+the alias handover, and the two-paragraph mention window. **Do not reuse these
+numbers.** When those branches merge, their rows come with them.
+
+### D-18 — Only two anchor episodes are confirmed against official data
+
+| | |
+|---|---|
+| **Status** | `resolved` · 27 Oct 2026 |
+| **Decision** | The eight candidate anchors are declared in `data/eval/episodes.yaml` and confirmed by `scripts/confirm_episodes.py` under as-of discipline; `data/eval/episodes.md` is generated, never hand-written. Outcome: **3 of 8 confirmed as declared, and only 2 of those against official data.** The September bond sell-off is **dropped** (the yield series ends 31 August and never reaches 7%). The March oil shock is **redated** to an as-of date of 1 April or later (Brent holds no March observation). The April ATF increase and both RBI meetings are retained as **document-confirmed only**, since no ATF or repo-rate series is held. |
+| **Why** | The proposal says the episodes "will be confirmed against official data". Checking that claim against the store rather than asserting it leaves only USD/INR (FBIL) and headline CPI (MOSPI) meeting the standard. Brent, the benchmark yield and FPI are news-reported observations by Track A's own account (`data/series/README.md`), so they are dated but not official, and `EpisodeConfirmation.official_source` separates the two rather than letting the distinction vanish. |
+| **Consequence** | The query set cannot be anchored on eight episodes as planned. Four anchors are usable (three confirmed plus the redated oil shock), which matches the proposal's own fallback of 4 dev queries — so B3 and B4 should be scoped to those four rather than six. **No anchor may use an as-of date earlier than its `earliest as-of` column**, or the anchor rests on a vintage published after the query date. The dropped September episode also removes the only bond-market anchor, so RQ1's deep-hop coverage loses its yield chain. |
+| **Revisit if** | Track A extends the series store. The check is re-runnable and `--check` fails if `episodes.md` goes stale, so a later import can only improve this, never silently change it. |
+
 ---
 
 ## Deferred past 30 October
