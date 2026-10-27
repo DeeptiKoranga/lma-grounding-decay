@@ -1,0 +1,73 @@
+{
+  "audited_on": "2026-10-27",
+  "scope": "Synthetic integration probes using real shared pipeline/tool/schema code; no research conclusions or new model inference.",
+  "all_seven_conditions": [
+    {
+      "condition": "B0",
+      "valid_graph": true,
+      "valid_log": true,
+      "tool_calls": 0,
+      "anchor_confirmed_after_run": true,
+      "get_series_calls": 0
+    },
+    {
+      "condition": "B1",
+      "valid_graph": true,
+      "valid_log": true,
+      "tool_calls": 1,
+      "anchor_confirmed_after_run": true,
+      "get_series_calls": 0
+    },
+    {
+      "condition": "B1-R",
+      "valid_graph": true,
+      "valid_log": true,
+      "tool_calls": 1,
+      "anchor_confirmed_after_run": true,
+      "get_series_calls": 0
+    },
+    {
+      "condition": "B2",
+      "valid_graph": true,
+      "valid_log": true,
+      "tool_calls": 1,
+      "anchor_confirmed_after_run": true,
+      "get_series_calls": 0
+    },
+    {
+      "condition": "A-NoVerify",
+      "valid_graph": true,
+      "valid_log": true,
+      "tool_calls": 2,
+      "anchor_confirmed_after_run": true,
+      "get_series_calls": 0
+    },
+    {
+      "condition": "A-NoLoop",
+      "valid_graph": true,
+      "valid_log": true,
+      "tool_calls": 2,
+      "anchor_confirmed_after_run": true,
+      "get_series_calls": 0
+    },
+    {
+      "condition": "M",
+      "valid_graph": true,
+      "valid_log": true,
+      "tool_calls": 2,
+      "anchor_confirmed_after_run": true,
+      "get_series_calls": 0
+    }
+  ],
+  "series_store_requests": 0,
+  "unbacked_confirmed_anchor_preserved": true,
+  "empty_run_audit": {
+    "completed_graphs": 0,
+    "conditions": {},
+    "failures": []
+  },
+  "conditions_cli_hard_codes_bm25": true,
+  "conditions_cli_accepts_retriever_selection": false,
+  "pipeline_get_series_call_present": false,
+  "core_code_changed": false
+}

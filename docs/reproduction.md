@@ -529,3 +529,19 @@ For a receipt-bound comparison, use the v7 replay command above with:
 The resulting report is `reports/pilot_retriever_v7_attested_20261027.md`.
 Earlier smoke reports retain their original provenance and are not overwritten.
 This review does not accept baseline corrections, support labels or final UER.
+
+## 27 October whole-project audit qualification
+
+The current local suite passes 641 tests after fixes for collection restart and
+future-dated retrieval receipts. A newly built wheel imports all 65 core modules
+in isolated mode and passes fixture retrieval, canonical series and accepted
+review-record checks. Its default verifier alias path is missing; explicitly
+passing the repository YAML works. This is not a complete standalone installation.
+
+The actual conditions command still hard-codes BM25, omits participating Track A
+code from its resume hash, and does not confirm anchors through the series tool.
+The run audit does not gate expected sweep completeness. Do not treat a fresh
+import, valid graph or empty failures list as proof of the full planned run.
+See `reports/whole_project_audit_20261027.md` before attempting the final
+selected-configuration reproduction. Historical v1 reproduction reports and
+the earlier 637-test clean-environment evidence retain their original scope.

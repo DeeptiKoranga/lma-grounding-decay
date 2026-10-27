@@ -1,5 +1,11 @@
 # Track A mid-submission scope and closeout — 27 October 2026
 
+**Subsequent audit qualification:** this is a standalone component/scope
+closeout, not completion of Track A's shared Phase 2–4 obligations. The
+[whole-project audit](whole_project_audit_20261027.md) identifies five outstanding
+integration/reproduction gaps and the remaining annotation and result work.
+The two newly found Track A code defects have been fixed; 641 local tests pass.
+
 The **scoped Track A development handoff is complete**. This closeout adopts the
 available source mix, narrative PDF extraction and sparse original-vintage
 series for the mid-submission. Those are explicit delivery deviations; they are

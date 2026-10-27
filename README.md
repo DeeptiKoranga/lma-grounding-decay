@@ -9,6 +9,12 @@ Deepti Koranga (2025204033).
 
 ## Latest Track A delivery — 27 October 2026
 
+**Whole-project audit:** standalone Track A components validate, but selected
+retriever wiring, anchor confirmation, resume/completeness checks and installed
+verifier alias data still need integration work. Shared annotation, UER figures
+and full reproduction also remain. See the
+[complete audit and A1–A11 matrix](reports/whole_project_audit_20261027.md).
+
 The scoped Track A mid-submission development handoff is complete. The
 [closeout](reports/track_a_mid_submission_scope_20261027.md) records the reduced
 source/PDF scope and sparse historical-series coverage as delivery deviations.
@@ -33,7 +39,7 @@ span has changed.
 All six macro series retain their 161 dated original observations. A separate
 317-observation retrospective snapshot remains excluded at historical cutoffs.
 Source gaps, permissions and anchor limitations are explicitly documented.
-The current suite passes **637 tests** after optional PDF/extraction dependencies
+The current suite passes **641 tests** after optional PDF/extraction dependencies
 are installed; committed-source reparse reproduces the archive hash.
 
 The new independent-review workspace is
@@ -84,7 +90,7 @@ remain required. All six macro series are populated; basket, Brent, benchmark yi
 coverage remain partial and do not confirm the planned anchor episodes.
 
 The 23 October local integration completed all 42 graphs across six unreviewed
-v1 candidates; current checks pass 637 tests. The separate synthetic tool-choice probe succeeded
+v1 candidates; current checks pass 641 tests. The separate synthetic tool-choice probe succeeded
 on only 5/40 expected actions, so model selection remains open. Execution and
 structural validity do not establish research performance. See
 [the validation and remaining gates](reports/integration_status.md).

@@ -1,5 +1,11 @@
 # Integrated development pipeline — updated 27 October 2026
 
+**Latest audit:** five integration/reproduction findings remain; the selected
+retriever is not consumed by the conditions command and anchor confirmation
+does not call the series layer. Two Track A bugs were fixed. The full current
+suite passes 641 tests, but this does not establish a complete project. See
+`reports/whole_project_audit_20261027.md` and its executable probe records.
+
 The scoped Track A development handoff is closed under
 `reports/track_a_mid_submission_scope_20261027.md`. Reduced publisher coverage,
 narrative-only PDFs and sparse original-vintage series are documented delivery
@@ -13,8 +19,9 @@ review is complete (195 relevant, 1,840 irrelevant); separate completed records
 now validate on Varun's attestations. Dense retrieval has Recall@10 0.4259 and
 0.5296 after top-50 reranking. See `reports/track_a_progress.md`.
 
-The current checkout and clean environment with optional PDF/extraction
-packages pass **637 tests**, Ruff and Black. The earlier clean-source reparse reproduces
+The current checkout passes **641 tests**, Ruff and Black. The earlier clean
+environment check passed 637 tests with optional PDF/extraction packages; it is
+historical evidence. The earlier clean-source reparse reproduces
 the v7 corpus/archive hashes. Historical tools retain 161 original series
 observations; the separate 317-observation October snapshot is excluded at
 March–September cutoffs. New review delivery contains wholly blank human

@@ -1,5 +1,15 @@
 # Retriever pilot
 
+**Current entry point — 27 October:** the receipt-bound comparison is
+[pilot_retriever_v7_attested_20261027.md](pilot_retriever_v7_attested_20261027.md).
+It records Varun's supplied review declarations and reproduces the metrics below.
+The selected first stage is BGE-M3; retain top-50 reranking for B1-R. See
+[the selection](track_a_retrieval_selection_20261027.json) and
+[review scope](track_a_review_acceptance_20261027.md). Record validation does not
+independently verify review conduct or establish end-to-end benefit.
+
+## Historical development comparison — 26 October
+
 Status: **SMOKE CHECK ONLY; no research decision**.
 
 Shared query/evidence pairs: 20. Positive passage IDs came from the supplied pair file; this runner does not certify independent annotation.

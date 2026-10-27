@@ -1,0 +1,14 @@
+{
+  "audited_on": "2026-10-27",
+  "scope": "Synthetic changed-source/resume probe in a temporary source copy; no workspace source or historical run modified.",
+  "retrieval_source_changed": true,
+  "temporary_change": "Replace BM25Retriever.search with an empty-result backend in the temporary source copy",
+  "recorded_pipeline_hash_unchanged": true,
+  "existing_graph_reused_without_rerun": true,
+  "runner_output": "completed B1 resume-probe: 0 edges, 1 tool calls\ncached B1 resume-probe\n",
+  "excluded_code_directories": [
+    "src/retrieval",
+    "src/corpus",
+    "src/schema"
+  ]
+}

@@ -21,6 +21,11 @@ pass, with original label provenance preserved; procedure and exposure timing
 are not independently verified. See
 `reports/track_a_reviewer_identity_20261027.json`.
 
+The subsequent whole-project audit confirms that D-02's selected BGE-M3 is not
+yet wired into the conditions command. A resolved pilot choice does not mean
+its integration is complete. See `reports/whole_project_audit_20261027.md` for
+that gap and four other integration/reproduction findings.
+
 ---
 
 ## Decisions from the proposal

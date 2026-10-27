@@ -6,6 +6,13 @@ an accepted experimental freeze. The study asks whether unsupported established
 edges increase with distance from an anchor, and whether targeted verification
 and retrieval reduce that rate without losing supported reference edges.
 
+The subsequent whole-project audit found five integration/reproduction gaps,
+including selected-retriever wiring and anchor confirmation. It repaired two
+Track A code defects and raised the local passing suite to 641 tests. Track A's
+scoped standalone handoff does not complete its shared integration, annotation,
+result-figure or full reproduction obligations. See
+`reports/whole_project_audit_20261027.md` for the full plan comparison.
+
 Track A's scoped development handoff is complete under the 27 October closeout
 in `reports/track_a_mid_submission_scope_20261027.md`. For the mid-submission it
 delivers the acquired source mix, narrative-only PDF index and sparse six-series
@@ -23,8 +30,9 @@ exposure. They remain unchanged after Varun's user-attested review; the accepted
 records validate declared review conditions, not independently observed conduct.
 The original blank workspace remains preserved separately.
 
-The current checkout and a new clean environment with optional PDF/extraction
-dependencies pass 637 tests. The earlier committed-source reparse reproduces all corpus
+The current checkout passes 641 tests. The earlier clean environment with
+optional PDF/extraction dependencies passed 637; that evidence is preserved.
+The earlier committed-source reparse reproduces all corpus
 and archive hashes. All six series retain 161 original observations; the
 317-observation October snapshot is available only for retrospective checks.
 Original-vintage gaps, inaccessible publishers and source permissions are

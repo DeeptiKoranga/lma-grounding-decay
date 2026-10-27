@@ -1,5 +1,12 @@
 # Track A delivery status — updated 27 October 2026
 
+**Audit correction:** the scoped standalone delivery does not complete Track A's
+shared Phase 2–4 work. The whole-project audit found five remaining integration
+or reproduction gaps, repaired two Track A defects, and verified 641 local
+tests. See [the A1–A11 and shared-obligation matrix](whole_project_audit_20261027.md).
+Selected-retriever wiring, anchor confirmation, shared annotation/result figures
+and full current-configuration reproduction remain outstanding.
+
 The remaining local engineering, corpus repair, development review, indexing,
 retrieval comparison and reproduction work is complete. The final v7 delivery
 has **1,156 documents and 16,472 passages**, **2,035 completed development

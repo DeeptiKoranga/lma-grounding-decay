@@ -1,6 +1,6 @@
 {
   "recorded_on": "2026-10-27",
-  "status": "Scoped Track A mid-submission handoff complete with declared data deviations; review records and receipt-bound pilot pass on user attestations.",
+  "status": "Scoped standalone Track A components and user-attested review records delivered; whole-project audit identifies incomplete shared Phase 2-4 integration/reporting work.",
   "decision_basis": {
     "user_instruction": "now finish the remaining track a tasks. don\u2019t stop until everything in track a is done; latest follow-up: DO IT",
     "recorded_by": "assistant",
@@ -108,7 +108,7 @@
   "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
   "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
   "scope_report": "reports/track_a_mid_submission_scope_20261027.md",
-  "scope_report_sha256": "48518232e6c14559b7a8557566d89b12a1bddae676c8842cc445800ea7902a5e",
+  "scope_report_sha256": "b9c474855547af44901535920db5b5a123838cd333d688c52fa3813459cadcbb",
   "evidence": {
     "reports/track_a_mid_submission_validation_20261027.json": "a6714bd2f5bcc8b55c0d3cd2e74e16b3233429da8ac0ef6e2d45b1e364ad03aa",
     "reports/track_a_retrieval_selection_20261026.json": "0f76a2e2e4f270585bf0d0a1fb6a38a58fa13f9b245a320b232e7aa25643b244",
@@ -119,7 +119,6 @@
     "reports/track_a_reviewer_identity_20261027.json": "6f6140e6c0e4ba9b7765b05ec602308294933b4ad0f06cfb709d8f309bfea3ab",
     "reports/track_a_retrieval_selection_20261027.json": "127380691fdf7632f8e50a2a712260f7629aa994c5012038912bdf24c511c4ca"
   },
-  "autonomous_engineering_tasks_remaining_in_scoped_track_a_handoff": 0,
   "formal_independent_acceptance_complete": true,
   "other_tracks_or_entire_mid_submission_complete": false,
   "research_acceptance": true,
@@ -127,5 +126,63 @@
   "formal_independent_acceptance_basis": "Completed record validation on user declarations; not independent observation of review procedure.",
   "acceptance_scope": "Track A pooled retrieval pilot and sampled-corpus review records; no experiment UER/reference-recall or whole-study acceptance.",
   "current_reviewed_retrieval_selection": "reports/track_a_retrieval_selection_20261027.json",
-  "current_reviewed_retrieval_selection_sha256": "127380691fdf7632f8e50a2a712260f7629aa994c5012038912bdf24c511c4ca"
+  "current_reviewed_retrieval_selection_sha256": "127380691fdf7632f8e50a2a712260f7629aa994c5012038912bdf24c511c4ca",
+  "standalone_component_engineering_tasks_remaining_after_audit_fixes": 0,
+  "whole_project_integration_complete": false,
+  "whole_project_audit": "reports/whole_project_audit_20261027.md",
+  "whole_project_audit_sha256": "66d52babfd892ac4d2cef7338edfbf0ed648ef20395552e12d4f2791e1352834",
+  "whole_project_validation": "reports/whole_project_validation_20261027.json",
+  "whole_project_validation_sha256": "45c008c9969195bdfdc454acdbba2b347c5e9c65bf227bc7bc9aaf67f21ea0dc",
+  "open_integration_findings": [
+    {
+      "id": "F1",
+      "priority": 1,
+      "path": "src/conditions/__main__.py",
+      "line": 115,
+      "title": "Selected BGE-M3 is not wired into the conditions CLI",
+      "owner": "A+C; C runner"
+    },
+    {
+      "id": "F2",
+      "priority": 1,
+      "path": "src/conditions/pipeline.py",
+      "line": 69,
+      "title": "Anchor confirmation is copied from input; no series lookup/receipt validation",
+      "owner": "B+C with A series interface"
+    },
+    {
+      "id": "F3",
+      "priority": 2,
+      "path": "src/conditions/__main__.py",
+      "line": 84,
+      "title": "Resume hash excludes retrieval, corpus and schema implementation",
+      "owner": "C"
+    },
+    {
+      "id": "F4",
+      "priority": 2,
+      "path": "src/eval/run_audit.py",
+      "line": 17,
+      "title": "Empty or partial sweeps are not completeness failures",
+      "owner": "C"
+    },
+    {
+      "id": "F5",
+      "priority": 2,
+      "path": "src/verify/aliases.py",
+      "line": 47,
+      "title": "Default verifier alias resource unavailable in installed wheel; configured path not passed through",
+      "owner": "B+C/shared packaging"
+    }
+  ],
+  "shared_track_a_work_remaining": [
+    "2.1 selected-retriever integration",
+    "2.5 double annotation/agreement",
+    "2.6 ten test-query annotations",
+    "3.2 separate dev support review",
+    "3.6 UER/result figures",
+    "3.7 current reviewed failure analysis",
+    "4.1 final mid report contributions",
+    "4.3 full selected-configuration fresh-checkout/team reproduction"
+  ]
 }

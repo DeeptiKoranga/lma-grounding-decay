@@ -1,0 +1,207 @@
+{
+  "audited_on": "2026-10-27",
+  "reviewed_base_commit": "d07ad4dd484012c3187fdac84b7d6bb9be50f5ea",
+  "status": "Component validation passed after two Track A fixes; whole-project integration incomplete with five open findings.",
+  "worktree_python_files": 144,
+  "test_suite": {
+    "baseline_passed": 637,
+    "after_fixes_passed": 641,
+    "new_regression_cases": 4,
+    "ruff_passed": true,
+    "black_passed": true,
+    "log": "/private/tmp/whole_project_checks_after_fixes_20261027.log",
+    "log_sha256": "79bbf2b4ce4461c53c551c9632b47bbcf1d878257ef4eb4ca00fba4ef5904ec5"
+  },
+  "fixed_code": [
+    {
+      "path": "scripts/fetch/news_batch.py",
+      "sha256": "37084fb6ef05d395ebfdddbc7b2b2e236d6722c50cee33996fdae99c31b39654",
+      "issue": "Resume applies attempt limit after complete-cache filtering; orphaned sidecars are retried.",
+      "regression_cases": 2,
+      "before_failure_log": "/private/tmp/track_a_news_resume_before_20261027.log",
+      "before_failure_log_sha256": "3905c828c6a95ecaad24afb0c16b0928127100b39d53523c8a91053d0efaa197"
+    },
+    {
+      "path": "src/retrieval/review.py",
+      "sha256": "bfc541ccf5b764b60b3492ad90e9062958e47ea3758a3bbf22b369c020db7a87",
+      "issue": "Reject future review dates both when exporting and loading receipts.",
+      "regression_cases": 2,
+      "before_failure_log": "/private/tmp/track_a_review_date_before_20261027.log",
+      "before_failure_log_sha256": "f1611351a6bb1831b12e4c73631b88e6ea4cadde04781ec73ee3f60ef3294c32"
+    }
+  ],
+  "open_findings": [
+    {
+      "id": "F1",
+      "priority": 1,
+      "path": "src/conditions/__main__.py",
+      "line": 115,
+      "title": "Selected BGE-M3 is not wired into the conditions CLI",
+      "owner": "A+C; C runner"
+    },
+    {
+      "id": "F2",
+      "priority": 1,
+      "path": "src/conditions/pipeline.py",
+      "line": 69,
+      "title": "Anchor confirmation is copied from input; no series lookup/receipt validation",
+      "owner": "B+C with A series interface"
+    },
+    {
+      "id": "F3",
+      "priority": 2,
+      "path": "src/conditions/__main__.py",
+      "line": 84,
+      "title": "Resume hash excludes retrieval, corpus and schema implementation",
+      "owner": "C"
+    },
+    {
+      "id": "F4",
+      "priority": 2,
+      "path": "src/eval/run_audit.py",
+      "line": 17,
+      "title": "Empty or partial sweeps are not completeness failures",
+      "owner": "C"
+    },
+    {
+      "id": "F5",
+      "priority": 2,
+      "path": "src/verify/aliases.py",
+      "line": 47,
+      "title": "Default verifier alias resource unavailable in installed wheel; configured path not passed through",
+      "owner": "B+C/shared packaging"
+    }
+  ],
+  "payload_integrity": {
+    "result": {
+      "checked_on": "2026-10-26",
+      "status": "development-delivery integrity passed; research acceptance pending",
+      "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+      "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+      "documents": 1156,
+      "passages": 16472,
+      "pooled_judgments": 2035,
+      "judgment_counts": {
+        "irrelevant": 1840,
+        "relevant": 195
+      },
+      "all_offsets_exact": true,
+      "all_positive_spans_valid": true,
+      "all_review_candidates_date_eligible": true,
+      "all_index_bytes_verified": true,
+      "new_review_workspace_files_verified": 82,
+      "old_review_workspace_files_unchanged": 83,
+      "human_judgments_and_attestations_blank": true,
+      "canonical_observations": 161,
+      "retrospective_observations": 317,
+      "series_bytes_unchanged": true,
+      "research_acceptance": false
+    },
+    "executed_on": "2026-10-27",
+    "note": "Historical validator status/date constants apply to the original blank workspaces; accepted review records are validated separately below."
+  },
+  "series_validation": {
+    "status": "passed; read-layer and source-byte validation, not research acceptance",
+    "canonical": "data/series",
+    "snapshot": "data/series/retrospective_20261025",
+    "canonical_observations": 161,
+    "snapshot_observations": 317,
+    "checks": {
+      "brent_usd_bbl_hidden_at_september_cutoff": true,
+      "brent_usd_bbl_covers_all_seven_months_after_capture": true,
+      "indian_basket_usd_bbl_hidden_at_september_cutoff": true,
+      "indian_basket_usd_bbl_covers_all_seven_months_after_capture": true,
+      "inr_usd_unchanged": true,
+      "cpi_headline_yoy_unchanged": true,
+      "gsec_10y_pct_hidden_at_september_cutoff": true,
+      "gsec_10y_pct_covers_all_seven_months_after_capture": true,
+      "fpi_flows_usd_mn_hidden_at_september_cutoff": true,
+      "fpi_flows_usd_mn_covers_all_seven_months_after_capture": true,
+      "default_store_ignores_nested_snapshot": true,
+      "all_default_csv_hashes_unchanged": true
+    },
+    "series": {
+      "brent_usd_bbl": {
+        "stored_observations": 148,
+        "visible_at_september_30": 0,
+        "visible_at_october_25": 148,
+        "move_at_october_25": "up",
+        "sha256": "3b2352af4b73a0d3f899c3fa4a17e9d5f20fd22575fda0ec1013afd04143fcf8"
+      },
+      "indian_basket_usd_bbl": {
+        "stored_observations": 7,
+        "visible_at_september_30": 0,
+        "visible_at_october_25": 7,
+        "move_at_october_25": "up",
+        "sha256": "4de40cba1acd377f5b02758c5eeb3fd1adf478a7c18db50e9ae353ef946dee09"
+      },
+      "inr_usd": {
+        "stored_observations": 141,
+        "visible_at_september_30": 141,
+        "visible_at_october_25": 141,
+        "move_at_october_25": "up",
+        "sha256": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c"
+      },
+      "cpi_headline_yoy": {
+        "stored_observations": 7,
+        "visible_at_september_30": 6,
+        "visible_at_october_25": 6,
+        "move_at_october_25": "up",
+        "sha256": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb"
+      },
+      "gsec_10y_pct": {
+        "stored_observations": 7,
+        "visible_at_september_30": 0,
+        "visible_at_october_25": 7,
+        "move_at_october_25": "up",
+        "sha256": "08a7845fbf97f448cdb158eec60a93748ac8b2d324ee1b477867a64b4e5034d9"
+      },
+      "fpi_flows_usd_mn": {
+        "stored_observations": 7,
+        "visible_at_september_30": 0,
+        "visible_at_october_25": 7,
+        "move_at_october_25": "up",
+        "sha256": "f32161adf9f2e8f668524cd8b4896d2b4c58404556d413b7f421294880c44c9d"
+      }
+    },
+    "limits": [
+      "Monthly observations do not validate daily episode dates.",
+      "Capture dates establish known availability, not original publication dates.",
+      "Brent vendor continuous closes and monthly main bond yields differ from the sparse news definitions."
+    ]
+  },
+  "accepted_track_a_review": {
+    "valid": true,
+    "reviewer": "Varun",
+    "reviewed_on": "2026-10-27",
+    "declared_independent_review": true,
+    "declared_blinded_to_results": true,
+    "queries": 20,
+    "candidates": 2035,
+    "relevant": 195,
+    "corpus_sample": 73,
+    "supplied_desktop_file_hashes_unchanged": true,
+    "scope": "Recorded user attestations; no new observed review or experiment-result acceptance."
+  },
+  "synthetic_fault_diagnostic": {
+    "faults": 20,
+    "passed": 20,
+    "scope": "executed synthetic fault diagnostic; not a model recovery benchmark"
+  },
+  "evidence": {
+    "reports/whole_project_audit_20261027.md": "66d52babfd892ac4d2cef7338edfbf0ed648ef20395552e12d4f2791e1352834",
+    "reports/whole_project_inventory_20261027.json": "3377210f562e56a1d3734dd0aa37e72112978ce3d1e2b125434dca7aba156c42",
+    "reports/whole_project_probes_20261027.json": "3b993d20cbcc38a5264f0e940b1545a27f51005f29fc0d480d13ac879ac3f7df",
+    "reports/whole_project_resume_probe_20261027.json": "619e19516c113924d768c4bf52cb62b902defd6d50a0a1ff069eccf40dac05be",
+    "reports/whole_project_real_retrieval_probe_20261027.json": "e935d849b8f2861098b1e54771987224913747d1388101c68d90d5d7a9bad5b6",
+    "reports/whole_project_install_probe_20261027.json": "53f0872bab107c57ee7ea1625e74db292ceebb4a9b617336d78afa650b41491c"
+  },
+  "build_attempts_note": "Initial offline build lacked a cached build dependency; the shared dependency cache also contained a missing typing-inspection file. A fresh temporary cache resolved installation. The current wheel imports all core modules; F5 remains a real default-data-path failure.",
+  "other_track_code_changed": false,
+  "source_reacquisition_during_audit": false,
+  "frozen_corpus_series_or_judgments_changed": false,
+  "whole_project_complete": false,
+  "pull_request_created": false,
+  "canonical_pilot_entry_point_updated": true,
+  "canonical_pilot_entry_point_sha256": "a6d07a13ddb9db21a45aaaf6de0bb9429d459420a7d1e55ee529ccb4ac113450"
+}

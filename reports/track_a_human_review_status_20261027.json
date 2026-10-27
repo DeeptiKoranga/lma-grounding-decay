@@ -33,7 +33,7 @@
   "research_acceptance": true,
   "source_permissions_changed": false,
   "series_coverage_changed": false,
-  "next_action": "Use the validated Track A review records and receipt-bound pilot for the scoped handoff. No further reviewer metadata is missing. Preserve declaration/procedure limits, source restrictions and sparse-series deviations; experiment support/reference review and final results remain separate.",
+  "next_action": "Reviewer metadata and scoped Track A record validation are complete. Preserve review-procedure and data-scope limits; use the whole-project audit for outstanding shared integration, annotation, result-figure and reproduction work. Do not interpret review-record acceptance as whole-project completion.",
   "scope_confirmed_by_user": true,
   "scope_confirmation": "no i mean i only did whatever was in track a",
   "numerical_hypothesis_results_imported": false,
@@ -64,7 +64,7 @@
   "wording_revision_sha256": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4",
   "current_user_files_role": "Track A user-attested review records; original label origin, declarations and receipt scope retained.",
   "mid_submission_scope_disposition": "reports/track_a_mid_submission_scope_20261027.json",
-  "mid_submission_scope_disposition_sha256": "ad79f32061b52f64a3587a4a0dfdcb240f66c63a437c48dc7d785096761f8ccf",
+  "mid_submission_scope_disposition_sha256": "1ffdfb2360edfe824c2c0901a488223be2f36e146d65a12dfa2a18f2e5a4f3ab",
   "scoped_development_handoff_complete": true,
   "formal_independent_acceptance_complete": true,
   "attestation_source": "YESBi have done independent review and blinded to results",
@@ -85,5 +85,8 @@
       "path": "data/interim/track_a_attested_review_20261027/relevance_accepted/receipt.json",
       "sha256": "5a4ce72530907ba8c82a4333cad3c0b67da35c0938bec31a8d8284e75c0096a0"
     }
-  }
+  },
+  "whole_project_integration_complete": false,
+  "whole_project_audit": "reports/whole_project_audit_20261027.md",
+  "whole_project_audit_sha256": "66d52babfd892ac4d2cef7338edfbf0ed648ef20395552e12d4f2791e1352834"
 }

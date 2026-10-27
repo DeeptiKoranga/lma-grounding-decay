@@ -202,3 +202,19 @@ paid API or Kaggle execution occurred. Report:
 `reports/pilot_retriever_v7_attested_20261027.md`; receipt, file and log hashes:
 `reports/track_a_reviewer_identity_20261027.json`. The earlier 637-test code
 validation remains historical; this metadata/report update adds no code changes.
+
+## 27 October whole-project audit
+
+A separate connector probe used the actual pinned BGE-M3/FAISS index and
+cross-encoder with the shared seven-condition pipeline. CPU phase wall time:
+**23.70 seconds**. The generator was an explicit empty-edge fixture, so this
+is not a new language-model run or semantic evaluation. No paid API or Kaggle
+execution occurred. See `reports/whole_project_real_retrieval_probe_20261027.json`.
+
+Two Track A fixes add four regression cases; the local suite now passes
+**641 tests**, Ruff and Black. Current package installation was checked in a new
+temporary environment with core dependencies only; default verifier alias
+loading fails, while explicit-path rules work. No full new real-model v7 sweep,
+all-laptop check or final result computation is claimed. The full audit and
+hash-bound receipts are in `reports/whole_project_audit_20261027.md` and
+`reports/whole_project_validation_20261027.json`.
