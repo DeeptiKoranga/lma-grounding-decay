@@ -180,6 +180,16 @@ numbers.** When those branches merge, their rows come with them.
 | **Consequence** | The query set cannot be anchored on eight episodes as planned. Four anchors are usable (three confirmed plus the redated oil shock), which matches the proposal's own fallback of 4 dev queries — so B3 and B4 should be scoped to those four rather than six. **No anchor may use an as-of date earlier than its `earliest as-of` column**, or the anchor rests on a vintage published after the query date. The dropped September episode also removes the only bond-market anchor, so RQ1's deep-hop coverage loses its yield chain. |
 | **Revisit if** | Track A extends the series store. The check is re-runnable and `--check` fails if `episodes.md` goes stale, so a later import can only improve this, never silently change it. |
 
+### D-19 — Eight queries over four anchors, split by episode
+
+| | |
+|---|---|
+| **Status** | `resolved` · 27 Oct 2026 |
+| **Decision** | The query set is **8 queries, not 30**: one `why` and one `effects` question for each of the four anchors that survived D-18. Dev is the oil-shock and rupee anchors (`data/eval/queries_dev.jsonl`); test is the CPI and FPI anchors (`data/eval/queries_test.jsonl`). **The split is by anchor, not by question type**, so dev and test share no episode, no as-of date and therefore no retrieved passages. `effects` questions carry no `target_var` so they stay open-ended; `why` questions name one. |
+| **Why** | D-18 left four usable anchors, so 30 queries were no longer expressible. Splitting by question type instead would have put both halves of the same event on both sides of the split: tuning the verifier on the dev oil question would then leak through shared passages into the test oil question, and the test result would be partly a measurement of the dev set. Splitting by anchor costs nothing and removes that. |
+| **Consequence** | The test half is four queries, so no test-set claim will have a usable confidence interval. Treat the test numbers as descriptive and say so. Both dev anchors are confirmed under as-of discipline, but the oil anchor is the redated one and rests on a news-reported Brent observation, so the dev half is not uniformly official-grade evidence. |
+| **Revisit if** | Track A extends the series store enough to revive the September bond anchor or add a repo-rate series. Either would restore a fifth and sixth anchor and let the test half grow. |
+
 ---
 
 ## Deferred past 30 October
