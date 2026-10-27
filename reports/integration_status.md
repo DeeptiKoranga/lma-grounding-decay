@@ -3,13 +3,14 @@
 The scoped Track A development handoff is closed under
 `reports/track_a_mid_submission_scope_20261027.md`. Reduced publisher coverage,
 narrative-only PDFs and sparse original-vintage series are documented delivery
-deviations. Formal independent review and the research gates below remain open;
-this does not close the other tracks or the full mid-submission.
+deviations. Varun's user-declared independent/blinded Track A review now passes
+record validation. The experiment gates below remain open; this does not close
+the other tracks or the full mid-submission.
 
 Current Track A delivery: **v7 narrative development**, 1,156 documents and
 16,472 passages, with a rebuilt pinned dense index. The new 2,035-item source
-review is complete (195 relevant, 1,840 irrelevant); independent acceptance is
-pending. Dense retrieval is selected for development, with Recall@10 0.4259 and
+review is complete (195 relevant, 1,840 irrelevant); separate completed records
+now validate on Varun's attestations. Dense retrieval has Recall@10 0.4259 and
 0.5296 after top-50 reranking. See `reports/track_a_progress.md`.
 
 The current checkout and clean environment with optional PDF/extraction
@@ -24,13 +25,14 @@ settings. No historical run is relabelled as a v7 experiment. Independent human
 support/reference labels, corrected baselines, accepted anchors and final UER
 remain separate research requirements.
 
-The user reports completing Track A review only and supplied the intended
-submission files. Their schemas and v7 packet bindings pass, but the provenance
-identifies generated drafts, illustrative corpus flags and copied development
-labels. Reviewer declarations are incomplete; both actual acceptance exports
-reject the files. They are preserved as drafts without changing score provenance,
-labels or acceptance. Experiment support review and main hypothesis findings
-remain separate. See `reports/track_a_submitted_review_validation_20261027.json`.
+The user identifies the reviewer as Varun, gives 27 October 2026 as the review
+date and explicitly attests independence and blinding. Both completed-record
+exports pass schemas, packet bindings, coverage and exact spans. Original
+automated-label provenance and the initially supplied files remain preserved;
+user-declared review conduct and timing are not independently verified. Experiment
+support review and main hypothesis findings remain separate. See
+`reports/track_a_reviewer_identity_20261027.json`; the initial rejection remains
+historical in `reports/track_a_submitted_review_validation_20261027.json`.
 
 ## Implemented and checked
 
@@ -132,8 +134,10 @@ current verification is recorded in `reports/track_a_validation_20261026.json`.
    double annotation/kappa or the public-dataset strength/direction checks.
 5. Retriever/reranker acceptance: the current v7 2,035-item pool covers 20
    questions across March–September. Development judgments and dense/reranker
-   selection are complete; independent human judgments remain blank. The old
-   v3 pool is preserved. D-02/D-03 research acceptance remains open.
+   selection are complete; separate records now carry Varun's explicit
+   independent/blinded review attestations and validate successfully. Original
+   blank v7/v3 workspaces remain unchanged. This is recorded-attestation
+   acceptance, not independent verification of procedure or end-to-end benefit.
 6. Results: human correction of baseline extraction and blinded support review
    are required before reporting UER or strength inflation. The recall guard
    also needs independently reviewed reference graphs. No zero-denominator

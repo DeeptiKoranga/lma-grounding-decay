@@ -9,17 +9,19 @@ and retrieval reduce that rate without losing supported reference edges.
 Track A's scoped development handoff is complete under the 27 October closeout
 in `reports/track_a_mid_submission_scope_20261027.md`. For the mid-submission it
 delivers the acquired source mix, narrative-only PDF index and sparse six-series
-store with explicit deviations. This closes the development-scope disposition;
-it does not grant independent review, publisher permission or anchor acceptance.
+store with explicit deviations. Separate completed review records now carry
+Varun's independence/blinding attestations and pass both exporters. This does
+not grant publisher permission or anchor acceptance.
 
 Track A's current delivery is recorded in `reports/track_a_progress.md`: an
 active v7 narrative development corpus of 1,156 documents and 16,472 passages,
 a rebuilt dense index, and complete source judgments for the 2,035-item new
 retrieval pool (195 relevant, 1,840 irrelevant). The 20-question development
 comparison selects dense retrieval: Recall@10 0.4259, or 0.5296 with reranking.
-These are single Codex judgments with prior exposure to results, not independent
-human research scores. The saved human-review forms remain blank; the reported
-completion is documented below.
+The original labels come from automated development review with prior results
+exposure. They remain unchanged after Varun's user-attested review; the accepted
+records validate declared review conditions, not independently observed conduct.
+The original blank workspace remains preserved separately.
 
 The current checkout and a new clean environment with optional PDF/extraction
 dependencies pass 637 tests. The earlier committed-source reparse reproduces all corpus
@@ -39,21 +41,22 @@ acceptance. See `reports/track_a_followup_20261026.json`.
 
 ## Human review report — 27 October
 
-The user reports completing Track A review only and supplied four intended
-submission files. Validation confirms final-v7 packet bindings, 73 corpus rows,
-20 questions and 2,035 candidate rows; all candidate decisions and 195 positive
-spans match the saved development review. However, the supplied provenance
-identifies generated drafts, illustrative corpus flags and copied decisions.
-Reviewer/date fields are empty and independence/blinding declarations are false.
-The actual acceptance exporters reject these records. They are preserved as
-submitted drafts and do not supply independent human labels or accepted scores.
+The user reports completing Track A review only, identifies the reviewer as
+Varun and the date as 27 October 2026, and explicitly attests independent review
+and blinding to results. These declarations are recorded in the intended files.
+Both actual acceptance exports pass final-v7 bindings, 73 corpus rows, 20
+questions and 2,035 candidates, with 195 exact positive spans. All decisions
+remain identical to the original automated development assessment. That origin
+and the originally supplied versions remain preserved. The software validates
+records and declarations, not reviewer identity, procedure or exposure timing.
 
 The user's completion report is retained separately from this artifact finding.
 The reduced source/PDF scope and sparse original-date coverage are now adopted
 for the scoped mid-submission handoff. Publisher permissions, fuller histories
 where needed for anchors, and experiment support review remain separate
 requirements. No main hypothesis result follows from these files. See
-`reports/track_a_submitted_review_validation_20261027.json` and
+`reports/track_a_reviewer_identity_20261027.json`, the historical initial check
+`reports/track_a_submitted_review_validation_20261027.json`, and
 `reports/track_a_human_review_status_20261027.json`.
 
 ## What is built
@@ -176,7 +179,7 @@ TA decisions. This draft leaves those decisions open.
 | Risk | Current evidence | Next action and acceptance criterion |
 |---|---|---|
 | Scoped data delivery | Track A adopts the acquired sources, narrative PDFs and sparse six-series store for the mid-submission | Report these deviations; retain redistribution limits and require dated evidence before accepting an unsupported anchor |
-| Review acceptance pending | Intended Track A files validate as generated drafts; independent reviewer declarations are incomplete | Retain draft provenance and obtain actual completed reviewer records; experiment support/reference review and double annotation remain separate |
+| Review procedure and experiment acceptance | Track A records validate on Varun's 27 October independent/blinded review attestations; original labels and prior results availability remain disclosed | Do not equate receipt validation with independently observed conduct; experiment support/reference review and double annotation remain separate |
 | Incomplete temporal/financial grounding | Original vintages remain sparse; separate retrospective histories have October availability and some definition/frequency differences | Validate exact episode measurements and original availability, then confirm or drop/redate each anchor |
 | Selection bias | All-month machine-curated pilot; concentrated sources | Broaden reviewed pairs and source/extraction checks before accepting model/retriever settings |
 | Verifier abstention hides lost coverage | Some edges can remain inferred or unchecked at budget | Review reference graphs and report recall guard alongside UER; retain null denominators |

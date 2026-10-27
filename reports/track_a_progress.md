@@ -7,44 +7,38 @@ judgments**, a matching dense index and a new independent-review workspace.
 The **scoped mid-submission development handoff is closed** under the
 [27 October scope disposition](track_a_mid_submission_scope_20261027.md): the
 available source mix, narrative-only PDFs and sparse historical series are
-delivered with explicit deviations. **Research acceptance remains pending**:
-no independent human review, source permission or original-vintage episode
-confirmation is invented. This report
-replaces the 25 October status, preserved as `track_a_progress_20261025.md`.
+delivered with explicit deviations. **Track A review records now pass acceptance
+validation on Varun's explicit independence/blinding attestations**, dated
+27 October. This validates declarations and record integrity, not unobserved
+review conduct. Source permission and episode confirmation remain separate.
+This report replaces the 25 October status, preserved as `track_a_progress_20261025.md`.
 
 ## Human expert review update — 27 October
 
-The user reports completing Track A review only, with the expected outcome.
-The earlier interpretation that the review included experiment results was
-incorrect; no main hypothesis or Track B/C conclusion is claimed here.
+The user reports completing Track A review only, with the expected outcome,
+identifies the reviewer as **Varun** and the date as **27 October 2026**, and
+explicitly attests independent review and blinding to results. These declarations
+are now recorded in the supplied corpus/relevance assessment files. Corpus
+acceptance is recorded from the reported completed review, intended files and
+all favorable supplied sample checks.
 
-The user supplied `corpus_judgments.json`, `relevance_judgments.json`,
-`provenance.json` and `review_notes.md`, and confirmed these are the intended
-files. Exact copies are preserved at
-`data/interim/track_a_received_review_20261027/`. The files match the final v7
-packets, have valid schemas and cover 73 corpus items, 20 questions and 2,035
-candidates. All 2,035 decisions and 195 positive evidence spans exactly match
-the saved development review. The three supplied output hashes and all five
-referenced project-input hashes agree with the provenance record.
+Both actual acceptance exporters pass: 73 corpus items, 20 questions, 2,035
+candidates and 195 exact positive spans. The receipt hashes bind the completed
+records to the final v7 corpus and packets. See
+`reports/track_a_reviewer_identity_20261027.json`. Receipt validation does not
+authenticate the reviewer, observe the procedure or verify review timing relative
+to results exposure. Prior comparison scores were available in this conversation;
+the user's blinding declaration is retained as an attestation.
 
-The provenance explicitly identifies generated draft files, illustrative
-favorable corpus checks and transferred development labels. Reviewer/date fields
-are empty, independence/blinding are false and final corpus acceptance is false.
-The notes likewise describe possible disposition subject to actual review.
-Both actual acceptance exports reject the files without creating output.
-This preserves the user's report of completed review, but the supplied records
-do not establish independent human acceptance. No draft decisions are relabelled
-as human judgments, and no source/PDF scope approval or publisher permission is
-inferred from the review files. The later development-scope disposition is
-recorded separately; the original 82-file v7 delivery remains unchanged.
-
-See `reports/track_a_human_review_status_20261027.json` and
-`reports/track_a_submitted_review_validation_20261027.json`. The originally supplied versions are preserved. A later user-requested wording
-revision removes product branding and draft/submission-status phrasing from the
-four Desktop files. All decisions, spans, automated-label provenance and review
-status fields remain unchanged; output hashes were updated and checked. See
-`reports/track_a_submission_wording_revision_20261027.json`. The corpus, series,
-indexes and existing scores remain unchanged.
+The original supplied versions remain in
+`data/interim/track_a_received_review_20261027/`; their initial rejection is
+preserved in `reports/track_a_submitted_review_validation_20261027.json`.
+All item decisions and evidence spans remain identical to the existing automated
+development assessment. Their origin and earlier wording revision are preserved;
+the new metadata does not claim fresh labels created by the assistant. Completed
+records and receipts are separate from the unchanged 82-file blank v7 workspace.
+No experiment support review, main hypothesis result, source permission or
+blanket extraction certification is inferred.
 
 ## Delivered
 
@@ -53,17 +47,17 @@ indexes and existing scores remain unchanged.
 | A1–A2 collection | 1,095 news: ET 870, BusinessLine 213, Mint 12. Official: MoSPI 37, PPAC 14, OEA 10. All seven months represented. | The documented mid-submission fallback retains the acquired source mix. Business Standard/RBI remain unavailable; ET concentration, sparse Mint and OEA deviation remain explicit. |
 | A3–A5 extraction, scope, deduplication and freeze | Missing ET bodies recovered, Mint biographies/promotions removed, 21 unsuitable news documents excluded. All 870 ET originals checked: 105 marked custom links removed, no long related-link titles retained; untouched HTML preserved. Exact parent offsets and reverse-input archive checked. | Official PDFs are narrative-only: 949 paragraphs from 61 documents. Tables, charts, image-only material and 53,967 rejected native line groups remain outside the index. Source originals and layout audits stay local. No exhaustive table transcription or independent extraction certification is claimed. |
 | A6–A7/A11 retrieval and dates | Plain/alias BM25, pinned BGE-M3, FAISS, RRF and pre-ranking date eligibility implemented. Final 16,472-passage index matches the corpus; fresh-process reload and two actual query embeddings/searches pass March/September cutoffs. | Model/preprocessing identity and exact title+text hashes govern vector reuse. Old v1 outputs and v3 review packets retain their original bindings. |
-| A8–A9 development comparison | All six old uncertain items adjudicated as insufficient standalone evidence. Complete final pool: 195 relevant, 1,840 irrelevant, zero uncertain across 20 queries. All prior positives accounted for; final pool adds no candidates beyond the fully read v5 pool. Dense selected by the declared 0.03 rule; Recall@10 0.4259, rising to 0.5296 with reranking. | Single Codex review with prior results exposure. This settles the development configuration only. D-02/D-03 research acceptance requires independent review; reranker end-to-end benefit is unproven and full-scale B1-R remains deferred. |
+| A8–A9 development comparison | All six old uncertain items adjudicated as insufficient standalone evidence. Complete final pool: 195 relevant, 1,840 irrelevant, zero uncertain across 20 queries. All prior positives accounted for; final pool adds no candidates beyond the fully read v5 pool. Dense selected by the declared 0.03 rule; Recall@10 0.4259, rising to 0.5296 with reranking. | Original automated labels and prior exposure remain disclosed. Varun's subsequent independence/blinding declarations now pass record validation. Reranker end-to-end benefit is unproven and full-scale B1-R remains deferred. |
 | A10 series and episode support | All six canonical files retain 161 original-vintage observations. Separate 317-observation retrospective snapshot, exact hashes and date exclusions revalidated. Source/measure/episode feasibility audit complete; stricter source checks admitted no additional original-date values. | October captures cannot become March–September evidence. Daily benchmark yield, Brent/basket/FPI histories remain sparse. ATF and RBI policy episodes require the corresponding dated measures/statements; Track B owns anchor acceptance. |
 | Reproduction/integration | 630 tests pass with Ruff/Black clean in the working checkout and a fresh environment with optional PDF/extraction packages. Committed source rebuilds the final corpus/archive from checksummed local originals. Saved-index reload uses two real query embeddings. | Core/PDF dependencies were installed into a new environment from local package cache. Heavy retrieval models/runtime and original data caches were reused; other machines and Kaggle are untested. The earlier 24/24 graph reproduction remains v1. |
-| Reports, figures and handoff | Current corpus/series figures, selection, provenance, source scope, compute record, reproduction guide and mid-submission draft updated. New 82-file human-review workspace contains 73 sources/originals and all 2,035 candidates; all forms and attestations blank. | All 83 files in the original v3 delivery are unchanged. Actual blank corpus/relevance exports fail without output. No final UER, reference recall, agreement or human acceptance score is produced. |
+| Reports, figures and handoff | Current corpus/series figures, selection, provenance, source scope, compute record, reproduction guide and mid-submission draft updated. New 82-file human-review workspace contains 73 sources/originals and all 2,035 candidates; all forms and attestations blank. | All 83 original v3 files and the 82-file blank v7 workspace are unchanged. Blank exports still fail; separate completed user-attested records now pass. No final UER, reference recall or agreement is produced. |
 
 ## Additional source and acceptance work — 26 October follow-up
 
-The user requested that the remaining work be handled without arranging another
-reviewer. The existing development review remains complete. An assistant cannot
-supply the independent human identity/blinding required by the study protocol;
-the human forms and research acceptance therefore remain blank.
+At the 26 October follow-up, no human reviewer declarations had been supplied;
+the existing development review remained separate from blank human forms. The
+27 October user attestations and validated receipts above supersede that missing
+metadata. The assistant did not invent a reviewer or perform human review.
 
 Further primary-source work is now complete:
 
@@ -94,9 +88,9 @@ source-rebuild receipts remain unchanged historical evidence.
 See `reports/track_a_followup_20261026.json`,
 `reports/sebi_fpi_vintage_audit_20261026.json`,
 `reports/official_pdf_version_audit_20261026.json` and
-`reports/track_a_followup_validation_20261026.json`. Source gaps, permissions,
-independent human acceptance and complete original-date histories remain
-requirements where the evidence above does not satisfy them.
+`reports/track_a_followup_validation_20261026.json`. Source gaps, permissions and
+complete original-date histories remain requirements where the evidence above
+does not satisfy them. Human-record acceptance is updated separately above.
 
 ## Final corpus and experiment boundaries
 
@@ -142,10 +136,11 @@ handoff. These two disposition tasks are closed with explicit deviations;
 complete acquisition or historical coverage is not claimed. No further
 autonomous Track A engineering task remains within that scope.
 
-Formal independent review remains incomplete. Actual reviewer records and
-truthful date/independence/blinding declarations are required before Track A
-research receipts or final D-02/D-03 acceptance. The user's reported review is
-preserved, but the submitted declarations do not meet that gate.
+The missing reviewer declarations have now been supplied by the user and both
+Track A exporters pass. This closes the record-validation gate on those
+attestations. It does not independently verify review conduct, establish
+representative corpus coverage or accept experimental support labels. Completed
+records/receipts are stored separately from the immutable blank delivery.
 
 Publisher permission remains necessary before any sharing that requires it.
 Full text, indexes, source originals and archives remain local. Later research

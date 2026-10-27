@@ -185,3 +185,20 @@ of the SEBI audit reproduces the report hash exactly. No new environment,
 heavy model run, paid API, Kaggle execution or independent human review occurred.
 Acquisition and review wall times were not instrumented; none are estimated.
 See `reports/track_a_followup_validation_20261026.json`.
+
+## 27 October receipt-bound Track A retrieval comparison
+
+After the user supplied reviewer Varun, date 27 October and explicit
+independence/blinding declarations, both acceptance exporters passed the
+73-document sample and 20-query/2,035-candidate records. These are recorded user
+attestations; review procedure and exposure timing were not independently
+observed. Original item decisions and evidence spans remain unchanged.
+
+The non-smoke comparison reused the pinned v7 FAISS index and local pinned model
+cache. CPU phase wall time was **153.84 seconds**, including the top-50 reranker;
+this excludes earlier acquisition, model download/index build and human review.
+All five reported metric rows reproduce the prior development comparison. No
+paid API or Kaggle execution occurred. Report:
+`reports/pilot_retriever_v7_attested_20261027.md`; receipt, file and log hashes:
+`reports/track_a_reviewer_identity_20261027.json`. The earlier 637-test code
+validation remains historical; this metadata/report update adds no code changes.

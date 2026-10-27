@@ -503,3 +503,29 @@ metadata audit are recorded in `reports/track_a_followup_20261026.json`. Web
 readability does not imply acquisition of a checksummed original for the corpus.
 Current 637-test local/fresh checks are separate from the earlier 630-test
 rebuild receipt; see `reports/track_a_followup_validation_20261026.json`.
+
+
+## 27 October user-attested Track A review
+
+The user identifies the reviewer as Varun, supplies 27 October 2026 as the date,
+and explicitly declares independent review and blinding to results. Completed
+records are in `data/interim/track_a_attested_review_20261027/assessment/`, with
+corpus and retrieval receipts in `corpus_accepted/` and `relevance_accepted/`.
+Original blank workspaces and earlier rejected submissions remain unchanged.
+
+The completed records preserve every original development decision and evidence
+span. The software checks packet/corpus hashes, coverage, dates, exact spans and
+recorded declarations. It does not authenticate identity or independently verify
+review conduct or timing of results exposure. See
+`reports/track_a_reviewer_identity_20261027.json` for exact declarations, file
+hashes, acceptance scope and limits.
+
+For a receipt-bound comparison, use the v7 replay command above with:
+
+- `--pairs data/interim/track_a_attested_review_20261027/relevance_accepted/pairs.jsonl`
+- `--review-receipt data/interim/track_a_attested_review_20261027/relevance_accepted/receipt.json`
+- omit `--smoke` and choose a fresh report output.
+
+The resulting report is `reports/pilot_retriever_v7_attested_20261027.md`.
+Earlier smoke reports retain their original provenance and are not overwritten.
+This review does not accept baseline corrections, support labels or final UER.

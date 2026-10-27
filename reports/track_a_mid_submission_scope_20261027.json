@@ -1,6 +1,6 @@
 {
   "recorded_on": "2026-10-27",
-  "status": "Scoped Track A mid-submission development handoff complete with declared deviations; independent research acceptance incomplete.",
+  "status": "Scoped Track A mid-submission handoff complete with declared data deviations; review records and receipt-bound pilot pass on user attestations.",
   "decision_basis": {
     "user_instruction": "now finish the remaining track a tasks. don\u2019t stop until everything in track a is done; latest follow-up: DO IT",
     "recorded_by": "assistant",
@@ -10,14 +10,17 @@
   },
   "dispositions": {
     "formal_independent_review": {
-      "status": "incomplete",
+      "status": "record-validation gate passed on explicit user attestations; procedure not independently verified",
       "user_report_preserved": true,
       "supplied_files_validated": true,
       "decisions_identical_to_development_review": 2035,
-      "reviewer_identity_and_date": "empty/unset",
-      "independence_blinding_and_corpus_acceptance": false,
-      "research_receipt_created": false,
-      "actual_export_attempts_rejected": true
+      "reviewer_identity_and_date": "Varun; 2026-10-27",
+      "independence_blinding_and_corpus_acceptance": true,
+      "research_receipt_created": true,
+      "actual_export_attempts_rejected": false,
+      "historical_incomplete_export_attempts_rejected": true,
+      "attestation_source": "User explicit declaration of independent review and blinding; recorded in reviewer metadata report.",
+      "verification_limit": "User attestation only; review procedure and timing relative to prior results exposure were not independently observed."
     },
     "source_and_pdf_scope": {
       "status": "closed for scoped mid-submission development handoff with deviations",
@@ -105,18 +108,24 @@
   "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
   "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
   "scope_report": "reports/track_a_mid_submission_scope_20261027.md",
-  "scope_report_sha256": "15aeed36bc4c5e561cef04d48ffe49fffda6ff91e4c8a70799c2d6b922cb93e2",
+  "scope_report_sha256": "48518232e6c14559b7a8557566d89b12a1bddae676c8842cc445800ea7902a5e",
   "evidence": {
     "reports/track_a_mid_submission_validation_20261027.json": "a6714bd2f5bcc8b55c0d3cd2e74e16b3233429da8ac0ef6e2d45b1e364ad03aa",
     "reports/track_a_retrieval_selection_20261026.json": "0f76a2e2e4f270585bf0d0a1fb6a38a58fa13f9b245a320b232e7aa25643b244",
     "reports/track_a_series_scope_20261026.json": "b0dc07a2ae9ba47518af88e5eafc1a705220e563691a7523000e781d21437b8b",
     "reports/track_a_source_scope_20261026.md": "6b5fbb533c97bc3af94d2f0ed093821ed643859ef5db62e0f1820ff4cab003f0",
     "reports/track_a_submitted_review_validation_20261027.json": "179fbf59fea4aeda12b978ab095ea8aabcd2aad33e65906945c4e9e5ff10ad76",
-    "reports/track_a_submission_wording_revision_20261027.json": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4"
+    "reports/track_a_submission_wording_revision_20261027.json": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4",
+    "reports/track_a_reviewer_identity_20261027.json": "6f6140e6c0e4ba9b7765b05ec602308294933b4ad0f06cfb709d8f309bfea3ab",
+    "reports/track_a_retrieval_selection_20261027.json": "127380691fdf7632f8e50a2a712260f7629aa994c5012038912bdf24c511c4ca"
   },
   "autonomous_engineering_tasks_remaining_in_scoped_track_a_handoff": 0,
-  "formal_independent_acceptance_complete": false,
+  "formal_independent_acceptance_complete": true,
   "other_tracks_or_entire_mid_submission_complete": false,
-  "research_acceptance": false,
-  "pull_request_created": false
+  "research_acceptance": true,
+  "pull_request_created": false,
+  "formal_independent_acceptance_basis": "Completed record validation on user declarations; not independent observation of review procedure.",
+  "acceptance_scope": "Track A pooled retrieval pilot and sampled-corpus review records; no experiment UER/reference-recall or whole-study acceptance.",
+  "current_reviewed_retrieval_selection": "reports/track_a_retrieval_selection_20261027.json",
+  "current_reviewed_retrieval_selection_sha256": "127380691fdf7632f8e50a2a712260f7629aa994c5012038912bdf24c511c4ca"
 }

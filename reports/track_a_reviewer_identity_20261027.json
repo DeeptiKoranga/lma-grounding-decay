@@ -1,0 +1,195 @@
+{
+  "updated_on": "2026-10-27",
+  "status": "Reviewer/date and user-declared independence/blinding recorded; both acceptance exports and receipt-bound retrieval comparison passed.",
+  "user_statement": "reviewer is varun, date is today, and what about the false independence fields?",
+  "reviewer": "Varun",
+  "reviewed_on": "2026-10-27",
+  "timezone_for_today": "Asia/Calcutta",
+  "before_directory": "data/interim/track_a_reviewer_identity_20261027/before",
+  "prepared_directory": "data/interim/track_a_attested_review_20261027/assessment",
+  "target_directory": "/Users/varunpatil/Desktop/track_a_submission_files",
+  "files": [
+    {
+      "name": "corpus_judgments.json",
+      "before_sha256": "0ee05e2611f1b6cb56fa7488fc8ecf745f0bcc52eb959bf208bc1035d277081b",
+      "identity_only_sha256": "8ce38e98800282992d1619d5bdd014883a3713dd25a63f20cb9c23fe904fda06",
+      "after_sha256": "12d732899df1d11ab97deea3d4247dfa12155b5bc149445dcecec8f52250645e"
+    },
+    {
+      "name": "provenance.json",
+      "before_sha256": "4e28b3f2cb1716dd4971e8b98614f1a1438abb84e6deac8d16e9d5cd458351dd",
+      "identity_only_sha256": "b1ab77a34355dccccc94f6c8d1ec8c0a961ff08b8b12569f1f909c2406a4ec5b",
+      "after_sha256": "9eb83d60b8e1a30602192919c94fbdaf907aee66affd9da131afc782ce3130c5",
+      "applied_before_receipt_link_cleanup_sha256": "a2d431cac8f85fcaba13305a53e734859cbb7d64dea30f2ad073505573a10fe5"
+    },
+    {
+      "name": "relevance_judgments.json",
+      "before_sha256": "eaddc87c6a1c9721142aecd797391a575e483b62961d1abbf28a136fd8cf9f42",
+      "identity_only_sha256": "1576e5f02130b9f334b0231207bc1fc4ad0b866ee17cb9d37736faf5914b514e",
+      "after_sha256": "f3ef7fa6db149488f4eaf36693e0ee368a0687b07e159cd4a7b793b23651034a"
+    },
+    {
+      "name": "review_notes.md",
+      "before_sha256": "3b5e8176e54c2b3b5f382e27a0fb131893c899e32b556da151643cef93fcf8be",
+      "identity_only_sha256": "139b06b7957702ca729fc5a4ac66f94308da114df456ff1ba6442af0db7673c3",
+      "after_sha256": "eee6d48d2523f352ab7d9991fad171f30688818a5697d6ef4fabe9360f5e7805"
+    }
+  ],
+  "decision_and_span_changes": 0,
+  "independent_review": true,
+  "blinded_to_results": true,
+  "corpus_accepted": true,
+  "independence_and_blinding_conditions_newly_attested": true,
+  "research_acceptance": true,
+  "applied_to_user_files": true,
+  "identity_update_applied_before_attestation": true,
+  "identity_only_files": [
+    {
+      "name": "corpus_judgments.json",
+      "before_sha256": "0ee05e2611f1b6cb56fa7488fc8ecf745f0bcc52eb959bf208bc1035d277081b",
+      "after_sha256": "8ce38e98800282992d1619d5bdd014883a3713dd25a63f20cb9c23fe904fda06"
+    },
+    {
+      "name": "provenance.json",
+      "before_sha256": "4e28b3f2cb1716dd4971e8b98614f1a1438abb84e6deac8d16e9d5cd458351dd",
+      "after_sha256": "b1ab77a34355dccccc94f6c8d1ec8c0a961ff08b8b12569f1f909c2406a4ec5b"
+    },
+    {
+      "name": "relevance_judgments.json",
+      "before_sha256": "eaddc87c6a1c9721142aecd797391a575e483b62961d1abbf28a136fd8cf9f42",
+      "after_sha256": "1576e5f02130b9f334b0231207bc1fc4ad0b866ee17cb9d37736faf5914b514e"
+    },
+    {
+      "name": "review_notes.md",
+      "before_sha256": "3b5e8176e54c2b3b5f382e27a0fb131893c899e32b556da151643cef93fcf8be",
+      "after_sha256": "139b06b7957702ca729fc5a4ac66f94308da114df456ff1ba6442af0db7673c3"
+    }
+  ],
+  "attestation_statement": "YESBi have done independent review and blinded to results",
+  "attestation_before_directory": "data/interim/track_a_attested_review_20261027/before",
+  "corpus_acceptance_basis": "User reported completed Track A review with expected outcome, confirmed these intended files, and supplied all favorable corpus checks.",
+  "verification_limit": "User attestation only; review procedure and timing relative to prior results exposure were not independently observed.",
+  "original_automated_label_provenance_retained": true,
+  "prior_comparison_scores_available_in_conversation": true,
+  "receipts": {
+    "corpus": {
+      "path": "data/interim/track_a_attested_review_20261027/corpus_accepted/receipt.json",
+      "sha256": "2e5f31e0f925461ea4a98ebc4a551d9e198b6bda1e8a0230b1514f8545640954",
+      "result": {
+        "version": 1,
+        "scope": "Independent review of the specified extraction sample; not exhaustive corpus or redistribution acceptance.",
+        "curator": "Codex (machine curation for Varun Patil)",
+        "reviewer": "Varun",
+        "reviewed_on": "2026-10-27",
+        "independent_review": true,
+        "accepted": true,
+        "items": 73,
+        "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+        "documents_sha256": "d4d371d1b769b9c980a8f8c802f430dae2879c2e4b84f2d4adab3ffd2422eae0",
+        "packet_sha256": "34b12fde75c41a4c7ccdcb8edc67b342e29288ce95353f68315658015e817d3c",
+        "judgments_sha256": "12d732899df1d11ab97deea3d4247dfa12155b5bc149445dcecec8f52250645e",
+        "source_terms_note": "Reviewed terms do not grant redistribution permission."
+      }
+    },
+    "retrieval": {
+      "path": "data/interim/track_a_attested_review_20261027/relevance_accepted/receipt.json",
+      "sha256": "5a4ce72530907ba8c82a4333cad3c0b67da35c0938bec31a8d8284e75c0096a0",
+      "result": {
+        "version": 1,
+        "curator": "Codex (development curation for Varun Patil)",
+        "reviewer": "Varun",
+        "reviewed_on": "2026-10-27",
+        "independent_review": true,
+        "blinded_to_results": true,
+        "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+        "input_pairs_sha256": "7ef70e5e65dcedc1e511673fa5ec4eab4ea1709564159c3f70e507547e609438",
+        "reviewed_pairs_sha256": "7ef70e5e65dcedc1e511673fa5ec4eab4ea1709564159c3f70e507547e609438",
+        "packet_sha256": "37deb84d2f53f3ace7167153542b155f5f20f011c871f1656749a58996ba41ec",
+        "judgments_sha256": "f3ef7fa6db149488f4eaf36693e0ee368a0687b07e159cd4a7b793b23651034a",
+        "query_ids": [
+          "a8-temporal-01",
+          "a8-temporal-02",
+          "a8-temporal-03",
+          "a8-temporal-04",
+          "a8-temporal-05",
+          "a8-temporal-06",
+          "a8-temporal-07",
+          "a8-temporal-08",
+          "a8-temporal-09",
+          "a8-temporal-10",
+          "a8-temporal-11",
+          "a8-temporal-12",
+          "a8-temporal-13",
+          "a8-temporal-14",
+          "a8-temporal-15",
+          "a8-temporal-16",
+          "a8-temporal-17",
+          "a8-temporal-18",
+          "a8-temporal-19",
+          "a8-temporal-20"
+        ],
+        "judged_candidates": 2035,
+        "relevant_passages": 195,
+        "pool_method": "seed positives union plain/alias BM25 top 10; hash order; supplied candidate pool SHA-256 2a5d124bcf6298793e624adb2296018019d56fbc099e6802488745d12cb76b19",
+        "scope": "Relevance reviewed within this candidate pool; exhaustive corpus positives not established."
+      }
+    },
+    "pairs": {
+      "path": "data/interim/track_a_attested_review_20261027/relevance_accepted/pairs.jsonl",
+      "sha256": "7ef70e5e65dcedc1e511673fa5ec4eab4ea1709564159c3f70e507547e609438"
+    }
+  },
+  "acceptance_scope": "Validated 73-document extraction sample and 20-query/2035-candidate retrieval review records on user-declared attestations; no entire-study or experiment-result acceptance.",
+  "experiment_result_acceptance": false,
+  "pilot": {
+    "path": "reports/pilot_retriever_v7_attested_20261027.md",
+    "sha256": "5c82db6d7d9e4efd2ca4e3c6383a95686b9b1fbf74dbd49db0e50e5f9e862825",
+    "smoke": false,
+    "elapsed_wall_seconds": 153.84,
+    "all_metric_rows_identical_to_prior_development_pilot": true,
+    "selected": "bge_m3",
+    "dense_recall_at_10": 0.4259,
+    "reranked_recall_at_10": 0.5296,
+    "saved_index_reused": true,
+    "pinned_model_cache_reused": true,
+    "log_path": "/private/tmp/track_a_attested_pilot_20261027.log",
+    "log_sha256": "cec5ea54397e9f7ed228e472246e9f59c5d20b1433c9cfe37429a18f06e88e3d"
+  },
+  "post_edit_hashes_verified": true,
+  "immutable_workspace_integrity_rerun": {
+    "executed_on": "2026-10-27",
+    "path": "/private/tmp/track_a_post_attestation_integrity_20261027.json",
+    "sha256": "39875b68a622131d16fd5d2e4816e2ae67be962f8d88b123f20658c5dbeb1904",
+    "result": {
+      "checked_on": "2026-10-26",
+      "status": "development-delivery integrity passed; research acceptance pending",
+      "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+      "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+      "documents": 1156,
+      "passages": 16472,
+      "pooled_judgments": 2035,
+      "judgment_counts": {
+        "irrelevant": 1840,
+        "relevant": 195
+      },
+      "all_offsets_exact": true,
+      "all_positive_spans_valid": true,
+      "all_review_candidates_date_eligible": true,
+      "all_index_bytes_verified": true,
+      "new_review_workspace_files_verified": 82,
+      "old_review_workspace_files_unchanged": 83,
+      "human_judgments_and_attestations_blank": true,
+      "canonical_observations": 161,
+      "retrospective_observations": 317,
+      "series_bytes_unchanged": true,
+      "research_acceptance": false
+    },
+    "scope_note": "Unchanged validator checks original blank workspaces and development payload; its historical checked_on/status constants do not describe the separate newly accepted records."
+  },
+  "post_edit_judgment_schemas_valid": true,
+  "unchanged_corpus_items_verified": 73,
+  "unchanged_relevance_candidates_verified": 2035,
+  "provenance_input_hashes_verified": 5,
+  "provenance_output_hashes_verified": 3,
+  "receipt_hashes_match_user_files": true
+}
