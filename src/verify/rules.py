@@ -5,8 +5,9 @@ hold. They are checked here, in code, with no model in the loop:
 
 1. **in corpus** - the passage belongs to the frozen corpus, by `doc_id`;
 2. **on or before the as-of date** - publication date <= as-of, *inclusive*;
-3. **both variables mentioned** - the passage names the edge's source and
-   destination variable, through the alias table (`verify.aliases`);
+3. **both variables mentioned** - the edge's source and destination variable
+   are named, through the alias table (`verify.aliases`), in the cited passage
+   or in the paragraph immediately before it (docs/decisions.md D-17);
 4. **span verbatim** - the passage contains the quoted evidence span word for
    word (`verify.normalise` fixes exactly how much typographic slack is given).
 
@@ -53,6 +54,8 @@ from .normalise import normalise_presentation
 __all__ = [
     "RULE_ORDER",
     "EdgeScreening",
+    "MentionMatch",
+    "MentionScope",
     "RuleName",
     "RuleOutcome",
     "RuleReport",
@@ -64,6 +67,7 @@ __all__ = [
     "check_on_or_before_as_of",
     "check_span_verbatim",
     "check_variables_mentioned",
+    "preceding_window",
     "screen_edge",
 ]
 
@@ -119,6 +123,48 @@ class SpanMatch(BaseModel):
         return self
 
 
+class MentionScope(StrEnum):
+    """Where rule 3 found the two variables.
+
+    `CITED` means both were in the cited paragraph. `WINDOW` means at least one
+    was only in the paragraph before it, which is weaker evidence: the relation
+    is stated across a paragraph break, usually through an anaphor ("the
+    increase", "the move"). The eval harness reports the two separately so a
+    UER figure cannot quietly rest on cross-break edges (docs/decisions.md D-17).
+    """
+
+    CITED = "cited"
+    WINDOW = "window"
+
+
+class MentionMatch(BaseModel):
+    """Result of looking for both variables across the mention window.
+
+    The counterpart of `SpanMatch` for rule 3. `src_passage_id` and
+    `dst_passage_id` name the paragraph each variable was found in, so a caller
+    can tell a both-in-one-paragraph edge from one that spans the break.
+    """
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    found: bool
+    scope: MentionScope | None = None
+    src_passage_id: str | None = None
+    dst_passage_id: str | None = None
+    reason: str | None = Field(default=None, description="Set when `found` is False.")
+
+    @model_validator(mode="after")
+    def _consistent(self) -> Self:
+        if self.found:
+            if self.scope is None:
+                raise ValueError("a found mention pair must say which scope it was found in")
+            if not (self.src_passage_id and self.dst_passage_id):
+                raise ValueError("a found mention pair must name both paragraphs")
+        elif self.reason is None:
+            raise ValueError("a mention pair that was not found must carry a reason")
+        return self
+
+
 class RuleOutcome(BaseModel):
     """One rule, on one passage. `reason` is set exactly when the rule failed."""
 
@@ -127,6 +173,10 @@ class RuleOutcome(BaseModel):
     rule: RuleName
     passed: bool
     reason: str | None = None
+    mention_match: MentionMatch | None = Field(
+        default=None,
+        description="Set by rule 3 only; the detail behind `passed` (D-17).",
+    )
 
     @model_validator(mode="after")
     def _reason_iff_failed(self) -> Self:
@@ -187,31 +237,90 @@ def check_on_or_before_as_of(passage: Passage, as_of: date) -> RuleOutcome:
     )
 
 
+def preceding_window(passage: Passage, document: Iterable[Passage]) -> tuple[Passage, ...]:
+    """The cited passage plus the paragraph immediately before it, in order.
+
+    `document` may be the cited document's paragraphs or the whole corpus: only
+    passages with the same `doc_id` and `para_idx == passage.para_idx - 1` are
+    taken, so the window never crosses a document boundary. Paragraph 0 has no
+    predecessor and yields a window of one.
+
+    The window reaches backwards only. A later paragraph is not evidence for an
+    earlier claim: the anaphor this rule exists to resolve ("the increase")
+    always points back (docs/decisions.md D-17).
+    """
+    if passage.para_idx == 0:
+        return (passage,)
+    previous = [
+        other
+        for other in document
+        if other.doc_id == passage.doc_id and other.para_idx == passage.para_idx - 1
+    ]
+    return (*previous, passage)
+
+
 def check_variables_mentioned(
     passage: Passage,
     src_var: str,
     dst_var: str,
     aliases: AliasTable,
+    *,
+    context: Sequence[Passage] = (),
 ) -> RuleOutcome:
-    """Rule 3: the passage names both variables of the edge.
+    """Rule 3: both variables of the edge are named within the mention window.
 
-    Scoped to the single passage, not to its parent document: an edge whose two
-    variables sit in different paragraphs fails here even when the document as a
-    whole mentions both (docs/decisions.md D-14).
+    The window is the cited `passage` plus whatever `context` supplies, which is
+    normally `preceding_window(passage, document)`. With no `context` the rule is
+    scoped to the single passage, because a neighbouring paragraph that was never
+    offered cannot be searched - so a caller that forgets to pass the document
+    gets the strict result, never a falsely permissive one.
+
+    Rule 4 does not widen with this: the quoted span must still be verbatim in
+    the cited passage (docs/decisions.md D-17).
     """
-    found = {var: aliases.first_mention(var, passage.text) for var in (src_var, dst_var)}
-    missing = [var for var, form in found.items() if form is None]
-    if not missing:
-        return RuleOutcome(rule=RuleName.BOTH_VARIABLES_MENTIONED, passed=True)
+    searched = (*context, passage) if passage not in context else tuple(context)
+    ordered = sorted(dict.fromkeys(searched), key=lambda p: p.para_idx)
 
-    seen = ", ".join(f"{var} (as {form!r})" for var, form in found.items() if form is not None)
+    located: dict[str, tuple[str, str]] = {}
+    for var in (src_var, dst_var):
+        for candidate in ordered:
+            form = aliases.first_mention(var, candidate.text)
+            if form is not None:
+                located[var] = (form, candidate.passage_id)
+                break
+
+    missing = [var for var in (src_var, dst_var) if var not in located]
+    if missing:
+        seen = ", ".join(
+            f"{var} (as {form!r} in {where})" for var, (form, where) in located.items()
+        )
+        where_searched = ", ".join(p.passage_id for p in ordered)
+        return RuleOutcome(
+            rule=RuleName.BOTH_VARIABLES_MENTIONED,
+            passed=False,
+            reason=(
+                f"{' or '.join(missing)} is not mentioned in the window {where_searched}: "
+                "no surface form from the alias table appears in it"
+                + (f"; it does mention {seen}" if seen else "")
+            ),
+            mention_match=MentionMatch(
+                found=False,
+                reason=f"{' or '.join(missing)} absent from {where_searched}",
+            ),
+        )
+
+    src_where, dst_where = located[src_var][1], located[dst_var][1]
+    scope = (
+        MentionScope.CITED if src_where == dst_where == passage.passage_id else MentionScope.WINDOW
+    )
     return RuleOutcome(
         rule=RuleName.BOTH_VARIABLES_MENTIONED,
-        passed=False,
-        reason=(
-            f"passage {passage.passage_id!r} does not mention "
-            f"{' or '.join(missing)}: no surface form from the alias table appears in it"
-            + (f"; it does mention {seen}" if seen else "")
+        passed=True,
+        mention_match=MentionMatch(
+            found=True,
+            scope=scope,
+            src_passage_id=src_where,
+            dst_passage_id=dst_where,
         ),
     )
 
@@ -338,6 +447,13 @@ class RuleReport(BaseModel):
     def outcome_for(self, rule: RuleName) -> RuleOutcome:
         return next(outcome for outcome in self.outcomes if outcome.rule == rule)
 
+    @property
+    def mention_match(self) -> MentionMatch:
+        """Rule 3's detail: where each variable was found, and in what scope."""
+        match = self.outcome_for(RuleName.BOTH_VARIABLES_MENTIONED).mention_match
+        assert match is not None  # check_variables_mentioned always sets it
+        return match
+
 
 class EdgeScreening(BaseModel):
     """One edge against several candidate passages - the shape `verify_edge` needs.
@@ -419,19 +535,30 @@ def check_claim(
     corpus_doc_ids: Collection[str],
     aliases: AliasTable | Path | None = None,
     edge_id: str | None = None,
+    document: Iterable[Passage] = (),
 ) -> RuleReport:
     """Run all four rules on a (claim, passage) pair, without needing an `Edge`.
 
     Used by extraction (B5) and the challenge-set builder (B9), which hold a
     candidate relation before it is a schema object. `aliases` takes a loaded
     table, a path to one, or None for `data/aliases.yaml`.
+
+    `document` should be the cited document's paragraphs (the whole corpus is
+    also fine) so rule 3 can see the paragraph before the cited one. Omitting it
+    gives the strict, passage-only result - see `check_variables_mentioned`.
     """
     table = _resolve_aliases(aliases)
     span_match = check_span_verbatim(passage, span)
     outcomes = (
         check_in_corpus(passage, corpus_doc_ids),
         check_on_or_before_as_of(passage, as_of),
-        check_variables_mentioned(passage, src_var, dst_var, table),
+        check_variables_mentioned(
+            passage,
+            src_var,
+            dst_var,
+            table,
+            context=preceding_window(passage, document),
+        ),
         _span_outcome(span_match),
     )
     return RuleReport(
@@ -454,6 +581,7 @@ def check_edge(
     corpus_doc_ids: Collection[str],
     aliases: AliasTable | Path | None = None,
     span: str | None = None,
+    document: Iterable[Passage] = (),
 ) -> RuleReport:
     """Run all four rules on one edge against one passage.
 
@@ -471,6 +599,7 @@ def check_edge(
         corpus_doc_ids=corpus_doc_ids,
         aliases=aliases,
         edge_id=edge.edge_id,
+        document=document,
     )
 
 
@@ -482,9 +611,16 @@ def screen_edge(
     corpus_doc_ids: Collection[str],
     aliases: AliasTable | Path | None = None,
     span: str | None = None,
+    document: Iterable[Passage] = (),
 ) -> EdgeScreening:
-    """Run the rules on one edge against every candidate passage."""
+    """Run the rules on one edge against every candidate passage.
+
+    `document` is passed through to rule 3's mention window, so it must hold the
+    paragraphs around each candidate - the corpus slice the caller retrieved from
+    is the usual thing to hand in.
+    """
     table = _resolve_aliases(aliases)
+    window_source = tuple(document)
     reports = tuple(
         check_edge(
             edge,
@@ -493,6 +629,7 @@ def screen_edge(
             corpus_doc_ids=corpus_doc_ids,
             aliases=table,
             span=span,
+            document=window_source,
         )
         for passage in passages
     )
