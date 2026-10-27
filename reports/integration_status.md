@@ -1,10 +1,14 @@
 # Integrated development pipeline — updated 27 October 2026
 
-**Latest audit:** five integration/reproduction findings remain; the selected
-retriever is not consumed by the conditions command and anchor confirmation
-does not call the series layer. Two Track A bugs were fixed. The full current
-suite passes 641 tests, but this does not establish a complete project. See
-`reports/whole_project_audit_20261027.md` and its executable probe records.
+**Latest engineering check:** all five findings from the original audit are
+fixed. The command uses the selected BGE-M3/FAISS first stage, performs logged
+series checks, rejects stale resumes and incomplete sweeps, and installs its
+default verifier alias resource. The suite passes 663 tests, Ruff and Black.
+See [fix validation](integration_fixes_20261027.md). The actual selected-configuration
+smoke completed all 14 graphs (two development candidates × seven conditions),
+passed the complete-matrix audit and reused all 14 results on unchanged resume.
+Experiment acceptance still requires the research gates below; the original
+audit remains historical.
 
 The scoped Track A development handoff is closed under
 `reports/track_a_mid_submission_scope_20261027.md`. Reduced publisher coverage,
@@ -19,7 +23,7 @@ review is complete (195 relevant, 1,840 irrelevant); separate completed records
 now validate on Varun's attestations. Dense retrieval has Recall@10 0.4259 and
 0.5296 after top-50 reranking. See `reports/track_a_progress.md`.
 
-The current checkout passes **641 tests**, Ruff and Black. The earlier clean
+The current checkout passes **663 tests**, Ruff and Black. The earlier clean
 environment check passed 637 tests with optional PDF/extraction packages; it is
 historical evidence. The earlier clean-source reparse reproduces
 the v7 corpus/archive hashes. Historical tools retain 161 original series
@@ -51,8 +55,8 @@ historical in `reports/track_a_submitted_review_validation_20261027.json`.
   remote use requires explicit opt-in and no paid request was made.
 - Baselines B0/B1/B1-R generate prose, then mechanically extract its links.
   B2 requests provenance labels. A-NoVerify, A-NoLoop and M use the same path
-  with verification/loop flags. Every retrieved condition shares plain BM25
-  for this development run; B1-R adds the pinned cached cross-encoder.
+  with verification/loop flags. Archived v1 runs shared plain BM25. New runs share the selected BGE-M3/FAISS
+  first stage; B1-R adds the pinned cached top-50 cross-encoder.
 - The six tools validate arguments, pin the cutoff, reject forged backend
   passages and enforce at most 12 calls. Verified assertions require a matching
   fresh semantic verification result. Graph mutations regenerate BFS hops and

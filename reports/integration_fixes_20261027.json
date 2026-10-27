@@ -1,0 +1,1043 @@
+{
+  "checked_on": "2026-10-27",
+  "status": "all five audited integration findings fixed and validated",
+  "base_commit": "0582574f3ae561d59b90b87f16c33eff9f7de47c",
+  "implementation_commit": "0ee617df221e8363d9a32b894c1aa9db2e3ab159",
+  "source": {
+    "sha256": "1edb5441d5d627ac6cf451ab6588c31d0a271482662a5e417dda34dbcf708a86",
+    "files": {
+      "agent/__init__.py": "dbaea21b4f5731de0e3ee9634117b4ee998b0a795af5ced7d66af9dfe97a3475",
+      "agent/controller.py": "f856bbc9b3ca7736506a405ec587c85d08fd564a080e258f3cf47fe96bb80303",
+      "agent/logging.py": "41e1719df1441f331e3df34326e2ab268f06d8b2fe0bb434f9acc9a489baebbd",
+      "conditions/__init__.py": "26c196ce0c6818883732b758eed3c795c860d9af90fb04381feb13f50938080f",
+      "conditions/__main__.py": "89578b3abb80a632fb4bdd41b357ed39b6ac508f941b76c9cd0a826868bb5dc0",
+      "conditions/anchors.py": "ab64b61b708684021e37d593d833e115030a0218d5ca41ca0d26a10edb0f48fe",
+      "conditions/config.py": "c6c1ea69fbdaf71f89a7a35d641659106cc748ef835e6f3bb82e8618316ff699",
+      "conditions/pipeline.py": "369469fdb850c26969c51c8b6f328639500e21e639f9c7170d23f50222da7585",
+      "conditions/provenance.py": "93d5ed1b7ecf5051f41393a84ba8d81352de90724e2c082367a206b96388055c",
+      "corpus/__init__.py": "f9dee4ff06171287682b41e2bd02cb79982c8e6fb594d15378f0e551d00c4715",
+      "corpus/__main__.py": "e4680754cbf65368dffc19eb9c276651cd1767b76cf391bf9677f241a3233ff2",
+      "corpus/bindings.py": "d486a9a0ffc8c4b5106818ae80357782001b265785d071abe13655a093969852",
+      "corpus/dedup.py": "bf0ab5f89247de8ed0912a6b5c2c26f4d3ffecbcc9e07ba048b90a6990b6bf42",
+      "corpus/documents.py": "666853487706c57cb440d36d3911bc05d4e38d030710ce8541815515cff3df8f",
+      "corpus/freeze.py": "3a3940be8cbb4be1e71a13acb26d27d45eecfd501fb39ee972456f152e3ce380",
+      "corpus/official.py": "3723cbd13cae5784eeacdc663cd711b20978908163cb5e394caf04f9b488d2c9",
+      "corpus/parser.py": "c3cc80dbf227ce6571dd3ce6f218521b4b6d0974168717a7278f9774bed4ff26",
+      "corpus/pdf_layout.py": "01f9486e8efd60e23f68063e02bb76951c32ead1739395603e7b1affd57c8851",
+      "corpus/quality.py": "81e019344643b30d3df6574c4a76700fec8ff1f28b1f08bd690fb5681eb69182",
+      "corpus/review.py": "933cb8b74343ae3c7ac9e39703ec53a7a1685ba3028c83434a1d5c1b286f3c9a",
+      "corpus/series.py": "f2d52c381c900629ae02e56b63b8dc020fd4800dc583b1eadb892dbc42996a0e",
+      "eval/__init__.py": "001460cc2a102753ae2a2a5ffc07001ca86b5937f849e709117afe930a38ec0c",
+      "eval/agreement.py": "efca41e5001cd7128f17a767bff9a3910dcd63f6106b82258682d39a258dded2",
+      "eval/capabilities.py": "dd239447298b63f58b2d7581b38df7aa49d1bef6547dc83704389e7dda0964e2",
+      "eval/challenge.py": "71ce40ad6cfbc982e46dae3e8990601e526efd3f6a5e8ab1464ad82bfbdc3943",
+      "eval/faults.py": "5ecd8290cc7ad64c9ce08c21eeebf85034694256eaf66181f73a5cece665fff8",
+      "eval/figures.py": "8d5844d2fd496043e796a036fa01050acee04b4f41726e950cbb913920bb9cd7",
+      "eval/metrics.py": "ca6fb43280fe0376cd9ac1752e72f365f59d58a41df3b597ecd1cf0041d3e978",
+      "eval/prose_review.py": "1684e696fb55f2ad32536335e58d9af03638fd06dc5df7e8fa89121585baf0a2",
+      "eval/references.py": "eea466e2590ef37366d60a2a9cae238a575db77276d0075ed3da0b5363191d3a",
+      "eval/review.py": "ba38188fbc2543cf458939db7ac426d9c60a6473f735b4d2e4c29fc45231671d",
+      "eval/run_audit.py": "7bb3ae90355b62481a90f5538d8c383addb3ba9696f6d6726522515816cbc6fd",
+      "eval/safety.py": "f90721c0bb9867c75459467f787cd580a3288abfa5b0018d52fc2b0c69417c54",
+      "eval/stats.py": "bdf0b47f53870772c697208934a488af00a8a4977a2ee477081a5294159ab17c",
+      "extract/__init__.py": "ec0172001803baa5fe623c458335cf84315075e49d2e1c85d3cc54e02e116568",
+      "extract/candidates.py": "cf6e7e51274dd8ed3936ee1c81feb40f651d03427fe152105bc9008f38a8b6e8",
+      "llm/__init__.py": "d4aa2790c23b373252c2012c428647f7876aa275951d57da112de79d51d3e6a1",
+      "llm/generate.py": "6bff43d4de0f6ed1ff701194fd939a196a4a330bdde3a5b7dd592e5a4e53b699",
+      "retrieval/__init__.py": "cd92b951e68f9bb450a2eef81f261bbcb9388119914aab176be302cfb12d5818",
+      "retrieval/__main__.py": "5884740c487373fc0deba5b88ec5dc2de6b409ee1e27fc3f87635f9f26f2e35e",
+      "retrieval/automated_review.py": "e816add3cc2f32fbaeb9d6667d61374e948280b9b0770e346622e8e602c89f1d",
+      "retrieval/bm25.py": "7a990292d2dbdec2ff671f3cf46b8eb5fac13834fe637af99950d4fadbe7aba8",
+      "retrieval/checkpoint.py": "b3a3931d6a7e83471f1af8e702df12c8151af99dbae605e6cb4df57c0affa990",
+      "retrieval/dense.py": "0ed339438512c95e5f11b9c9315c73bbab8ee5a0a55abf9b57312f44db10e20e",
+      "retrieval/factory.py": "f2c124e0a21de7309875499796b5c59275c5156ac67ec5b9c3ffd1427476165c",
+      "retrieval/filters.py": "986454a7d2015e761ef46879f33af11d768d903df62f5646db3cb0d06d6b4b77",
+      "retrieval/hybrid.py": "62746be06d8f66bb5af6f1aa3cfcfc9d13e17454b919e619e5a190f374846072",
+      "retrieval/pilot.py": "247716182325845520ffabc182c364af66d7407e7ce8d129b6c831cf2d9f20f0",
+      "retrieval/pilot_runner.py": "f057f0a7469e034c197932d48a9c41b0adb3c23fef40df40d59839eac6fa32c3",
+      "retrieval/rerank.py": "2ffb5edadd654a7081839f893c80d2470eb5186a508e3b1137374e982a07a4cf",
+      "retrieval/review.py": "bfc541ccf5b764b60b3492ad90e9062958e47ea3758a3bbf22b369c020db7a87",
+      "retrieval/score_cli.py": "a8f979b8db41fc5b18866c7a01c107ca288ed5155bed486eeab2003df63d7e48",
+      "retrieval/worker.py": "57ccc298e9f56d0a1caf0c05364d7a1498daa819cc52d5c2ffb8575e1cfe46c4",
+      "schema/__init__.py": "b9302717d6a1d6d0421f4ecf4e32c6005d27a7fd7debda0c8da4af4fd3669b63",
+      "schema/enums.py": "3bbb005bbd52fd51d3b5baa75be10675b67da55924ba0fd65f4e9643e0e03366",
+      "schema/export_schemas.py": "ec1ee59743a5f836622f2bfe9939835de4c87dee6b5e5fa399e3ccfca5cda9c5",
+      "schema/models.py": "a108339e4b61ae802e8e9749feabf166e4df336d347f97878c7a6570c4814ee6",
+      "schema/ontology.py": "b820df8ece9bd7cde8192eb349f0cdab844d93ea409cda6ff8605d9ec42627e2",
+      "schema/ontology.yaml": "68e93f63c20f68510e4cca030b7c4da596c75e80603368987dc6049c6d2b5aa9",
+      "schema/runlog.py": "da91883f100788f9f94ca5994f554f897765e94cb2672cfb6c85fca9e531c6a9",
+      "schema/tools.py": "dc6606f0b005be8c3ce93ba9e7bcb139b45301722cebf25294280a8f3a05e218",
+      "tools/__init__.py": "cbee864eba44dc92386f80d6471769e57f23a1de0468cd0346fa0efb2f97ecfd",
+      "tools/runtime.py": "9160339a184e2375d3fced48590a39a13fa0c3353ec7e8fc118a0f275fab8156",
+      "verify/__init__.py": "0cf2fdc4309b116a622800355ce907db9eb761e92aeccb6795ddf6ab89f2c7e8",
+      "verify/aliases.py": "c7b8771fb77aaa5f550350208da4c0cb88b23155a9086003098fcbd136fddde3",
+      "verify/llm_verifier.py": "36d4a8283559776c9b63776f45290ed39dc6bf24de198a5b138d6119ff26ea3d",
+      "verify/normalise.py": "56150227ab4fb2898554e466c9f27a84b22b73fb1c2d31a59d3f2f22026d1146",
+      "verify/paths.py": "245d100081cb583f9e49a4e981c8a622abe887185e04d610af21632b9910af53",
+      "verify/rules.py": "5c61d01447117800864a66992bf2083e71906c5136ecec11365d317c8b48fb5a"
+    }
+  },
+  "resolved_findings": {
+    "F1": "selected pinned BGE-M3/FAISS is the actual conditions default and shared first stage",
+    "F2": "logged, budgeted series preflight recomputes anchor confirmation from visible declared windows",
+    "F3": "complete runtime source/config/data identity and artifact/log receipts gate resume",
+    "F4": "expected query-condition matrix and valid bound artifacts/logs gate completion and CLI exit status",
+    "F5": "default aliases ship in wheel and configured aliases reach verifier rules"
+  },
+  "working_checks": {
+    "tests_passed": 663,
+    "new_regression_cases": 22,
+    "ruff": true,
+    "black": true,
+    "log_sha256": "0af0e1653f910bcb6898ef27282d45907806dff67c87155bdec1e8cc8d79af68"
+  },
+  "clean_checkout": {
+    "path": "/private/tmp/lma-connected-clean-20261027",
+    "commit": "0ee617d",
+    "existing_optional_runtime_tests_passed": 663,
+    "shared_runtime_log_sha256": "767531a341e49a607da8d6f28869e69347a75d579b2dc7f9d17a31ae5d6031b3",
+    "fresh_core_dev_summary": "659 passed, 4 skipped in 4.48s",
+    "fresh_core_dev_log_sha256": "7f525e8a0237049121df08296af3a3e03418c3e7e0abd27606457fdfd672c40b",
+    "setup_note": "shared cache failure resolved with a fresh cache and copy installation; locked dev dependencies only"
+  },
+  "installed_package": {
+    "isolated_python": true,
+    "default_alias_path": "/private/tmp/track_a_wheel_environment_20261027/lib/python3.12/site-packages/verify/aliases.yaml",
+    "covered_variables": 46,
+    "ontology_variables": 46,
+    "alias_sha256": "826f0e59c3ad98b2ca3d6ff08027ead08c917fed36d9d0a711cf802a1eebe843",
+    "repository_alias_sha256": "826f0e59c3ad98b2ca3d6ff08027ead08c917fed36d9d0a711cf802a1eebe843",
+    "default_rule_check_passed": true,
+    "submodules_imported": 58,
+    "modules": [
+      "agent.controller",
+      "agent.logging",
+      "conditions.__main__",
+      "conditions.anchors",
+      "conditions.config",
+      "conditions.pipeline",
+      "conditions.provenance",
+      "corpus.__main__",
+      "corpus.bindings",
+      "corpus.dedup",
+      "corpus.documents",
+      "corpus.freeze",
+      "corpus.official",
+      "corpus.parser",
+      "corpus.pdf_layout",
+      "corpus.quality",
+      "corpus.review",
+      "corpus.series",
+      "eval.agreement",
+      "eval.capabilities",
+      "eval.challenge",
+      "eval.faults",
+      "eval.figures",
+      "eval.metrics",
+      "eval.prose_review",
+      "eval.references",
+      "eval.review",
+      "eval.run_audit",
+      "eval.safety",
+      "eval.stats",
+      "extract.candidates",
+      "llm.generate",
+      "retrieval.__main__",
+      "retrieval.automated_review",
+      "retrieval.bm25",
+      "retrieval.checkpoint",
+      "retrieval.dense",
+      "retrieval.factory",
+      "retrieval.filters",
+      "retrieval.hybrid",
+      "retrieval.pilot",
+      "retrieval.pilot_runner",
+      "retrieval.rerank",
+      "retrieval.review",
+      "retrieval.score_cli",
+      "retrieval.worker",
+      "schema.enums",
+      "schema.export_schemas",
+      "schema.models",
+      "schema.ontology",
+      "schema.runlog",
+      "schema.tools",
+      "tools.runtime",
+      "verify.aliases",
+      "verify.llm_verifier",
+      "verify.normalise",
+      "verify.paths",
+      "verify.rules"
+    ],
+    "final_wheel": "/private/tmp/lma_connected_final_wheel_20261027/lma_grounding_decay-0.1.0.dev0-py3-none-any.whl",
+    "final_wheel_sha256": "7ffd6bf3d8cc652e657a56e2dc7d1c511c33bcaf8a7fbdf7ca2661a9ba0744ed",
+    "package_roots_imported": 10,
+    "core_modules_imported": 68
+  },
+  "gate_probes": {
+    "empty_audit_exit_code": 1,
+    "empty_audit_failures": [
+      {
+        "kind": "expected_run_matrix_not_declared"
+      },
+      {
+        "kind": "no_completed_graphs"
+      }
+    ],
+    "regression_tests": "tests/unit/test_connected_runs.py",
+    "regression_test_sha256": "e7021c2825e0471b902d95797557e74ccee35507d521535e1812e9101f478c34"
+  },
+  "partial_live_run_probe": {
+    "expected": 14,
+    "completed": 3,
+    "passed": false,
+    "failure_kind": "missing_graph"
+  },
+  "series_connection": {
+    "status": "real canonical series connection; explicit empty fixture generator and fixture corpus; no semantic score",
+    "source_series_sha256": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c",
+    "conditions": [
+      {
+        "condition": "B0",
+        "anchor_check": {
+          "confirmed": true,
+          "status": "confirmed_window_move",
+          "observations": [
+            {
+              "on": "2026-05-18",
+              "value": 96.2948,
+              "available_on": "2026-05-18",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            },
+            {
+              "on": "2026-05-19",
+              "value": 96.345,
+              "available_on": "2026-05-19",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            }
+          ],
+          "series_id": "inr_usd",
+          "request": {
+            "series_id": "inr_usd",
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "as_of": "2026-05-20"
+          },
+          "call_id": "call-1",
+          "window_declared": true,
+          "change": 0.0502000000000038,
+          "percent_change_magnitude": 0.05213157927531269,
+          "criteria": {
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "minimum_absolute_change": 0.0,
+            "minimum_percent_change": 0.0
+          }
+        },
+        "tool_calls": 1,
+        "log_sha256": "873aab29f860dc020982a7f69de500ceed818bede4608eb73e6221c14633ee1d"
+      },
+      {
+        "condition": "B1",
+        "anchor_check": {
+          "confirmed": true,
+          "status": "confirmed_window_move",
+          "observations": [
+            {
+              "on": "2026-05-18",
+              "value": 96.2948,
+              "available_on": "2026-05-18",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            },
+            {
+              "on": "2026-05-19",
+              "value": 96.345,
+              "available_on": "2026-05-19",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            }
+          ],
+          "series_id": "inr_usd",
+          "request": {
+            "series_id": "inr_usd",
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "as_of": "2026-05-20"
+          },
+          "call_id": "call-1",
+          "window_declared": true,
+          "change": 0.0502000000000038,
+          "percent_change_magnitude": 0.05213157927531269,
+          "criteria": {
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "minimum_absolute_change": 0.0,
+            "minimum_percent_change": 0.0
+          }
+        },
+        "tool_calls": 2,
+        "log_sha256": "e87f24be5483135cd68901e83d32d47d2b1fee01082379d24950c4d2fd307ca5"
+      },
+      {
+        "condition": "B1-R",
+        "anchor_check": {
+          "confirmed": true,
+          "status": "confirmed_window_move",
+          "observations": [
+            {
+              "on": "2026-05-18",
+              "value": 96.2948,
+              "available_on": "2026-05-18",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            },
+            {
+              "on": "2026-05-19",
+              "value": 96.345,
+              "available_on": "2026-05-19",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            }
+          ],
+          "series_id": "inr_usd",
+          "request": {
+            "series_id": "inr_usd",
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "as_of": "2026-05-20"
+          },
+          "call_id": "call-1",
+          "window_declared": true,
+          "change": 0.0502000000000038,
+          "percent_change_magnitude": 0.05213157927531269,
+          "criteria": {
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "minimum_absolute_change": 0.0,
+            "minimum_percent_change": 0.0
+          }
+        },
+        "tool_calls": 2,
+        "log_sha256": "a79b1a30efd5da60352343d8a3faa04167420f663e71dad63685a8a317ff8388"
+      },
+      {
+        "condition": "B2",
+        "anchor_check": {
+          "confirmed": true,
+          "status": "confirmed_window_move",
+          "observations": [
+            {
+              "on": "2026-05-18",
+              "value": 96.2948,
+              "available_on": "2026-05-18",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            },
+            {
+              "on": "2026-05-19",
+              "value": 96.345,
+              "available_on": "2026-05-19",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            }
+          ],
+          "series_id": "inr_usd",
+          "request": {
+            "series_id": "inr_usd",
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "as_of": "2026-05-20"
+          },
+          "call_id": "call-1",
+          "window_declared": true,
+          "change": 0.0502000000000038,
+          "percent_change_magnitude": 0.05213157927531269,
+          "criteria": {
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "minimum_absolute_change": 0.0,
+            "minimum_percent_change": 0.0
+          }
+        },
+        "tool_calls": 2,
+        "log_sha256": "8b2d58f6a04954fdfdaf0a3163dc5f2dd4f34296327d386b7c2612b615905a95"
+      },
+      {
+        "condition": "A-NoVerify",
+        "anchor_check": {
+          "confirmed": true,
+          "status": "confirmed_window_move",
+          "observations": [
+            {
+              "on": "2026-05-18",
+              "value": 96.2948,
+              "available_on": "2026-05-18",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            },
+            {
+              "on": "2026-05-19",
+              "value": 96.345,
+              "available_on": "2026-05-19",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            }
+          ],
+          "series_id": "inr_usd",
+          "request": {
+            "series_id": "inr_usd",
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "as_of": "2026-05-20"
+          },
+          "call_id": "call-1",
+          "window_declared": true,
+          "change": 0.0502000000000038,
+          "percent_change_magnitude": 0.05213157927531269,
+          "criteria": {
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "minimum_absolute_change": 0.0,
+            "minimum_percent_change": 0.0
+          }
+        },
+        "tool_calls": 3,
+        "log_sha256": "e4a63b13852da9d2da07add5e0410d0f9a6868a44e1115c15f17a8108a4fc164"
+      },
+      {
+        "condition": "A-NoLoop",
+        "anchor_check": {
+          "confirmed": true,
+          "status": "confirmed_window_move",
+          "observations": [
+            {
+              "on": "2026-05-18",
+              "value": 96.2948,
+              "available_on": "2026-05-18",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            },
+            {
+              "on": "2026-05-19",
+              "value": 96.345,
+              "available_on": "2026-05-19",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            }
+          ],
+          "series_id": "inr_usd",
+          "request": {
+            "series_id": "inr_usd",
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "as_of": "2026-05-20"
+          },
+          "call_id": "call-1",
+          "window_declared": true,
+          "change": 0.0502000000000038,
+          "percent_change_magnitude": 0.05213157927531269,
+          "criteria": {
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "minimum_absolute_change": 0.0,
+            "minimum_percent_change": 0.0
+          }
+        },
+        "tool_calls": 3,
+        "log_sha256": "a3c4dffb76aaa3d4ac047010719b2c2115a8211226d3de78d4ba322c7aeb5b99"
+      },
+      {
+        "condition": "M",
+        "anchor_check": {
+          "confirmed": true,
+          "status": "confirmed_window_move",
+          "observations": [
+            {
+              "on": "2026-05-18",
+              "value": 96.2948,
+              "available_on": "2026-05-18",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            },
+            {
+              "on": "2026-05-19",
+              "value": 96.345,
+              "available_on": "2026-05-19",
+              "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+              "unit": "INR per USD"
+            }
+          ],
+          "series_id": "inr_usd",
+          "request": {
+            "series_id": "inr_usd",
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "as_of": "2026-05-20"
+          },
+          "call_id": "call-1",
+          "window_declared": true,
+          "change": 0.0502000000000038,
+          "percent_change_magnitude": 0.05213157927531269,
+          "criteria": {
+            "start": "2026-05-18",
+            "end": "2026-05-19",
+            "minimum_absolute_change": 0.0,
+            "minimum_percent_change": 0.0
+          }
+        },
+        "tool_calls": 3,
+        "log_sha256": "331b9ee937e007d11b951505e57ed6a4e85e4f2492f941106f2d31809aec0405"
+      }
+    ]
+  },
+  "real_model_run": {
+    "root": "runs/connected_v7_smoke_20261027",
+    "inputs_sha256": "cfc53d537b4ab66d90a22bce42341a6517617e4e568b3078fc121446d91e9d8c",
+    "query_file": "data/interim/connected_smoke_20261027/queries.jsonl",
+    "queries_sha256": "e219141f5fc8941645bce468066fcda60dea565a56b6ccca4b029c306265453e",
+    "model": "mlx-community/Qwen3-8B-4bit",
+    "revision": "545dc4251c05440727734bcd94334791f6ab0192",
+    "retrieval": {
+      "config": "bge_m3",
+      "device": "cpu",
+      "local_files_only": true,
+      "embedding_model": "BAAI/bge-m3",
+      "embedding_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+      "dense_backend": "faiss",
+      "dense_index": "/Users/varunpatil/Desktop/LMA grounding decay/data/interim/corpus_v7_index_20261026/bge_m3_vectors.json",
+      "embedding_batch_size": 8,
+      "max_length": 1024
+    },
+    "dense_index_sha256": "5345b8a3384f759f73a7fee6c58ef544a4ad6ad47f04262fc81efafb5e038d2c",
+    "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+    "audit": {
+      "status": "development integration audit; no human support scores",
+      "passed": true,
+      "complete": true,
+      "allow_partial": false,
+      "expected_graphs": 14,
+      "completed_graphs": 14,
+      "conditions": {
+        "A-NoLoop": 2,
+        "A-NoVerify": 2,
+        "B0": 2,
+        "B1": 2,
+        "B1-R": 2,
+        "B2": 2,
+        "M": 2
+      },
+      "failures": [],
+      "graphs": [
+        {
+          "query_id": "dev-candidate-02",
+          "condition": "A-NoLoop",
+          "edges": 6,
+          "established_edges": 1,
+          "paths": 3,
+          "tool_calls": 12,
+          "stop_reason": "budget_exhausted",
+          "unchecked_inferred_edges": 1,
+          "verifier_verdicts": {
+            "supported": 1,
+            "unsupported": 4
+          },
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "56b240f3dbd72340c244e47b6e26874cb7d64808fca170b6502cd84a36c31d35"
+        },
+        {
+          "query_id": "dev-candidate-05",
+          "condition": "A-NoLoop",
+          "edges": 6,
+          "established_edges": 0,
+          "paths": 3,
+          "tool_calls": 12,
+          "stop_reason": "budget_exhausted",
+          "unchecked_inferred_edges": 1,
+          "verifier_verdicts": {
+            "unsupported": 5
+          },
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "ff9b2da4aa10de9f0b743e629afa889fc6c44801b642906ce909b1ed0e65994b"
+        },
+        {
+          "query_id": "dev-candidate-02",
+          "condition": "A-NoVerify",
+          "edges": 6,
+          "established_edges": 6,
+          "paths": 2,
+          "tool_calls": 3,
+          "stop_reason": "important_edges_resolved",
+          "unchecked_inferred_edges": 0,
+          "verifier_verdicts": {},
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "5185fd0ecf3875954596d8a902c9613d91b5cf78502e5c0bb777befa5de73abd"
+        },
+        {
+          "query_id": "dev-candidate-05",
+          "condition": "A-NoVerify",
+          "edges": 5,
+          "established_edges": 5,
+          "paths": 2,
+          "tool_calls": 9,
+          "stop_reason": "two_searches_added_nothing",
+          "unchecked_inferred_edges": 4,
+          "verifier_verdicts": {},
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "f4f92451d26ff5427f17220ec6b7965b2d03fec042255d42d8bd1ef8b1414ef2"
+        },
+        {
+          "query_id": "dev-candidate-02",
+          "condition": "B0",
+          "edges": 0,
+          "established_edges": 0,
+          "paths": 0,
+          "tool_calls": 1,
+          "stop_reason": "important_edges_resolved",
+          "unchecked_inferred_edges": 0,
+          "verifier_verdicts": {},
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "78ffb4e0cedeaf4b42dbf5ac607a1c985d7940ed07fd41ec7c045fd19afbca77"
+        },
+        {
+          "query_id": "dev-candidate-05",
+          "condition": "B0",
+          "edges": 6,
+          "established_edges": 4,
+          "paths": 2,
+          "tool_calls": 1,
+          "stop_reason": "important_edges_resolved",
+          "unchecked_inferred_edges": 6,
+          "verifier_verdicts": {},
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "18bd76f5c05faa5957b30a08d6137f963b6e76eb2aee15adb8513fde95817df8"
+        },
+        {
+          "query_id": "dev-candidate-02",
+          "condition": "B1",
+          "edges": 1,
+          "established_edges": 1,
+          "paths": 1,
+          "tool_calls": 2,
+          "stop_reason": "important_edges_resolved",
+          "unchecked_inferred_edges": 0,
+          "verifier_verdicts": {},
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "32334153999868c7592159a2924a250f698ca7157a97133c0dc980050aba1391"
+        },
+        {
+          "query_id": "dev-candidate-05",
+          "condition": "B1",
+          "edges": 6,
+          "established_edges": 6,
+          "paths": 5,
+          "tool_calls": 2,
+          "stop_reason": "important_edges_resolved",
+          "unchecked_inferred_edges": 6,
+          "verifier_verdicts": {},
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "e1552be3288f43bb31ee7a319edd56bae474c153d9b7732c3bc32e00d26899d0"
+        },
+        {
+          "query_id": "dev-candidate-02",
+          "condition": "B1-R",
+          "edges": 6,
+          "established_edges": 6,
+          "paths": 6,
+          "tool_calls": 2,
+          "stop_reason": "important_edges_resolved",
+          "unchecked_inferred_edges": 0,
+          "verifier_verdicts": {},
+          "safety": {
+            "failures": [
+              {
+                "edge_id": "edge-2",
+                "kind": "nonverbatim_span"
+              },
+              {
+                "edge_id": "edge-3",
+                "kind": "nonverbatim_span"
+              },
+              {
+                "edge_id": "edge-5",
+                "kind": "nonverbatim_span"
+              },
+              {
+                "edge_id": "edge-6",
+                "kind": "nonverbatim_span"
+              }
+            ],
+            "passed": false,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "8553f7d193bf9c49277e9e25f78ebf446b25d5ea6fc4e4d1b84377539c6b0e1b"
+        },
+        {
+          "query_id": "dev-candidate-05",
+          "condition": "B1-R",
+          "edges": 9,
+          "established_edges": 9,
+          "paths": 6,
+          "tool_calls": 2,
+          "stop_reason": "important_edges_resolved",
+          "unchecked_inferred_edges": 0,
+          "verifier_verdicts": {},
+          "safety": {
+            "failures": [
+              {
+                "edge_id": "edge-6",
+                "kind": "nonverbatim_span"
+              },
+              {
+                "edge_id": "edge-7",
+                "kind": "nonverbatim_span"
+              },
+              {
+                "edge_id": "edge-8",
+                "kind": "nonverbatim_span"
+              },
+              {
+                "edge_id": "edge-9",
+                "kind": "nonverbatim_span"
+              },
+              {
+                "edge_id": "edge-10",
+                "kind": "nonverbatim_span"
+              }
+            ],
+            "passed": false,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "298bb8f928854436d3324d4b2a92e43743f9ca4178b1b60b22cc9407dc48b99a"
+        },
+        {
+          "query_id": "dev-candidate-02",
+          "condition": "B2",
+          "edges": 6,
+          "established_edges": 6,
+          "paths": 2,
+          "tool_calls": 2,
+          "stop_reason": "important_edges_resolved",
+          "unchecked_inferred_edges": 0,
+          "verifier_verdicts": {},
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "0d03acf785685ea09ad64f71e1ec00b46980cec378e7cc8edac1f6721014c701"
+        },
+        {
+          "query_id": "dev-candidate-05",
+          "condition": "B2",
+          "edges": 5,
+          "established_edges": 5,
+          "paths": 2,
+          "tool_calls": 2,
+          "stop_reason": "important_edges_resolved",
+          "unchecked_inferred_edges": 5,
+          "verifier_verdicts": {},
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "b8940393b4b5999113f9dfa2e816f46d7d7e12d5d6663d1e640d3d37387d4680"
+        },
+        {
+          "query_id": "dev-candidate-02",
+          "condition": "M",
+          "edges": 6,
+          "established_edges": 1,
+          "paths": 3,
+          "tool_calls": 12,
+          "stop_reason": "budget_exhausted",
+          "unchecked_inferred_edges": 2,
+          "verifier_verdicts": {
+            "supported": 1,
+            "unsupported": 3
+          },
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "9db8442cad1a5d2f70ef072dd8bcf7adce7f452f9a3b75a6ba89dab52bca84c2"
+        },
+        {
+          "query_id": "dev-candidate-05",
+          "condition": "M",
+          "edges": 6,
+          "established_edges": 2,
+          "paths": 3,
+          "tool_calls": 12,
+          "stop_reason": "budget_exhausted",
+          "unchecked_inferred_edges": 4,
+          "verifier_verdicts": {
+            "supported": 2
+          },
+          "safety": {
+            "failures": [],
+            "passed": true,
+            "scope": "structural source/date/span checks; semantic support requires independent judgment"
+          },
+          "artifact_sha256": "0910c29c847fc46a24cc63cd78ff56bb320fe26454a6ee70053f435f9f0dcb51"
+        }
+      ],
+      "compute": {
+        "A-NoLoop": {
+          "model_calls": 3,
+          "prompt_tokens": 10476,
+          "completion_tokens": 1604,
+          "model_call_wall_s": 230.5917277080007,
+          "tool_calls": 24,
+          "invalid_json_calls": 0
+        },
+        "A-NoVerify": {
+          "model_calls": 6,
+          "prompt_tokens": 23492,
+          "completion_tokens": 4121,
+          "model_call_wall_s": 525.6657580430619,
+          "tool_calls": 12,
+          "invalid_json_calls": 0
+        },
+        "B0": {
+          "model_calls": 4,
+          "prompt_tokens": 5539,
+          "completion_tokens": 588,
+          "model_call_wall_s": 70.3308847497683,
+          "tool_calls": 2,
+          "invalid_json_calls": 0
+        },
+        "B1": {
+          "model_calls": 4,
+          "prompt_tokens": 15752,
+          "completion_tokens": 1799,
+          "model_call_wall_s": 275.0283368338132,
+          "tool_calls": 4,
+          "invalid_json_calls": 0
+        },
+        "B1-R": {
+          "model_calls": 4,
+          "prompt_tokens": 15678,
+          "completion_tokens": 2144,
+          "model_call_wall_s": 314.66986737505067,
+          "tool_calls": 4,
+          "invalid_json_calls": 0
+        },
+        "B2": {
+          "model_calls": 2,
+          "prompt_tokens": 9943,
+          "completion_tokens": 1433,
+          "model_call_wall_s": 208.5959592500003,
+          "tool_calls": 4,
+          "invalid_json_calls": 0
+        },
+        "M": {
+          "model_calls": 6,
+          "prompt_tokens": 12152,
+          "completion_tokens": 1898,
+          "model_call_wall_s": 284.6998144170502,
+          "tool_calls": 24,
+          "invalid_json_calls": 0
+        }
+      },
+      "unbound_logs": [],
+      "compute_note": "completed artifacts' bound logs only for v2; legacy logs are unbound. Measured model-call wall times and actual token counts, excluding failed/orphan attempts; not GPU-active time or full phase time",
+      "research_acceptance": "separate from structural completion; model selection, human correction/support review, independent gold and episode acceptance required"
+    },
+    "artifacts": [
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/A-NoLoop/dev-candidate-02.json",
+        "sha256": "56b240f3dbd72340c244e47b6e26874cb7d64808fca170b6502cd84a36c31d35",
+        "log_file": "dev-candidate-02-4fe13d21.jsonl",
+        "log_sha256": "032992896ab06451f8c77a7401d4e34c41f5dc3351516952cbedfcbbf52dc4fb",
+        "anchor_check_status": "window_not_declared",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/A-NoLoop/dev-candidate-05.json",
+        "sha256": "ff9b2da4aa10de9f0b743e629afa889fc6c44801b642906ce909b1ed0e65994b",
+        "log_file": "dev-candidate-05-9698cdb9.jsonl",
+        "log_sha256": "6532249f37dfe0e556b4087e731038497e8933e34f11ec06c9cf3d20ef635611",
+        "anchor_check_status": "empty_result",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/A-NoVerify/dev-candidate-02.json",
+        "sha256": "5185fd0ecf3875954596d8a902c9613d91b5cf78502e5c0bb777befa5de73abd",
+        "log_file": "dev-candidate-02-8f2544af.jsonl",
+        "log_sha256": "518e571a286d2748af77cff1754df9ed0447e357cb7b88caf6b717bd6c2ee778",
+        "anchor_check_status": "window_not_declared",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/A-NoVerify/dev-candidate-05.json",
+        "sha256": "f4f92451d26ff5427f17220ec6b7965b2d03fec042255d42d8bd1ef8b1414ef2",
+        "log_file": "dev-candidate-05-b5ccd067.jsonl",
+        "log_sha256": "5e61fe6c2f6e7731c0cb3f9a9c8f1c2c00b80f245f9d033cbf49061c1b912d3f",
+        "anchor_check_status": "empty_result",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/B0/dev-candidate-02.json",
+        "sha256": "78ffb4e0cedeaf4b42dbf5ac607a1c985d7940ed07fd41ec7c045fd19afbca77",
+        "log_file": "dev-candidate-02-783c30d9.jsonl",
+        "log_sha256": "55479fe52bbbeaaca78780d75aa827e5a93402c6c585a1086cd4ff8fc459ad50",
+        "anchor_check_status": "window_not_declared",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/B0/dev-candidate-05.json",
+        "sha256": "18bd76f5c05faa5957b30a08d6137f963b6e76eb2aee15adb8513fde95817df8",
+        "log_file": "dev-candidate-05-e9aa0449.jsonl",
+        "log_sha256": "e10e54da3aaf8699270cea15a1993882e5c8dfe4ea71d2da06fffb1606f484c0",
+        "anchor_check_status": "empty_result",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/B1/dev-candidate-02.json",
+        "sha256": "32334153999868c7592159a2924a250f698ca7157a97133c0dc980050aba1391",
+        "log_file": "dev-candidate-02-05a182ac.jsonl",
+        "log_sha256": "e2b23f6d6f426cdb41be0f1bb48d0999f51dd3293c14f6b3c46fa77cab4730a8",
+        "anchor_check_status": "window_not_declared",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/B1/dev-candidate-05.json",
+        "sha256": "e1552be3288f43bb31ee7a319edd56bae474c153d9b7732c3bc32e00d26899d0",
+        "log_file": "dev-candidate-05-be7daf12.jsonl",
+        "log_sha256": "57863e07301754f202cae8d03bdf41d22cbb3357b280c3dc1eaf0fc4104e060d",
+        "anchor_check_status": "empty_result",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/B1-R/dev-candidate-02.json",
+        "sha256": "8553f7d193bf9c49277e9e25f78ebf446b25d5ea6fc4e4d1b84377539c6b0e1b",
+        "log_file": "dev-candidate-02-745ffdf1.jsonl",
+        "log_sha256": "cf179443efbe45354867ceba40854ef81d46363ff9f4abd2ee6e142d65947958",
+        "anchor_check_status": "window_not_declared",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/B1-R/dev-candidate-05.json",
+        "sha256": "298bb8f928854436d3324d4b2a92e43743f9ca4178b1b60b22cc9407dc48b99a",
+        "log_file": "dev-candidate-05-7d176cf2.jsonl",
+        "log_sha256": "01f8785dfe7918b40ea459942294dc0f9781f5bc1807ada039d4a81963c28d81",
+        "anchor_check_status": "empty_result",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/B2/dev-candidate-02.json",
+        "sha256": "0d03acf785685ea09ad64f71e1ec00b46980cec378e7cc8edac1f6721014c701",
+        "log_file": "dev-candidate-02-bf4617f0.jsonl",
+        "log_sha256": "c979db751cd404233297dff890f10ca48ac53be002d0008de3cc8188e90e0002",
+        "anchor_check_status": "window_not_declared",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/B2/dev-candidate-05.json",
+        "sha256": "b8940393b4b5999113f9dfa2e816f46d7d7e12d5d6663d1e640d3d37387d4680",
+        "log_file": "dev-candidate-05-24b95ad5.jsonl",
+        "log_sha256": "df26f679cfaee929c96dc55d7d0b870eff28dbe24d9c48961aa2847a82b495d2",
+        "anchor_check_status": "empty_result",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/M/dev-candidate-02.json",
+        "sha256": "9db8442cad1a5d2f70ef072dd8bcf7adce7f452f9a3b75a6ba89dab52bca84c2",
+        "log_file": "dev-candidate-02-4b928f7c.jsonl",
+        "log_sha256": "dafcdc91fe2982e50395da014188a57c353ebf375abf94def76d95fea302cb31",
+        "anchor_check_status": "window_not_declared",
+        "confirmed_by_series": false
+      },
+      {
+        "artifact": "runs/connected_v7_smoke_20261027/M/dev-candidate-05.json",
+        "sha256": "0910c29c847fc46a24cc63cd78ff56bb320fe26454a6ee70053f435f9f0dcb51",
+        "log_file": "dev-candidate-05-5b4082e7.jsonl",
+        "log_sha256": "1a41e380daee7ee52eeb1a48fdb265b3d31520ca49bde5dad704b4161d9e0ecb",
+        "anchor_check_status": "empty_result",
+        "confirmed_by_series": false
+      }
+    ],
+    "unchanged_resume_cached": 14,
+    "resume_log_sha256": "ec4dacf1d6ea4967eddfcfc08b302c9baaa804197012628b27d2ea185935596b"
+  },
+  "delivery_integrity": {
+    "executed_on": "2026-10-27",
+    "result": {
+      "checked_on": "2026-10-26",
+      "status": "development-delivery integrity passed; research acceptance pending",
+      "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+      "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+      "documents": 1156,
+      "passages": 16472,
+      "pooled_judgments": 2035,
+      "judgment_counts": {
+        "irrelevant": 1840,
+        "relevant": 195
+      },
+      "all_offsets_exact": true,
+      "all_positive_spans_valid": true,
+      "all_review_candidates_date_eligible": true,
+      "all_index_bytes_verified": true,
+      "new_review_workspace_files_verified": 82,
+      "old_review_workspace_files_unchanged": 83,
+      "human_judgments_and_attestations_blank": true,
+      "canonical_observations": 161,
+      "retrospective_observations": 317,
+      "series_bytes_unchanged": true,
+      "research_acceptance": false
+    },
+    "note": "validator template retains its historical date and blank-workspace status; accepted review records remain separate and unchanged"
+  },
+  "accepted_review_metadata": {
+    "path": "reports/track_a_reviewer_identity_20261027.json",
+    "sha256": "6f6140e6c0e4ba9b7765b05ec602308294933b4ad0f06cfb709d8f309bfea3ab"
+  },
+  "research_acceptance": false,
+  "pull_request_created": false,
+  "remaining_study_requirements": [
+    "two-model selection pilot",
+    "episode/query/reference review",
+    "baseline correction and blinded support judgments",
+    "paired independent annotation/agreement",
+    "public-dataset strength/direction checks",
+    "reviewed UER/recall results and figures",
+    "complete study reproduction and final report"
+  ]
+}

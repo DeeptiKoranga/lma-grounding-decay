@@ -1,10 +1,10 @@
 # Track A mid-submission scope and closeout — 27 October 2026
 
-**Subsequent audit qualification:** this is a standalone component/scope
-closeout, not completion of Track A's shared Phase 2–4 obligations. The
-[whole-project audit](whole_project_audit_20261027.md) identifies five outstanding
-integration/reproduction gaps and the remaining annotation and result work.
-The two newly found Track A code defects have been fixed; 641 local tests pass.
+**Integration update:** all five code findings in the preserved
+[original audit](whole_project_audit_20261027.md) are repaired. The suite passes
+663 tests; [fix validation](integration_fixes_20261027.md) records the checks.
+This component/scope closeout still does not complete the separate annotation,
+model-selection and result obligations in Phases 2–4.
 
 The **scoped Track A development handoff is complete**. This closeout adopts the
 available source mix, narrative PDF extraction and sparse original-vintage
@@ -76,9 +76,9 @@ reviewer/date and explicit independent/blinded review attestations, both exports
 passed and created receipts. The current update and limits are in
 `track_a_reviewer_identity_20261027.json`; the earlier validation stays historical.
 
-The last code validation remains 637 passing tests in both the working checkout
-and a fresh core/PDF environment, with Ruff and Black clean. This closeout changes
-reports and scope documentation; it does not claim a new model or experiment run.
+The earlier 637-test clean-environment record remains historical. The current
+integration changes pass 663 tests, Ruff and Black; their separate installed
+package and live-run evidence is recorded in `integration_fixes_20261027.json`.
 
 No autonomous Track A engineering task remains for this scoped development
 handoff. **Track A reviewer-record validation now passes** on the supplied user

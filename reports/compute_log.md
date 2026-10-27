@@ -218,3 +218,36 @@ loading fails, while explicit-path rules work. No full new real-model v7 sweep,
 all-laptop check or final result computation is claimed. The full audit and
 hash-bound receipts are in `reports/whole_project_audit_20261027.md` and
 `reports/whole_project_validation_20261027.json`.
+
+## 27 October selected-configuration integration fixes
+
+All five code findings are repaired under implementation commit `0ee617d`.
+The actual conditions command ran two existing development candidates through
+all seven conditions using pinned local Qwen3-8B, selected BGE-M3/FAISS and the
+pinned top-50 cross-encoder for B1-R. All 14 graphs pass the expected-matrix,
+artifact/log identity, source-safety and budget audit. Unchanged resume reused
+all 14 artifacts without another model call.
+
+| Condition | Graphs | Model calls | Prompt tokens | Completion tokens | Model-call seconds | Tool calls |
+|---|---:|---:|---:|---:|---:|---:|
+| A-NoLoop | 2 | 3 | 10,476 | 1,604 | 230.59 | 24 |
+| A-NoVerify | 2 | 6 | 23,492 | 4,121 | 525.67 | 12 |
+| B0 | 2 | 4 | 5,539 | 588 | 70.33 | 2 |
+| B1 | 2 | 4 | 15,752 | 1,799 | 275.03 | 4 |
+| B1-R | 2 | 4 | 15,678 | 2,144 | 314.67 | 4 |
+| B2 | 2 | 2 | 9,943 | 1,433 | 208.60 | 4 |
+| M | 2 | 6 | 12,152 | 1,898 | 284.70 | 24 |
+
+Totals: **29 model calls**, **93,032 prompt tokens**, **13,587 completion tokens**, **1909.58 measured model-call wall seconds**, **74 tool calls**. Summed case wall time is **1992.20 seconds**, including retrieval/worker overhead within each case. These are not GPU-active hours or total setup/download time.
+
+This is a development execution check, not a reviewed UER/recall or model-choice
+result. Named episode flags remain unconfirmed. A separate explicitly synthetic
+generator check confirms a declared canonical USD/INR numerical window across
+all seven conditions. The suite passes 663 tests; the fresh core/dev checkout
+passes 659 with four optional PDF checks skipped. Installed aliases now pass
+isolated default loading. See `reports/integration_fixes_20261027.json`.
+
+An optional Qwen3.5 candidate download was started during the broader preparation
+and interrupted when work focused on these five fixes. Its partial ignored cache
+is not a completed candidate installation or pilot result. No paid API or Kaggle
+execution occurred.

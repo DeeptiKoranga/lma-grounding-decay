@@ -64,7 +64,7 @@
   "wording_revision_sha256": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4",
   "current_user_files_role": "Track A user-attested review records; original label origin, declarations and receipt scope retained.",
   "mid_submission_scope_disposition": "reports/track_a_mid_submission_scope_20261027.json",
-  "mid_submission_scope_disposition_sha256": "1ffdfb2360edfe824c2c0901a488223be2f36e146d65a12dfa2a18f2e5a4f3ab",
+  "mid_submission_scope_disposition_sha256": "e755354a4c8da0204f7e7ddaf0543c35f7fce0775c9b0ac9361c888c7eee4b36",
   "scoped_development_handoff_complete": true,
   "formal_independent_acceptance_complete": true,
   "attestation_source": "YESBi have done independent review and blinded to results",
@@ -88,5 +88,8 @@
   },
   "whole_project_integration_complete": false,
   "whole_project_audit": "reports/whole_project_audit_20261027.md",
-  "whole_project_audit_sha256": "66d52babfd892ac4d2cef7338edfbf0ed648ef20395552e12d4f2791e1352834"
+  "whole_project_audit_sha256": "66d52babfd892ac4d2cef7338edfbf0ed648ef20395552e12d4f2791e1352834",
+  "audited_integration_code_findings_complete": true,
+  "integration_fix_validation": "reports/integration_fixes_20261027.json",
+  "integration_fix_validation_sha256": "5d43419b45a1445af897d8899de2227f0086af1652049bbc32261628694c89da"
 }
