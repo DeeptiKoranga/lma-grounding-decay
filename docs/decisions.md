@@ -167,11 +167,12 @@ Last reviewed: **19 Oct 2026** (Phase 0; D-13 to D-16 added with B6).
 
 | | |
 |---|---|
-| **Status** | `resolved` · 19 Oct 2026 |
+| **Status** | `superseded by D-17` · 19 Oct 2026, superseded 27 Oct 2026 |
 | **Decision** | Rule 3 of the verifier (`check_variables_mentioned`) requires both variables of an edge to be named **in the single passage** that is offered as evidence. An edge whose two variables sit in different paragraphs of the same document fails, even though the document as a whole mentions both. |
 | **Why** | The unit of evidence in this project is the paragraph: it is what `Passage` models, what retrieval returns and what the span is quoted from. A document-scoped rule would let an edge be "supported" by a document that mentions A in its lede and B eleven paragraphs later with no relation between them asserted anywhere — which is precisely the unsupported established edge UER is meant to catch. Paragraph scope keeps the rule layer's guarantee legible: whatever the LLM verifier later reads, both endpoints were in front of it. |
 | **Consequence** | A genuine relation stated across a paragraph break is not expressible as one source-asserted edge. The honest options are to cite the paragraph that states the relation, or to leave the edge `model_inferred`. It also found a fixture inconsistency: `tests/fixtures/graph_brent_hormuz.json` labels edge `e6` (ATF_PRICE → AIRLINE_COSTS) `source_asserted` / `supported`, but the passage it cites (`mint-2026-03-16-atf#p1`) names ATF only as the bare word "Fuel", which is not an ATF_PRICE alias; paragraph 0 has the ATF mention. `tests/unit/test_verify_rules.py` pins the current behaviour and the B6 PR raises the fixture for Track B review. |
 | **Revisit if** | B1 annotation finds that reviewers routinely want to cite a two-paragraph span. That would be a change to the chunking unit (A5), not a relaxation of this rule. |
+| **Outcome** | Revisited after four days, not after annotation: the `e6` case below turned out to be the normal shape of the copy rather than a fixture slip. See D-17. |
 
 ### D-15 — Passing the rule layer means "eligible", never "supported"
 
@@ -201,6 +202,17 @@ blocks anything today.
 * **`VerifyVerdict` cannot distinguish a span miss from an unmentioned variable.** Both collapse to `unsupported`. The per-rule detail lives in `RuleReport.rule_failures`, which `ToolResult` already carries, so no enum change is proposed — but failure analysis must read `rule_failures`, not `verdict`, to separate the two.
 * **`Edge.evidence_passage_id` is optional while `evidence_doc_id` is required.** The rule layer verifies a passage, so an edge that cites only a document cannot be re-checked at paragraph scope without a retrieval round trip. Worth tightening to required-on-`source_asserted` if B4's gold graphs always have a passage id; that is a shared-file change and would need announcing.
 * **`Edge.evidence_published_at` is a copy of the passage's timestamp.** `check_on_or_before_as_of` reads the passage, never the edge, so a stale or wrong copy on the edge cannot widen the as-of window. `Graph` already validates the copy against `as_of` independently.
+
+### D-17 — Rule 3 searches the cited paragraph plus the one before it
+
+| | |
+|---|---|
+| **Status** | `resolved` · 27 Oct 2026. Supersedes D-14. |
+| **Decision** | `check_variables_mentioned` looks for the two variables across a **two-paragraph window**: the cited paragraph and the paragraph immediately preceding it in the same document. The window reaches backwards only, stops at one paragraph, and never crosses a document boundary. **Rule 4 does not move** — the quoted span must still be verbatim in the cited passage. `preceding_window()` derives the window; the entry points take a `document` argument and default to the strict, passage-only behaviour when it is not supplied, so a caller that forgets cannot get a falsely permissive result. |
+| **Why** | D-14 was measuring the rule's strictness instead of the thing the project is about. Indian macro copy states a relation across a paragraph break constantly — paragraph 0 names aviation turbine fuel, paragraph 1 says "the increase feeds straight through to airline operating costs". Rejecting those edges under-labels `source_asserted`, which pushes reference-edge recall down (the H2d guard) while flattering UER: the system would look well grounded largely because it had declined to claim anything. One paragraph back is the span an anaphor actually reaches across; two or more starts admitting the "A in the lede, B eleven paragraphs later" case D-14 was right to exclude. |
+| **Consequence** | `MentionMatch.scope` records whether both variables were in the cited paragraph (`cited`) or the window was needed (`window`), and `src_passage_id` / `dst_passage_id` name where each was found. **The eval harness (C7) must report UER for the two scopes separately**, or a headline figure can rest on cross-break edges without saying so. Fixture edge `e6` (ATF_PRICE → AIRLINE_COSTS) now clears all four rules with `scope: window`; it was never a fixture bug. |
+| **Carries a cost** | Two things must follow or the comparison tilts: the window has to be expressible over Track A's chunks (A5), and the same window must apply when B1/B2 prose is converted to edges — if M gets the window and the baselines do not, M's UER advantage is partly an artefact of the scoring rule. |
+| **Revisit if** | Blind scoring (3.2) finds reviewers disagree with `scope: window` edges materially more often than with `scope: cited` ones. The fix would be to report them as a separate stratum rather than to narrow the window again. |
 
 ---
 
