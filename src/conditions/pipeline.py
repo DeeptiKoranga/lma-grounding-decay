@@ -15,9 +15,11 @@ from extract.candidates import Extraction, candidate_edge, extraction_prompt
 from llm.generate import json_object
 from schema import Anchor, Condition, Provenance, Strength, load_ontology
 from tools.runtime import ToolRuntime
+from verify.aliases import AliasTable
 from verify.llm_verifier import Verifier
 from verify.paths import rebuild
 
+from .anchors import AnchorWindow, confirm_anchor
 from .config import SETTINGS
 
 
@@ -27,6 +29,7 @@ class Query(BaseModel):
     query: str = Field(min_length=1)
     as_of: date
     anchor: Anchor
+    anchor_window: AnchorWindow | None = None
     question_type: str = "effects"
     target_var: str | None = None
     status: str = "development; pending independent review"
@@ -35,6 +38,8 @@ class Query(BaseModel):
     def _date(self):
         if self.anchor.event_date > self.as_of:
             raise ValueError("anchor event cannot postdate the query cutoff")
+        if self.anchor_window and self.anchor_window.end != self.anchor.event_date:
+            raise ValueError("anchor window must end on the declared event date")
         if self.question_type not in {"why", "effects"}:
             raise ValueError("question_type must be why or effects")
         if self.target_var is not None and self.target_var not in load_ontology():
@@ -53,9 +58,20 @@ def pack_passages(passages, *, char_budget=16000):
 
 
 class Pipeline:
-    def __init__(self, *, generator, retriever, series, reranked_retriever=None):
+    def __init__(
+        self,
+        *,
+        generator,
+        retriever,
+        series,
+        reranked_retriever=None,
+        aliases: AliasTable | None = None,
+        require_confirmed_anchors=False,
+    ):
         self.generator, self.retriever, self.series = generator, retriever, series
         self.reranked_retriever = reranked_retriever
+        self.aliases = aliases
+        self.require_confirmed_anchors = require_confirmed_anchors
 
     def run(self, query: Query, *, condition: str, run_id: str, log_path: Path) -> dict:
         query = Query.model_validate(query.model_dump())
@@ -73,7 +89,9 @@ class Pipeline:
             edges=[],
             condition=condition,
         )
-        verifier = Verifier(self.generator, list(retriever.passages), log_model=logger.model)
+        verifier = Verifier(
+            self.generator, list(retriever.passages), log_model=logger.model, aliases=self.aliases
+        )
         runtime = ToolRuntime(
             graph=graph,
             retriever=retriever,
@@ -89,7 +107,7 @@ class Pipeline:
         def generate(passages, answer=None):
             prompt = extraction_prompt(
                 query.query,
-                query.anchor,
+                runtime.graph.anchor,
                 pack_passages(passages),
                 self_labels=flags.self_labels,
                 answer=answer,
@@ -109,6 +127,9 @@ class Pipeline:
             raise RuntimeError("unreachable extraction state")
 
         try:
+            anchor_check = confirm_anchor(runtime, query)
+            if self.require_confirmed_anchors and not anchor_check["confirmed"]:
+                raise ValueError(f"anchor confirmation failed: {anchor_check['status']}")
             passages = []
             if flags.retrieve:
                 result = runtime.call("search_corpus", query=query.query, k=8, as_of=query.as_of)
@@ -233,6 +254,7 @@ class Pipeline:
             )
             return {
                 "graph": final.model_dump(mode="json"),
+                "anchor_check": anchor_check,
                 "established_edge_ids": sorted(established),
                 "raw_candidates": raw_candidates,
                 "prose_answer": prose_answer,

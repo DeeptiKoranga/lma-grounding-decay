@@ -43,8 +43,13 @@ from .normalise import normalise_presentation
 
 __all__ = ["ALIASES_PATH", "AliasTable", "load_aliases"]
 
-#: `data/aliases.yaml`, resolved from this file so it works from any cwd.
-ALIASES_PATH = Path(__file__).resolve().parents[2] / "data" / "aliases.yaml"
+# The wheel includes the same tracked source table; no second editable copy.
+_REPOSITORY_ALIASES = Path(__file__).resolve().parents[2] / "data" / "aliases.yaml"
+ALIASES_PATH = (
+    Path(__file__).with_name("aliases.yaml")
+    if Path(__file__).with_name("aliases.yaml").is_file()
+    else _REPOSITORY_ALIASES
+)
 
 #: Tolerated after a surface form: "carrier" matches "carriers" and "carrier's".
 _SUFFIX = r"(?:'s|es|s)?"

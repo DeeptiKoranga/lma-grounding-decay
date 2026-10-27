@@ -63,6 +63,7 @@ packages = [
 
 [tool.hatch.build.targets.wheel.force-include]
 "src/schema/ontology.yaml" = "schema/ontology.yaml"
+"data/aliases.yaml" = "verify/aliases.yaml"
 
 [tool.uv]
 # `uv sync` should always give you the dev toolchain; heavy extras stay opt-in.
