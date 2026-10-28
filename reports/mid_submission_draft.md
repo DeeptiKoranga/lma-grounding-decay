@@ -284,6 +284,45 @@ One mapping worth carrying forward: Yu et al.'s labels are `0 = none, 1 = Direct
 reverse of the intuitive order.** The builder asserts the published class counts
 on load so a re-release cannot silently invert every strength number.
 
+### What a word list catches, and what it cannot
+
+The challenge set (#20) is **104 items**: 19 clean controls plus 85 corruptions
+of the five families, derived mechanically from the dev gold edges. It is 104
+rather than the planned 125 because D-18 and D-19 capped the gold set at 24
+edges, which made the original target unreachable by construction — the
+arithmetic is in `reports/b9_feasibility_20261028.md`.
+
+Run against the **deterministic rule layer with no model at all**:
+
+| corruption family | items | flagged | can the rules see it? |
+|---|---:|---:|---|
+| `unsupported_intermediate` | 19 | 19 | yes |
+| `wrong_date` | 19 | 19 | yes |
+| `wrong_target` | 19 | 19 | yes |
+| `reversed_relation` | 19 | **0** | **no, by construction** |
+| `inflated_strength` | 9 | **0** | **no, by construction** |
+| clean controls | 19 | **0** | these are the false alarms |
+
+**57 of 57 citation corruptions caught, 0 false alarms, 0 of 28 semantic ones.**
+
+This is the project's clearest evidence on both sides of its own design
+question. Reversing an edge leaves the same two variables in the same passage
+with the same verbatim span, and no rule reads the `strength` field, so a third
+of the corruptions — including the two a careless graph is most likely to
+contain — **cannot be caught by matching text at all.** That is the argument for
+the semantic verifier, and it is an argument from data rather than from
+expectation. It cuts the other way too: the three families the rules do catch are
+caught deterministically, cheaply, with no model, so a verifier spending calls
+re-checking citations is spending them where a regex already wins.
+
+The per-family denominators are uneven on purpose (D-21) — the gold set supplies
+19 seeds but only 9 hedged links — so every rate is quoted with its own and no
+macro average over families is meaningful. One asymmetry to carry into the
+report: corruption detection is sound even on un-adjudicated gold, because each
+corruption was applied mechanically and is known by construction, but **the
+0.000 false-alarm figure is not** — a control is clean only if its gold edge was
+right. Recorded as D-23.
+
 ### Source access: two publishers are closed to us
 
 `reports/source_access_recheck_20261027.md`. Business Standard (403) and the RBI

@@ -32,7 +32,7 @@ audit-dev: ## Validate generated graphs, safety boundaries, logs and measured co
 synthetic-faults: ## Exercise the frozen synthetic tool-fault diagnostic
 	PYTHONPATH=src $(PY) python -m eval.faults --output reports/tool_faults_recheck.json
 
-.PHONY: gold adjudicate kappa rq
+.PHONY: gold adjudicate kappa rq challenge
 
 gold: ## Re-draft the dev gold graphs and check every span against the corpus
 	PYTHONPATH=src $(PY) python scripts/draft_gold_graphs.py
@@ -46,6 +46,13 @@ kappa: ## Score two completed worksheets -> reports/adjudication_kappa.md
 
 rq: ## Write the RQ1/RQ2 findings from a reviewed run (needs #41, #42, #37 first)
 	PYTHONPATH=src $(PY) python scripts/report_rq.py --review-dir data/interim/support-review
+
+challenge: ## Build the challenge set and run the rules-only arm (no model needed)
+	@rm -f data/eval/challenge.jsonl data/eval/challenge_manifest.json
+	PYTHONPATH=src $(PY) python -m eval.challenge --gold data/eval/gold/dev \
+		--corpus data/processed/articles.jsonl --output data/eval/challenge.jsonl \
+		--allow-unreviewed
+	PYTHONPATH=src $(PY) python scripts/run_challenge.py
 
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'

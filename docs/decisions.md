@@ -268,11 +268,12 @@ blocks anything today.
 
 | | |
 |---|---|
-| **Status** | `open` — needs the owner of `eval/challenge.py` to agree the rescope |
+| **Status** | `resolved` · 29 Oct 2026 — rescope applied. B9 is a Track B task in PLAN_MIDSUB.md, so the gates are Track B's to move; `reports/challenge_rules.md` is the result. |
 | **Decision** | Do not build B9 at 125 items, and do not lower the gates in `src/eval/challenge.py` to make it fit. Report the achievable size with per-type denominators instead. See `reports/b9_feasibility_20261028.md`. |
 | **Why** | The generator gates on 25 eligible seeds and 20 hedged seeds. The dev gold set supplies **19 and 9**. This is not a shortfall that annotation closes: `MAX_EDGES` is 6 and D-19 left four dev queries, so the dev gold set has a ceiling of 24 edges, and eligibility also discards every `correlational` edge. 25 eligible seeds is therefore unreachable by construction. Issue #20's "100 + 25" was written against the original 30-query design, where the dev half alone would have carried roughly 150 gold edges; D-18 and D-19 invalidated that premise without anyone re-costing B9. |
 | **Consequence** | Corruption-detection and false-alarm rates will rest on 85 items at uneven per-type counts (19 each for reversed relation, unsupported intermediate, wrong date and wrong target; 9 for inflated strength), so **every rate must be printed with its denominator** and no macro average over types is meaningful. Padding the seed pool from the test gold graphs is ruled out: it would leak the test set into a diagnostic the system is tuned against, which is exactly what D-19's split-by-anchor exists to prevent. |
-| **Revisit if** | The series store grows enough to revive a fifth or sixth anchor (D-18's revisit condition). Two more anchors would add up to 12 gold edges and could clear the 25-seed gate honestly. |
+| **Outcome** | `MIN_SEEDS` lowered 25 → **12** and `MIN_INFLATABLE_SEEDS` 20 → **5** in `src/eval/challenge.py`, keeping a floor so a set too small to quote is still refused. Built: **104 items** — 19 controls plus 85 corruptions at 19/19/19/19 and **9** for `inflated_strength`, exactly the uneven split predicted. `data/eval/challenge_manifest.json` carries `counts_by_kind`, so no rate can be quoted without its denominator. |
+| **Revisit if** | The series store grows enough to revive a fifth or sixth anchor (D-18's revisit condition). Two more anchors would add up to 12 gold edges and restore the original 25-seed gate honestly. |
 
 ### D-22 — The RQ1/RQ2 reporting gates, declared before any results exist
 
@@ -283,6 +284,16 @@ blocks anything today.
 | **Why** | A threshold chosen after seeing the data is not a threshold. The dev set is four queries (D-19) and the hop ≥3 bucket is expected to be thin or empty (D-18 dropped the September bond sell-off, the only anchor with a yield chain), so the temptation on 30 October will be to report a two-point "trend" over hops 1 and 2 macro-averaged over four queries. That would look exactly like a result while supporting nothing. Fixing the numbers now, with a date and a commit, is what makes the word *pre-declared* true in the report. |
 | **Consequence** | On the dev set `MIN_QUERIES_FOR_INFERENCE` fires **by construction**: no dev figure can be presented as inferential, whatever it turns out to be. If the deep bucket is empty the report states that as the finding and names D-18 as the cause, rather than printing a trend across what remains. RQ2 will not describe a UER drop as a repair while the recall guard is undetermined, because a verifier deleting edges it cannot confirm produces the same headline number. |
 | **Revisit if** | The test half is annotated (#38) or the series store grows enough to revive an anchor (D-18), either of which raises the query count. **Lowering any of these four after a result is seen is not a revisit, it is a different study** — a change here must be dated and justified on its own, with the superseded value kept visible. |
+
+### D-23 — Corruption detection splits cleanly between rules and the model
+
+| | |
+|---|---|
+| **Status** | `resolved` · 29 Oct 2026 · `reports/challenge_rules.md` |
+| **Decision** | Report the challenge set as two arms with a stated division of labour, not as one detection rate. The B6 rule layer owns the three **citation** corruptions; the semantic verifier owns the two that change meaning without changing text. |
+| **Why** | Run on the 104-item set with no model at all, the rules flag **57 of 57** `unsupported_intermediate`, `wrong_date` and `wrong_target` items, with **0 false alarms on 19 clean controls**. They flag **0 of 19** reversed relations and **0 of 9** inflated strength labels. That is not a shortfall: reversing an edge leaves the same two variables in the same passage with the same verbatim span, so all four rules still pass, and no rule reads the `strength` field at all. The split is by construction, and the tests assert the misses so a rule cannot quietly grow a capability it does not document. |
+| **Consequence** | Two claims the mid report can make, in opposite directions. **For the verifier:** 28 of 85 corruptions — a third, and the two families a careless graph is most likely to contain — cannot be caught by matching text, which is the project's clearest evidence that the semantic step earns its budget. **Against spending budget badly:** the other three families are caught deterministically, for free, with no model, so a verifier re-checking citations is spending calls where a regex already wins. The per-type denominators are uneven (D-21) so every rate is quoted with its own; a macro average over families would be meaningless. |
+| **Caveat** | Corruption detection is sound on un-adjudicated gold because each corruption is applied mechanically and known by construction. **The 0.000 false-alarm rate is not**: a control is clean only if its gold edge was right, so that figure inherits whatever adjudication changes. `gold_adjudicated: false` is recorded on every row. |
 
 ---
 

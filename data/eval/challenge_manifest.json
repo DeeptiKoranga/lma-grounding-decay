@@ -1,0 +1,16 @@
+{
+  "items": 104,
+  "counts_by_kind": {
+    "control": 19,
+    "reversed_relation": 19,
+    "inflated_strength": 9,
+    "unsupported_intermediate": 19,
+    "wrong_date": 19,
+    "wrong_target": 19
+  },
+  "gold_adjudicated": false,
+  "reference_review_receipt_sha256": null,
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "status": "challenge candidates; independent review is required before accepting corruption labels",
+  "reading": "Corruption-detection rate is sound on un-adjudicated gold because the corruption is applied mechanically. The false-alarm rate over controls is only as good as the gold edges. Quote every rate with its denominator from counts_by_kind; the per-type counts are uneven by construction (D-21)."
+}

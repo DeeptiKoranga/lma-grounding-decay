@@ -3,9 +3,20 @@
     python scripts/run_strength_pilot.py [--classifier cue|llm]
 
 `cue` is the deterministic word-list baseline in `eval.strength_bench`, needs no
-model, and is the thing the LLM verifier has to beat. `llm` runs the B7 verifier
-over the same items and needs the pinned local model; it is not run here, and
-the report says so rather than leaving a gap that reads like a result.
+model, and is the thing the model arm has to beat.
+
+`llm` runs the pinned local model over the same 200 items on the same strength
+taxonomy, and needs `--model-path` and `--revision`. Without the model it says
+exactly what is missing and writes nothing, rather than leaving a gap that reads
+like a result.
+
+Scope the report has to state: the `llm` arm is **not** `verify.Verifier` end to
+end. The verifier runs its deterministic rule layer against a corpus passage
+first, and these benchmark sentences are not in our corpus - no passage, no
+as-of date, no document id, so there is nothing for rules 1, 2 and 4 to check.
+What is compared is the model's strength judgement against the word list's,
+which is the comparison the design needs, on the taxonomy wording lifted from
+the verifier's own prompt.
 """
 
 from __future__ import annotations
@@ -16,7 +27,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from eval.strength_bench import ScoreReport, cue_strength, score
+from eval.strength_bench import ScoreReport, cue_strength, llm_strength, score
 from schema import Strength
 
 REPO = Path(__file__).resolve().parent.parent
@@ -67,28 +78,49 @@ def _confusion(report: ScoreReport) -> list[str]:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--classifier", choices=["cue", "llm"], default="cue")
+    parser.add_argument("--model-path", type=Path, default=Path("data/raw/generator/qwen3-8b-4bit"))
+    parser.add_argument("--model", default="mlx-community/Qwen3-8B-4bit")
+    parser.add_argument("--revision", help="pinned model revision; required for --classifier llm")
+    parser.add_argument("--report", type=Path, default=REPORT)
     args = parser.parse_args(argv)
 
+    classify, generator = cue_strength, None
     if args.classifier == "llm":
-        print(
-            "the LLM verifier needs the pinned local model, which is not available here",
-            file=sys.stderr,
-        )
-        return 2
+        if not args.revision:
+            print(
+                "--classifier llm requires --revision (the pinned model revision)", file=sys.stderr
+            )
+            return 2
+        if not args.model_path.is_dir():
+            print(
+                f"model not found at {args.model_path}. The pinned Qwen3-8B 4-bit weights are "
+                "not on every machine; see reports/compute_log.md for where they live.",
+                file=sys.stderr,
+            )
+            return 2
+        from llm.generate import MLXGenerator
+
+        generator = MLXGenerator(args.model_path, model_id=args.model, revision=args.revision)
+
+        def classify(sentence: str) -> Strength | None:
+            """An unparseable response is an abstention, never a guess: `score`
+            counts abstentions against recall and never as correct."""
+            try:
+                return llm_strength(generator, sentence)
+            except ValueError:
+                return None
 
     items = _load()
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
     strength_items = [i for i in items if i["task"] == "strength"]
     gold = [Strength(i["gold"]) for i in strength_items]
-    predicted = [cue_strength(i["text"]) for i in strength_items]
+    predicted = [classify(i["text"]) for i in strength_items]
     strength_report = score(gold, predicted)
 
     detection_items = [i for i in items if i["task"] == "detection"]
     det_gold = [i["gold"] for i in detection_items]
-    det_pred = [
-        CAUSAL if cue_strength(i["text"]) is not None else NOT_CAUSAL for i in detection_items
-    ]
+    det_pred = [CAUSAL if classify(i["text"]) is not None else NOT_CAUSAL for i in detection_items]
     tp = sum(1 for g, p in zip(det_gold, det_pred, strict=True) if g == p == CAUSAL)
     fp = sum(1 for g, p in zip(det_gold, det_pred, strict=True) if g != p == CAUSAL)
     fn = sum(1 for g, p in zip(det_gold, det_pred, strict=True) if p != g == CAUSAL)
@@ -165,19 +197,35 @@ def main(argv: list[str] | None = None) -> int:
         "be judged in: well above the word list, and not expected to reach a supervised model",
         "trained on the same distribution.",
         "",
-        "**Still outstanding.** The same two benchmarks have not been run against the B7 LLM",
-        "verifier, which needs the pinned local model. Until that runs there is no",
-        "comparison, and the project cannot yet claim the verifier earns its place on",
-        "strength. `scripts/run_strength_pilot.py --classifier llm` is where that goes.",
+        "**Still outstanding.** The model arm is wired but not run: it needs the pinned",
+        "Qwen3-8B 4-bit weights, which are not on the Track B machine.",
+        "",
+        "```bash",
+        "python scripts/run_strength_pilot.py --classifier llm \\",
+        "    --model-path data/raw/generator/qwen3-8b-4bit --revision <pinned>",
+        "```",
+        "",
+        "Until that runs there is no comparison, and **the project cannot yet claim the",
+        "verifier earns its place on strength.**",
+        "",
+        "Two limits on what that arm will show, both of which belong in the report rather",
+        "than in a footnote. It is **not `verify.Verifier` end to end**: the verifier checks",
+        "a span against a corpus passage under an as-of date first, and these sentences are",
+        "not in our corpus, so three of the four rules have nothing to check. What is",
+        "compared is the model's strength judgement against the word list's, on the taxonomy",
+        "wording lifted from the verifier's own prompt so the two arms share one definition.",
+        "And **neither dataset labels edge direction**, so the direction third of this check",
+        "is uncovered by either arm - that gap is a property of the public data, not",
+        "something a model run closes.",
     ]
 
     # Strip trailing whitespace per line: the pre-commit hook would otherwise
     # rewrite a generated file and fight the generator on every commit.
     body = "\n".join(line.rstrip() for line in lines).rstrip()
-    REPORT.write_text(body + "\n", encoding="utf-8")
+    args.report.write_text(body + "\n", encoding="utf-8")
     print(f"strength  macro-F1 {strength_report.macro_f1:.3f}  acc {strength_report.accuracy:.3f}")
     print(f"detection F1       {f1:.3f}  acc {accuracy:.3f}")
-    print(f"wrote {REPORT.relative_to(REPO)}")
+    print(f"wrote {args.report}")
     return 0
 
 

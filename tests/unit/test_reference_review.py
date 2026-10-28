@@ -63,7 +63,8 @@ def test_completed_receipt_binds_both_reference_files_and_support_corpus(tmp_pat
     )
     assert set(graphs) == {path.stem}
     assert receipt_hash == digest(folder / "review_receipt.json")
-    with pytest.raises(ValueError, match="at least 25"):
+    # Rescoped from 25 to 12 by D-21; one gold edge is still far too few.
+    with pytest.raises(ValueError, match="at least 12 eligible"):
         build_challenge(gold=folder, corpus=corpus, output=tmp_path / "challenge.jsonl")
     with pytest.raises(ValueError, match="corpus hash"):
         validate(references=folder, corpus=corpus, expected_corpus_sha256="0" * 64)
