@@ -10,7 +10,7 @@ import uuid
 from pathlib import Path
 
 from corpus.series import SeriesStore
-from llm.generate import ChatCompletionsGenerator, MLXGenerator
+from llm.generate import (ANTHROPIC_HAIKU_45, AnthropicGenerator, ChatCompletionsGenerator, MLXGenerator)
 from retrieval.bm25 import Aliases, BM25Retriever
 from retrieval.factory import build_retriever
 from retrieval.pilot import CONFIG_ORDER
@@ -52,10 +52,10 @@ def main():
         choices=[c.value for c in Condition],
         default=[c.value for c in Condition],
     )
-    parser.add_argument("--backend", choices=["mlx", "llama.cpp", "vllm", "api"], default="mlx")
+    parser.add_argument("--backend", choices=["mlx", "llama.cpp", "vllm", "api", "claude"], default="mlx")
     parser.add_argument("--model-path", type=Path, default=Path("data/raw/generator/qwen3-8b-4bit"))
-    parser.add_argument("--model", default="mlx-community/Qwen3-8B-4bit")
-    parser.add_argument("--revision", required=True)
+    parser.add_argument("--model")
+    parser.add_argument("--revision")
     parser.add_argument("--base-url")
     parser.add_argument("--allow-remote", action="store_true")
     parser.add_argument("--retriever", choices=CONFIG_ORDER, default="bge_m3")
@@ -76,6 +76,16 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("runs/development"))
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
+    if args.model is None:
+        args.model = (
+            ANTHROPIC_HAIKU_45
+            if args.backend == "claude"
+            else "mlx-community/Qwen3-8B-4bit"
+        )
+    if args.backend == "claude":
+        args.revision = args.revision or args.model
+    elif not args.revision or not args.revision.strip():
+        parser.error("--revision is required for reproducible non-Claude runs")
     if Condition.B1_R in args.conditions and not args.reranker_python:
         parser.error(
             "B1-R requires --reranker-python pointing to the existing cross-encoder environment"
@@ -89,8 +99,8 @@ def main():
         parser.error("queries must be nonempty and uniquely identified")
     if len(set(args.conditions)) != len(args.conditions):
         parser.error("conditions must not be repeated")
-    if args.backend != "mlx" and not args.base_url:
-        parser.error("HTTP backends require --base-url")
+    if args.backend not in {"mlx", "claude"} and not args.base_url:
+        parser.error("HTTP-compatible backends require --base-url")
     dense = args.retriever in {"bge_m3", "hybrid_rrf"}
     if dense and not args.dense_index.is_file():
         parser.error("selected dense retriever requires an existing corpus-matched --dense-index")
@@ -174,14 +184,15 @@ def main():
         return
     if args.backend == "mlx":
         generator = MLXGenerator(args.model_path, model_id=args.model, revision=args.revision)
+    elif args.backend == "claude":
+        generator = AnthropicGenerator(model=args.model, revision=args.revision)
     else:
-        if not args.base_url:
-            parser.error("HTTP backends require --base-url")
         generator = ChatCompletionsGenerator(
             base_url=args.base_url,
             model=args.model,
             backend=args.backend,
             allow_remote=args.allow_remote,
+            revision=args.revision,
         )
     first_stage = (
         WorkerRetriever(
