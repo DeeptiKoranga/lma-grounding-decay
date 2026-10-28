@@ -52,9 +52,26 @@ python scripts/check_gold_graphs.py --require  # fails while any file is missing
 
 ## Two annotators, not one
 
-Issue #37 (2.5) needs Cohen's κ on a shared subset, so **at least one of these
-four must be annotated independently by two people** before scoring. Agreement
-measured on a subset one person wrote twice is not agreement.
+Issue #37 (2.5) needs Cohen's κ, so **every edge is annotated independently by
+two people who have not compared notes**. Agreement measured on a sheet one
+person signed twice is not agreement.
+
+The protocol and the blind worksheets are in [`adjudication/`](adjudication/).
+Two points about how it is set up:
+
+- **The worksheets carry no labels.** `ADJUDICATION.md` prints the drafter's
+  own, so annotating from that file would turn agreement between the two people
+  into agreement with the draft, and κ would measure how persuasive the draft
+  was. The worksheets hold the span, the two variables and the dates, nothing
+  else, under opaque item ids, in a different order for each annotator.
+- **Both annotators take all 20 edges, not half each.** Splitting would leave κ
+  resting on 4 to 6 items, which supports no claim; double-labelling the whole
+  set also means every edge is settled by two people rather than one.
+
+```bash
+python scripts/prepare_adjudication.py --annotators Deepti Varun
+python scripts/score_adjudication.py --pair deepti varun   # -> reports/adjudication_kappa.md
+```
 
 ## Why this cannot be generated
 

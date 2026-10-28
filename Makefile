@@ -32,6 +32,18 @@ audit-dev: ## Validate generated graphs, safety boundaries, logs and measured co
 synthetic-faults: ## Exercise the frozen synthetic tool-fault diagnostic
 	PYTHONPATH=src $(PY) python -m eval.faults --output reports/tool_faults_recheck.json
 
+.PHONY: gold adjudicate kappa
+
+gold: ## Re-draft the dev gold graphs and check every span against the corpus
+	PYTHONPATH=src $(PY) python scripts/draft_gold_graphs.py
+	PYTHONPATH=src $(PY) python scripts/check_gold_graphs.py --require
+
+adjudicate: ## Write the two blind adjudication worksheets (keeps started ones)
+	PYTHONPATH=src $(PY) python scripts/prepare_adjudication.py --annotators Deepti Varun
+
+kappa: ## Score two completed worksheets -> reports/adjudication_kappa.md
+	PYTHONPATH=src $(PY) python scripts/score_adjudication.py
+
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
 
