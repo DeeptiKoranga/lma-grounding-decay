@@ -1,5 +1,10 @@
 # Mid-submission working draft — updated 28 October 2026
 
+> **This is the working log, not the submission.** The document submitted on
+> 30 October is [`reports/mid_submission.md`](mid_submission.md), which is
+> organised against the eight elements the brief requires. This file is kept
+> because it records what was found when, which the submission summarises.
+
 **Status: implementation checkpoint; research results and team acceptance pending.**
 **As of 28 October the v7 corpus is installed on both machines and Track B's
 anchors, query set, gold graphs and public-data diagnostics are in. What is still
