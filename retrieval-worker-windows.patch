@@ -1,0 +1,231 @@
+diff --git a/src/retrieval/worker.py b/src/retrieval/worker.py
+index 8192c63..d005175 100644
+--- a/src/retrieval/worker.py
++++ b/src/retrieval/worker.py
+@@ -6,9 +6,10 @@ import argparse
+ import contextlib
+ import json
+ import os
+-import selectors
++import queue
+ import subprocess
+ import sys
++import threading
+ from pathlib import Path
+ 
+ from schema.tools import SearchCorpusArgs
+@@ -28,66 +29,99 @@ class WorkerRetriever:
+         self.aliases = Aliases.load(aliases)
+         self.corpus = {p.passage_id: p for p in self.passages}
+         self.process = None
++        self._responses = None
++        self._reader = None
++        self._lock = threading.RLock()
++
++    @staticmethod
++    def _read_responses(stream, responses):
++        try:
++            for line in stream:
++                responses.put(line)
++        except (OSError, ValueError):
++            pass  # Closing a failed worker can also close its stdout pipe.
++        finally:
++            responses.put(None)
+ 
+     def search(self, query, *, as_of, k=10, source_kind="any", must_mention=None):
+-        args = validate_query(
+-            query,
+-            as_of=as_of,
+-            k=k,
+-            source_kind=source_kind,
+-            must_mention=must_mention,
+-            aliases=self.aliases,
+-        )
+-        if self.process is None:
+-            self.process = subprocess.Popen(
+-                [
+-                    self.python,
+-                    "-u",
+-                    "-m",
+-                    "retrieval.worker",
+-                    "--corpus",
+-                    str(self.corpus_path),
+-                    "--aliases",
+-                    str(self.aliases_path),
+-                    "--settings",
+-                    json.dumps(self.settings),
+-                ],
+-                stdin=subprocess.PIPE,
+-                stdout=subprocess.PIPE,
+-                stderr=subprocess.DEVNULL,
+-                text=True,
+-                env={**os.environ, "HF_HUB_OFFLINE": "1"},
++        with self._lock:
++            args = validate_query(
++                query,
++                as_of=as_of,
++                k=k,
++                source_kind=source_kind,
++                must_mention=must_mention,
++                aliases=self.aliases,
+             )
+-        try:
+-            self.process.stdin.write(args.model_dump_json() + "\n")
+-            self.process.stdin.flush()
+-            with selectors.DefaultSelector() as selector:
+-                selector.register(self.process.stdout, selectors.EVENT_READ)
+-                if not selector.select(self.timeout):
+-                    raise RuntimeError("retrieval worker timed out")
+-            line = self.process.stdout.readline()
+-            if not line:
+-                raise RuntimeError("retrieval worker exited before returning results")
+-            result = json.loads(line)
+-            if "error" in result:
+-                raise RuntimeError(result["error"])
+-            hits = [Hit(self.corpus[row["passage_id"]], row["score"]) for row in result["hits"]]
+-            return checked_hits(hits, self.corpus, args, self.aliases)
+-        except (OSError, ValueError, KeyError, TypeError, RuntimeError) as exc:
+-            self.close()
+-            raise RuntimeError(f"retrieval worker failed: {exc}") from exc
++            try:
++                if self.process is None:
++                    self._responses = queue.Queue()
++                    self.process = subprocess.Popen(
++                        [
++                            self.python,
++                            "-u",
++                            "-m",
++                            "retrieval.worker",
++                            "--corpus",
++                            str(self.corpus_path),
++                            "--aliases",
++                            str(self.aliases_path),
++                            "--settings",
++                            json.dumps(self.settings),
++                        ],
++                        stdin=subprocess.PIPE,
++                        stdout=subprocess.PIPE,
++                        stderr=subprocess.DEVNULL,
++                        text=True,
++                        encoding="utf-8",
++                        env={
++                            **os.environ,
++                            "HF_HUB_OFFLINE": "1",
++                            "PYTHONUTF8": "1",
++                            "PYTHONIOENCODING": "utf-8",
++                        },
++                    )
++                    self._reader = threading.Thread(
++                        target=self._read_responses,
++                        args=(self.process.stdout, self._responses),
++                        daemon=True,
++                    )
++                    self._reader.start()
++                self.process.stdin.write(args.model_dump_json() + "\n")
++                self.process.stdin.flush()
++                try:
++                    line = self._responses.get(timeout=self.timeout)
++                except queue.Empty as exc:
++                    raise RuntimeError("retrieval worker timed out") from exc
++                if line is None:
++                    raise RuntimeError("retrieval worker exited before returning results")
++                result = json.loads(line)
++                if "error" in result:
++                    raise RuntimeError(result["error"])
++                hits = [Hit(self.corpus[row["passage_id"]], row["score"]) for row in result["hits"]]
++                return checked_hits(hits, self.corpus, args, self.aliases)
++            except (OSError, ValueError, KeyError, TypeError, RuntimeError) as exc:
++                self.close()
++                raise RuntimeError(f"retrieval worker failed: {exc}") from exc
+ 
+     def close(self):
+-        if self.process is not None:
+-            self.process.terminate()
+-            try:
+-                self.process.wait(timeout=10)
+-            except subprocess.TimeoutExpired:
+-                self.process.kill()
+-                self.process.wait()
+-            self.process.stdin.close()
+-            self.process.stdout.close()
+-            self.process = None
++        with self._lock:
++            if self.process is not None:
++                process = self.process
++                if process.poll() is None:
++                    with contextlib.suppress(OSError):
++                        process.terminate()
++                try:
++                    process.wait(timeout=10)
++                except subprocess.TimeoutExpired:
++                    process.kill()
++                    process.wait()
++                with contextlib.suppress(OSError):
++                    process.stdin.close()
++                process.stdout.close()
++                if self._reader is not None:
++                    self._reader.join(timeout=1)
++                self.process = self._responses = self._reader = None
+ 
+ 
+ def main():
+diff --git a/tests/unit/test_retrieval_worker.py b/tests/unit/test_retrieval_worker.py
+new file mode 100644
+index 0000000..7137664
+--- /dev/null
++++ b/tests/unit/test_retrieval_worker.py
+@@ -0,0 +1,54 @@
++"""The persistent retrieval worker must work when pipe selectors are unavailable."""
++
++import selectors
++import subprocess
++import sys
++from datetime import date
++from pathlib import Path
++
++import pytest
++
++from retrieval.worker import WorkerRetriever
++
++ROOT = Path(__file__).parents[2]
++
++
++def test_worker_reads_two_responses_without_selecting_on_pipe(monkeypatch):
++    def unavailable():
++        raise OSError("Windows selectors cannot watch subprocess pipes")
++
++    monkeypatch.setattr(selectors, "DefaultSelector", unavailable)
++    monkeypatch.setenv("PYTHONPATH", str(ROOT / "src"))
++    worker = WorkerRetriever(
++        python=sys.executable,
++        corpus=ROOT / "tests/fixtures/passages.jsonl",
++        aliases=ROOT / "data/aliases.yaml",
++        settings={"config": "bm25"},
++        timeout=15,
++    )
++    try:
++        assert worker.search("crude rupee", as_of=date(2026, 3, 20))
++        process = worker.process
++        assert worker.search("crude", as_of=date(2026, 3, 20))
++        assert worker.process is process
++    finally:
++        worker.close()
++
++
++def test_worker_timeout_terminates_a_child_that_never_replies(monkeypatch):
++    real_popen = subprocess.Popen
++
++    def silent_worker(_command, **options):
++        return real_popen([sys.executable, "-u", "-c", "import time; time.sleep(30)"], **options)
++
++    monkeypatch.setattr("retrieval.worker.subprocess.Popen", silent_worker)
++    worker = WorkerRetriever(
++        python=sys.executable,
++        corpus=ROOT / "tests/fixtures/passages.jsonl",
++        aliases=ROOT / "data/aliases.yaml",
++        settings={"config": "bm25"},
++        timeout=0.1,
++    )
++    with pytest.raises(RuntimeError, match="retrieval worker timed out"):
++        worker.search("crude", as_of=date(2026, 3, 20))
++    assert worker.process is None
