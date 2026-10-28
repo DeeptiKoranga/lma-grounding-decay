@@ -316,7 +316,7 @@ is **15 November** with work winding up **12 November**, so it splits in two.
 left to look like oversights:
 
 - **The interactive event-impact graph.** Static SVG/PNG rendering exists
-  (`src/eval/figures.py`) and is what ships. Interactivity is not reachable in
+  (`src/eval/figures.py`, `reports/figures/`) and is what ships. Interactivity is not reachable in
   12 days alongside the experiments, and neither research question needs it.
 - **Blind scoring at scale** beyond the 4 dev and 4 test queries.
 - **B1-R end-to-end benefit**, deferred since D-03. The retrieval-side

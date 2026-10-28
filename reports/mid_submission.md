@@ -38,7 +38,7 @@ deterministic verifier plus an LLM verifier downstream of it; six read-only,
 schema-validated tools under a 12-call budget; all seven experimental conditions
 sharing one code path; and the scoring harness for both research questions.
 
-**Scale:** 73 source modules, 53 test files, **799 tests passing**, Ruff and
+**Scale:** 73 source modules, 55 test files, **810 tests passing**, Ruff and
 Black clean. 23 decision rows in `docs/decisions.md`, each recording what was
 decided, why, and what it costs. 38 of 51 issues closed.
 
@@ -504,8 +504,7 @@ Named here so they read as choices rather than omissions, and each is a stated
 limitation in the final report:
 
 - **The interactive event-impact graph.** Static SVG and PNG renderings exist
-  (`src/eval/figures.py`, `reports/development_example.svg`) and are what we
-  will ship. Interactivity is not reachable in 12 days alongside the experiments
+  (`src/eval/figures.py`, `reports/figures/`) and are what we will ship. Interactivity is not reachable in 12 days alongside the experiments
   and is not needed for either research question.
 - **Blind scoring at scale** beyond the 4 dev and 4 test queries.
 - **B1-R end-to-end benefit**, deferred since D-03 and still deferred; the
@@ -517,7 +516,7 @@ limitation in the final report:
 
 ```bash
 git clone https://github.com/DeeptiKoranga/lma-grounding-decay
-make setup && make test          # 799 tests
+make setup && make test          # 810 tests
 make hooks                       # pre-commit + the main-branch guard
 ```
 
