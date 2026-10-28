@@ -1,6 +1,8 @@
 # Mid-submission — Does Grounding Decay with Distance?
 
-**Language Models & Agents (LMA) Group Project 2026 · 30 October 2026**
+**Language Models & Agents (LMA) Group Project 2026**
+
+Mid-submission: **30 October 2026**. Final submission: **15 November 2026**.
 
 Varun Patil (2025204013) · Harshal Bhansali (2026909007) · Deepti Koranga (2025204033)
 
@@ -317,7 +319,8 @@ claimed.** Times are measured model-call wall times, not GPU-active hours.
 
 **UER, strength inflation and reference-edge recall — the primary metric and
 both secondary metrics — have no values.** They require blind human support
-judgements on the generated edges, which are scheduled for 2–6 November.
+judgements on the generated edges, which are scheduled for **4 November** on
+the dev set and 10 November on the test set (Section 8).
 
 The scoring is built and runs today. `scripts/report_rq.py` currently writes
 nothing and names the three preconditions in dependency order, which is
@@ -414,11 +417,11 @@ machine rather than on code.
 
 | # | Challenge | Done already | Planned |
 |---|---|---|---|
-| 6.1 | Anchors unconfirmed | `scripts/confirm_episodes.py` checks all eight under as-of discipline and **generates** `episodes.md`; `--check` fails if it goes stale. `official_source` is a first-class flag so a report cannot claim eight official confirmations. | Extend the series store (1–6 Nov). More series can only improve the count, never silently change it. Two more anchors would also restore the challenge set's original gate. |
+| 6.1 | Anchors unconfirmed | `scripts/confirm_episodes.py` checks all eight under as-of discipline and **generates** `episodes.md`; `--check` fails if it goes stale. `official_source` is a first-class flag so a report cannot claim eight official confirmations. | Extend the series store (1 Nov). More series can only improve the count, never silently change it. Two more anchors would also restore the challenge set's original gate. |
 | 6.2 | 8 queries, not 30 | Split by anchor, so no leakage. Both files validate against the runner's `Query` model. | Annotate the four test queries after the dev four are adjudicated, so the guide is exercised once first. Report test numbers descriptively. |
 | 6.3 | No hop ≥3 gold | The RQ1 reporter **refuses** to print a trend from fewer than three usable buckets and names the empty slice as the finding (D-22). | Reviving the September anchor (6.1) restores the yield chain. Otherwise scope the H1 claim to hops 1–2 explicitly and say why. |
 | 6.4 | Publishers closed | Re-checked 27 Oct; declined the circumvention; probe artefacts removed. Concentration quantified at 870/1,095. | PIB seed discovery is the one untested legitimate avenue. Otherwise this is a stated limitation, reported beside Recall@10. |
-| 6.5 | Verifier too conservative | H2d recall guard implemented with a pre-declared floor of −0.10; RQ2 **will not report a UER drop as a repair** while the guard is undetermined. | Tune the verifier on **dev only** once support judgements exist (2–6 Nov). If recall cannot be held, report that verification trades recall for precision — a finding, not a failure. |
+| 6.5 | Verifier too conservative | H2d recall guard implemented with a pre-declared floor of −0.10; RQ2 **will not report a UER drop as a repair** while the guard is undetermined. | Tune the verifier on **dev only** once support judgements exist — one round, on 6 Nov, recorded as a decision row. If recall cannot be held, report that verification trades recall for precision — a finding, not a failure. |
 | 6.6 | Challenge set size | Gates rescoped to 12/5 with floors retained; built 104 items; `counts_by_kind` published so no rate is quoted without its denominator. | Rebuild at the original size if 6.1 adds anchors. |
 | 6.7 | Branches unmerged | All branches merged by **real ancestry**, not a third copy. The duplicated D-13 is renumbered to D-24 on the branch that still carries it (PR #52, open for review). Every branch now merges cleanly into `main` in any order, verified pairwise. **`main` now carries all the code.** | Merge to `main` on completion of each issue rather than at phase end. |
 | 6.8 | Machine asymmetry | Every blocked step fails loudly and names its missing precondition rather than producing a placeholder. | Run the sweep on the machine that holds the weights; Kaggle (2×T4) remains the documented fallback and is unused so far. |
@@ -428,23 +431,85 @@ machine rather than on code.
 
 ## 8. Timeline to final submission
 
-| Window | Work | Exit condition |
-|---|---|---|
-| **30 Oct** | Blind double annotation of the 20 dev gold edges; sign the reference review receipt | κ reported with its interval; receipt validates |
-| **2–6 Nov** | Full dev sweep on v7 (7 conditions × 4 dev queries); blind support judgements; verifier tuning on dev only; extend the series store | First UER, strength inflation and reference-edge recall; anchors re-confirmed |
-| **9–13 Nov** | Annotate the four test queries; freeze test inputs; run all conditions with immutable settings | Complete logged sweep, no tuning against test outcomes |
-| **16–20 Nov** | Blind score the test runs; challenge-set model arm; paired bootstrap and recall guard; strength model arm | RQ1 and RQ2 reported with intervals and denominators |
-| **23–27 Nov** | Repeated-sampling stability check; failure analysis on the five worst cases; figures; reproduction from a clean clone | Reviewed results and archived artefacts |
+**Final submission: Sunday 15 November 2026. All work winds up Thursday 12
+November**, leaving 13–14 November as deliberate buffer rather than schedule.
 
-**Deferred past the final submission, and recorded as such rather than left to
-look like oversights:** B1-R at full scale, interactive graph UI, blind scoring
-at scale beyond the dev and test sets.
+The window is 12 calendar days — 9 weekdays plus the weekends of 1, 7–8
+November. Owners: **V** Varun (Track A; holds the pinned model weights and the
+dense index), **D** Deepti (Track B), **H** Harshal (Track C).
 
-**Critical path:** annotation (30 Oct) → dev sweep and support judgements (2–6
-Nov) → everything else. The only step with no slack is the first, because every
-downstream number is measured against the gold standard it produces.
+### Before the window
 
----
+**30 October — blind double annotation of the 20 dev gold edges (D + V).**
+Already prepared; worksheets are generated and the scorer is built. **This is
+the only step with no slack**, because every downstream number is measured
+against the gold standard it produces.
+
+### Week 1 — get a dev result, then decide what to change
+
+| Date | Owner | Work | Exit condition |
+|---|---|---|---|
+| **Sun 1 Nov** | V · D | Extend the series store and re-run anchor confirmation · draft the four **test** gold graphs | `episodes.md` regenerated; test graphs span-exact |
+| **Mon 2 Nov** | V · D+H | **Dev sweep on v7**: 7 conditions × 4 dev queries = 28 graphs · adjudicate the test gold graphs | Complete logged sweep, structural audit passes; test receipt signed |
+| **Tue 3 Nov** | H | Prepare the blind support packet from the dev sweep | Packet hash-bound, condition hidden, edges shuffled |
+| **Wed 4 Nov** | **all three** | **Blind support judgements on the dev edges** (~150–200 edges) | Every edge judged; no blanks |
+| **Thu 5 Nov** | H | Score: first **UER, strength inflation, reference-edge recall**, RQ1 and RQ2 on dev | `rq1_hop_decay.md` and `rq2_verification.md` written |
+| **Fri 6 Nov** | all three | **Decision day.** Read the dev result. Tune the verifier on **dev only**; record every change as a decision row | Settings agreed and written down, or explicitly unchanged |
+
+### Week 2 — freeze, run test, report
+
+| Date | Owner | Work | Exit condition |
+|---|---|---|---|
+| **Sat 7 – Sun 8 Nov** | V · H | Machine time, low human cost: challenge-set **model arm** (the 28 semantic corruptions the rules cannot see) · strength **model arm** (200 items) · repeated-sampling stability check on one query · re-run dev if 6 Nov changed anything | Model arms reported; dev numbers final |
+| **Mon 9 Nov** | all three | **FREEZE.** Record settings and hashes; **no tuning after this point.** Then the test sweep: 7 × 4 = 28 graphs | Frozen settings recorded; test sweep logged |
+| **Tue 10 Nov** | all three | Blind support judgements on the **test** edges | Every edge judged |
+| **Wed 11 Nov** | H · D | Final scoring: RQ1, RQ2, paired bootstrap, recall guard · figures | Results with intervals and denominators |
+| **Thu 12 Nov** | all three | **Wind up.** Failure analysis on the five worst cases · reproduction from a clean clone · final report · tag `v1.0` | Report complete, repository archived |
+| **Fri 13 – Sat 14 Nov** | — | **Buffer. Deliberately empty.** | — |
+
+### The dependency that governs everything
+
+```
+gold adjudicated (30 Oct)
+    -> dev sweep (2 Nov)
+        -> blind support judgements (4 Nov)
+            -> dev UER / RQ1 / RQ2 (5 Nov)
+                -> tuning decisions (6 Nov)
+                    -> FREEZE (9 Nov)
+                        -> test sweep -> test judgements -> final results
+```
+
+Each arrow is a hard dependency. Slipping 30 October by a day slips 15 November
+by a day, which the buffer absorbs once and not twice.
+
+### Contingency, pre-declared
+
+The v1 sweep (Section 4) shows M establishing 8 of 35 edges and A-NoLoop 0 of
+35. **We should expect 5 November to show a failing or undetermined recall
+guard.** Deciding now what to do about it stops the decision being made under
+time pressure with the result already visible:
+
+- **If H2d fails on dev**, the verifier is loosened on dev only, once, with the
+  change recorded as a decision row, and the dev set is re-run on 7–8 November.
+  One tuning round, not an open-ended search.
+- **If it still fails**, we report that verification trades reference recall for
+  precision and that H2b/H2c cannot be separated from deletion. That is a
+  finding and it gets reported as one. We do not tune until the guard passes;
+  tuning to a target is how a result becomes an artefact of its own tuning.
+- **No tuning happens after 9 November**, whatever the test numbers look like.
+
+### Scope deliberately dropped for the 15 November date
+
+Named here so they read as choices rather than omissions, and each is a stated
+limitation in the final report:
+
+- **The interactive event-impact graph.** Static SVG and PNG renderings exist
+  (`src/eval/figures.py`, `reports/development_example.svg`) and are what we
+  will ship. Interactivity is not reachable in 12 days alongside the experiments
+  and is not needed for either research question.
+- **Blind scoring at scale** beyond the 4 dev and 4 test queries.
+- **B1-R end-to-end benefit**, deferred since D-03 and still deferred; the
+  retrieval-side comparison stands (Recall@10 0.5296 against 0.4259).
 
 ## 9. Repository
 

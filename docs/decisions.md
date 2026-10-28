@@ -297,9 +297,28 @@ blocks anything today.
 
 ---
 
-## Deferred past 30 October
+## Deferred past 30 October — revised 29 Oct for a 15 November final
 
-Recorded here so they are not mistaken for oversights (PLAN_MIDSUB.md §3):
-all 24 test queries annotated · frozen test runs · B1-R and the two ablations at
-full scale · interactive graph UI · blind scoring at scale · repeated-sampling
-stability check.
+The original list was written against a four-week run-out. The final submission
+is **15 November** with work winding up **12 November**, so it splits in two.
+
+**Scheduled inside 1–12 November** (see `reports/mid_submission.md` §8):
+
+| Item | When |
+|---|---|
+| Test-query annotation — **four** queries, not 24 (D-19) | 1–2 Nov |
+| Frozen test runs | 9 Nov |
+| Both ablations at full scale (A-NoVerify, A-NoLoop) | in the 2 Nov and 9 Nov sweeps |
+| Repeated-sampling stability check | 7–8 Nov, one query |
+| Challenge-set and strength **model** arms | 7–8 Nov |
+
+**Dropped for the 15 November date**, and reported as limitations rather than
+left to look like oversights:
+
+- **The interactive event-impact graph.** Static SVG/PNG rendering exists
+  (`src/eval/figures.py`) and is what ships. Interactivity is not reachable in
+  12 days alongside the experiments, and neither research question needs it.
+- **Blind scoring at scale** beyond the 4 dev and 4 test queries.
+- **B1-R end-to-end benefit**, deferred since D-03. The retrieval-side
+  comparison stands (Recall@10 0.5296 against 0.4259); the end-to-end claim is
+  not made.
