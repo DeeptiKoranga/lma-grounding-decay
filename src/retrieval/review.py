@@ -100,6 +100,9 @@ class ReviewReceipt(Record):
 
     @model_validator(mode="after")
     def _check(self):
+        if self.reviewed_on > date.today():
+            raise ValueError("review date cannot be in the future")
+
         def identity(name):
             return " ".join(unicodedata.normalize("NFKC", name).casefold().split())
 

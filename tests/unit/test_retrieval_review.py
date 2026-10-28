@@ -2,6 +2,7 @@
 
 import json
 import sys
+from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
@@ -119,6 +120,10 @@ def test_reviewed_pairs_and_receipt_round_trip(review_files, tmp_path):
         (lambda j: j.update(independent_review=False), "True"),
         (lambda j: j.update(blinded_to_results=False), "True"),
         (lambda j: j.update(reviewed_on=None), "date"),
+        (
+            lambda j: j.update(reviewed_on=str(date.today() + timedelta(days=1))),
+            "future",
+        ),
         (lambda j: j["queries"][0].update(suitable=None), "independent acceptance"),
         (lambda j: j["queries"][0].update(suitable=False), "independent acceptance"),
         (lambda j: j["candidates"][0].update(relevant=None), "incomplete"),
@@ -326,3 +331,16 @@ def test_receipt_metadata_must_match_reviewed_pairs(review_files, tmp_path):
         receipt_path.write_text(json.dumps({**original, **change}))
         with pytest.raises(ValueError, match=message):
             validate_receipt(receipt_path, pairs=target / "pairs.jsonl", corpus=corpus)
+
+
+def test_loaded_receipt_cannot_claim_a_future_review_date(review_files, tmp_path):
+    corpus, _, output, _ = review_files
+    complete_judgments(output)
+    target = tmp_path / "export"
+    export(corpus, output, target)
+    path = target / "receipt.json"
+    receipt = json.loads(path.read_text())
+    receipt["reviewed_on"] = str(date.today() + timedelta(days=1))
+    path.write_text(json.dumps(receipt))
+    with pytest.raises(ValueError, match="future"):
+        validate_receipt(path, pairs=target / "pairs.jsonl", corpus=corpus)

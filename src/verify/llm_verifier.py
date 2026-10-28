@@ -10,6 +10,7 @@ from llm.generate import Generator, json_object
 from schema import Direction, Edge, Passage, Provenance, Strength, VerifyVerdict
 from schema.tools import VerifyEdgeResult
 
+from .aliases import AliasTable
 from .rules import check_claim
 
 
@@ -22,10 +23,18 @@ class Judgment(BaseModel):
 
 
 class Verifier:
-    def __init__(self, generator: Generator, passages: list[Passage], *, log_model=None):
+    def __init__(
+        self,
+        generator: Generator,
+        passages: list[Passage],
+        *,
+        log_model=None,
+        aliases: AliasTable | None = None,
+    ):
         self.generator, self.corpus = generator, {p.passage_id: p for p in passages}
         self.doc_ids = {p.doc_id for p in passages}
         self.log_model = log_model
+        self.aliases = aliases
 
     def verify(
         self, edge: Edge, *, passage: Passage, span: str, as_of, call_id: str
@@ -39,7 +48,13 @@ class Verifier:
                 rule_failures=["in_corpus"],
             )
         report = check_claim(
-            edge.src_var, edge.dst_var, span, passage, as_of=as_of, corpus_doc_ids=self.doc_ids
+            edge.src_var,
+            edge.dst_var,
+            span,
+            passage,
+            as_of=as_of,
+            corpus_doc_ids=self.doc_ids,
+            aliases=self.aliases,
         )
         if not report.passed:
             return VerifyEdgeResult(

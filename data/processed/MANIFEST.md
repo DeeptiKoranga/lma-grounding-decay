@@ -59,8 +59,10 @@ scope as explicit development-delivery deviations. See
 not alter the frozen corpus/archive bytes or grant research/redistribution
 acceptance.
 
-Development corpus only; research acceptance remains pending. The original v1
-experiments and v3 human-review packet remain bound to their original snapshots.
+This remains a scoped development corpus. Varun's 27 October user-attested
+review passes validation for the 73-document extraction sample and retrieval
+pool; it does not certify every document, the review procedure or redistribution.
+The original v1 experiments and v3 human-review packet retain their bindings.
 
 The final corpus contains 1,156 documents and 16,472 exact-offset passages. The
 61 official PDFs contribute 949 narrative paragraphs. Numeric tables, charts,

@@ -97,15 +97,17 @@ def main():
             )
             cache.write_text("".join(json.dumps({"url": url}) + "\n" for url in urls))
         candidates = select_candidates(urls, limit=len(urls), seed=args.seed + f"-{month}")
-        # Keep already downloaded payloads out of the attempt budget. Existing
-        # checksummed caches are re-parsed by the corpus rebuild, not redownloaded.
+        # Apply the attempt limit after excluding complete caches, so restarting
+        # a bounded batch advances through the archive. An orphaned sidecar is
+        # not a completed download. The rebuild rechecks cached payload hashes.
         pending = [
             url
-            for url in candidates[: args.per_month]
+            for url in candidates
             if not (
-                output / (hashlib.sha256(url.encode()).hexdigest()[:20] + ".meta.json")
-            ).exists()
-        ]
+                (output / (hashlib.sha256(url.encode()).hexdigest()[:20] + ".meta.json")).is_file()
+                and (output / (hashlib.sha256(url.encode()).hexdigest()[:20] + ".html")).is_file()
+            )
+        ][: args.per_month]
         chosen = pending
         print(
             json.dumps(

@@ -7,19 +7,28 @@ the evidence that closes it**: write the number, link the report, and date it.
 Status is one of `open` · `resolved` · `deferred`.
 
 Last reviewed: **27 Oct 2026** (Track A mid-submission scope closed with deviations;
-development selections complete, independent research acceptance remains open).
+development selections complete; subsequent user-attested Track A review records
+pass acceptance validation, with procedure-verification limits retained).
 
 The [Track A closeout](../reports/track_a_mid_submission_scope_20261027.md)
 adopts the acquired source mix, narrative-only PDF extraction and sparse
 original-vintage six-series store for the development handoff. This is an
 implementation disposition under the user's instruction to finish Track A;
 it is not TA/team acceptance, a publisher licence or a research-review receipt.
-The original proposal and export gates remain unchanged. D-02/D-03 below retain
-separate development selections and outstanding research acceptance.
+The original proposal and export gates remain unchanged. Varun subsequently
+supplied reviewer/date and independent/blinded review attestations. Both exports
+pass, with original label provenance preserved; procedure and exposure timing
+are not independently verified. See
+`reports/track_a_reviewer_identity_20261027.json`.
+
+The subsequent whole-project audit confirms that D-02's selected BGE-M3 is not
+yet wired into the conditions command. A resolved pilot choice does not mean
+its integration is complete. See `reports/whole_project_audit_20261027.md` for
+that gap and four other integration/reproduction findings.
 
 ---
 
-## Open from the proposal
+## Decisions from the proposal
 
 ### D-01 — Which model? `[needs pilot]`
 
@@ -38,29 +47,29 @@ separate development selections and outstanding research acceptance.
 
 | | |
 |---|---|
-| **Status** | `open` |
+| **Status** | `resolved` for the scoped Track A retrieval pilot on user-attested review |
 | **Question** | BM25, BM25 + alias expansion, bge-m3, or hybrid with reciprocal rank fusion? |
 | **Where** | Proposal §7 Table 1 and §8 |
 | **How it gets decided** | A8: 20 query–evidence pairs × 4 configs; Recall@5, Recall@10, MRR. **Decision rule is pre-declared: take the simplest config within 0.03 Recall@10 of the best.** |
 | **Owner / due** | A · by Sat 24 Oct |
-| **Evidence** | `reports/pilot_retriever.md` |
+| **Evidence** | `reports/pilot_retriever_v7_attested_20261027.md`; `reports/track_a_retrieval_selection_20261027.json` |
 | **Blocks** | B1, B1-R and every agent condition share one first-stage retriever (proposal §11). |
 | **Development selection — 26 Oct** | BGE-M3: Recall@10 0.4259 versus 0.3518 plain BM25, 0.3551 alias BM25 and 0.4161 hybrid. Selected by the declared 0.03 rule on 20 queries/2,035 pooled judgments (195 relevant). Single Codex review with previous results exposure; no independent receipt. See `reports/track_a_retrieval_selection_20261026.json`. Archived v1 run settings stay unchanged. |
-| **Resolution** | Independent corpus/relevance acceptance remains open. |
+| **Resolution** | BGE-M3 selected; the 27 October receipt-bound pilot reproduces Recall@10 0.4259. Track A review records pass on Varun's independent/blinded review attestations. Original label provenance and limits of self-reported procedure remain disclosed. See `reports/track_a_retrieval_selection_20261027.json`. Record validation does not accept experiment outcomes. |
 
 ### D-03 — Does the cross-encoder reranker earn its place? `[needs pilot]`
 
 | | |
 |---|---|
-| **Status** | `open` |
+| **Status** | `deferred` for end-to-end benefit; retrieval-pilot component complete |
 | **Question** | Does bge-reranker-v2-m3 over the top 50 improve retrieval enough to keep B1-R as a condition, and does better ranking alone close the gap to M? |
 | **Where** | Proposal §8, §11 |
 | **How it gets decided** | A9: same metrics as D-02, on top of whichever retriever D-02 picks; then end-to-end as B1-R. |
 | **Owner / due** | A · retrieval numbers by Sat 24 Oct; end-to-end deferred past 30 Oct |
-| **Evidence** | `reports/pilot_retriever.md` |
+| **Evidence** | `reports/pilot_retriever_v7_attested_20261027.md`; `reports/track_a_retrieval_selection_20261027.json` |
 | **Note** | B1-R at full scale is explicitly deferred past the mid-submission (PLAN_MIDSUB.md §3). |
 | **Development selection — 26 Oct** | Retain the pinned top-50 cross-encoder for B1-R development: Recall@10 0.5296 versus dense 0.4259, a 0.1037 gain. Same complete development pool as D-02; no independent receipt or end-to-end benefit established. |
-| **Resolution** | Independent research acceptance remains open; full end-to-end comparison remains deferred as planned. |
+| **Resolution** | Receipt-bound retrieval comparison reproduces Recall@10 0.5296, a 0.1037 gain; retain the reranker for B1-R. Review records pass on Varun's declared conditions. Full end-to-end comparison remains deferred as planned; no end-to-end benefit is claimed. |
 
 ### D-04 — Are the eight anchor episodes real? `[needs pilot]`
 

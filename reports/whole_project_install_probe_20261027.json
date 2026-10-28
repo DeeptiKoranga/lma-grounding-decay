@@ -1,0 +1,23 @@
+{
+  "executed_on": "2026-10-27",
+  "wheel": "/private/tmp/track_a_whole_project_wheels_20261027/after_fixes/lma_grounding_decay-0.1.0.dev0-py3-none-any.whl",
+  "wheel_sha256": "d7090d4cb5abdb3de9529271023aab223104189bb478997a2bdbda6dfbabd166",
+  "isolated_mode": true,
+  "workspace_not_on_import_path": true,
+  "core_modules_imported": 65,
+  "ontology_variables": 46,
+  "fixture_search_hits": 8,
+  "all_fixture_hits_date_eligible": true,
+  "canonical_series": 6,
+  "canonical_observations": 161,
+  "accepted_review_receipt_valid": true,
+  "versions": {
+    "lma-grounding-decay": "0.1.0.dev0",
+    "pydantic": "2.14.1",
+    "pyyaml": "6.0.3"
+  },
+  "heavy_dependencies_installed_for_probe": false,
+  "default_verifier_aliases_available": false,
+  "default_verifier_alias_error": "alias table not found at /private/tmp/track_a_wheel_environment_20261027/lib/python3.12/data/aliases.yaml. It is tracked in git (see .gitignore); Track A extends it in task A6.",
+  "explicit_verifier_alias_path_works": true
+}

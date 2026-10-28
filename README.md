@@ -9,10 +9,21 @@ Deepti Koranga (2025204033).
 
 ## Latest Track A delivery — 27 October 2026
 
+**Integration fixes:** all five audited code gaps are repaired: new runs use the
+selected BGE-M3 retriever, anchor checks call the series store, resume binds all
+participating code/data/settings, run validation requires the declared sweep,
+and installed verifier aliases are included. See
+[the fix validation](reports/integration_fixes_20261027.md).
+Shared annotation, model selection, result figures and complete study
+reproduction remain separate prerequisites. The
+[original audit](reports/whole_project_audit_20261027.md) is preserved as history.
+
 The scoped Track A mid-submission development handoff is complete. The
 [closeout](reports/track_a_mid_submission_scope_20261027.md) records the reduced
 source/PDF scope and sparse historical-series coverage as delivery deviations.
-Formal independent research acceptance remains incomplete.
+Varun's 27 October review and explicit independence/blinding attestations are
+now recorded. Both sampled-corpus and retrieval acceptance exports pass; these
+validate the records and declarations, not the unobserved review procedure.
 
 The active **v7 narrative development** corpus contains **1,156 documents and
 16,472 passages**. Missing article text, author biographies, embedded related
@@ -23,23 +34,26 @@ index with their originals and layout provenance preserved.
 The dense index is rebuilt. All **2,035 pooled relevance judgments** are complete
 within the new pool: **195 relevant, 1,840 irrelevant**, with no unresolved labels.
 The 20-question development comparison selects BGE-M3 under the declared rule;
-Recall@10 is 0.4259, rising to 0.5296 with top-50 reranking. These are a single
-Codex review and development diagnostics, not independent human research scores.
+Recall@10 is 0.4259, rising to 0.5296 with top-50 reranking. The original
+comparison uses automated development judgments. Their origin is preserved
+alongside Varun's subsequent user-attested review; no item decision or evidence
+span has changed.
 
 All six macro series retain their 161 dated original observations. A separate
 317-observation retrospective snapshot remains excluded at historical cutoffs.
 Source gaps, permissions and anchor limitations are explicitly documented.
-The current suite passes **637 tests** after optional PDF/extraction dependencies
+The current suite passes **663 tests** after optional PDF/extraction dependencies
 are installed; committed-source reparse reproduces the archive hash.
 
 The new independent-review workspace is
 `data/interim/track_a_review_delivery_v7_20261026/START_HERE.md`; its judgments and
-attestations are blank in the saved delivery. On 27 October the user reported
-completing Track A review and supplied the intended files. Packet/schema checks
-pass, but their provenance identifies generated drafts with illustrative corpus
-flags and copied development decisions; reviewer declarations remain incomplete.
-Formal independent acceptance remains pending. No experiment-result review or
-main hypothesis conclusion is claimed. Earlier v1 runs and
+attestations are blank in the saved delivery. Separate completed records now
+name Varun, dated 27 October, with user-declared independence and blinding.
+Schemas, packet bindings, complete coverage and exact spans pass both exporters.
+The original supplied files and development-label provenance remain preserved;
+identity, review conduct and timing of blinding are not independently verified.
+See `reports/track_a_reviewer_identity_20261027.json`. No experiment-result
+review or main hypothesis conclusion is claimed. Earlier v1 runs and
 the v3 review retain their original corpus bindings. See
 [Track A delivery](reports/track_a_progress.md) and
 [reproduction instructions](docs/reproduction.md).
@@ -79,7 +93,7 @@ remain required. All six macro series are populated; basket, Brent, benchmark yi
 coverage remain partial and do not confirm the planned anchor episodes.
 
 The 23 October local integration completed all 42 graphs across six unreviewed
-v1 candidates; current checks pass 637 tests. The separate synthetic tool-choice probe succeeded
+v1 candidates; current checks pass 663 tests. The separate synthetic tool-choice probe succeeded
 on only 5/40 expected actions, so model selection remains open. Execution and
 structural validity do not establish research performance. See
 [the validation and remaining gates](reports/integration_status.md).

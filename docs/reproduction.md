@@ -1,8 +1,9 @@
 # Reproduce the integrated development pipeline
 
-Updated 26 October 2026. Unit checks and development runs are distinct from a
-reviewed research experiment. Corpus acceptance, independent annotations, model
-selection, complete series histories and anchor confirmation remain open; see
+Updated 27 October 2026. Unit checks and development runs are distinct from a
+reviewed research experiment. Track A review records are accepted on Varun's
+attestations. Experiment annotations, model selection, complete series histories
+and final episode acceptance remain open; see
 `reports/track_a_progress.md`.
 
 ## Core checks
@@ -34,11 +35,21 @@ exact revision and `local_dir='data/raw/generator/qwen3-8b-4bit'`. Model Python
 code is not downloaded or executed. The isolated runtime avoids changing the
 core environment when local inference requires different packages.
 
-The first stage was plain BM25 for the archived v1 development runs. D-02/D-03
-research acceptance remains open. B1-R uses the same BM25 candidates plus the pinned existing BGE
-cross-encoder, revision `953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e`, from the
-local Hugging Face cache. The worker runs in `.venv` and releases its memory when
-it exits. No reranker download occurs during a development sweep.
+New runs default to the selected BGE-M3 first stage with the pinned v7 FAISS
+index. All retrieved conditions share this first stage; B1-R adds the pinned
+cross-encoder over its top 50 eligible candidates. The original v1 BM25 runs
+remain historical. D-02 is resolved by the receipt-bound retrieval pilot; the
+end-to-end reranker comparison and D-01 model selection remain separate.
+
+`make run-dev` and `make run-all-dev` use `.venv/bin/python` for a persistent
+retrieval worker, keeping native retrieval dependencies outside the MLX runtime.
+The cross-encoder worker also uses `.venv`. All workers are offline. Place the
+corpus-matched vector file at
+`data/interim/corpus_v7_index_20261026/bge_m3_vectors.json`, or set `DENSE_INDEX`.
+Its embedding revision is `5617a9f61b028005a4858fdac845db406aefb181`; the reranker
+revision is `953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e`. Both models must already
+be present in `HF_HOME`. Select another first stage explicitly with `RETRIEVER`;
+new settings require a new output directory.
 
 ## Corpus transfer
 
@@ -78,12 +89,18 @@ UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/lma-uv-cache make run-dev DEV_OUTPUT=runs
 UV_NO_SYNC=1 UV_CACHE_DIR=/private/tmp/lma-uv-cache make run-all-dev DEV_OUTPUT=runs/my-all-dev
 ```
 
-The first command runs B0/B1/B2/M; the second runs all seven conditions.
+The first command runs B0/B1/B2/M; the second runs all seven conditions. The
+default output directories are `runs/local-v7-dev` and `runs/local-v7-all-dev`,
+respectively. Use the same command and output directory for resume.
 Each query/condition gets a validated graph, provisional established-edge IDs,
 raw candidates, optional prose answer, and a separate append-only event log.
 Actual prompts, completions, token counts and call wall times are recorded.
 Graph output is written only after a completed run. Failed attempts retain their
-logs and are listed separately. Resume refuses changed settings/input hashes.
+logs and are listed separately. Resume checks all ten runtime packages
+(including retrieval, corpus and schema code/resources), exact local generator files, runtime package versions, selected
+retriever/index, aliases, series, queries and model settings. Saved artifacts and
+their successful execution logs have checksum receipts. Changed or legacy
+unbound output is rejected; start a new directory rather than relabelling it.
 
 `make run-dev` requires Metal access and downloaded weights; it is not a fixture
 substitute for a research sweep. `--backend llama.cpp` and `--backend vllm` accept
@@ -91,7 +108,32 @@ an explicitly configured local `/v1` chat endpoint. Remote endpoints require
 `--allow-remote`; no paid fallback occurs automatically. Native HTTP backends
 are transport adapters and have not been validated on Kaggle in this session.
 
+## Anchor checks
+
+Every mapped anchor triggers a logged `get_series` lookup within the common
+12-call budget, including B0. Supplied `confirmed_by_series` flags are discarded.
+Confirmation requires a query's explicit `anchor_window` with exact `start` and
+`end` observation dates; `end` must equal `anchor.event_date`. Both endpoints
+must be published by `as_of`, match the declared direction and satisfy any
+`minimum_absolute_change` or `minimum_percent_change` magnitude thresholds.
+Recorded observations include availability dates, units and source URLs.
+
+Without an explicit window the seven-day lookup is diagnostic and cannot confirm
+an event. Empty, delayed or missing endpoints leave the anchor unconfirmed;
+non-series policy announcements need separate episode evidence. No causal link
+is established by a series move. `--require-confirmed-anchors` rejects
+unconfirmed events before generation. Existing development candidates remain
+unreviewed; they are not silently converted into confirmed study episodes.
+
 ## Audit, review and figures
+
+The auditor checks the full condition/query matrix recorded in `inputs.json`,
+artifact/log checksums, identities and call counts. Empty, incomplete, malformed
+or unexpected runs fail with a nonzero exit status. `--allow-partial` explicitly
+permits inspection of a partial/legacy run but never certifies completion.
+Legacy runs need `--conditions ... --queries ...` for a declared matrix.
+Compute for new runs uses only logs bound to completed artifacts; extra failed
+or retry logs are listed separately and excluded from those totals.
 
 Correct the mechanically extracted prose baselines before their final support
 review. The correction packet includes the actual answer and editable graph;
@@ -503,3 +545,41 @@ metadata audit are recorded in `reports/track_a_followup_20261026.json`. Web
 readability does not imply acquisition of a checksummed original for the corpus.
 Current 637-test local/fresh checks are separate from the earlier 630-test
 rebuild receipt; see `reports/track_a_followup_validation_20261026.json`.
+
+
+## 27 October user-attested Track A review
+
+The user identifies the reviewer as Varun, supplies 27 October 2026 as the date,
+and explicitly declares independent review and blinding to results. Completed
+records are in `data/interim/track_a_attested_review_20261027/assessment/`, with
+corpus and retrieval receipts in `corpus_accepted/` and `relevance_accepted/`.
+Original blank workspaces and earlier rejected submissions remain unchanged.
+
+The completed records preserve every original development decision and evidence
+span. The software checks packet/corpus hashes, coverage, dates, exact spans and
+recorded declarations. It does not authenticate identity or independently verify
+review conduct or timing of results exposure. See
+`reports/track_a_reviewer_identity_20261027.json` for exact declarations, file
+hashes, acceptance scope and limits.
+
+For a receipt-bound comparison, use the v7 replay command above with:
+
+- `--pairs data/interim/track_a_attested_review_20261027/relevance_accepted/pairs.jsonl`
+- `--review-receipt data/interim/track_a_attested_review_20261027/relevance_accepted/receipt.json`
+- omit `--smoke` and choose a fresh report output.
+
+The resulting report is `reports/pilot_retriever_v7_attested_20261027.md`.
+Earlier smoke reports retain their original provenance and are not overwritten.
+This review does not accept baseline corrections, support labels or final UER.
+
+## 27 October integration fixes
+
+All five original code findings are repaired. The current suite passes 663 tests,
+Ruff and Black. A new wheel loads its default alias table and passes an actual
+rule check from outside the repository in Python isolated mode. The packaged
+alias bytes match the tracked table. The run command now selects BGE-M3 and
+uses the provenance, completeness and anchor checks documented above.
+
+See `reports/integration_fixes_20261027.md` and its JSON evidence. The original
+641-test audit and earlier reproduction reports retain their historical scope;
+they are not current implementation instructions or reviewed research results.
