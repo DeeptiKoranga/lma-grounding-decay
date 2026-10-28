@@ -209,6 +209,16 @@ numbers.** When those branches merge, their rows come with them.
 | **Consequence** | The rule layer is not a substitute for judgment and must not be read as one: it confirms a span is verbatim and that the passage mentions both variables, and that is all. Three candidates passed every rule and were dropped by hand — two cited passages that mention both variables while asserting no relation between them, and one whose causation ran backwards (portfolio outflows pressuring the rupee, read as the rupee driving outflows). A reviewer should expect to find more. Twenty edges across four graphs, reaching hop 2; the dropped September anchor (D-18) is still why nothing reaches hop 3, so RQ1's deepest slice stays empty. **Cohen's κ (#37) is not addressable by drafting at all** — it needs two people who have not compared notes. |
 | **Revisit if** | Adjudication happens. The `MACHINE-DRAFTED, NOT YET ADJUDICATED` string is asserted by a test, so removing it is a deliberate act with a diff, not a quiet edit. |
 
+### D-21 — The 125-item challenge set is unreachable; rescope B9
+
+| | |
+|---|---|
+| **Status** | `open` — needs the owner of `eval/challenge.py` to agree the rescope |
+| **Decision** | Do not build B9 at 125 items, and do not lower the gates in `src/eval/challenge.py` to make it fit. Report the achievable size with per-type denominators instead. See `reports/b9_feasibility_20261028.md`. |
+| **Why** | The generator gates on 25 eligible seeds and 20 hedged seeds. The dev gold set supplies **19 and 9**. This is not a shortfall that annotation closes: `MAX_EDGES` is 6 and D-19 left four dev queries, so the dev gold set has a ceiling of 24 edges, and eligibility also discards every `correlational` edge. 25 eligible seeds is therefore unreachable by construction. Issue #20's "100 + 25" was written against the original 30-query design, where the dev half alone would have carried roughly 150 gold edges; D-18 and D-19 invalidated that premise without anyone re-costing B9. |
+| **Consequence** | Corruption-detection and false-alarm rates will rest on 85 items at uneven per-type counts (19 each for reversed relation, unsupported intermediate, wrong date and wrong target; 9 for inflated strength), so **every rate must be printed with its denominator** and no macro average over types is meaningful. Padding the seed pool from the test gold graphs is ruled out: it would leak the test set into a diagnostic the system is tuned against, which is exactly what D-19's split-by-anchor exists to prevent. |
+| **Revisit if** | The series store grows enough to revive a fifth or sixth anchor (D-18's revisit condition). Two more anchors would add up to 12 gold edges and could clear the 25-seed gate honestly. |
+
 ---
 
 ## Deferred past 30 October

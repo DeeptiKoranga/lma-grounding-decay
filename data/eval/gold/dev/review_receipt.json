@@ -1,0 +1,13 @@
+{
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "reference_sha256": {
+    "dev-oil-effects.json": "cc278b3c86c769085369fbabb89887e2ed20a8ead8c6448190c12dfe10721bb5",
+    "dev-oil-why.json": "983537466e3b4ea39da6a67a6c83db09ec5b5b07ef0d8565a2650164ad220e12",
+    "dev-rupee-effects.json": "ecce710d6fb2911b72f0972d50ad9a60bde8de10585b04b45e732b5abd84d1ee",
+    "dev-rupee-why.json": "122189e3f3cad3690c9c45e0ef446b61a778a811f9fa07b0e28d6b2de1fe93b8"
+  },
+  "reviewer": "",
+  "reviewed_on": null,
+  "independent_review": false,
+  "all_relations_and_strengths_reviewed": false
+}
