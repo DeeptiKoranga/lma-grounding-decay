@@ -152,7 +152,7 @@ Last reviewed: **19 Oct 2026** (Phase 0).
 | **Why** | Every headline number is sliced by hop. If hop labels drift, the central RQ1 claim is unmeasurable, and a shortest-path definition is the only one that is well defined when a node has two incoming chains. |
 | **Consequence** | Where two chains reach the same variable at different lengths, the shorter one sets the hop. Worth a sentence in the mid report. |
 
-### D-13 — `main` is protected client-side, not server-side
+### D-24 — `main` is protected client-side, not server-side
 
 | | |
 |---|---|
@@ -160,6 +160,7 @@ Last reviewed: **19 Oct 2026** (Phase 0).
 | **Decision** | A tracked `pre-push` hook (`scripts/git-hooks/pre-push`, installed by `make hooks`) refuses direct pushes to `main`. Override with `PUSH_TO_MAIN=1` for a genuine emergency. |
 | **Why** | GitHub requires Pro for branch protection and rulesets on a *private* repository, and the repo stays private until submission. The hook catches the accidental push, which is the failure that actually happens; it is not a security boundary and anyone can bypass it. |
 | **Revisit if** | The repo moves to GitHub Pro — free via the Student Developer Pack. Then add real branch protection (PR + 1 approval, no force-push, no deletion) and keep the hook as a local fast-fail. |
+| **Renumbered** | Taken as D-13 on this branch on 19 Oct, the same number `b/verifier-rules` took that day for the span-tolerance row. That branch has since merged into the Track B line, so this row moves to **D-24**. Nothing else referred to it by number. |
 
 ---
 
