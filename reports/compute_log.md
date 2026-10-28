@@ -251,3 +251,42 @@ An optional Qwen3.5 candidate download was started during the broader preparatio
 and interrupted when work focused on these five fixes. Its partial ignored cache
 is not a completed candidate installation or pilot result. No paid API or Kaggle
 execution occurred.
+
+## 28 October full current-v7 fresh-checkout reproduction
+
+Task 4.3 used clean GitHub source `07f10f08870860388ec05207ecfd497f2ed8fad3`, a fresh core/dev
+environment and the frozen current-v7 corpus/index. Cached pretrained weights,
+native MLX/retrieval environments and verified unchanged PDF distribution files
+were reused. The initial slow PDF download was deliberately stopped and the
+old pruned cache missed; both attempts are retained separately from successful
+installation and run timings. Setup, Ruff/Black and 663 tests pass.
+
+The full planned `make run-dev` matrix produced 24 new graphs: six development
+candidates × B0/B1/B2/M. Run phase wall time was **2666.02
+seconds**. The full matrix audit and independent trace checks pass.
+Unchanged resume reused all 24 without new model calls.
+
+The baseline source screen retains four nonverbatim spans in three B1/B2
+outputs. All M outputs pass source/date/span checks. These findings remain for
+correction/support review and are not silently repaired or treated as accepted
+evidence.
+
+| Condition | Graphs | Model calls | Prompt tokens | Completion tokens | Model-call seconds | Tool calls |
+|---|---:|---:|---:|---:|---:|---:|
+| B0 | 6 | 12 | 16,680 | 1,986 | 366.85 | 6 |
+| B1 | 6 | 12 | 46,830 | 5,369 | 870.77 | 12 |
+| B2 | 6 | 6 | 29,546 | 4,136 | 585.00 | 12 |
+| M | 6 | 15 | 34,741 | 5,129 | 744.12 | 68 |
+
+Totals: **45 model calls**, **127,797
+prompt tokens**, **16,620 completion tokens**,
+**2566.74 measured model-call wall seconds**,
+**98 tool calls** and **2657.26 summed case wall
+seconds**. Invalid-JSON calls: **0**.
+These are measured wall times, not GPU-active hours; run times exclude setup,
+dependency downloads and review. No paid API or Kaggle execution occurred.
+
+This completes local software reproduction, not independent edge support,
+reviewed UER/recall, model selection or an all-machine check. Detailed source,
+stage, input, graph and log hashes:
+`reports/fresh_checkout_reproduction_20261028.json`.

@@ -108,7 +108,7 @@
   "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
   "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
   "scope_report": "reports/track_a_mid_submission_scope_20261027.md",
-  "scope_report_sha256": "8171015e614d31f30a71786590f7a532b6b9bd27b06e368bea71edc4bab42c3c",
+  "scope_report_sha256": "c994743ba077b4dd3dfd9a601a8377552566565ad804b55e1fac7f507ef6d6f0",
   "evidence": {
     "reports/track_a_mid_submission_validation_20261027.json": "a6714bd2f5bcc8b55c0d3cd2e74e16b3233429da8ac0ef6e2d45b1e364ad03aa",
     "reports/track_a_retrieval_selection_20261026.json": "0f76a2e2e4f270585bf0d0a1fb6a38a58fa13f9b245a320b232e7aa25643b244",
@@ -118,7 +118,8 @@
     "reports/track_a_submission_wording_revision_20261027.json": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4",
     "reports/track_a_reviewer_identity_20261027.json": "6f6140e6c0e4ba9b7765b05ec602308294933b4ad0f06cfb709d8f309bfea3ab",
     "reports/track_a_retrieval_selection_20261027.json": "127380691fdf7632f8e50a2a712260f7629aa994c5012038912bdf24c511c4ca",
-    "reports/integration_fixes_20261027.json": "5d43419b45a1445af897d8899de2227f0086af1652049bbc32261628694c89da"
+    "reports/integration_fixes_20261027.json": "5d43419b45a1445af897d8899de2227f0086af1652049bbc32261628694c89da",
+    "reports/fresh_checkout_reproduction_20261028.json": "d3366c0a35eb7565dc6eddb7a82f751ea380e10a9613ab9c8588bb0ea1fbf136"
   },
   "formal_independent_acceptance_complete": true,
   "other_tracks_or_entire_mid_submission_complete": false,
@@ -141,7 +142,7 @@
     "3.6 UER/result figures",
     "3.7 current reviewed failure analysis",
     "4.1 final mid report contributions",
-    "4.3 full selected-configuration fresh-checkout/team reproduction"
+    "Other-team-laptop/Kaggle verification; local task 4.3 passed"
   ],
   "resolved_integration_findings": [
     {
@@ -187,5 +188,11 @@
   ],
   "open_integration_findings": [],
   "integration_fix_validation": "reports/integration_fixes_20261027.json",
-  "integration_fix_validation_sha256": "5d43419b45a1445af897d8899de2227f0086af1652049bbc32261628694c89da"
+  "integration_fix_validation_sha256": "5d43419b45a1445af897d8899de2227f0086af1652049bbc32261628694c89da",
+  "last_updated_on": "2026-10-28",
+  "fresh_checkout_reproduction": "reports/fresh_checkout_reproduction_20261028.json",
+  "fresh_checkout_reproduction_sha256": "d3366c0a35eb7565dc6eddb7a82f751ea380e10a9613ab9c8588bb0ea1fbf136",
+  "full_selected_configuration_fresh_checkout_reproduction_complete": true,
+  "fresh_checkout_reproduction_scope": "Task 4.3 local software check: clean committed source, fresh core/dev environment, cached native MLX/retrieval/PDF packages and model weights; all 24 B0/B1/B2/M cases; no other-machine or research acceptance.",
+  "other_team_laptop_reproduction_complete": false
 }

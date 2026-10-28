@@ -33,7 +33,7 @@
   "research_acceptance": true,
   "source_permissions_changed": false,
   "series_coverage_changed": false,
-  "next_action": "Reviewer metadata and scoped Track A record validation are complete. Preserve review-procedure and data-scope limits; use the whole-project audit for outstanding shared integration, annotation, result-figure and reproduction work. Do not interpret review-record acceptance as whole-project completion.",
+  "next_action": "Track A corpus/retrieval review-record validation and local task 4.3 software reproduction are complete. Shared support/correction annotation, UER/result figures, model/episode acceptance and other-machine verification remain separate; no whole-project acceptance is inferred.",
   "scope_confirmed_by_user": true,
   "scope_confirmation": "no i mean i only did whatever was in track a",
   "numerical_hypothesis_results_imported": false,
@@ -64,7 +64,7 @@
   "wording_revision_sha256": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4",
   "current_user_files_role": "Track A user-attested review records; original label origin, declarations and receipt scope retained.",
   "mid_submission_scope_disposition": "reports/track_a_mid_submission_scope_20261027.json",
-  "mid_submission_scope_disposition_sha256": "e755354a4c8da0204f7e7ddaf0543c35f7fce0775c9b0ac9361c888c7eee4b36",
+  "mid_submission_scope_disposition_sha256": "de0792c3eb82c27b797bfd2e25356d0ef51d88ebd5aabf68a48e6d352cc7c05c",
   "scoped_development_handoff_complete": true,
   "formal_independent_acceptance_complete": true,
   "attestation_source": "YESBi have done independent review and blinded to results",
@@ -91,5 +91,8 @@
   "whole_project_audit_sha256": "66d52babfd892ac4d2cef7338edfbf0ed648ef20395552e12d4f2791e1352834",
   "audited_integration_code_findings_complete": true,
   "integration_fix_validation": "reports/integration_fixes_20261027.json",
-  "integration_fix_validation_sha256": "5d43419b45a1445af897d8899de2227f0086af1652049bbc32261628694c89da"
+  "integration_fix_validation_sha256": "5d43419b45a1445af897d8899de2227f0086af1652049bbc32261628694c89da",
+  "local_software_reproduction_complete": true,
+  "local_software_reproduction": "reports/fresh_checkout_reproduction_20261028.json",
+  "local_software_reproduction_sha256": "d3366c0a35eb7565dc6eddb7a82f751ea380e10a9613ab9c8588bb0ea1fbf136"
 }

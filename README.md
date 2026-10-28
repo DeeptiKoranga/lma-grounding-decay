@@ -7,15 +7,24 @@ Deepti Koranga (2025204033).
 
 ---
 
-## Latest Track A delivery — 27 October 2026
+## Latest Track A delivery — 28 October 2026
+
+**Fresh-checkout update — 28 October:** Track A / Varun task 4.3 is complete
+for the local development configuration. A clean GitHub checkout passed setup,
+Ruff/Black and **663 tests with no skips**, then generated **24/24 new graphs**
+(B0/B1/B2/M × six current-v7 candidates). Full audit, independent trace checks
+and unchanged resume (24 cached, no new model calls) passed. Cached model weights,
+native inference environments and the verified PDF distribution were reused;
+other laptops/Kaggle remain unverified. See
+[fresh-checkout evidence](reports/fresh_checkout_reproduction_20261028.md).
 
 **Integration fixes:** all five audited code gaps are repaired: new runs use the
 selected BGE-M3 retriever, anchor checks call the series store, resume binds all
 participating code/data/settings, run validation requires the declared sweep,
 and installed verifier aliases are included. See
 [the fix validation](reports/integration_fixes_20261027.md).
-Shared annotation, model selection, result figures and complete study
-reproduction remain separate prerequisites. The
+Shared annotation, model selection, result figures and other-machine/Kaggle
+verification remain separate prerequisites. The
 [original audit](reports/whole_project_audit_20261027.md) is preserved as history.
 
 The scoped Track A mid-submission development handoff is complete. The

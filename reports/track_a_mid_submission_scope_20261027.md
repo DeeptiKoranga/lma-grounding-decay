@@ -1,5 +1,14 @@
 # Track A mid-submission scope and closeout — 27 October 2026
 
+**Fresh-checkout update — 28 October:** Track A / Varun task 4.3 is complete
+for the local development configuration. A clean GitHub checkout passed setup,
+Ruff/Black and **663 tests with no skips**, then generated **24/24 new graphs**
+(B0/B1/B2/M × six current-v7 candidates). Full audit, independent trace checks
+and unchanged resume (24 cached, no new model calls) passed. Cached model weights,
+native inference environments and the verified PDF distribution were reused;
+other laptops/Kaggle remain unverified. See
+[fresh-checkout evidence](fresh_checkout_reproduction_20261028.md).
+
 **Integration update:** all five code findings in the preserved
 [original audit](whole_project_audit_20261027.md) are repaired. The suite passes
 663 tests; [fix validation](integration_fixes_20261027.md) records the checks.
