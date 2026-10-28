@@ -1,0 +1,27 @@
+{
+  "status": "passed; sparse published observations, not comprehensive histories",
+  "counts": {
+    "brent_usd_bbl": 4,
+    "indian_basket_usd_bbl": 2,
+    "inr_usd": 141,
+    "cpi_headline_yoy": 7,
+    "gsec_10y_pct": 6,
+    "fpi_flows_usd_mn": 1
+  },
+  "total_observations": 161,
+  "checks": {
+    "all_six_required_files_load": true,
+    "fpi_unavailable_before_published_vintage": true,
+    "one_fpi_point_does_not_invent_a_move": true,
+    "brent_returns_only_visible_quotes": true,
+    "earlier_canonical_vintages_preserved_during_extension": true
+  },
+  "sha256": {
+    "cpi_headline_yoy.csv": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+    "indian_basket_usd_bbl.csv": "17f3e0f0919727bd0ebba18d46f50e98509dea35e5ebc0be018e1b431d1b23b7",
+    "inr_usd.csv": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c",
+    "fpi_flows_usd_mn.csv": "94c24a79a038b34c510c2f93bdcd0b5ef2540d2756b129c8d5ba32f5666c9a4d",
+    "brent_usd_bbl.csv": "07b92e9762cf03460f7dedaa1186796bd5c781feb3418b4f9fd58296bb82a9fa",
+    "gsec_10y_pct.csv": "7b12e2cf5f9254f1b7b648a33803b1f5ea381b96a7f61ebab150ed14911a2be6"
+  }
+}

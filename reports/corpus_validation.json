@@ -1,0 +1,46 @@
+{
+  "documents": 1173,
+  "news_documents": 1112,
+  "official_documents": 61,
+  "passages": 27286,
+  "by_source": {
+    "businessline": 218,
+    "eaindustry": 10,
+    "economic_times": 892,
+    "mint": 2,
+    "mospi": 37,
+    "ppac": 14
+  },
+  "by_publication_month": {
+    "2026-03": 195,
+    "2026-04": 159,
+    "2026-05": 164,
+    "2026-06": 166,
+    "2026-07": 161,
+    "2026-08": 156,
+    "2026-09": 172
+  },
+  "duplicate_removals": 1,
+  "all_offsets_match_archived_parent": true,
+  "unique_document_and_passage_ids": true,
+  "all_publications_within_frozen_window": true,
+  "known_later_day_versions_retained": 0,
+  "pilot_pairs": 20,
+  "pilot_positive_references": 29,
+  "pilot_references_exist_and_are_visible": true,
+  "independent_gold_review": false,
+  "archive_members_match_files": true,
+  "reversed_input_archive_hash_identical": true,
+  "archive_sha256": "ebef2e56b9db7c331289479e5dc9e67850edd5546364dc9844e79eeb6264a3f4",
+  "articles_sha256": "7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3",
+  "pair_file_sha256": "de6c265557d352516bc97cae762e109c5e50c99c315264bc373f7748adb11f8d",
+  "rejected_raw_sidecars": 199,
+  "version_exclusions": 46,
+  "version_exclusions_by_source": {
+    "businessline": 19,
+    "economic_times": 19,
+    "mospi": 2,
+    "ppac": 6
+  },
+  "review_scope": "Automated integrity and source-date checks, with a small source-stratified extraction inspection; not full manual quality or licence acceptance."
+}

@@ -1,0 +1,188 @@
+# Track A delivery status — updated 28 October 2026
+
+**Fresh-checkout update — 28 October:** Track A / Varun task 4.3 is complete
+for the local development configuration. A clean GitHub checkout passed setup,
+Ruff/Black and **663 tests with no skips**, then generated **24/24 new graphs**
+(B0/B1/B2/M × six current-v7 candidates). Full audit, independent trace checks
+and unchanged resume (24 cached, no new model calls) passed. Cached model weights,
+native inference environments and the verified PDF distribution were reused;
+other laptops/Kaggle remain unverified. See
+[fresh-checkout evidence](fresh_checkout_reproduction_20261028.md).
+
+**Integration update:** the five code findings in the
+[original audit](whole_project_audit_20261027.md) are repaired. New runs consume
+the selected retriever, log actual series checks, reject stale resumes and
+incomplete sweeps, and load default aliases from the installed package.
+The suite passes 663 tests; see [fix validation](integration_fixes_20261027.md).
+Shared annotation, model selection, UER figures and other-machine/Kaggle
+verification remain outstanding.
+
+The remaining local engineering, corpus repair, development review, indexing,
+retrieval comparison and reproduction work is complete. The final v7 delivery
+has **1,156 documents and 16,472 passages**, **2,035 completed development
+judgments**, a matching dense index and a new independent-review workspace.
+The **scoped mid-submission development handoff is closed** under the
+[27 October scope disposition](track_a_mid_submission_scope_20261027.md): the
+available source mix, narrative-only PDFs and sparse historical series are
+delivered with explicit deviations. **Track A review records now pass acceptance
+validation on Varun's explicit independence/blinding attestations**, dated
+27 October. This validates declarations and record integrity, not unobserved
+review conduct. Source permission and episode confirmation remain separate.
+This report replaces the 25 October status, preserved as `track_a_progress_20261025.md`.
+
+## Human expert review update — 27 October
+
+The user reports completing Track A review only, with the expected outcome,
+identifies the reviewer as **Varun** and the date as **27 October 2026**, and
+explicitly attests independent review and blinding to results. These declarations
+are now recorded in the supplied corpus/relevance assessment files. Corpus
+acceptance is recorded from the reported completed review, intended files and
+all favorable supplied sample checks.
+
+Both actual acceptance exporters pass: 73 corpus items, 20 questions, 2,035
+candidates and 195 exact positive spans. The receipt hashes bind the completed
+records to the final v7 corpus and packets. See
+`reports/track_a_reviewer_identity_20261027.json`. Receipt validation does not
+authenticate the reviewer, observe the procedure or verify review timing relative
+to results exposure. Prior comparison scores were available in this conversation;
+the user's blinding declaration is retained as an attestation.
+
+The original supplied versions remain in
+`data/interim/track_a_received_review_20261027/`; their initial rejection is
+preserved in `reports/track_a_submitted_review_validation_20261027.json`.
+All item decisions and evidence spans remain identical to the existing automated
+development assessment. Their origin and earlier wording revision are preserved;
+the new metadata does not claim fresh labels created by the assistant. Completed
+records and receipts are separate from the unchanged 82-file blank v7 workspace.
+No experiment support review, main hypothesis result, source permission or
+blanket extraction certification is inferred.
+
+## Delivered
+
+| Track A task | Final evidence | Scope and acceptance limit |
+|---|---|---|
+| A1–A2 collection | 1,095 news: ET 870, BusinessLine 213, Mint 12. Official: MoSPI 37, PPAC 14, OEA 10. All seven months represented. | The documented mid-submission fallback retains the acquired source mix. Business Standard/RBI remain unavailable; ET concentration, sparse Mint and OEA deviation remain explicit. |
+| A3–A5 extraction, scope, deduplication and freeze | Missing ET bodies recovered, Mint biographies/promotions removed, 21 unsuitable news documents excluded. All 870 ET originals checked: 105 marked custom links removed, no long related-link titles retained; untouched HTML preserved. Exact parent offsets and reverse-input archive checked. | Official PDFs are narrative-only: 949 paragraphs from 61 documents. Tables, charts, image-only material and 53,967 rejected native line groups remain outside the index. Source originals and layout audits stay local. No exhaustive table transcription or independent extraction certification is claimed. |
+| A6–A7/A11 retrieval and dates | Plain/alias BM25, pinned BGE-M3, FAISS, RRF and pre-ranking date eligibility implemented. Final 16,472-passage index matches the corpus; fresh-process reload and two actual query embeddings/searches pass March/September cutoffs. | Model/preprocessing identity and exact title+text hashes govern vector reuse. Old v1 outputs and v3 review packets retain their original bindings. |
+| A8–A9 development comparison | All six old uncertain items adjudicated as insufficient standalone evidence. Complete final pool: 195 relevant, 1,840 irrelevant, zero uncertain across 20 queries. All prior positives accounted for; final pool adds no candidates beyond the fully read v5 pool. Dense selected by the declared 0.03 rule; Recall@10 0.4259, rising to 0.5296 with reranking. | Original automated labels and prior exposure remain disclosed. Varun's subsequent independence/blinding declarations now pass record validation. Reranker end-to-end benefit is unproven and full-scale B1-R remains deferred. |
+| A10 series and episode support | All six canonical files retain 161 original-vintage observations. Separate 317-observation retrospective snapshot, exact hashes and date exclusions revalidated. Source/measure/episode feasibility audit complete; stricter source checks admitted no additional original-date values. | October captures cannot become March–September evidence. Daily benchmark yield, Brent/basket/FPI histories remain sparse. ATF and RBI policy episodes require the corresponding dated measures/statements; Track B owns anchor acceptance. |
+| Reproduction/integration | Task 4.3: clean source at 07f10f0, fresh core environment, 663 tests, Ruff/Black, 24 newly generated current-v7 B0/B1/B2/M graphs; full audit and 24-result cached resume pass. Source rebuild and saved-index reload receipts remain available. | Model weights, native inference environments and verified PDF package files were reused. Other machines/Kaggle are untested. Historical v1 reproductions remain separately bound. See the 28 October evidence above. |
+| Reports, figures and handoff | Current corpus/series figures, selection, provenance, source scope, compute record, reproduction guide and mid-submission draft updated. New 82-file human-review workspace contains 73 sources/originals and all 2,035 candidates; all forms and attestations blank. | All 83 original v3 files and the 82-file blank v7 workspace are unchanged. Blank exports still fail; separate completed user-attested records now pass. No final UER, reference recall or agreement is produced. |
+
+## Additional source and acceptance work — 26 October follow-up
+
+At the 26 October follow-up, no human reviewer declarations had been supplied;
+the existing development review remained separate from blank human forms. The
+27 October user attestations and validated receipts above supersede that missing
+metadata. The assistant did not invent a reviewer or perform human review.
+
+Further primary-source work is now complete:
+
+- All 61 retained official PDFs were checked for file creation/modification dates
+  later than their declared publication. All have comparable metadata; no known
+  later-version conflict was found. This detects known conflicts, not unknown
+  historical edits or full extraction correctness.
+- The dated [PIB announcement](https://www.pib.gov.in/PressReleasePage.aspx?PRID=2247895&lang=2&reg=3)
+  supports the April 1 domestic ATF announcement and its limited 25 percent
+  increase. It does not provide a city-specific daily price series.
+- The [August 5 RBI statement](https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx?prid=63288)
+  confirms the August 3–5 meeting and unchanged 5.25 percent repo rate. Primary
+  content was read through the web tool; the collector remains blocked and no
+  new RBI original was added to the corpus. Track B anchor acceptance is open.
+- Seven public SEBI annexures were acquired. Four pass the file/version/table
+  checks, yielding five distinct April–August total-FPI candidates with native
+  USD values and conservative publication dates. The August annexure postdates
+  its listed release and is excluded; two other downloaded copies are invalid
+  ZIP files. The total includes mutual-fund investment and cannot be mixed with
+  the current equity-plus-debt series. All five candidates and their source
+  cells are recorded separately; canonical series remain at 161 observations.
+
+The follow-up implementation adds seven meaningful publication, table identity,
+unit, arithmetic, future-date and corrupt-download checks. Current local and
+fresh-checkout suites pass **637 tests**. The earlier 630-test delivery and
+source-rebuild receipts remain unchanged historical evidence.
+
+See `reports/track_a_followup_20261026.json`,
+`reports/sebi_fpi_vintage_audit_20261026.json`,
+`reports/official_pdf_version_audit_20261026.json` and
+`reports/track_a_followup_validation_20261026.json`. Source gaps, permissions and
+complete original-date histories remain requirements where the evidence above
+does not satisfy them. Human-record acceptance is updated separately above.
+
+## Final corpus and experiment boundaries
+
+Active: `data/processed/`, **v7-narrative-development**, corpus SHA-256
+`25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496`;
+archive SHA-256
+`88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037`.
+The active manifest records the narrative extraction scope. The final dense index
+is `data/interim/corpus_v7_index_20261026/bge_m3_vectors.json`.
+
+The reviewed v3 snapshot is archived at `data/interim/frozen_v3_20261026/`,
+SHA `1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164`.
+Its 25 October review, index and original reviewer packet remain historical.
+Intermediate v4/v5/v6 candidates are preserved and identified in
+`reports/corpus_versions.json`. They are not mixed into final comparisons.
+
+The earlier 42-graph assembly and 24-graph fresh-source reproduction use v1,
+SHA `7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3`,
+at `data/interim/frozen_v1_20261023/`, with the preserved original three-series
+inputs. They are unreviewed development runs, not v7 experiments or accepted
+gold. Corrected baseline graphs, independent support/reference labels and
+final UER belong to the remaining study work across tracks.
+
+## Independent review handoff
+
+Open `data/interim/track_a_review_delivery_v7_20261026/START_HERE.md` and read
+`SCOPE.md` first. The corpus page includes 73 deterministic source/month samples
+and all 73 checksummed originals. The relevance page includes 20 questions and
+2,035 candidates without scores, ranks or seed flags. Forms and human identity,
+date, independence, blinding and acceptance attestations remain wholly blank.
+Do not copy the separate Codex review into those forms.
+
+The final integrity validator checks corpus/archive bytes, every passage offset,
+index identity, complete judgment coverage/text hashes/evidence spans, dates,
+all new and original workspace hashes, series hashes and blank human forms.
+It checks integrity; it does not certify semantic correctness or independence.
+
+## Mid-submission closure and remaining research acceptance
+
+The [27 October closeout](track_a_mid_submission_scope_20261027.md) adopts the
+reduced source/PDF scope and sparse six-series coverage for this development
+handoff. These two disposition tasks are closed with explicit deviations;
+complete acquisition or historical coverage is not claimed. No further
+autonomous Track A engineering task remains within that scope.
+
+The missing reviewer declarations have now been supplied by the user and both
+Track A exporters pass. This closes the record-validation gate on those
+attestations. It does not independently verify review conduct, establish
+representative corpus coverage or accept experimental support labels. Completed
+records/receipts are stored separately from the immutable blank delivery.
+
+Publisher permission remains necessary before any sharing that requires it.
+Full text, indexes, source originals and archives remain local. Later research
+requiring complete series or confirmed anchors needs the missing dated evidence;
+Track B must confirm, drop or redate unsupported anchors. Retrospective proxies
+remain separate. The broader study still has Track B/C annotation, model/TA
+decisions and final-result work. No pull request or research issue closure is
+part of this delivery.
+
+## Key records
+
+- `reports/track_a_validation_20261026.json`,
+  `reports/track_a_clean_reproduction_20261026.json`.
+- `reports/corpus_v7_build_20261026.json`,
+  `reports/corpus_v7_navigation_qa_20261026.json`,
+  `reports/corpus_v7_index_20261026.json`,
+  `reports/retrieval_v7_saved_index_validation_20261026.json`.
+- `reports/relevance_adjudication_20261026.json`,
+  `reports/retriever_v5_full_review_20261026.json`,
+  `reports/retriever_v7_full_review_20261026.json`,
+  `reports/track_a_retrieval_selection_20261026.json`,
+  `reports/pilot_retriever_v7_20261026.md`.
+- `reports/track_a_source_scope_20261026.md`,
+  `reports/track_a_series_scope_20261026.json`,
+  `reports/retrospective_series_read_validation_20261026.json`.
+- `reports/track_a_reviewer_delivery_v7_20261026.json`,
+  `reports/corpus_versions.json`, `data/processed/MANIFEST.md`,
+  `docs/reproduction.md`, `docs/decisions.md`, `reports/compute_log.md`.

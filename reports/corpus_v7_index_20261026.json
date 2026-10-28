@@ -1,0 +1,16 @@
+{
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "index_sha256": "5345b8a3384f759f73a7fee6c58ef544a4ad6ad47f04262fc81efafb5e038d2c",
+  "index": "data/interim/corpus_v7_index_20261026/bge_m3_vectors.json",
+  "passages": 16472,
+  "reused_exact_title_text_inputs": 16440,
+  "new_inputs_encoded": 32,
+  "embedding_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+  "device": "cpu",
+  "max_length": 1024,
+  "batch_size": 8,
+  "phase_wall_s": 38.55,
+  "all_passages_match_snapshot": true,
+  "lexical_date_checks_passed": true,
+  "research_acceptance": false
+}

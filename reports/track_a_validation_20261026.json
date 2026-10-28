@@ -1,0 +1,24 @@
+{
+  "checked_on": "2026-10-26",
+  "status": "development-delivery integrity passed; research acceptance pending",
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+  "documents": 1156,
+  "passages": 16472,
+  "pooled_judgments": 2035,
+  "judgment_counts": {
+    "irrelevant": 1840,
+    "relevant": 195
+  },
+  "all_offsets_exact": true,
+  "all_positive_spans_valid": true,
+  "all_review_candidates_date_eligible": true,
+  "all_index_bytes_verified": true,
+  "new_review_workspace_files_verified": 82,
+  "old_review_workspace_files_unchanged": 83,
+  "human_judgments_and_attestations_blank": true,
+  "canonical_observations": 161,
+  "retrospective_observations": 317,
+  "series_bytes_unchanged": true,
+  "research_acceptance": false
+}

@@ -1,0 +1,191 @@
+{
+  "status": "v6-narrative-development candidate; source snapshot, prior indexes, experiments and human records unchanged",
+  "method": "Codex source review and checksum-bound reparse; not independent human acceptance",
+  "reviewed_on": "2026-10-26",
+  "research_acceptance": false,
+  "original_corpus_sha256": "24c925d01e6d3b5515962ff9b732341f76c5ee23a440bf6e011f8243ad46f9c6",
+  "candidate_corpus_sha256": "4305ea307372bbe3d306bb79d7de555e7e0a274643ebc65f6d2b7a37071b243b",
+  "candidate_archive_sha256": "e6674d8b51aa0043996cf2d9d6c2582c47df0ca9be8328e4b582b571725317ab",
+  "candidate": "data/interim/corpus_v6_20261026/snapshot",
+  "documents": 1156,
+  "passages": 16472,
+  "sources": {
+    "businessline": 213,
+    "eaindustry": 10,
+    "economic_times": 870,
+    "mint": 12,
+    "mospi": 37,
+    "ppac": 14
+  },
+  "changed_documents": 22,
+  "changed_by_source": {
+    "economic_times": 22
+  },
+  "changes": [
+    {
+      "doc_id": "economic_times-03110864791d4fd2da46",
+      "source": "economic_times",
+      "old_chars": 3478,
+      "new_chars": 3611,
+      "raw_sha256": "59048d581dcc78af3b4c997ae7605b1d91eb6599aaebaf213aa5178342efc343"
+    },
+    {
+      "doc_id": "economic_times-09b6307d7e1699a803ae",
+      "source": "economic_times",
+      "old_chars": 3683,
+      "new_chars": 3685,
+      "raw_sha256": "4b5a7ae912664618b40a8d8233c513421763368b7c9ea3ff7487c0a248f663a2"
+    },
+    {
+      "doc_id": "economic_times-13a197e8fb36c0b9dce5",
+      "source": "economic_times",
+      "old_chars": 1544,
+      "new_chars": 1713,
+      "raw_sha256": "a69179b2bd1c3e0269b6e7d0c940d591cf656e1104e0722ee2634700609d09f1"
+    },
+    {
+      "doc_id": "economic_times-1540e97ce8f488a13da0",
+      "source": "economic_times",
+      "old_chars": 10016,
+      "new_chars": 10017,
+      "raw_sha256": "860f87bfa2d348d2794a5024cb696e8dd0ab53ae23b73c7461e4407f77a47636"
+    },
+    {
+      "doc_id": "economic_times-208c38486e4bf0d22306",
+      "source": "economic_times",
+      "old_chars": 1058,
+      "new_chars": 962,
+      "raw_sha256": "89a4073ef58762a5fb1fde02187c82290696952ba22b68526578249707fd5fe0"
+    },
+    {
+      "doc_id": "economic_times-24f36b14f7b35608fe69",
+      "source": "economic_times",
+      "old_chars": 4004,
+      "new_chars": 3875,
+      "raw_sha256": "ffa14c114e4f8ab8a6e13ec59c059308e7a8d70fb423d52f234b75faff1f16f5"
+    },
+    {
+      "doc_id": "economic_times-281affc526236b038d16",
+      "source": "economic_times",
+      "old_chars": 5546,
+      "new_chars": 5547,
+      "raw_sha256": "4029fd62cd5aa9a14b20ed7a8e7b7e1a884ec133820127f32dfd473f2af669ca"
+    },
+    {
+      "doc_id": "economic_times-2f238c9f9ded66b39a65",
+      "source": "economic_times",
+      "old_chars": 5729,
+      "new_chars": 5733,
+      "raw_sha256": "2357bce37052ae396b4fef0b46e6914e63e54e267d9f9834858600b32ffc6c63"
+    },
+    {
+      "doc_id": "economic_times-3a707a326e6535b58058",
+      "source": "economic_times",
+      "old_chars": 6432,
+      "new_chars": 6433,
+      "raw_sha256": "df1216040f34fe26a0c2d75288bad65a73a6744b954fcf25e8c6ccb16a9a3a5c"
+    },
+    {
+      "doc_id": "economic_times-3e1bec7cd170c43fadc7",
+      "source": "economic_times",
+      "old_chars": 6796,
+      "new_chars": 6797,
+      "raw_sha256": "ef87cb4a4331071a18e72fec96f684bbf9c73f704cfbb670337a522fe04023ba"
+    },
+    {
+      "doc_id": "economic_times-4b3afc2d0bdcb2d41298",
+      "source": "economic_times",
+      "old_chars": 1967,
+      "new_chars": 1971,
+      "raw_sha256": "456b8ebdf866483aa014ff110c3b5a4b8ff5d46c1565a0cd0e859e69a28df27a"
+    },
+    {
+      "doc_id": "economic_times-67b4ff6e75161b3a2533",
+      "source": "economic_times",
+      "old_chars": 2657,
+      "new_chars": 2591,
+      "raw_sha256": "b49730c9cc9173fdefe5fa6f379c63585d8a45a3b71d9f51e313ed39a3380226"
+    },
+    {
+      "doc_id": "economic_times-68e85f331f8de7883e71",
+      "source": "economic_times",
+      "old_chars": 7188,
+      "new_chars": 7189,
+      "raw_sha256": "9134990dc1cc264e816a9c7c5f2341439f2a5f8678ca81459638e83c46361990"
+    },
+    {
+      "doc_id": "economic_times-a94d7f2d07056c6bf269",
+      "source": "economic_times",
+      "old_chars": 6620,
+      "new_chars": 6621,
+      "raw_sha256": "3753c4d7f0a10e33336af472ef1ad1f57ab4ec23a1074e77cd20affa5642d34a"
+    },
+    {
+      "doc_id": "economic_times-b6a763b209186715aefe",
+      "source": "economic_times",
+      "old_chars": 2863,
+      "new_chars": 2869,
+      "raw_sha256": "511ec8df7a80946ac1ff802e7032947c5321b3d475ffce9b4fcc8516b7d4e873"
+    },
+    {
+      "doc_id": "economic_times-bda1cc4e9b164ec2d226",
+      "source": "economic_times",
+      "old_chars": 2619,
+      "new_chars": 2621,
+      "raw_sha256": "57496b3fa675c3f7c4e49bd07041255c1d5bc6c0da12b2be592a21cdcb29cdad"
+    },
+    {
+      "doc_id": "economic_times-c4fe4042fa02133c6819",
+      "source": "economic_times",
+      "old_chars": 3557,
+      "new_chars": 3491,
+      "raw_sha256": "d19fb3955be54097cb81ebf87e5cdb752dba1f2581c403c628aa3cf168ea0cde"
+    },
+    {
+      "doc_id": "economic_times-cb6aa7cbe799d6f59f32",
+      "source": "economic_times",
+      "old_chars": 6983,
+      "new_chars": 6988,
+      "raw_sha256": "d28f3064744cc9ca0c6998e169784ff7dac6ccf73aef57bd8d012df008e18fa9"
+    },
+    {
+      "doc_id": "economic_times-d5654eb7d1f23cbfc14d",
+      "source": "economic_times",
+      "old_chars": 3050,
+      "new_chars": 3051,
+      "raw_sha256": "5a057d7e4b3f490a1be4450c7e8169b3db55ab16f38d851bc63cab615fb86d36"
+    },
+    {
+      "doc_id": "economic_times-d594ecec67cc75752880",
+      "source": "economic_times",
+      "old_chars": 4246,
+      "new_chars": 4257,
+      "raw_sha256": "dd9f90e469f307210e4231757fde1f7e633f307bc05f322c46932268df3bf4bf"
+    },
+    {
+      "doc_id": "economic_times-e5d99c6ff88adf78add9",
+      "source": "economic_times",
+      "old_chars": 3199,
+      "new_chars": 3139,
+      "raw_sha256": "28db02fe5a6cd7cec9949ea6be8211b24bfb674531527b45cbd3eb2235c3f148"
+    },
+    {
+      "doc_id": "economic_times-e775fce8f3f76d12c099",
+      "source": "economic_times",
+      "old_chars": 8679,
+      "new_chars": 8683,
+      "raw_sha256": "fc9e590fa74b3de85697317c70d6e969b1fe07964290a9d5e3df4625a416df0d"
+    }
+  ],
+  "excluded": [],
+  "checks": {
+    "all_offsets_exact": true,
+    "reverse_input_archive_identical": true,
+    "reviewed_corpus_unchanged": true
+  },
+  "remaining_limits": [
+    "PDF table layout and image-only content are not repaired by HTML fixes.",
+    "A corpus change requires new indexes and passage/review migration before experiments.",
+    "No human review receipt, source-rights clearance or research configuration decision is generated."
+  ]
+}

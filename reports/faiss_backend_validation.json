@@ -1,0 +1,11 @@
+{
+  "purpose": "real FAISS versus exact scorer validation on source-backed development queries",
+  "queries": 20,
+  "top_10_id_rankings_identical": true,
+  "as_of_boundary_passed": true,
+  "embedding_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+  "elapsed_seconds": 9.820906124950852,
+  "corpus_passages": 664,
+  "corpus_sha256": "63aa2e5e59c501d5b8441698a2bf0b156483f42638b6bc9cc061effb515cfe59",
+  "scope": "Initial 35-document development snapshot; backend correctness only. The original quality pilot was superseded after a source-version audit."
+}

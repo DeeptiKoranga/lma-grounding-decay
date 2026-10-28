@@ -89,3 +89,8 @@ uv.lock.bak
 !data/aliases.yaml
 !data/series/*.csv
 !tests/fixtures/**
+
+# --- B10: third-party benchmark text is not ours to redistribute ---
+# The manifest (sources, SHA-256, selected ids) is tracked; the text is not.
+# Regenerate with scripts/build_strength_benchmark.py.
+data/eval/strength_benchmark.jsonl

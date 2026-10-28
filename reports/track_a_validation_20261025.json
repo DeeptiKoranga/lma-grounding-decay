@@ -1,0 +1,73 @@
+{
+  "local_tests_passed": 620,
+  "local_tests_skipped": 0,
+  "ruff": "passed",
+  "black": "passed",
+  "local_check_log": "/private/tmp/lma-track-a-20261025-final-checks.log",
+  "series_source_replay_new_requests": 0,
+  "series_import_replay_six_csv_hashes_identical": true,
+  "source_audit_replay_pair_bytes_identical": true,
+  "corpus_sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+  "original_review_delivery_files_hash_verified": 83,
+  "human_review_judgments_and_attestations_changed": false,
+  "research_acceptance": false,
+  "source_files_sha256": {
+    "scripts/fetch/cdsl_series.py": "05900dfd9a24852790cda50c2f95d9b512e4ff85856a0b7bb71e05c4131d5aef",
+    "scripts/fetch/retrospective_sources.py": "a94a2f80b068d33af4b2bf1ede2ba96c6522af6db33c5c7a6ec83b0c30a00fae",
+    "scripts/fetch/retrospective_series.py": "e0b0a3a38f3274beeeea48300cb81a5d90964db5e7dd55abe8e68e831edbf13e",
+    "scripts/audit_retrieval_seeds.py": "bf7a4ead176e88d3fff35e536b1d868a27ad51388c504e64b5c7bf9e06617913",
+    "scripts/validate_retrospective_series.py": "23e1841ebd255a10eb9070ed4781a183d5e736f9fd4e96c6a5725ea7eaf0005e",
+    "src/retrieval/automated_review.py": "e816add3cc2f32fbaeb9d6667d61374e948280b9b0770e346622e8e602c89f1d",
+    "scripts/plot_series_coverage.py": "2637cced54c6e1e64dd4f1ac75f80005935d950fa9bdacc43954ae8ade4582e2"
+  },
+  "figure_visually_checked": "reports/series_coverage_20261025.png",
+  "remaining_research_requirements": [
+    "Independent corpus extraction/source acceptance and pooled relevance judgments.",
+    "D-02/D-03 research selection after accepted labels.",
+    "Original-vintage macro histories or a documented measurement/scope decision; anchor confirmation.",
+    "Corrected prose baselines, independent support/reference labels and final UER/recall figures.",
+    "Team-machine/Kaggle execution and team/TA decisions."
+  ],
+  "checked_on": "2026-10-25",
+  "status": "passed; development data and source validation, independent research acceptance incomplete",
+  "source_commit": "a27e8e02618a02578d240af64e3f034986273134",
+  "clean_clone": {
+    "path": "/private/tmp/lma-grounding-fresh-20261025",
+    "source_commit": "a27e8e02618a02578d240af64e3f034986273134",
+    "tests_passed": 618,
+    "tests_skipped": 2,
+    "skip_reason": "optional PyMuPDF checks in reused core-only environment",
+    "ruff": "passed",
+    "black": "passed",
+    "imports_from_fresh_checkout_verified": true,
+    "tracked_series_read_validation": "passed; raw caches not needed",
+    "test_log": "/private/tmp/lma-track-a-20261025-fresh-tests.log",
+    "lint_log": "/private/tmp/lma-track-a-20261025-fresh-lint.log",
+    "scope": "New local clone and committed source/data; reused the earlier core environment. No fresh heavy-runtime install, team-machine or Kaggle execution."
+  },
+  "retrieval_pilot": {
+    "questions": 20,
+    "audited_seed_passages": 43,
+    "positive_seed_passages": 37,
+    "irrelevant_seed_passages": 4,
+    "uncertain_seed_passages": 2,
+    "report": "reports/pilot_retriever_v3_audited_seeds_20261025.md",
+    "initial_phase_wall_s": 146.3,
+    "deterministic_replay_phase_wall_s": 145.04,
+    "metrics_identical_across_executions": true,
+    "research_acceptance": false
+  },
+  "series": {
+    "canonical_observations_unchanged": 161,
+    "retrospective_snapshot_observations": 317,
+    "historical_cutoff_leakage": false,
+    "report": "reports/retrospective_series_read_validation_20261025.json",
+    "backfill_file_observations": 169
+  },
+  "reports": [
+    "reports/retriever_seed_audit_20261025.json",
+    "reports/relevance_screen_failure_audit_20261025.json",
+    "reports/retrospective_series_acquisition_20261025.json",
+    "reports/track_a_source_gaps_20261025.json"
+  ]
+}

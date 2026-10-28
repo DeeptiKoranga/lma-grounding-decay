@@ -1,0 +1,54 @@
+{
+  "purpose": "Full-corpus model execution and persistence validation; development pairs remain unreviewed.",
+  "python": "3.12.3",
+  "platform": "Darwin",
+  "architecture": "arm64",
+  "hardware_memory_gib": 16,
+  "device": "mps",
+  "dense_backend": "faiss",
+  "packages": {
+    "torch": "2.14.1",
+    "sentence-transformers": "6.2.0",
+    "transformers": "5.20.2",
+    "faiss-cpu": "1.15.1",
+    "trafilatura": "2.3.1",
+    "pymupdf": "2.0"
+  },
+  "embedding_model": "BAAI/bge-m3",
+  "embedding_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+  "reranker_model": "BAAI/bge-reranker-v2-m3",
+  "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+  "max_input_tokens": 1024,
+  "embedding_batch_size": 8,
+  "reranker_batch_size": 1,
+  "checkpoint_block_size": 400,
+  "precompute": {
+    "passages": 24161,
+    "elapsed_seconds": 977.67,
+    "existing_checkpoint_reused": true,
+    "source_corpus_sha256": "9643a65c7f190f7f178c81d1ee13ed3b5d27a6d08c9c1b81727771856d73d606"
+  },
+  "corrected_comparison": {
+    "corpus_passages": 27286,
+    "corpus_sha256": "7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3",
+    "pair_file_sha256": "de6c265557d352516bc97cae762e109c5e50c99c315264bc373f7748adb11f8d",
+    "elapsed_seconds": 327.29,
+    "existing_checkpoint_reused": true,
+    "report": "reports/pilot_retriever.md"
+  },
+  "recorded_phase_wall_seconds": 1304.96,
+  "timing_scope": "Wall time for these two recorded phases; excludes downloads, earlier initial/synthetic checks, and the final saved-index reload. This is not GPU-active time.",
+  "vector_artifact": {
+    "path": "data/interim/retrieval/bge_m3_v1_vectors.json",
+    "bytes": 641529731,
+    "sha256": "1d074275050241990c776bfa0d73878167a266ca5ae83d8df77a5543490b73c7",
+    "tracked_in_git": false
+  },
+  "saved_index_reload": {
+    "passed": true,
+    "as_of": "2026-03-12",
+    "returned_hits": 5,
+    "all_returned_passages_visible": true
+  },
+  "research_decisions_frozen": false
+}

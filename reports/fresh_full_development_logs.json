@@ -1,0 +1,112 @@
+{
+  "status": "passed; schema, exact prompts, pinned model/revision, tools, budgets and archived corpus/date checks",
+  "source_commit": "bbc9288",
+  "runs": "/private/tmp/lma-grounding-fresh-20261023/runs/fresh_full_development_20261023",
+  "corpus_sha256": "7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3",
+  "counts": {
+    "graphs": 24,
+    "model_calls": 53,
+    "tool_calls": 83,
+    "retrieved_passage_occurrences": 179
+  },
+  "failures": [],
+  "logs": [
+    {
+      "path": "B0/dev-candidate-01-d8f433ee.jsonl",
+      "sha256": "4dc199ded06f0f0d7a416a1c0369598dd5dd112466978e0dd61642fc23d0c743"
+    },
+    {
+      "path": "B0/dev-candidate-02-1e959571.jsonl",
+      "sha256": "4b1e2568c411f66e8e6bef22aed2a295ab5d5031a55ef1d6efc8efc37ddba6dd"
+    },
+    {
+      "path": "B0/dev-candidate-03-e0c37b44.jsonl",
+      "sha256": "ede1a2cfc440ace3c211cee6b014392c792f47829c9bf78829fa662cd82ac167"
+    },
+    {
+      "path": "B0/dev-candidate-04-3615171a.jsonl",
+      "sha256": "d27e6a3fd1594979079690a2fc49d97236945978dba3856e22631ecb3632d937"
+    },
+    {
+      "path": "B0/dev-candidate-05-17df9896.jsonl",
+      "sha256": "e75a08c6eb9d49db6121e26146335bd1cee572694fdb9c34a11496c18330f6dc"
+    },
+    {
+      "path": "B0/dev-candidate-06-752b7afe.jsonl",
+      "sha256": "fed1c715ee89f3af074f9d6f0727903307bfc98eb0497604ed08b80e8adcd8ae"
+    },
+    {
+      "path": "B1/dev-candidate-01-a5610b2d.jsonl",
+      "sha256": "d07c63f471af1025f6d256d195c9265c5fc2debfd73fe0b7eb656181204b2d62"
+    },
+    {
+      "path": "B1/dev-candidate-02-fc1f0274.jsonl",
+      "sha256": "5e56674d8848993265d0029ae28c072bc157441f6a18cefc80d5043d53a71fe6"
+    },
+    {
+      "path": "B1/dev-candidate-03-2601cd0a.jsonl",
+      "sha256": "4eff2d9ab6f9770bcb4fe39f2c5e0084c7a9070c4f4c941ea5a2f7b59c32b433"
+    },
+    {
+      "path": "B1/dev-candidate-04-da091077.jsonl",
+      "sha256": "a0d0e0516ec7811a5487c5b5a059973634a5e22c825d3a5a6d6ec97e726aa153"
+    },
+    {
+      "path": "B1/dev-candidate-05-232be2cb.jsonl",
+      "sha256": "4adee82acb665aae4a8cd211b50b671f565787e79f58580987f148e35d1efa76"
+    },
+    {
+      "path": "B1/dev-candidate-06-12d5a940.jsonl",
+      "sha256": "548510abce11b52896651adc97eaf57d08e70c26cdd83dbfb4a1b3e5fde50c24"
+    },
+    {
+      "path": "B2/dev-candidate-01-8523ca2d.jsonl",
+      "sha256": "ce3b5e30ca81603a530961ad9078723228e2db3203ad7877d573d119672aa28a"
+    },
+    {
+      "path": "B2/dev-candidate-02-a90b1ef1.jsonl",
+      "sha256": "5033b681f98777d970c6c1e533a23c6dac07c07cbf6fc99b73c52d88864d7d9c"
+    },
+    {
+      "path": "B2/dev-candidate-03-7c646d9a.jsonl",
+      "sha256": "58096f4c5cbd6c5f18edf92384e4b8d273976edefae159d29d1d7e8cb1dc1d58"
+    },
+    {
+      "path": "B2/dev-candidate-04-6ab8e551.jsonl",
+      "sha256": "12d7f1847c2593e1998202e93a75f071d726302dd88c64c68618a54c2db8f963"
+    },
+    {
+      "path": "B2/dev-candidate-05-9fd45aa4.jsonl",
+      "sha256": "8180ac9c907a23b3441d84cac781ef170db1c53a923b8a7296530c16dca877b5"
+    },
+    {
+      "path": "B2/dev-candidate-06-1b8c1e96.jsonl",
+      "sha256": "184fe608c36056e6a5a9eea84a8528c733e7157636e9f60cebc680060d643695"
+    },
+    {
+      "path": "M/dev-candidate-01-435be314.jsonl",
+      "sha256": "2eaef192324ed3b722de45c46528e68fc9fc7f43c86841f64b2090e635dd374d"
+    },
+    {
+      "path": "M/dev-candidate-02-98281632.jsonl",
+      "sha256": "e0f71f32648ac3cb7de55d241a65d45c9a4affad52533dbb79830ce483a471a5"
+    },
+    {
+      "path": "M/dev-candidate-03-5837f550.jsonl",
+      "sha256": "efe91db0389beea2ad2fc71f35a418ca41b07b9ce1e6849bb95d0aed8be59e8d"
+    },
+    {
+      "path": "M/dev-candidate-04-a1c4f8f9.jsonl",
+      "sha256": "2992070bedcead98d4a5a7eefccfd6b61288e984fce54fbc0c18e9cd661d5308"
+    },
+    {
+      "path": "M/dev-candidate-05-ae061bfa.jsonl",
+      "sha256": "1373da7c8b90b9d571ae6c87412dbda4f23087d956b50ef4308c477ccce83214"
+    },
+    {
+      "path": "M/dev-candidate-06-000bc4d9.jsonl",
+      "sha256": "5583aa60ba75df829a56b968ebe0bdab76391e1c2ec0a4124177168885f11714"
+    }
+  ],
+  "scope": "event integrity only; matching baseline citation and extraction errors remain for independent correction, not a semantic support pass"
+}

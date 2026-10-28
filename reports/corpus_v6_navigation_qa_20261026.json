@@ -1,0 +1,6 @@
+{
+  "corpus_sha256": "4305ea307372bbe3d306bb79d7de555e7e0a274643ebc65f6d2b7a37071b243b",
+  "custom_links_found_in_raw": 105,
+  "long_custom_link_titles_remaining": 0,
+  "scope": "All 870 ET originals checked. Links over 40 characters are checked against final text; short-link handling is covered by the structural filter and regression tests."
+}

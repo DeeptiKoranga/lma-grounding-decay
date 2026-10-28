@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "corpus_sha256": "b63a8743e7f227a90f4d08ae73a5f195ac10ceb581ee11060d59815b1e5f80e2",
+  "source_dense_sha256": "0ed339438512c95e5f11b9c9315c73bbab8ee5a0a55abf9b57312f44db10e20e",
+  "passages": 26888,
+  "saved_index_reopened": true,
+  "model": "BAAI/bge-m3",
+  "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+  "device": "cpu",
+  "faiss_threads": 1,
+  "checks": [
+    {
+      "query_id": "a8-temporal-01",
+      "as_of": "2026-03-12",
+      "hits": [
+        "mint-820a071eb59246e8f4e4#p3",
+        "economic_times-aeef41c48e7583bc45de#p0",
+        "businessline-17ada433751a4c30c372#p0",
+        "businessline-17ada433751a4c30c372#p5",
+        "businessline-0ac56b04bf074df3eb05#p3",
+        "businessline-469aabd081e5b5594ab2#p9",
+        "economic_times-aeef41c48e7583bc45de#p8",
+        "businessline-4e6cb326132a1332c1b2#p38",
+        "economic_times-3f30d09d4b97d2eee973#p8",
+        "economic_times-98332c11937b2442c2bc#p0"
+      ],
+      "cutoff_check": true
+    },
+    {
+      "query_id": "a8-temporal-20",
+      "as_of": "2026-09-24",
+      "hits": [
+        "economic_times-5dda834071751583b9cc#p0",
+        "businessline-381f9a50df1318733c8d#p8",
+        "economic_times-884d2e7bb89039d53473#p1",
+        "economic_times-884d2e7bb89039d53473#p2",
+        "economic_times-aeef41c48e7583bc45de#p0",
+        "economic_times-380f14d5af6a700f0e65#p0",
+        "businessline-469aabd081e5b5594ab2#p9",
+        "businessline-2b9f8a2307226d085de4#p0",
+        "businessline-5f4df16578c6e1000d05#p10",
+        "economic_times-a10f3cc72150e0e9406a#p18"
+      ],
+      "cutoff_check": true
+    }
+  ],
+  "elapsed_seconds": 15.55
+}

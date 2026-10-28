@@ -1,0 +1,54 @@
+{
+  "corpus_sha256": "7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3",
+  "queries": [
+    {
+      "query_id": "dev-candidate-01",
+      "seed_passage_id": "businessline-dfee03edb7e80dc990ee#p0",
+      "url": "https://www.thehindubusinessline.com/markets/forex/rupee-falls-21-paise-to-9129-against-us-dollar-in-early-trade/article70693890.ece",
+      "published_at": "2026-03-02T09:58:02+05:30",
+      "seed_text_sha256": "4fbeeb03955c59581dd4c2fb487e7931fe2dc70911836de267fbe4a3ea15cfca",
+      "status": "machine-curated; not reviewed gold; no series confirmation"
+    },
+    {
+      "query_id": "dev-candidate-02",
+      "seed_passage_id": "businessline-da351fa0679d4ce9a95b#p4",
+      "url": "https://www.thehindubusinessline.com/money-and-banking/economists-see-rbi-holding-rates-in-april-policy-review-on-inflation-fears-amid-west-asia-crisis/article70826330.ece",
+      "published_at": "2026-04-05T15:43:55+05:30",
+      "seed_text_sha256": "a62634d5dd07224d0611c0faf55ce4e3e1eff9bd3fa1c0826269c1ad3e6c31e6",
+      "status": "machine-curated; not reviewed gold; no series confirmation"
+    },
+    {
+      "query_id": "dev-candidate-03",
+      "seed_passage_id": "economic_times-a9f6f10b98de2664af23#p22",
+      "url": "https://economictimes.indiatimes.com/industry/energy/oil-gas/petrol-diesel-price-hike-rs-3-per-litre-india-food-inflation-retail-growth-iran-war-impact-rbi-crude-oil/articleshow/131113757.cms",
+      "published_at": "2026-05-15T15:25:00+05:30",
+      "seed_text_sha256": "45a50b2c70a9e6c64eeb6ce017d88e14c5c9fcf221c176cc384916ddd4676a5e",
+      "status": "machine-curated; not reviewed gold; no series confirmation"
+    },
+    {
+      "query_id": "dev-candidate-04",
+      "seed_passage_id": "businessline-429d8042be669ff025a6#p1",
+      "url": "https://www.thehindubusinessline.com/markets/d-street-extends-rally-for-5th-session-as-softer-crude-india-uk-fta-optimism-offset-us-fed-hawkish-tone/article71117515.ece",
+      "published_at": "2026-06-18T17:11:00+05:30",
+      "seed_text_sha256": "d8f66d0e055b6e5df26bcb3f38e2467cb50ddefff17088e144f2803836d259cb",
+      "status": "machine-curated; not reviewed gold; no series confirmation"
+    },
+    {
+      "query_id": "dev-candidate-05",
+      "seed_passage_id": "businessline-22d1a5934dc05a3d60ba#p0",
+      "url": "https://www.thehindubusinessline.com/markets/forex/rbi-intervenes-to-arrest-rupee-decline-amid-an-oil-spike-fed-rate-worries-traders-say/article71409637.ece",
+      "published_at": "2026-08-31T09:54:13+05:30",
+      "seed_text_sha256": "a99ca950d4b6af1d0cca16d900e9478af882975ad70114bb2e0fff0ad1879a25",
+      "status": "machine-curated; not reviewed gold; no series confirmation"
+    },
+    {
+      "query_id": "dev-candidate-06",
+      "seed_passage_id": "businessline-cb14e11b088b37ebeb00#p0",
+      "url": "https://www.thehindubusinessline.com/markets/commodities/indias-oil-and-gas-sector-to-remain-under-pressure-as-crude-lng-costs-rise/article71437678.ece",
+      "published_at": "2026-09-07T12:29:19+05:30",
+      "seed_text_sha256": "07bcd79719a1485a0364983f817305bfe02fad65f16d483f0df44138b889de24",
+      "status": "machine-curated; not reviewed gold; no series confirmation"
+    }
+  ],
+  "selection": "Source-first manual curation before new model runs; March, April, May, June, August, September. Not the frozen six-query gold dev set."
+}

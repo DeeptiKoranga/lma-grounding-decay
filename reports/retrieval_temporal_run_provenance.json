@@ -1,0 +1,31 @@
+{
+  "model_identity": "[\"retrieval.dense.BGEEmbedder\",\"BAAI/bge-m3\",\"5617a9f61b028005a4858fdac845db406aefb181\",1024,\"title-newline-paragraph;unit-cosine;v2\"]",
+  "candidate_passages": 26888,
+  "unchanged_input_occurrences_reused": 26722,
+  "new_input_occurrences": 166,
+  "candidate_corpus_sha256": "b63a8743e7f227a90f4d08ae73a5f195ac10ceb581ee11060d59815b1e5f80e2",
+  "candidate_index_sha256": "9614b4987d12d659819cb05c99feaf90fc2506fc479e06c42d2fdc3ef9edfde3",
+  "active_corpus_sha256": "7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3",
+  "source_checkpoint_modified": false,
+  "candidate_index": "data/interim/corpus_revision_20261023/bge_m3_vectors.json",
+  "status": "development candidate; no accepted research configuration",
+  "failed_attempts": [
+    {
+      "device": "mps",
+      "exit_code": 139,
+      "log": "data/raw/retrieval_temporal_progress.log",
+      "cause": "not established"
+    },
+    {
+      "device": "cpu",
+      "status": "terminated after process sample showed FAISS OpenMP join stall",
+      "log": "data/raw/retrieval_temporal_cpu_progress.log",
+      "sample": "/private/tmp/lma-retrieval-stall-20261023.txt"
+    }
+  ],
+  "completed_reports": [
+    "reports/pilot_retriever_temporal_development.md",
+    "reports/pilot_retriever_temporal_candidate_development.md"
+  ],
+  "runtime": "CPU, one FAISS thread, cached pinned models; no GPU-active time claimed"
+}

@@ -1,0 +1,93 @@
+{
+  "status": "v7-narrative-development candidate; source snapshot, prior indexes, experiments and human records unchanged",
+  "method": "Codex source review and checksum-bound reparse; not independent human acceptance",
+  "reviewed_on": "2026-10-26",
+  "research_acceptance": false,
+  "original_corpus_sha256": "24c925d01e6d3b5515962ff9b732341f76c5ee23a440bf6e011f8243ad46f9c6",
+  "candidate_corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "candidate_archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+  "candidate": "data/interim/corpus_v7_20261026/snapshot",
+  "documents": 1156,
+  "passages": 16472,
+  "sources": {
+    "businessline": 213,
+    "eaindustry": 10,
+    "economic_times": 870,
+    "mint": 12,
+    "mospi": 37,
+    "ppac": 14
+  },
+  "changed_documents": 8,
+  "changed_by_source": {
+    "economic_times": 8
+  },
+  "changes": [
+    {
+      "doc_id": "economic_times-03110864791d4fd2da46",
+      "source": "economic_times",
+      "old_chars": 3478,
+      "new_chars": 3611,
+      "raw_sha256": "59048d581dcc78af3b4c997ae7605b1d91eb6599aaebaf213aa5178342efc343"
+    },
+    {
+      "doc_id": "economic_times-13a197e8fb36c0b9dce5",
+      "source": "economic_times",
+      "old_chars": 1544,
+      "new_chars": 1713,
+      "raw_sha256": "a69179b2bd1c3e0269b6e7d0c940d591cf656e1104e0722ee2634700609d09f1"
+    },
+    {
+      "doc_id": "economic_times-208c38486e4bf0d22306",
+      "source": "economic_times",
+      "old_chars": 1058,
+      "new_chars": 962,
+      "raw_sha256": "89a4073ef58762a5fb1fde02187c82290696952ba22b68526578249707fd5fe0"
+    },
+    {
+      "doc_id": "economic_times-24f36b14f7b35608fe69",
+      "source": "economic_times",
+      "old_chars": 4004,
+      "new_chars": 3875,
+      "raw_sha256": "ffa14c114e4f8ab8a6e13ec59c059308e7a8d70fb423d52f234b75faff1f16f5"
+    },
+    {
+      "doc_id": "economic_times-67b4ff6e75161b3a2533",
+      "source": "economic_times",
+      "old_chars": 2657,
+      "new_chars": 2591,
+      "raw_sha256": "b49730c9cc9173fdefe5fa6f379c63585d8a45a3b71d9f51e313ed39a3380226"
+    },
+    {
+      "doc_id": "economic_times-c4fe4042fa02133c6819",
+      "source": "economic_times",
+      "old_chars": 3557,
+      "new_chars": 3491,
+      "raw_sha256": "d19fb3955be54097cb81ebf87e5cdb752dba1f2581c403c628aa3cf168ea0cde"
+    },
+    {
+      "doc_id": "economic_times-d594ecec67cc75752880",
+      "source": "economic_times",
+      "old_chars": 4246,
+      "new_chars": 4257,
+      "raw_sha256": "dd9f90e469f307210e4231757fde1f7e633f307bc05f322c46932268df3bf4bf"
+    },
+    {
+      "doc_id": "economic_times-e5d99c6ff88adf78add9",
+      "source": "economic_times",
+      "old_chars": 3199,
+      "new_chars": 3139,
+      "raw_sha256": "28db02fe5a6cd7cec9949ea6be8211b24bfb674531527b45cbd3eb2235c3f148"
+    }
+  ],
+  "excluded": [],
+  "checks": {
+    "all_offsets_exact": true,
+    "reverse_input_archive_identical": true,
+    "reviewed_corpus_unchanged": true
+  },
+  "remaining_limits": [
+    "PDF table layout and image-only content are not repaired by HTML fixes.",
+    "A corpus change requires new indexes and passage/review migration before experiments.",
+    "No human review receipt, source-rights clearance or research configuration decision is generated."
+  ]
+}

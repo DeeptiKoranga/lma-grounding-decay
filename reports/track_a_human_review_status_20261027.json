@@ -1,0 +1,98 @@
+{
+  "reported_on": "2026-10-27",
+  "reported_by": "user",
+  "statement": "i did human expert review... it was as expected",
+  "review_completion_reported": true,
+  "status": "Varun reports completed Track A review on 2026-10-27 and explicitly attests independence/blinding; completed records and receipt-bound pilot pass validation.",
+  "reviewer_name": "Varun",
+  "reviewed_on": "2026-10-27",
+  "review_scope": [
+    "Track A work only: corpus and retrieval review"
+  ],
+  "independent_review": true,
+  "blinded_to_prior_labels_or_results": true,
+  "corrections": null,
+  "completed_judgment_files_located": true,
+  "current_delivery_packets_for_matching": {
+    "corpus": {
+      "path": "data/interim/track_a_review_delivery_v7_20261026/01_corpus/packet.json",
+      "sha256": "34b12fde75c41a4c7ccdcb8edc67b342e29288ce95353f68315658015e817d3c"
+    },
+    "retrieval": {
+      "path": "data/interim/track_a_review_delivery_v7_20261026/02_relevance/packet.json",
+      "sha256": "37deb84d2f53f3ace7167153542b155f5f20f011c871f1656749a58996ba41ec"
+    }
+  },
+  "current_delivery_forms_at_check": {
+    "corpus_checks_completed": 0,
+    "retrieval_query_checks_completed": 0,
+    "relevance_judgments_completed": 0
+  },
+  "item_decisions_imported": true,
+  "human_receipts_generated": true,
+  "research_acceptance": true,
+  "source_permissions_changed": false,
+  "series_coverage_changed": false,
+  "next_action": "Track A corpus/retrieval review-record validation and local task 4.3 software reproduction are complete. Shared support/correction annotation, UER/result figures, model/episode acceptance and other-machine verification remain separate; no whole-project acceptance is inferred.",
+  "scope_confirmed_by_user": true,
+  "scope_confirmation": "no i mean i only did whatever was in track a",
+  "numerical_hypothesis_results_imported": false,
+  "reviewed_packet_version_verified": true,
+  "scope_correction": "The assistant previously interpreted \u201cboth\u201d as including experiment-result review. The user corrected that interpretation: the review covers Track A only.",
+  "reported_track_a_outcome": "as expected",
+  "experiment_results_review_reported": false,
+  "main_hypothesis_outcome_reported": false,
+  "submitted_files_received": true,
+  "intended_files_confirmed_by_user": true,
+  "draft_judgment_files_located": true,
+  "submitted_files_directory": "data/interim/track_a_attested_review_20261027/assessment",
+  "submitted_files_classification": "Completed assessment records with user-declared independent/blinded review; original automated label provenance preserved.",
+  "submission_validation_report": "reports/track_a_submitted_review_validation_20261027.json",
+  "submission_validation_sha256": "179fbf59fea4aeda12b978ab095ea8aabcd2aad33e65906945c4e9e5ff10ad76",
+  "draft_packet_bindings_verified": true,
+  "submitted_file_attestations": {
+    "corpus_reviewer_empty": false,
+    "corpus_review_date_unset": false,
+    "corpus_independent_review": true,
+    "corpus_accepted": true,
+    "relevance_reviewer_empty": false,
+    "relevance_review_date_unset": false,
+    "relevance_independent_review": true,
+    "relevance_blinded_to_results": true
+  },
+  "wording_revision_report": "reports/track_a_submission_wording_revision_20261027.json",
+  "wording_revision_sha256": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4",
+  "current_user_files_role": "Track A user-attested review records; original label origin, declarations and receipt scope retained.",
+  "mid_submission_scope_disposition": "reports/track_a_mid_submission_scope_20261027.json",
+  "mid_submission_scope_disposition_sha256": "de0792c3eb82c27b797bfd2e25356d0ef51d88ebd5aabf68a48e6d352cc7c05c",
+  "scoped_development_handoff_complete": true,
+  "formal_independent_acceptance_complete": true,
+  "attestation_source": "YESBi have done independent review and blinded to results",
+  "attestation_verification_limit": "User attestation only; review procedure and timing relative to prior results exposure were not independently observed.",
+  "acceptance_scope": "Track A pooled retrieval pilot and sampled-corpus review records; no experiment UER/reference-recall or whole-study acceptance.",
+  "study_result_acceptance": false,
+  "original_submitted_files_directory": "data/interim/track_a_received_review_20261027",
+  "original_submitted_files_classification": "generated draft with copied development labels and illustrative corpus flags",
+  "reviewer_metadata_report": "reports/track_a_reviewer_identity_20261027.json",
+  "reviewer_metadata_report_sha256": "6f6140e6c0e4ba9b7765b05ec602308294933b4ad0f06cfb709d8f309bfea3ab",
+  "formal_independent_acceptance_basis": "Completed record validation on user declarations; not independent observation of review procedure.",
+  "human_review_receipts": {
+    "corpus": {
+      "path": "data/interim/track_a_attested_review_20261027/corpus_accepted/receipt.json",
+      "sha256": "2e5f31e0f925461ea4a98ebc4a551d9e198b6bda1e8a0230b1514f8545640954"
+    },
+    "retrieval": {
+      "path": "data/interim/track_a_attested_review_20261027/relevance_accepted/receipt.json",
+      "sha256": "5a4ce72530907ba8c82a4333cad3c0b67da35c0938bec31a8d8284e75c0096a0"
+    }
+  },
+  "whole_project_integration_complete": false,
+  "whole_project_audit": "reports/whole_project_audit_20261027.md",
+  "whole_project_audit_sha256": "66d52babfd892ac4d2cef7338edfbf0ed648ef20395552e12d4f2791e1352834",
+  "audited_integration_code_findings_complete": true,
+  "integration_fix_validation": "reports/integration_fixes_20261027.json",
+  "integration_fix_validation_sha256": "5d43419b45a1445af897d8899de2227f0086af1652049bbc32261628694c89da",
+  "local_software_reproduction_complete": true,
+  "local_software_reproduction": "reports/fresh_checkout_reproduction_20261028.json",
+  "local_software_reproduction_sha256": "d3366c0a35eb7565dc6eddb7a82f751ea380e10a9613ab9c8588bb0ea1fbf136"
+}

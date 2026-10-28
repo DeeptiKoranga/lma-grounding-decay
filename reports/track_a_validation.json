@@ -1,0 +1,96 @@
+{
+  "checked_on": "2026-10-23",
+  "source_commit": "57c0480",
+  "scope": "current Track A local technical delivery; independent research acceptance incomplete",
+  "local": {
+    "tests_passed": 586,
+    "tests_skipped": 0,
+    "ruff": "passed",
+    "black": "passed",
+    "log": "/private/tmp/lma-track-a-v3-final-checks-20261023.log"
+  },
+  "clean_clone": {
+    "path": "/private/tmp/lma-grounding-fresh-20261023",
+    "source_commit": "57c0480",
+    "method": "refreshed existing clean clone exclusively from local project repository; reused its core environment",
+    "tests_passed": 584,
+    "tests_skipped": 2,
+    "skip_reason": "two optional PyMuPDF checks; core-only environment",
+    "ruff": "passed",
+    "black": "passed",
+    "log": "/private/tmp/lma-track-a-v3-fresh-checks-20261023.log",
+    "new_heavy_install": false
+  },
+  "corpus": {
+    "version": "v3 development",
+    "documents": 1177,
+    "news": 1116,
+    "official": 61,
+    "passages": 28391,
+    "sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+    "archived_v1": "data/interim/frozen_v1_20261023",
+    "source_month_extraction_samples": 73,
+    "independent_extraction_labels": 0,
+    "review_complete": false,
+    "full_integrity_report": "reports/corpus_v3_audit.json",
+    "extraction_qa": "reports/corpus_v3_extraction_qa.json"
+  },
+  "retrieval": {
+    "questions": 20,
+    "months": 7,
+    "seed_candidates": 43,
+    "blinded_items": 2062,
+    "independent_judgments": 0,
+    "blank_export_rejected": true,
+    "saved_index_reload": "passed; real CPU BGE-M3 and FAISS queries at March/September cutoffs",
+    "readiness": "reports/retrieval_v3_review_readiness.json",
+    "index_validation": "reports/retrieval_v3_saved_index_validation.json",
+    "run_provenance": "reports/retrieval_v3_run_provenance.json"
+  },
+  "series": {
+    "canonical_populated": 6,
+    "required": 6,
+    "observations": 161,
+    "counts": {
+      "brent_usd_bbl": 4,
+      "indian_basket_usd_bbl": 2,
+      "inr_usd": 141,
+      "cpi_headline_yoy": 7,
+      "gsec_10y_pct": 6,
+      "fpi_flows_usd_mn": 1
+    },
+    "coverage": "sparse for Brent, GSEC yield, FPI and Indian basket; no interpolation or anchor confirmation",
+    "new_news_observations": 11,
+    "measurement_and_vintage_scope": "data/series/README.md"
+  },
+  "full_fresh_development_reproduction": {
+    "source_commit": "bbc9288",
+    "conditions": [
+      "B0",
+      "B1",
+      "B2",
+      "M"
+    ],
+    "queries": 6,
+    "graphs": 24,
+    "canonical_matches_excluding_run_id": 24,
+    "model_calls": 53,
+    "tool_calls": 83,
+    "archived_corpus_version": "v1",
+    "series_checkpoint": "original three series",
+    "reused_existing_weights_and_runtime": true,
+    "reviewed_gold": false,
+    "report": "reports/fresh_full_development_reproduction.json",
+    "logs": "reports/fresh_full_development_logs.json"
+  },
+  "actual_run_corpus_guard": "passed; both older run folders reject current v3 and accept archived v1",
+  "open_gates": [
+    "Independent corpus extraction/source-terms acceptance; Business Standard/RBI source gaps and publisher balance.",
+    "Independent blinded retrieval relevance judgments; D-02/D-03 remain open.",
+    "Complete appropriate macro-series histories and independent anchor-episode confirmation.",
+    "Cross-track human baseline correction/support/reference judgments, agreement, model/TA decisions and reviewed results.",
+    "Other team-machine/Kaggle reproduction and team acceptance."
+  ],
+  "export_status": "local only; no push or PR created in this continuation",
+  "latest_review_workflow_validation": "reports/track_a_review_validation.json"
+}

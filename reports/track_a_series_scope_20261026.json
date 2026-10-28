@@ -1,0 +1,131 @@
+{
+  "checked_on": "2026-10-26",
+  "mid_submission_scope": "Preserve sparse original-vintage series for historical tools and use the separately dated snapshot only for retrospective feasibility checks. No interpolation, measure substitution, backdating or automatic anchor confirmation.",
+  "series": [
+    {
+      "series_id": "brent_usd_bbl",
+      "canonical_count": 4,
+      "canonical_sha256": "07b92e9762cf03460f7dedaa1186796bd5c781feb3418b4f9fd58296bb82a9fa",
+      "retrospective_count": 148,
+      "retrospective_sha256": "3b2352af4b73a0d3f899c3fa4a17e9d5f20fd22575fda0ec1013afd04143fcf8",
+      "backfill_visible_at_2026_09_30": 0,
+      "coverage_note": "Sparse original observations; use the separate October-captured history for retrospective analysis only."
+    },
+    {
+      "series_id": "indian_basket_usd_bbl",
+      "canonical_count": 2,
+      "canonical_sha256": "17f3e0f0919727bd0ebba18d46f50e98509dea35e5ebc0be018e1b431d1b23b7",
+      "retrospective_count": 7,
+      "retrospective_sha256": "4de40cba1acd377f5b02758c5eeb3fd1adf478a7c18db50e9ae353ef946dee09",
+      "backfill_visible_at_2026_09_30": 0,
+      "coverage_note": "Sparse original observations; use the separate October-captured history for retrospective analysis only."
+    },
+    {
+      "series_id": "inr_usd",
+      "canonical_count": 141,
+      "canonical_sha256": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c",
+      "retrospective_count": 141,
+      "retrospective_sha256": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c",
+      "backfill_visible_at_2026_09_30": 141,
+      "coverage_note": "Seven source/reference-month files available; a separate trading-calendar completeness audit is not claimed."
+    },
+    {
+      "series_id": "cpi_headline_yoy",
+      "canonical_count": 7,
+      "canonical_sha256": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+      "retrospective_count": 7,
+      "retrospective_sha256": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+      "backfill_visible_at_2026_09_30": 7,
+      "coverage_note": "Seven monthly CPI releases available within the source publication window."
+    },
+    {
+      "series_id": "gsec_10y_pct",
+      "canonical_count": 6,
+      "canonical_sha256": "7b12e2cf5f9254f1b7b648a33803b1f5ea381b96a7f61ebab150ed14911a2be6",
+      "retrospective_count": 7,
+      "retrospective_sha256": "08a7845fbf97f448cdb158eec60a93748ac8b2d324ee1b477867a64b4e5034d9",
+      "backfill_visible_at_2026_09_30": 0,
+      "coverage_note": "Sparse original observations; use the separate October-captured history for retrospective analysis only."
+    },
+    {
+      "series_id": "fpi_flows_usd_mn",
+      "canonical_count": 1,
+      "canonical_sha256": "94c24a79a038b34c510c2f93bdcd0b5ef2540d2756b129c8d5ba32f5666c9a4d",
+      "retrospective_count": 7,
+      "retrospective_sha256": "f32161adf9f2e8f668524cd8b4896d2b4c58404556d413b7f421294880c44c9d",
+      "backfill_visible_at_2026_09_30": 0,
+      "coverage_note": "Sparse original observations; use the separate October-captured history for retrospective analysis only."
+    }
+  ],
+  "canonical_total": 161,
+  "retrospective_total": 317,
+  "named_episode_checks": [
+    {
+      "named_episode": "March oil shock",
+      "status": "retrospective proxy only; official historical Brent/basket vintage incomplete",
+      "data": "148 daily vendor futures closes and seven monthly basket averages are available retrospectively, with October availability; no pre-March baseline or original ICE settlements are supplied."
+    },
+    {
+      "named_episode": "April ATF price increase",
+      "status": "not confirmed by the six required series",
+      "data": "ATF retail prices are a separate measure. Brent/basket movements cannot confirm an ATF price change; retain as Track B source/anchor follow-up."
+    },
+    {
+      "named_episode": "May rupee low",
+      "status": "dated official reference-rate support within the acquired window",
+      "observation": {
+        "on": "2026-05-20",
+        "value": "96.8441",
+        "available_on": "2026-05-20",
+        "source_url": "https://www.fbil.org.in/wasdm/refrates/fetchfiltered?fromDate=2026-5-1&toDate=2026-5-31&authenticated=false",
+        "unit": "INR per USD"
+      },
+      "data": "Maximum INR-per-USD reference rate in the acquired May records; not an intraday trading low or a claim about all-time records."
+    },
+    {
+      "named_episode": "June RBI meeting",
+      "status": "meeting/policy announcement requires the dated official statement",
+      "data": "Price/FX/CPI series cannot prove that a meeting occurred or a policy rate decision was announced. RBI originals remain inaccessible."
+    },
+    {
+      "named_episode": "August RBI meeting",
+      "status": "meeting/policy announcement requires the dated official statement",
+      "data": "Do not substitute an inflation print or a news expectation for the policy announcement."
+    },
+    {
+      "named_episode": "September bond sell-off",
+      "status": "monthly retrospective support only; daily benchmark episode unconfirmed",
+      "observations": [
+        {
+          "on": "2026-08-31",
+          "value": "6.84",
+          "available_on": "2026-10-25",
+          "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30",
+          "unit": "percent"
+        },
+        {
+          "on": "2026-09-30",
+          "value": "7.06",
+          "available_on": "2026-10-25",
+          "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30",
+          "unit": "percent"
+        }
+      ],
+      "change_basis_points": 22.0,
+      "data": "OECD/FRED monthly main yields rose from August to September. This is not a named-security daily close and cannot establish the day of a sell-off."
+    }
+  ],
+  "additional_episodes": "The proposal names six examples of eight planned episodes. The other two are not specified in the current Track B query/episode files; none are invented here.",
+  "historical_news_expansion_check": {
+    "existing_strict_passage_extractors_candidates": {
+      "brent_front_quote": 2,
+      "brent_expiry_quote": 2,
+      "gsec_close": 6
+    },
+    "new_values_beyond_existing_store": 0,
+    "parent_context_candidates_after_same_day_and_unambiguous_security_checks": 1,
+    "new_parent_values_beyond_existing_store": 0
+  },
+  "research_anchor_acceptance": false,
+  "track_b_files_changed": false
+}

@@ -1,0 +1,17 @@
+{
+  "source_metadata": "data/raw/ppac/0635ef9798f4afd29a5c.meta.json",
+  "raw_sha256": "f304fa095055e8fc53dbafb5d8625747df9de3a575c1286a63ba1e043e45676d",
+  "method": "visual model transcription of the original scanned PDF; not a human-review attestation",
+  "page": 5,
+  "on": "2026-03-31",
+  "value": 113.49,
+  "unit": "USD per barrel",
+  "measure": "Indian crude basket monthly average",
+  "crosscheck": {
+    "april_value_on_highlights_page": 114.48,
+    "april_value_on_page_38_table": 114.48,
+    "april_value_in_public_current_year_table": 114.48
+  },
+  "historical_publication_date_claimed": false,
+  "availability_basis": "actual cache capture timestamp in the source metadata, never the conflicting listed publication date"
+}

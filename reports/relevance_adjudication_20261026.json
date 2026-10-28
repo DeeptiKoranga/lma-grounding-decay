@@ -1,0 +1,60 @@
+{
+  "reviewer": "Codex",
+  "independent_human_review": false,
+  "blinded_to_previous_results": false,
+  "research_acceptance": false,
+  "reviewed_on": "2026-10-26",
+  "input_review_sha256": "1eec777802f84068ecb737d61d0e383504ce1bc3662382dabb83be2bf5d14f08",
+  "packet_sha256": "1cd044b3801589b332b5e2e62e5a7add9313f48e3942777f18811d2812297f65",
+  "criterion": "Direct partial answers must be identifiable from the supplied paragraph and its document metadata. Omitted antecedents/column labels may not be borrowed from neighbouring passages. This resolves relevance of the isolated text, not truth of the source value.",
+  "items": [
+    {
+      "query_id": "a8-temporal-03",
+      "passage_id": "mospi-5a1b977e356b0b14de7c#p26",
+      "text_sha256": "0364b9327e9f6db8a4cc665b66a4785186c379322e2d69affbdf29bf392f6872",
+      "previous_decision": "uncertain",
+      "decision": "irrelevant",
+      "reason": "The isolated PDF number equals the headline reading, but its measure and rural/urban context are absent; cannot accept a naked value as evidence. Adjudication: the supplied isolated passage does not provide a self-contained answer. Neighbouring text or a table header cannot be silently attributed to it."
+    },
+    {
+      "query_id": "a8-temporal-05",
+      "passage_id": "businessline-229f1dddd86b622b74a1#p2",
+      "text_sha256": "dd140fb33fa7687b0f06a471afa2e704d26d64a87e8ff4eafceda266fe047735",
+      "previous_decision": "uncertain",
+      "decision": "irrelevant",
+      "reason": "Same report explains preceding bank-position unwinding, but this isolated paragraph does not identify the measures or establish the dollar-flow change on 13 April. Adjudication: the supplied isolated passage does not provide a self-contained answer. Neighbouring text or a table header cannot be silently attributed to it."
+    },
+    {
+      "query_id": "a8-temporal-06",
+      "passage_id": "economic_times-e19e92bf379122b3f13b#p5",
+      "text_sha256": "3d29fa0c58ac9902bb2ca23682f783c751d7ed0b6749108637432964fd51d6fd",
+      "previous_decision": "uncertain",
+      "decision": "irrelevant",
+      "reason": "That assessment has no resolved antecedent in this isolated paragraph; the changed growth/inflation outlook is not stated. Adjudication: the supplied isolated passage does not provide a self-contained answer. Neighbouring text or a table header cannot be silently attributed to it."
+    },
+    {
+      "query_id": "a8-temporal-09",
+      "passage_id": "economic_times-d4ab1ecc281f974ecb33#p9",
+      "text_sha256": "b486e0f8e5c4ccffb55729765c9db0418c9cb7c524cdbb4828d1d4ae48cdc1e0",
+      "previous_decision": "uncertain",
+      "decision": "irrelevant",
+      "reason": "The quotation says volatility and cost controls but does not identify the underlying currency/cost pressure without omitted context. Adjudication: the supplied isolated passage does not provide a self-contained answer. Neighbouring text or a table header cannot be silently attributed to it."
+    },
+    {
+      "query_id": "a8-temporal-12",
+      "passage_id": "mospi-06aa3b9c37ec2bad5137#p178",
+      "text_sha256": "d841acb4e120b7dcbdee1abfb76a244b786569f67994fb7bec9dfc07532cebe8",
+      "previous_decision": "uncertain",
+      "decision": "irrelevant",
+      "reason": "The flattened food row contains the matching value but lacks the Index versus Inflation column labels; the paired rural/urban/combined triples require the original table context. Adjudication: the supplied isolated passage does not provide a self-contained answer. Neighbouring text or a table header cannot be silently attributed to it."
+    },
+    {
+      "query_id": "a8-temporal-18",
+      "passage_id": "mospi-5cc04c551825955916a3#p180",
+      "text_sha256": "eb8a8c2c9315f8972d05fa4731728ab7a9eb1f262fad41f70c231e911c4c9247",
+      "previous_decision": "uncertain",
+      "decision": "irrelevant",
+      "reason": "The matching food-row value appears without the Index versus Inflation header; the two rural/urban/combined triples cannot be certified from the isolated flattened row. Adjudication: the supplied isolated passage does not provide a self-contained answer. Neighbouring text or a table header cannot be silently attributed to it."
+    }
+  ]
+}

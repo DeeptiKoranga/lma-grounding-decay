@@ -1,0 +1,68 @@
+{
+  "executed_on": "2026-10-27",
+  "scope": "Real pinned BGE-M3/FAISS and reranker injected into the shared pipeline; synthetic empty-edge generator. Connector validation only, not a language-model experiment or semantic score.",
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "first_stage": "bge_m3",
+  "condition_cli_used": false,
+  "series_store_files": 6,
+  "elapsed_wall_seconds": 23.7,
+  "conditions": [
+    {
+      "condition": "B0",
+      "valid_graph_and_log": true,
+      "retrieved_passages": 0,
+      "all_retrieved_passages_date_eligible": true,
+      "graph_edges": 0,
+      "tool_calls": 0
+    },
+    {
+      "condition": "B1",
+      "valid_graph_and_log": true,
+      "retrieved_passages": 8,
+      "all_retrieved_passages_date_eligible": true,
+      "graph_edges": 0,
+      "tool_calls": 1
+    },
+    {
+      "condition": "B1-R",
+      "valid_graph_and_log": true,
+      "retrieved_passages": 8,
+      "all_retrieved_passages_date_eligible": true,
+      "graph_edges": 0,
+      "tool_calls": 1
+    },
+    {
+      "condition": "B2",
+      "valid_graph_and_log": true,
+      "retrieved_passages": 8,
+      "all_retrieved_passages_date_eligible": true,
+      "graph_edges": 0,
+      "tool_calls": 1
+    },
+    {
+      "condition": "A-NoVerify",
+      "valid_graph_and_log": true,
+      "retrieved_passages": 8,
+      "all_retrieved_passages_date_eligible": true,
+      "graph_edges": 0,
+      "tool_calls": 2
+    },
+    {
+      "condition": "A-NoLoop",
+      "valid_graph_and_log": true,
+      "retrieved_passages": 8,
+      "all_retrieved_passages_date_eligible": true,
+      "graph_edges": 0,
+      "tool_calls": 2
+    },
+    {
+      "condition": "M",
+      "valid_graph_and_log": true,
+      "retrieved_passages": 8,
+      "all_retrieved_passages_date_eligible": true,
+      "graph_edges": 0,
+      "tool_calls": 2
+    }
+  ],
+  "paid_api_requests": 0
+}

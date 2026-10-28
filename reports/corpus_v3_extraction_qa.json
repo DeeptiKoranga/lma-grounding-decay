@@ -1,0 +1,31 @@
+{
+  "status": "agent integrity/extraction QA; independent research acceptance pending",
+  "original_news_caches_reparsed_and_checked": 1112,
+  "paragraphs_restored_before_deduplication": 1589,
+  "restored_paragraphs_in_retained_documents": 1572,
+  "known_related_link_paragraphs_removed_from_original": 564,
+  "new_near_duplicates": 6,
+  "known_missing_lead_examples_inspected": [
+    "economic_times-ae679171e11946f3db64",
+    "economic_times-e19e92bf379122b3f13b",
+    "economic_times-53fbe85760a1ee289abd"
+  ],
+  "duplicate_review": "Six same-day near-duplicate reports have matching titles/leads; earliest timestamps retained, with exact similarity scores and removed IDs in duplicates.jsonl.",
+  "visible_lead_policy": "Only visible HTML div.artText prefix matching the current declared body; metadata body text is not copied. Unicode format characters are ignored only for comparison.",
+  "checks": {
+    "original_offsets_exact": true,
+    "candidate_offsets_exact": true,
+    "known_related_link_prefixes_absent": true,
+    "reversed_input_archive_identical": true,
+    "human_judgments_blank": true
+  },
+  "independent_extraction_review_items": 73,
+  "independent_extraction_labels": 0,
+  "candidate_corpus_sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+  "remaining_limits": [
+    "Unlabelled recommendations or residual PDF headers/tables may remain.",
+    "Unknown historical article edits cannot be excluded by the absence of modification metadata.",
+    "Business Standard and RBI absent; Mint is sparse and ET dominates.",
+    "Publisher text remains local; redistribution permission is not assumed."
+  ]
+}

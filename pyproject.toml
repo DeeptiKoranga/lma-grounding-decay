@@ -63,6 +63,7 @@ packages = [
 
 [tool.hatch.build.targets.wheel.force-include]
 "src/schema/ontology.yaml" = "schema/ontology.yaml"
+"data/aliases.yaml" = "verify/aliases.yaml"
 
 [tool.uv]
 # `uv sync` should always give you the dev toolchain; heavy extras stay opt-in.
@@ -71,7 +72,9 @@ default-groups = []
 [tool.pytest.ini_options]
 minversion = "8.0"
 testpaths = ["tests"]
-pythonpath = ["src"]
+# "." so tests can import the scripts/ entry points, which are modules the
+# project ships and therefore worth testing rather than only running by hand.
+pythonpath = ["src", "."]
 addopts = "-q --strict-markers --strict-config"
 filterwarnings = ["error"]
 markers = [

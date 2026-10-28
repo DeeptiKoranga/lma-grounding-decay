@@ -7,6 +7,73 @@ Deepti Koranga (2025204033).
 
 ---
 
+## Latest Track A delivery — 28 October 2026
+
+**Fresh-checkout update — 28 October:** Track A / Varun task 4.3 is complete
+for the local development configuration. A clean GitHub checkout passed setup,
+Ruff/Black and **663 tests with no skips**, then generated **24/24 new graphs**
+(B0/B1/B2/M × six current-v7 candidates). Full audit, independent trace checks
+and unchanged resume (24 cached, no new model calls) passed. Cached model weights,
+native inference environments and the verified PDF distribution were reused;
+other laptops/Kaggle remain unverified. See
+[fresh-checkout evidence](reports/fresh_checkout_reproduction_20261028.md).
+
+**Integration fixes:** all five audited code gaps are repaired: new runs use the
+selected BGE-M3 retriever, anchor checks call the series store, resume binds all
+participating code/data/settings, run validation requires the declared sweep,
+and installed verifier aliases are included. See
+[the fix validation](reports/integration_fixes_20261027.md).
+Shared annotation, model selection, result figures and other-machine/Kaggle
+verification remain separate prerequisites. The
+[original audit](reports/whole_project_audit_20261027.md) is preserved as history.
+
+The scoped Track A mid-submission development handoff is complete. The
+[closeout](reports/track_a_mid_submission_scope_20261027.md) records the reduced
+source/PDF scope and sparse historical-series coverage as delivery deviations.
+Varun's 27 October review and explicit independence/blinding attestations are
+now recorded. Both sampled-corpus and retrieval acceptance exports pass; these
+validate the records and declarations, not the unobserved review procedure.
+
+The active **v7 narrative development** corpus contains **1,156 documents and
+16,472 passages**. Missing article text, author biographies, embedded related
+links and scope false positives have been addressed. Official PDFs contribute
+949 coherent narrative paragraphs; table/chart fragments stay outside the text
+index with their originals and layout provenance preserved.
+
+The dense index is rebuilt. All **2,035 pooled relevance judgments** are complete
+within the new pool: **195 relevant, 1,840 irrelevant**, with no unresolved labels.
+The 20-question development comparison selects BGE-M3 under the declared rule;
+Recall@10 is 0.4259, rising to 0.5296 with top-50 reranking. The original
+comparison uses automated development judgments. Their origin is preserved
+alongside Varun's subsequent user-attested review; no item decision or evidence
+span has changed.
+
+All six macro series retain their 161 dated original observations. A separate
+317-observation retrospective snapshot remains excluded at historical cutoffs.
+Source gaps, permissions and anchor limitations are explicitly documented.
+The current suite passes **663 tests** after optional PDF/extraction dependencies
+are installed; committed-source reparse reproduces the archive hash.
+
+The new independent-review workspace is
+`data/interim/track_a_review_delivery_v7_20261026/START_HERE.md`; its judgments and
+attestations are blank in the saved delivery. Separate completed records now
+name Varun, dated 27 October, with user-declared independence and blinding.
+Schemas, packet bindings, complete coverage and exact spans pass both exporters.
+The original supplied files and development-label provenance remain preserved;
+identity, review conduct and timing of blinding are not independently verified.
+See `reports/track_a_reviewer_identity_20261027.json`. No experiment-result
+review or main hypothesis conclusion is claimed. Earlier v1 runs and
+the v3 review retain their original corpus bindings. See
+[Track A delivery](reports/track_a_progress.md) and
+[reproduction instructions](docs/reproduction.md).
+
+
+The follow-up audit checks every retained official PDF version and seven SEBI
+annexures. Five total-FPI candidates remain separate because their asset coverage
+differs from the current series. Dated primary announcements now support the
+April ATF announcement and August RBI meeting; final anchor acceptance remains
+with Track B. See [the follow-up record](reports/track_a_followup_20261026.json).
+
 ## What this is
 
 Given a question like *"Brent crossed $100 on 12 March 2026; what effects on India were
@@ -26,11 +93,39 @@ Primary metric is **UER** (unsupported established-edge rate), always sliced by 
 
 ## Status
 
-**Phase 0 — contracts and scaffold.** The five records are frozen, the ontology is closed, and
-the fixtures exist so Tracks B and C can build against them with no dependency on the real
-corpus. No scraper, retriever, agent or model call is implemented yet. See
-[PLAN_MIDSUB.md](PLAN_MIDSUB.md) for the 11-day plan and
-[docs/decisions.md](docs/decisions.md) for what is still open.
+**Development pipeline integrated; research acceptance is incomplete.** The local
+development snapshot contains 1,156 documents and 16,472 passages. Retrieval, constrained
+extraction, independent rule/LLM verification, six bounded read-only tools, the
+controller and all seven conditions are implemented. B0/B1/B1-R produce prose
+before mechanical edge extraction. Human correction and blinded support review
+remain required. All six macro series are populated; basket, Brent, benchmark yield and FPI
+coverage remain partial and do not confirm the planned anchor episodes.
+
+The 23 October local integration completed all 42 graphs across six unreviewed
+v1 candidates; current checks pass 663 tests. The separate synthetic tool-choice probe succeeded
+on only 5/40 expected actions, so model selection remains open. Execution and
+structural validity do not establish research performance. See
+[the validation and remaining gates](reports/integration_status.md).
+
+The local Qwen3-8B run uses pinned public weights and no paid API. It is an
+integration model, not the result of the still-pending two-model selection pilot.
+The six source-backed queries in `data/eval/development_candidates.jsonl` are
+unreviewed candidates, not the frozen development gold set. See
+[docs/reproduction.md](docs/reproduction.md), [PLAN_MIDSUB.md](PLAN_MIDSUB.md),
+and [docs/decisions.md](docs/decisions.md).
+
+```mermaid
+flowchart LR
+  Q[Question and pinned cutoff] --> R[Shared date-safe retrieval]
+  R --> G[Prose or constrained graph generation]
+  G --> V[Corpus, date, variable and quotation checks]
+  V --> J[Fresh-context semantic verifier]
+  J --> A[Bounded edge repair and targeted retrieval]
+  A --> O[Graph with BFS hops and weakest-link paths]
+  A --> R
+  O --> H[Blinded human support review]
+  H --> E[Hop metrics and paired query bootstrap]
+```
 
 ## Quick start
 
@@ -103,7 +198,9 @@ Seven conditions, **one code path**, config flags only (`src/conditions/`, `conf
 ## Corpus
 
 Indian macro-financial news (BusinessLine, Economic Times, Business Standard, Mint) plus
-RBI / MOSPI / PPAC / PIB documents, **1 March – 30 September 2026**, frozen. The window is
+RBI / MOSPI / PPAC / PIB documents are the planned sources, **1 March – 30 September
+2026**. The current development snapshot contains ET, BusinessLine, Mint, MoSPI,
+PPAC and OEA; Business Standard and RBI remain absent. The window is
 enforced in the `Passage` model. Macro series only confirm that a move happened; they are
 never evidence for an edge.
 

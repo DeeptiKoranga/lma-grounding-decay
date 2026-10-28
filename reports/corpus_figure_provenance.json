@@ -1,0 +1,20 @@
+{
+  "plotter": "scripts/plot_corpus_coverage.py",
+  "backend": "Agg",
+  "packages": {
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.4",
+    "pillow": "13.0.0",
+    "fonttools": "4.67.0",
+    "kiwisolver": "1.5.1",
+    "contourpy": "1.4.0",
+    "cycler": "0.12.1",
+    "pyparsing": "3.3.3"
+  },
+  "documents_sha256": "d82e1da13ce405c7431c03e1238562f52303c1e4adb811249d33e62e2f55b212",
+  "outputs": [
+    "reports/corpus_v3_coverage.png",
+    "reports/corpus_v3_coverage.svg"
+  ],
+  "scope": "observed acquisition counts, not human review or causal scores"
+}

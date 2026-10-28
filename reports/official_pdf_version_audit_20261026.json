@@ -1,0 +1,744 @@
+{
+  "checked_on": "2026-10-26",
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "official_documents_checked": 61,
+  "known_later_version_flags": 0,
+  "with_comparable_metadata_dates": 61,
+  "without_comparable_metadata_dates": 0,
+  "items": [
+    {
+      "doc_id": "eaindustry-0a679d84762e4ccf7b19",
+      "source": "eaindustry",
+      "published_at": "2026-07-20T00:00:00+05:30",
+      "raw_sha256": "a598e834ed45248d025de1298a0a0d199ce8539640ea34476e561c2457abc56d",
+      "metadata_dates": {
+        "creationDate": "D:20260717164634+05'30'",
+        "modDate": "D:20260717164634+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "eaindustry-2c2d37ea876923ce00c5",
+      "source": "eaindustry",
+      "published_at": "2026-09-21T00:00:00+05:30",
+      "raw_sha256": "8e786a20f97cb809961923e72ef2d6f6a0730bb900580f9bb402115639b483da",
+      "metadata_dates": {
+        "creationDate": "D:20260918152943+05'30'",
+        "modDate": "D:20260918152943+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "eaindustry-3022c0753fba7d6e2fd0",
+      "source": "eaindustry",
+      "published_at": "2026-04-20T00:00:00+05:30",
+      "raw_sha256": "9fe74606471c2f21d38298ddb685cb29e412644ca2221a9f39568bc2ddc3c765",
+      "metadata_dates": {
+        "creationDate": "D:20260416172112+05'30'",
+        "modDate": ""
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "eaindustry-565f6bc58f72c89fc17a",
+      "source": "eaindustry",
+      "published_at": "2026-07-14T00:00:00+05:30",
+      "raw_sha256": "54709d4eed907ba5651f97592809ecbc7e39363fbe2202e99dd32a256cff2d2d",
+      "metadata_dates": {
+        "creationDate": "D:20260714114202+05'30'",
+        "modDate": "D:20260714114202+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "eaindustry-95fe42ebbfa734e5bd6d",
+      "source": "eaindustry",
+      "published_at": "2026-09-14T00:00:00+05:30",
+      "raw_sha256": "751d58d8f1c1801de53ff8758f53ae562ab71ccdd8936c7d6548dddd5c6ce017",
+      "metadata_dates": {
+        "creationDate": "D:20260914112643+05'30'",
+        "modDate": "D:20260914112643+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "eaindustry-98df52b22152b58e6475",
+      "source": "eaindustry",
+      "published_at": "2026-05-20T00:00:00+05:30",
+      "raw_sha256": "7afb41c01042346a39c1e6fd2e14883cae7a8644f30a4aa97949bb07aedc09ab",
+      "metadata_dates": {
+        "creationDate": "D:20260520072759+00'00'",
+        "modDate": "D:20260520072800Z"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "eaindustry-b5ce3fb968f7cf81a31d",
+      "source": "eaindustry",
+      "published_at": "2026-06-22T00:00:00+05:30",
+      "raw_sha256": "35faab36defb3e0798413a6bd2390c20f00f72b7651871bbbec3789b8718e084",
+      "metadata_dates": {
+        "creationDate": "D:20260619180851+05'30'",
+        "modDate": "D:20260619180851+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "eaindustry-c238b537103056328f7a",
+      "source": "eaindustry",
+      "published_at": "2026-03-20T00:00:00+05:30",
+      "raw_sha256": "72a53dd87e80a6079d0f8c5b72b20e13bded88b2d7dbdb84e67303eec64b8fc8",
+      "metadata_dates": {
+        "creationDate": "D:20260320053456+00'00'",
+        "modDate": "D:20260320053456Z"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "eaindustry-dc8d92d302f272085db0",
+      "source": "eaindustry",
+      "published_at": "2026-06-15T00:00:00+05:30",
+      "raw_sha256": "a490a0db5ae80ebf1e74f41840766dd5fd616301491636ad810765473cb9de34",
+      "metadata_dates": {
+        "creationDate": "D:20260615114456+05'30'",
+        "modDate": "D:20260615114456+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "eaindustry-f3b70522bf4b31d05b3b",
+      "source": "eaindustry",
+      "published_at": "2026-08-14T00:00:00+05:30",
+      "raw_sha256": "2b69303a1fcdc36df4af829eebc204621f5706822c494fb120e0cd788064c596",
+      "metadata_dates": {
+        "creationDate": "D:20260814115118+05'30'",
+        "modDate": "D:20260814115118+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-00115b63ef9736be8351",
+      "source": "mospi",
+      "published_at": "2026-07-28T00:00:00+05:30",
+      "raw_sha256": "35510bea753fceee2d106fb0d463d4945ca404a8fb5013a5b3f96c05e12bd31a",
+      "metadata_dates": {
+        "creationDate": "D:20260728171049+05'30'",
+        "modDate": "D:20260728171049+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-06aa3b9c37ec2bad5137",
+      "source": "mospi",
+      "published_at": "2026-06-12T00:00:00+05:30",
+      "raw_sha256": "97827058d0c325c8135e02d76301b843ae1410fc1aa0b7ba83ba682c14b8c4c5",
+      "metadata_dates": {
+        "creationDate": "D:20260611141451+05'30'",
+        "modDate": "D:20260612154732+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-086b80b3f699adfe6040",
+      "source": "mospi",
+      "published_at": "2026-09-29T00:00:00+05:30",
+      "raw_sha256": "ab46b96bf39c39ceaa8e692bf23124ec0b4c7653abbf2fcd18b91a2eeb23d2c1",
+      "metadata_dates": {
+        "creationDate": "D:20260929104041+05'30'",
+        "modDate": "D:20260929104041+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-115e43a5bcf3faae49c2",
+      "source": "mospi",
+      "published_at": "2026-04-13T00:00:00+05:30",
+      "raw_sha256": "3ce90fcdd386beb354d6fdf9c2bb8115ac7c18e6195e61e33f4508083e681908",
+      "metadata_dates": {
+        "creationDate": "D:20260413145916+05'30'",
+        "modDate": "D:20260413154206+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-1569f27ccd1114adcb6b",
+      "source": "mospi",
+      "published_at": "2026-03-24T00:00:00+05:30",
+      "raw_sha256": "11fb042b8b0f9d92af7c83a2763e23b10b67be01aec369b27e196a9f6a4b6a64",
+      "metadata_dates": {
+        "creationDate": "D:20260324154037+05'30'",
+        "modDate": "D:20260324154037+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-1649376918bd807c6b42",
+      "source": "mospi",
+      "published_at": "2026-06-29T00:00:00+05:30",
+      "raw_sha256": "3cdcef9751b9d04093dda7ae87fed45e3c10d46ef6739093ea958c87b285f8db",
+      "metadata_dates": {
+        "creationDate": "D:20260629150543+05'30'",
+        "modDate": "D:20260629150543+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-30da5db933d902a0ff76",
+      "source": "mospi",
+      "published_at": "2026-05-12T00:00:00+05:30",
+      "raw_sha256": "80c82154b48f349bb4618d16f44774720bc817926b4566e6276e97ada3a8a7b8",
+      "metadata_dates": {
+        "creationDate": "D:20260512144223+05'30'",
+        "modDate": "D:20260512154122+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-3a973485a8bd0874e9c0",
+      "source": "mospi",
+      "published_at": "2026-06-24T00:00:00+05:30",
+      "raw_sha256": "940993416d57ff07b6fd0e7e20519d546e145c4dd37ea83554a62bcbce0a612e",
+      "metadata_dates": {
+        "creationDate": "D:20260624143547+05'30'",
+        "modDate": "D:20260624143547+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-417d9bbd93453df80f5c",
+      "source": "mospi",
+      "published_at": "2026-08-31T00:00:00+05:30",
+      "raw_sha256": "30560afaf9c8627a86eec809b9ce8327dee5acec6923eeac951401e4b49ffec8",
+      "metadata_dates": {
+        "creationDate": "D:20260831110055+05'30'",
+        "modDate": "D:20260831110055+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-48ed6b3745482bbd0b08",
+      "source": "mospi",
+      "published_at": "2026-07-07T00:00:00+05:30",
+      "raw_sha256": "653fceb3dd0f9c358ec794b7ebfa2457ddc655198c0a849a55a561a93344f8ef",
+      "metadata_dates": {
+        "creationDate": "D:20260707144544+05'30'",
+        "modDate": "D:20260707144544+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-4d14c699d74930923cfa",
+      "source": "mospi",
+      "published_at": "2026-09-02T00:00:00+05:30",
+      "raw_sha256": "899c81e1298465249734c8d6168c2b5f2549960a15a3ba23d3b13bb1772f63f6",
+      "metadata_dates": {
+        "creationDate": "D:20260902141918+00'00'",
+        "modDate": "D:20260902141918+00'00'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-571eaa3314f6690532cc",
+      "source": "mospi",
+      "published_at": "2026-05-25T00:00:00+05:30",
+      "raw_sha256": "aa48889f41312c9869a6109828069b0d133620247934224051b4eae7efd76924",
+      "metadata_dates": {
+        "creationDate": "D:20260525161742+05'30'",
+        "modDate": "D:20260525161742+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-5732b26758c831e57faa",
+      "source": "mospi",
+      "published_at": "2026-03-23T00:00:00+05:30",
+      "raw_sha256": "f0394534dbb7728c06085b6c0e93fb36751540b7239ecccbbd1ff5e262de59b8",
+      "metadata_dates": {
+        "creationDate": "D:20260323154432+05'30'",
+        "modDate": "D:20260323154432+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-597791db2d4365470b48",
+      "source": "mospi",
+      "published_at": "2026-08-31T00:00:00+05:30",
+      "raw_sha256": "152d9020853769fe4fe4433bec038a558aae1312bbb13ec072058e8dd5b0bc49",
+      "metadata_dates": {
+        "creationDate": "D:20260831154330+05'30'",
+        "modDate": "D:20260831160305+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-5a1b977e356b0b14de7c",
+      "source": "mospi",
+      "published_at": "2026-03-12T00:00:00+05:30",
+      "raw_sha256": "76631a0fbb35b7ee7dac6e1d77a8e81705f8db0278ea72c9399eb76246953bc1",
+      "metadata_dates": {
+        "creationDate": "D:20260312131909+05'30'",
+        "modDate": "D:20260312154250+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-5cc04c551825955916a3",
+      "source": "mospi",
+      "published_at": "2026-08-12T00:00:00+05:30",
+      "raw_sha256": "f0c031b3177cec8ef13b54f62d71e42835d4eb713eb6e69996260dc5b016cfe4",
+      "metadata_dates": {
+        "creationDate": "D:20260810165940+05'30'",
+        "modDate": "D:20260812154022+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-5df9bc44eeb55bae5c33",
+      "source": "mospi",
+      "published_at": "2026-08-03T00:00:00+05:30",
+      "raw_sha256": "ead8d08ac11d81de9ad9d8d8fd0f8417c8d46f71274b4ed3bad8754d383c28a4",
+      "metadata_dates": {
+        "creationDate": "D:20260803152843+05'30'",
+        "modDate": "D:20260803152843+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-661d52097a78c872eb93",
+      "source": "mospi",
+      "published_at": "2026-05-21T00:00:00+05:30",
+      "raw_sha256": "4857f4161f565a21f749073faf6e57a3b313a28abe02640e2b77fec5c5fb18a5",
+      "metadata_dates": {
+        "creationDate": "D:20260521142203+05'30'",
+        "modDate": "D:20260521142203+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-6a9804fc71ff4cc9ac2c",
+      "source": "mospi",
+      "published_at": "2026-07-29T00:00:00+05:30",
+      "raw_sha256": "7e778c39897b105dc4c97df0b3c0fb978c72ac93d800b782c923814257befe17",
+      "metadata_dates": {
+        "creationDate": "D:20260729103302+05'30'",
+        "modDate": "D:20260729103302+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-71100362bdc23640d1a8",
+      "source": "mospi",
+      "published_at": "2026-09-21T00:00:00+05:30",
+      "raw_sha256": "8664378fb96774aa7663eaebc27bd7746e04d575669ccd3618086658ebe41fe9",
+      "metadata_dates": {
+        "creationDate": "D:20260921161336+05'30'",
+        "modDate": "D:20260921161336+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-8276789ed675a61d0c9f",
+      "source": "mospi",
+      "published_at": "2026-08-31T00:00:00+05:30",
+      "raw_sha256": "e6f0d24320c3bf482de6fc39af164acec68a24592cd58cbec225e56d6f36abc2",
+      "metadata_dates": {
+        "creationDate": "D:20260831151913+05'30'",
+        "modDate": "D:20260831151913+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-8fcc6e11e20ccd2630e6",
+      "source": "mospi",
+      "published_at": "2026-07-14T00:00:00+05:30",
+      "raw_sha256": "caa1a2c7f87ac6b93da0b4e9660b481a16a8bb19ba2ee9ec74208f4a89a97a81",
+      "metadata_dates": {
+        "creationDate": "D:20260714122335+05'30'",
+        "modDate": "D:20260714122335+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-a372935b6813f26f6d21",
+      "source": "mospi",
+      "published_at": "2026-04-28T00:00:00+05:30",
+      "raw_sha256": "6562577de9c7c4b993328415f7782b4ad93b64c27b09718921e323baa1dab357",
+      "metadata_dates": {
+        "creationDate": "D:20260428102411+05'30'",
+        "modDate": "D:20260428102411+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-a76a01cb8160a6a97209",
+      "source": "mospi",
+      "published_at": "2026-06-01T00:00:00+05:30",
+      "raw_sha256": "02a5794ac6dc4e60156295e3b8b31fb0eae8aaa5a1d1ac0e1fff474183fb1dbc",
+      "metadata_dates": {
+        "creationDate": "D:20260601213912+05'30'",
+        "modDate": "D:20260601213912+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-b484a45cef7bda82a2bd",
+      "source": "mospi",
+      "published_at": "2026-09-28T00:00:00+05:30",
+      "raw_sha256": "ddcc61c13d4be93484d590bcd151772f7adfb64484d48da421b009b1d4b699b5",
+      "metadata_dates": {
+        "creationDate": "D:20260928112501+05'30'",
+        "modDate": "D:20260928112501+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-b4d796c3a83f8df94477",
+      "source": "mospi",
+      "published_at": "2026-09-30T00:00:00+05:30",
+      "raw_sha256": "e56b9a8a7ad3e176717ec7f94ff04095d9543c506d1f1a2c8150f76dfc83422c",
+      "metadata_dates": {
+        "creationDate": "D:20260930164508+05'30'",
+        "modDate": "D:20260930164508+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-b946a78c7e6feff02b39",
+      "source": "mospi",
+      "published_at": "2026-07-13T00:00:00+05:30",
+      "raw_sha256": "20a61f0d4c339c2cfa005c9889ab73f5c36ebc664ccd9a628314a066aecf5c89",
+      "metadata_dates": {
+        "creationDate": "D:20260713140039+05'30'",
+        "modDate": "D:20260713154225+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-bd47119dc149b3a4288c",
+      "source": "mospi",
+      "published_at": "2026-03-02T00:00:00+05:30",
+      "raw_sha256": "03a1f4c99b8635fd1d6ee32b8381ecc875709fe674a10e0670b27f59907e9a58",
+      "metadata_dates": {
+        "creationDate": "D:20260302112116+05'30'",
+        "modDate": "D:20260302112116+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-c53b058e47c7d790f0c1",
+      "source": "mospi",
+      "published_at": "2026-03-30T00:00:00+05:30",
+      "raw_sha256": "f956df544016af6152bc7c5da9e28af79b2e1d3f0578ced4a21e24c70eea1da6",
+      "metadata_dates": {
+        "creationDate": "D:20260330045432",
+        "modDate": "D:20260330045432"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-cc8d1b236b5800655e6e",
+      "source": "mospi",
+      "published_at": "2026-05-15T00:00:00+05:30",
+      "raw_sha256": "8d100c34668fe4c6c70cc5d4379f3694d46b61a666becaca11e4c2e63951a86c",
+      "metadata_dates": {
+        "creationDate": "D:20260515103158+00'00'",
+        "modDate": "D:20260515103158+00'00'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-ceed4a044eae9cebf526",
+      "source": "mospi",
+      "published_at": "2026-08-28T00:00:00+05:30",
+      "raw_sha256": "e1f956b082a4b64a8d4274fa457c7a3a394f60abd7189e533ad327f24178affe",
+      "metadata_dates": {
+        "creationDate": "D:20260828152601+05'30'",
+        "modDate": "D:20260828152601+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-cfa93234d8a7adc3b019",
+      "source": "mospi",
+      "published_at": "2026-09-14T00:00:00+05:30",
+      "raw_sha256": "efed906339562651b94218b35079f4fc3a04f6aa43c0d6901bde8985478fda57",
+      "metadata_dates": {
+        "creationDate": "D:20260914102225+05'30'",
+        "modDate": "D:20260914154022+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-d6ee5bc5d95bf518ca55",
+      "source": "mospi",
+      "published_at": "2026-03-30T00:00:00+05:30",
+      "raw_sha256": "1b061d3e2e3f48359c4c15226ef3b763e53a21eaaf92ca845075d76f05e45dd6",
+      "metadata_dates": {
+        "creationDate": "D:20260330120048+05'30'",
+        "modDate": "D:20260330120048+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-d8a2d3cfd306f43591d4",
+      "source": "mospi",
+      "published_at": "2026-05-27T00:00:00+05:30",
+      "raw_sha256": "cd094decc3d99fafd2231e2788d0a62b86aee62e5e83d25410ba0168ac1f46d4",
+      "metadata_dates": {
+        "creationDate": "D:20260526203500+05'30'",
+        "modDate": "D:20260526203500+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-d9523c14ef321489cc5c",
+      "source": "mospi",
+      "published_at": "2026-08-21T00:00:00+05:30",
+      "raw_sha256": "b6925740538003cc50fc3ed86d9b4ee8c0838e9514ef4bae0006d0b42e073ab6",
+      "metadata_dates": {
+        "creationDate": "D:20260821154902+05'30'",
+        "modDate": "D:20260821154902+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-ebad89937a472648d7b1",
+      "source": "mospi",
+      "published_at": "2026-06-05T00:00:00+05:30",
+      "raw_sha256": "2074d6eb285a446642749c535e4a57055b4b948a8d38509cf59bfdacf37fa0db",
+      "metadata_dates": {
+        "creationDate": "D:20260605160344+05'30'",
+        "modDate": "D:20260605160344+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "mospi-f1eb1698bcecf7306fef",
+      "source": "mospi",
+      "published_at": "2026-05-06T00:00:00+05:30",
+      "raw_sha256": "95ee3f4addd58375d83f506b6f2c643bdbd7a580ea7250067418cf658f84c7c1",
+      "metadata_dates": {
+        "creationDate": "D:20260506160210+05'30'",
+        "modDate": "D:20260506160212+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-2138efa39310b9775f04",
+      "source": "ppac",
+      "published_at": "2026-07-22T00:00:00+05:30",
+      "raw_sha256": "016a36fb6844b5529cbb13c8e9da87bd3cbef079c1df9d064316cc075d8ba94c",
+      "metadata_dates": {
+        "creationDate": "D:20260722145408+05'30'",
+        "modDate": "D:20260722145408+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-2a05e0b74db3e11b9595",
+      "source": "ppac",
+      "published_at": "2026-04-26T00:00:00+05:30",
+      "raw_sha256": "f562522c2fcbad17a9f05a23948eb164d412c0f97a878cbdfdc5c900e7b46dc0",
+      "metadata_dates": {
+        "creationDate": "D:20260425144326+05'30'",
+        "modDate": "D:20260425144326+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-2be10cbc843b4b28a562",
+      "source": "ppac",
+      "published_at": "2026-06-03T00:00:00+05:30",
+      "raw_sha256": "466f8676f0ca591975e1e09c03365feee65231b15a4d58216a61e6a687cf2b7c",
+      "metadata_dates": {
+        "creationDate": "D:20260515174524+05'30'",
+        "modDate": "D:20260515174604+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-46dac8cab6308be3b51d",
+      "source": "ppac",
+      "published_at": "2026-08-22T00:00:00+05:30",
+      "raw_sha256": "b811d8ed5b9f11ddb496cce0a70c373ac611bfee0f8cd4155fb807177c0c4b8e",
+      "metadata_dates": {
+        "creationDate": "D:20260821151014+05'30'",
+        "modDate": "D:20260821151014+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-6e71f681abf0c4c2746d",
+      "source": "ppac",
+      "published_at": "2026-06-23T00:00:00+05:30",
+      "raw_sha256": "627687680f982b21518d94c7b51d05a5358d5b08cac462529f224d30e143fb90",
+      "metadata_dates": {
+        "creationDate": "D:20260623155631+05'30'",
+        "modDate": "D:20260623155631+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-82fb359cfe7eaed4fdd0",
+      "source": "ppac",
+      "published_at": "2026-07-08T00:00:00+05:30",
+      "raw_sha256": "e4e4434fbf0ac872ee110875d6fd857d0793219b202791881c9e54571a544ab3",
+      "metadata_dates": {
+        "creationDate": "D:20260701172948+05'30'",
+        "modDate": "D:20260701172948+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-8b2de05cb2a6c5c9b01c",
+      "source": "ppac",
+      "published_at": "2026-06-03T00:00:00+05:30",
+      "raw_sha256": "11f3b632a2f46be4b1f2864307a4318bf4a0296bcb7797a72f5986465d0ae93b",
+      "metadata_dates": {
+        "creationDate": "D:20260529115224+05'30'",
+        "modDate": "D:20260529115224+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-a416fd1764b3302ca993",
+      "source": "ppac",
+      "published_at": "2026-08-21T00:00:00+05:30",
+      "raw_sha256": "c3d74c4c18a4f1c85e7397a3d87404421af4e09d376afab9653ae8982cce56aa",
+      "metadata_dates": {
+        "creationDate": "D:20260821144301+05'30'",
+        "modDate": "D:20260821144301+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-a7a7fa65ce5a75ce43c5",
+      "source": "ppac",
+      "published_at": "2026-03-16T00:00:00+05:30",
+      "raw_sha256": "f6e415e5b5acb3f6bef72f7410e579e3b5e41c928c5795b3b056037dc6292f06",
+      "metadata_dates": {
+        "creationDate": "D:20260316144047+05'30'",
+        "modDate": "D:20260316144102+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-a94c715ae5330ab28509",
+      "source": "ppac",
+      "published_at": "2026-08-27T00:00:00+05:30",
+      "raw_sha256": "cf18aaff462502d131a0e1f5f3f9a8746ce7a83bb4a22a74db0d082f61a54630",
+      "metadata_dates": {
+        "creationDate": "D:20260827130437+05'30'",
+        "modDate": "D:20260827130437+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-b7dfdd740db9d5f7456b",
+      "source": "ppac",
+      "published_at": "2026-06-03T00:00:00+05:30",
+      "raw_sha256": "884b5ac1a4251fbf551211507b157a4d63576e00da7096c6520086ff9d4f9157",
+      "metadata_dates": {
+        "creationDate": "D:20260522142423+05'30'",
+        "modDate": "D:20260522142423+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-e4369693bbde6e6ce02c",
+      "source": "ppac",
+      "published_at": "2026-06-17T00:00:00+05:30",
+      "raw_sha256": "37d68131ebbafd4df5641c88a8659fddbd6e8ac0b09e49bc7061f1c252e62d79",
+      "metadata_dates": {
+        "creationDate": "D:20260617153110+05'30'",
+        "modDate": "D:20260617153110+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-e856ca0afca408821203",
+      "source": "ppac",
+      "published_at": "2026-04-02T00:00:00+05:30",
+      "raw_sha256": "93d3b8386ef425e24599090b50a3ac3526a0d29b526a2067a63c386125614a38",
+      "metadata_dates": {
+        "creationDate": "D:20260331164618+05'30'",
+        "modDate": "D:20260331164618+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    },
+    {
+      "doc_id": "ppac-f90f112ce09818125ebf",
+      "source": "ppac",
+      "published_at": "2026-08-04T00:00:00+05:30",
+      "raw_sha256": "25dc6cd36c4196208703ebc6dd325bde2603eec70dab8d03b33199bf63a4b96e",
+      "metadata_dates": {
+        "creationDate": "D:20260804171258+05'30'",
+        "modDate": "D:20260804171258+05'30'"
+      },
+      "has_comparable_metadata_date": true,
+      "known_later_metadata_date": false
+    }
+  ],
+  "scope": "Known file-version conflict screen over every retained official PDF; metadata does not prove unchanged historical bytes or independent review.",
+  "research_acceptance": false
+}

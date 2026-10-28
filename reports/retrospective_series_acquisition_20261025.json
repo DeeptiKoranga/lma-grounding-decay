@@ -1,0 +1,354 @@
+{
+  "status": "retrospective capture, not an original point-in-time history or human acceptance",
+  "directory": "data/series/retrospective_20261025",
+  "new_historical_observations": {
+    "brent_usd_bbl": 148,
+    "gsec_10y_pct": 7,
+    "indian_basket_usd_bbl": 7,
+    "fpi_flows_usd_mn": 7
+  },
+  "original_cpi_fx_copied_unchanged": true,
+  "canonical_sha256_before": {
+    "cpi_headline_yoy.csv": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+    "indian_basket_usd_bbl.csv": "17f3e0f0919727bd0ebba18d46f50e98509dea35e5ebc0be018e1b431d1b23b7",
+    "inr_usd.csv": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c",
+    "fpi_flows_usd_mn.csv": "94c24a79a038b34c510c2f93bdcd0b5ef2540d2756b129c8d5ba32f5666c9a4d",
+    "brent_usd_bbl.csv": "07b92e9762cf03460f7dedaa1186796bd5c781feb3418b4f9fd58296bb82a9fa",
+    "gsec_10y_pct.csv": "7b12e2cf5f9254f1b7b648a33803b1f5ea381b96a7f61ebab150ed14911a2be6"
+  },
+  "canonical_sha256_after": {
+    "cpi_headline_yoy.csv": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+    "indian_basket_usd_bbl.csv": "17f3e0f0919727bd0ebba18d46f50e98509dea35e5ebc0be018e1b431d1b23b7",
+    "inr_usd.csv": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c",
+    "fpi_flows_usd_mn.csv": "94c24a79a038b34c510c2f93bdcd0b5ef2540d2756b129c8d5ba32f5666c9a4d",
+    "brent_usd_bbl.csv": "07b92e9762cf03460f7dedaa1186796bd5c781feb3418b4f9fd58296bb82a9fa",
+    "gsec_10y_pct.csv": "7b12e2cf5f9254f1b7b648a33803b1f5ea381b96a7f61ebab150ed14911a2be6"
+  },
+  "files": {
+    "cpi_headline_yoy.csv": {
+      "sha256": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+      "observations": 7
+    },
+    "indian_basket_usd_bbl.csv": {
+      "sha256": "4de40cba1acd377f5b02758c5eeb3fd1adf478a7c18db50e9ae353ef946dee09",
+      "observations": 7
+    },
+    "inr_usd.csv": {
+      "sha256": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c",
+      "observations": 141
+    },
+    "fpi_flows_usd_mn.csv": {
+      "sha256": "f32161adf9f2e8f668524cd8b4896d2b4c58404556d413b7f421294880c44c9d",
+      "observations": 7
+    },
+    "brent_usd_bbl.csv": {
+      "sha256": "3b2352af4b73a0d3f899c3fa4a17e9d5f20fd22575fda0ec1013afd04143fcf8",
+      "observations": 148
+    },
+    "gsec_10y_pct.csv": {
+      "sha256": "08a7845fbf97f448cdb158eec60a93748ac8b2d324ee1b477867a64b4e5034d9",
+      "observations": 7
+    }
+  },
+  "sources": {
+    "brent_usd_bbl": [
+      {
+        "raw": "data/raw/track_a_20261025/brent_nymex_chart.json",
+        "url": "https://query1.finance.yahoo.com/v8/finance/chart/BZ%3DF?period1=1772323200&period2=1790812800&interval=1d&events=history",
+        "checked_at": "2026-10-25T14:27:10.642198+00:00",
+        "purpose": "retrospective market history; no original historical-vintage availability inferred",
+        "status": "acquired; retrospective inspection required",
+        "content_type": "application/json",
+        "bytes": 16691,
+        "sha256": "3e9af84ea8be2428e52b9fe9c2f269e8ffac967ec91ba11a0801b46c8d2d7ddd",
+        "records": 148,
+        "metadata": {
+          "currency": "USD",
+          "symbol": "BZ=F",
+          "exchangeName": "NYM",
+          "fullExchangeName": "NY Mercantile",
+          "instrumentType": "FUTURE",
+          "firstTradeDate": 1185768000,
+          "regularMarketTime": 1792789159,
+          "hasPrePostMarketData": false,
+          "gmtoffset": -14400,
+          "timezone": "EDT",
+          "exchangeTimezoneName": "America/New_York",
+          "regularMarketPrice": 111.7,
+          "regularMarketChangePercent": 2.798,
+          "fulldayPrice": 111.7,
+          "fulldayChange": 3.04,
+          "fulldayChangePercent": 2.798,
+          "fiftyTwoWeekHigh": 126.1,
+          "fiftyTwoWeekLow": 58.72,
+          "regularMarketDayHigh": 112.41,
+          "regularMarketDayLow": 108.28,
+          "regularMarketVolume": 41394,
+          "longName": "Brent Crude Oil Last Day Financial Futures",
+          "shortName": "Brent Crude Oil Last Day Financ",
+          "chartPreviousClose": 72.48,
+          "priceHint": 2,
+          "currentTradingPeriod": {
+            "pre": {
+              "timezone": "EDT",
+              "start": 1792900800,
+              "end": 1792900800,
+              "gmtoffset": -14400
+            },
+            "regular": {
+              "timezone": "EDT",
+              "start": 1792900800,
+              "end": 1792987140,
+              "gmtoffset": -14400
+            },
+            "post": {
+              "timezone": "EDT",
+              "start": 1792987140,
+              "end": 1792987140,
+              "gmtoffset": -14400
+            }
+          },
+          "dataGranularity": "1d",
+          "range": "",
+          "validRanges": [
+            "1d",
+            "5d",
+            "1mo",
+            "3mo",
+            "6mo",
+            "1y",
+            "2y",
+            "5y",
+            "10y",
+            "ytd",
+            "max"
+          ]
+        }
+      }
+    ],
+    "gsec_10y_pct": [
+      {
+        "raw": "data/raw/track_a_20261025/gsec_oecd_fred_main.csv",
+        "url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=INDIRLTLT01STM&cosd=2026-03-01&coed=2026-09-30",
+        "checked_at": "2026-10-25T14:33:40.871884+00:00",
+        "purpose": "retrospective OECD/FRED monthly main ten-year government bond yield; no historical release dates inferred",
+        "status": "acquired; retrospective inspection required",
+        "bytes": 228,
+        "content_type": "application/csv",
+        "sha256": "93caf1809a450d4400f6a9ef1d4c267901023b7c1e4110d970bd5755782a30a4",
+        "path": "data/raw/track_a_20261025/gsec_oecd_fred_main.csv"
+      }
+    ],
+    "indian_basket_usd_bbl": [
+      {
+        "raw": "data/raw/track_a_20261025/ppac_current_monthly.json",
+        "checked_at": "2026-10-25T14:34:24.252913+00:00",
+        "url": "https://ppac.gov.in/AjaxController/getInternationalPricesCrudeOil",
+        "parameters": {
+          "financialYear": "2026-2027",
+          "reportBy": "4",
+          "pageId": "30"
+        },
+        "purpose": "public current financial-year monthly table; retrospective capture only",
+        "status": "acquired; retrospective inspection required",
+        "sha256": "907af16bde4a185d7da38f14eb497fe46719622fd432d56ea91397c6dc418683",
+        "bytes": 2556,
+        "path": "data/raw/track_a_20261025/ppac_current_monthly.json",
+        "requests": 2
+      },
+      {
+        "raw": "data/raw/ppac/0635ef9798f4afd29a5c.pdf",
+        "raw_sha256": "f304fa095055e8fc53dbafb5d8625747df9de3a575c1286a63ba1e043e45676d",
+        "captured_at": "2026-10-21T21:58:57.627152+00:00",
+        "transcription": {
+          "source_metadata": "data/raw/ppac/0635ef9798f4afd29a5c.meta.json",
+          "raw_sha256": "f304fa095055e8fc53dbafb5d8625747df9de3a575c1286a63ba1e043e45676d",
+          "method": "visual model transcription of the original scanned PDF; not a human-review attestation",
+          "page": 5,
+          "on": "2026-03-31",
+          "value": 113.49,
+          "unit": "USD per barrel",
+          "measure": "Indian crude basket monthly average",
+          "crosscheck": {
+            "april_value_on_highlights_page": 114.48,
+            "april_value_on_page_38_table": 114.48,
+            "april_value_in_public_current_year_table": 114.48
+          },
+          "historical_publication_date_claimed": false,
+          "availability_basis": "actual cache capture timestamp in the source metadata, never the conflicting listed publication date"
+        }
+      }
+    ],
+    "fpi_flows_usd_mn": [
+      {
+        "raw": "data/raw/series/cdsl/archive_2026-03-31.html",
+        "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+        "selectedDate": "March 31, 2026",
+        "requested_as_of": "2026-03-31",
+        "sha256": "da36f3daf2b0157c292d66049750202d474ce3135992ecfbbc856b87d170bdb6",
+        "bytes": 409537,
+        "fetched_at": "2026-10-22T22:40:25.957090+00:00",
+        "availability_basis": "actual capture date; no historical release/vintage claim",
+        "retrospective_only": true,
+        "components_usd_million": {
+          "Debt": "670.87",
+          "Debt FAR": "-1246.33",
+          "Debt-VRR": "-351.23",
+          "Equity": "-12723.81"
+        },
+        "daily_reporting_rows": 19,
+        "last_reporting_date": "2026-03-30",
+        "monthly_label": "Total for March",
+        "daily_monthly_rounding_tolerance_usd_million": "0.100"
+      },
+      {
+        "raw": "data/raw/series/cdsl/archive_2026-04-30.html",
+        "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+        "selectedDate": "April 30, 2026",
+        "requested_as_of": "2026-04-30",
+        "sha256": "c0ee7ba63185bf9dd661aed4d656016c75dec755a5e4daca3ecb7cae2812144e",
+        "bytes": 446271,
+        "fetched_at": "2026-10-22T22:40:32.521141+00:00",
+        "availability_basis": "actual capture date; no historical release/vintage claim",
+        "retrospective_only": true,
+        "components_usd_million": {
+          "Debt": "-826.19",
+          "Debt FAR": "-13.89",
+          "Debt-VRR": "-329.05",
+          "Equity": "-6474.37"
+        },
+        "daily_reporting_rows": 21,
+        "last_reporting_date": "2026-04-30",
+        "monthly_label": "Total for April",
+        "daily_monthly_rounding_tolerance_usd_million": "0.110"
+      },
+      {
+        "raw": "data/raw/series/cdsl/archive_2026-05-31.html",
+        "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+        "selectedDate": "May 31, 2026",
+        "requested_as_of": "2026-05-31",
+        "sha256": "c0cb30ba3040a7f15ae8e324872ac097b9bcc982364e8c7d6df84ef989262a8f",
+        "bytes": 409230,
+        "fetched_at": "2026-10-22T22:40:38.503155+00:00",
+        "availability_basis": "actual capture date; no historical release/vintage claim",
+        "retrospective_only": true,
+        "components_usd_million": {
+          "Debt": "-10.07",
+          "Debt FAR": "461.89",
+          "Debt-VRR": "-160.80",
+          "Equity": "-3450.44"
+        },
+        "daily_reporting_rows": 19,
+        "last_reporting_date": "2026-05-29",
+        "monthly_label": "Total for May",
+        "daily_monthly_rounding_tolerance_usd_million": "0.100"
+      },
+      {
+        "raw": "data/raw/series/cdsl/archive_2026-06-30.html",
+        "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+        "selectedDate": "June 30, 2026",
+        "requested_as_of": "2026-06-30",
+        "sha256": "f500d4bc9d45300e57966b6f3fbc52090e6e1b769e6a96b7e61c2c4ef23a859a",
+        "bytes": 446625,
+        "fetched_at": "2026-10-22T22:40:44.788941+00:00",
+        "availability_basis": "actual capture date; no historical release/vintage claim",
+        "retrospective_only": true,
+        "components_usd_million": {
+          "Debt": "3234.63",
+          "Debt FAR": "2272.73",
+          "Debt-VRR": "340.86",
+          "Equity": "-5157.48"
+        },
+        "daily_reporting_rows": 21,
+        "last_reporting_date": "2026-06-30",
+        "monthly_label": "Total for June",
+        "daily_monthly_rounding_tolerance_usd_million": "0.110"
+      },
+      {
+        "raw": "data/raw/series/cdsl/archive_2026-07-31.html",
+        "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+        "selectedDate": "July 31, 2026",
+        "requested_as_of": "2026-07-31",
+        "sha256": "539870914820ef8a48fe965664041c1ff38fbfa78b4a09066acaf1fedc702538",
+        "bytes": 484033,
+        "fetched_at": "2026-10-22T22:40:51.154013+00:00",
+        "availability_basis": "actual capture date; no historical release/vintage claim",
+        "retrospective_only": true,
+        "components_usd_million": {
+          "Debt": "3039.01",
+          "Debt FAR": "321.92",
+          "Debt-VRR": "-1413.20",
+          "Equity": "2123.15"
+        },
+        "daily_reporting_rows": 23,
+        "last_reporting_date": "2026-07-31",
+        "monthly_label": "Total for July",
+        "daily_monthly_rounding_tolerance_usd_million": "0.120"
+      },
+      {
+        "raw": "data/raw/series/cdsl/archive_2026-08-31.html",
+        "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+        "selectedDate": "August 31, 2026",
+        "requested_as_of": "2026-08-31",
+        "sha256": "9faefcc8a3ccfc5cee35d6c6ceec8446168920ffe11fb14b8ef1cd29421cb8ca",
+        "bytes": 446376,
+        "fetched_at": "2026-10-22T22:40:57.354079+00:00",
+        "availability_basis": "actual capture date; no historical release/vintage claim",
+        "retrospective_only": true,
+        "components_usd_million": {
+          "Debt": "-232.41",
+          "Debt FAR": "27.74",
+          "Debt-VRR": "52.29",
+          "Equity": "3104.47"
+        },
+        "daily_reporting_rows": 21,
+        "last_reporting_date": "2026-08-31",
+        "monthly_label": "Total for August",
+        "daily_monthly_rounding_tolerance_usd_million": "0.110"
+      },
+      {
+        "raw": "data/raw/series/cdsl/archive_2026-09-30.html",
+        "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+        "selectedDate": "September 30, 2026",
+        "requested_as_of": "2026-09-30",
+        "sha256": "5088844cd5f856e9ea7b928c52f20086455d9d10c941ab9d71cd14161da41762",
+        "bytes": 446831,
+        "fetched_at": "2026-10-22T22:41:03.616310+00:00",
+        "availability_basis": "actual capture date; no historical release/vintage claim",
+        "retrospective_only": true,
+        "components_usd_million": {
+          "Debt": "-548.23",
+          "Debt FAR": "-1089.18",
+          "Debt-VRR": "-525.77",
+          "Equity": "-3750.26"
+        },
+        "daily_reporting_rows": 21,
+        "last_reporting_date": "2026-09-30",
+        "monthly_label": "Total for September",
+        "daily_monthly_rounding_tolerance_usd_million": "0.110"
+      }
+    ]
+  },
+  "definitions": {
+    "brent_usd_bbl": "Yahoo BZ=F NYMEX Brent Last Day Financial futures vendor continuous daily closes; cents normalized from float encoding. Vendor roll mapping is not independently verified against every ICE contract; not spot, not the previous intraday news series.",
+    "gsec_10y_pct": "FRED/OECD INDIRLTLT01STM, main (including benchmark) Indian ten-year government bond yield, monthly percent. Monthly period labels are stored on month end; not daily or month-end closes and not a generic par-yield substitute.",
+    "indian_basket_usd_bbl": "PPAC monthly averages. April-September from the public current-year table; March from the identified scanned snapshot, with the overlapping April value cross-checked against both the page 38 table and public table.",
+    "fpi_flows_usd_mn": "CDSL monthly custodian-reporting flows: Equity + Debt + Debt-VRR + Debt FAR, native USD million. Last reporting day may precede a calendar month end; no reporting/release date is inferred from that fact."
+  },
+  "availability": "The particular captured values become visible only from their actual verified cache capture dates in India time. Those dates are conservative known-availability upper bounds, not first release dates. No original March-September vintage is asserted.",
+  "limits": [
+    "Retrospective files are separate from the default agent store and cannot supply information to earlier as-of queries.",
+    "Monthly observations cannot confirm a particular daily threshold crossing or daily episode date.",
+    "Vendor continuous futures contract rolls and quoted closes differ from intraday ICE news quotes.",
+    "Retrospective values may differ from earlier published values; existing vintages are never overwritten.",
+    "No anchor-confirmation flags, human-review attestations or causal evidence labels are generated."
+  ],
+  "citation": "OECD (2026), Main Economic Indicators, via FRED, Federal Reserve Bank of St. Louis, INDIRLTLT01STM; accessed 25 October 2026. Yahoo Finance BZ=F and PPAC/CDSL sources are linked per observation."
+}

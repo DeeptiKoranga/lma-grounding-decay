@@ -1,0 +1,147 @@
+{
+  "status": "passed; full six-query development software reproduction, not reviewed research results",
+  "source_commit": "bbc9288",
+  "conditions": [
+    "B0",
+    "B1",
+    "B2",
+    "M"
+  ],
+  "queries": 6,
+  "graphs": 24,
+  "all_canonical_graphs_identical": true,
+  "comparison_excludes": [
+    "run_id"
+  ],
+  "cases": [
+    {
+      "artifact": "B0/dev-candidate-01.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B0/dev-candidate-02.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B0/dev-candidate-03.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B0/dev-candidate-04.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B0/dev-candidate-05.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B0/dev-candidate-06.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B1/dev-candidate-01.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B1/dev-candidate-02.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B1/dev-candidate-03.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B1/dev-candidate-04.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B1/dev-candidate-05.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B1/dev-candidate-06.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B2/dev-candidate-01.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B2/dev-candidate-02.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B2/dev-candidate-03.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B2/dev-candidate-04.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B2/dev-candidate-05.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "B2/dev-candidate-06.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "M/dev-candidate-01.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "M/dev-candidate-02.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "M/dev-candidate-03.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "M/dev-candidate-04.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "M/dev-candidate-05.json",
+      "canonical_graph_identical": true
+    },
+    {
+      "artifact": "M/dev-candidate-06.json",
+      "canonical_graph_identical": true
+    }
+  ],
+  "inputs": {
+    "protocol": "prose baselines, mechanically extracted graphs; independent correction pending",
+    "pipeline_sha256": "121edf5ae50f4aaf9cc4f7ee9e80e6e83d4fbb86ed2ca7ece739bbca3f67cb4d",
+    "queries_sha256": "cb925413f03a2b60c93946d1238b84fbff770610ba946a08b8c35c66618e6e2e",
+    "corpus_sha256": "7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3",
+    "aliases_sha256": "826f0e59c3ad98b2ca3d6ff08027ead08c917fed36d9d0a711cf802a1eebe843",
+    "model": "mlx-community/Qwen3-8B-4bit",
+    "revision": "545dc4251c05440727734bcd94334791f6ab0192",
+    "backend": "mlx",
+    "conditions": [
+      "B0",
+      "B1",
+      "B2",
+      "M"
+    ],
+    "reranker_revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+    "first_stage": "plain BM25 (development; D-02 unresolved)",
+    "series_sha256": {
+      "cpi_headline_yoy.csv": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+      "indian_basket_usd_bbl.csv": "17f3e0f0919727bd0ebba18d46f50e98509dea35e5ebc0be018e1b431d1b23b7",
+      "inr_usd.csv": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c"
+    },
+    "status": "development_unreviewed; not a frozen experiment"
+  },
+  "runs": "/private/tmp/lma-grounding-fresh-20261023/runs/fresh_full_development_20261023",
+  "corpus_snapshot": "data/interim/frozen_v1_20261023/articles.jsonl",
+  "series_snapshot": "data/interim/fresh_reproduction_inputs_20261023/series",
+  "limitations": [
+    "Six unreviewed development candidates, not accepted gold.",
+    "Reused cached model weights and existing isolated MLX runtime; no fresh heavy-runtime install.",
+    "Reproduces the earlier v1 corpus and original three-series checkpoint, not the repaired corpus or extended series.",
+    "Other team machines and Kaggle execution remain untested."
+  ]
+}

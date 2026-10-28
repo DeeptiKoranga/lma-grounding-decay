@@ -1,0 +1,15 @@
+{
+  "status": "pending independent review",
+  "packet_sha256": "88722218b0330d3cd398b6d5a23dc7e963b0ac98eb42e77bb749b32fe4cceb1e",
+  "corpus_sha256": "7b843fe072573fe7b3d54f89af6b2128bf61abe4115b4059d57665e9638543d3",
+  "pairs_sha256": "de6c265557d352516bc97cae762e109c5e50c99c315264bc373f7748adb11f8d",
+  "aliases_sha256": "826f0e59c3ad98b2ca3d6ff08027ead08c917fed36d9d0a711cf802a1eebe843",
+  "queries": 20,
+  "known_seed_positives": 29,
+  "candidates": 1988,
+  "as_of_months": {
+    "2026-03": 20
+  },
+  "pool_method": "seed positives union plain/alias BM25 top 10; hash order; supplied candidate pool SHA-256 4312b49706fcf03e2fcf9867dfadc6729c68fd2cbcb9dd6cce6f4cb15f181e43",
+  "scope": "Relevance reviewed within this candidate pool; exhaustive corpus positives not established."
+}

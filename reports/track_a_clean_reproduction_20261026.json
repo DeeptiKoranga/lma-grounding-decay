@@ -1,0 +1,59 @@
+{
+  "checked_on": "2026-10-26",
+  "source_commit": "c0324cd",
+  "fresh_checkout": "/private/tmp/lma-grounding-fresh-20261026",
+  "python": "3.12.13",
+  "new_core_dev_pdf_environment": true,
+  "installation": "Offline from local uv package cache into a new environment; core/dev plus PyMuPDF 2.0 and trafilatura 2.3.1.",
+  "tests_passed": 630,
+  "tests_skipped": 0,
+  "ruff_passed": true,
+  "black_passed": true,
+  "raw_inputs": "Checksummed local cached originals; no new acquisition.",
+  "heavy_model_runtime": "Existing local retrieval/MLX runtimes and pinned weights reused; not freshly installed here.",
+  "source_replay": {
+    "method": "Direct archived v3 to final v7 narrative corpus using committed fresh source/PDF environment.",
+    "output": "data/interim/corpus_v7_direct_clean_replay_20261026/snapshot",
+    "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+    "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+    "all_three_payload_files_identical": true,
+    "reverse_input_archive_identical": true,
+    "documents": 1156,
+    "passages": 16472
+  },
+  "news_only_independent_replay_identical": true,
+  "saved_index_reload": "reports/retrieval_v7_saved_index_validation_20261026.json",
+  "blank_corpus_export_rejected": true,
+  "blank_relevance_export_rejected": true,
+  "no_blank_export_output": true,
+  "other_machines_tested": false,
+  "kaggle_executed": false,
+  "paid_api_requests": 0,
+  "research_acceptance": false,
+  "logs": [
+    {
+      "path": "/private/tmp/lma-track-a-20261026-fresh-setup.log",
+      "sha256": "65e934c312c0c10495e912e45d61ef20945d105651c4f50f6dba61875d7b949c"
+    },
+    {
+      "path": "/private/tmp/lma-track-a-20261026-fresh-pdf-setup.log",
+      "sha256": "faccabfaa8441fdd204de8e4b9d3154cb8a4f5f210a4223e919f2f7e812d0bce"
+    },
+    {
+      "path": "/private/tmp/lma-track-a-20261026-fresh-final-checks.log",
+      "sha256": "9f8237a9b4e7ab1fb3a4721c5eab76f6b6581d39be17e6970f63337e85e9cb2a"
+    },
+    {
+      "path": "/private/tmp/lma-v7-direct-clean-replay-20261026.log",
+      "sha256": "25040b5f3515228c0ead18121761a22bd6154f7827dc6ea6551ede059ad8a0ea"
+    },
+    {
+      "path": "/private/tmp/lma-v7-blank-corpus-export-20261026.log",
+      "sha256": "bbd2c667b9e8a9b8e699f24e77251f3d667328c7f7ad5e8351a875fc7abdbece"
+    },
+    {
+      "path": "/private/tmp/lma-v7-blank-relevance-export-20261026.log",
+      "sha256": "54c5cda9a7f8acd66c2234c95c5632db47c86e6366ab1c53f755b5389a4b6981"
+    }
+  ]
+}

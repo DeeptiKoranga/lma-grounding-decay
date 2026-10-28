@@ -1,0 +1,49 @@
+{
+  "source_commit": "b3acf53",
+  "clone": "/private/tmp/lma-grounding-fresh-20261023",
+  "setup": "make setup; uv sync --python 3.12 --extra dev",
+  "fresh_python": "Python 3.12.13",
+  "status": "fresh core setup/lint/tests and four-condition one-query model probe completed",
+  "original_environment_tests": {
+    "passed": 547,
+    "skipped": 0,
+    "log": "/private/tmp/lma-final-checks-20261023.log"
+  },
+  "limitations": [
+    "No model weights or corpus payload included in git",
+    "Two PyMuPDF tests skipped in the core-only fresh environment",
+    "Kaggle and other team laptops not exercised",
+    "Model probe reuses the existing heavy runtime and downloaded corpus/weights; it is not a fresh heavy-dependency installation",
+    "Only one query across four conditions was rerun in the fresh clone; no full frozen-gold reproduction claimed"
+  ],
+  "fresh_tests": {
+    "passed": 545,
+    "skipped": 2,
+    "log": "/private/tmp/lma-fresh-checks-20261023.log"
+  },
+  "model_probe": {
+    "conditions": [
+      "B0",
+      "B1",
+      "B2",
+      "M"
+    ],
+    "queries": 1,
+    "graphs": 4,
+    "failures": [],
+    "runtime_python": "3.12.3",
+    "pipeline_source": "/private/tmp/lma-grounding-fresh-20261023/src/conditions/pipeline.py",
+    "run_path": "/private/tmp/lma-grounding-fresh-20261023/runs/fresh_model_probe_20261023",
+    "inputs_sha256": "48277934a6196d183bc01a6a17436da4ce5f94973e48acb049c3f7545f918797",
+    "canonical_graph_matches_excluding_run_id": {
+      "B0": true,
+      "B1": true,
+      "B2": true,
+      "M": true
+    },
+    "audit": "reports/fresh_model_probe_validation.json"
+  },
+  "historical_checkpoint": true,
+  "latest_core_and_full_sweep_validation": "reports/track_a_validation.json",
+  "latest_full_development_reproduction": "reports/fresh_full_development_reproduction.json"
+}

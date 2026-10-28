@@ -1,0 +1,65 @@
+{
+  "decision_date": "2026-10-27",
+  "status": "Receipt-bound pilot passed on user-attested independent/blinded review; scoped first-stage choice resolved and reranking retained. End-to-end experiment acceptance remains separate.",
+  "first_stage": "bge_m3",
+  "rule": "Simplest first-stage configuration within 0.03 macro Recall@10 of the best, in order bm25, bm25_alias, bge_m3, hybrid_rrf. Reranking is a separate comparison.",
+  "first_stage_metrics": {
+    "bm25": {
+      "recall_at_5": 0.2405,
+      "recall_at_10": 0.3518,
+      "mrr_at_50": 0.4555
+    },
+    "bm25_alias": {
+      "recall_at_5": 0.2211,
+      "recall_at_10": 0.3551,
+      "mrr_at_50": 0.5787
+    },
+    "bge_m3": {
+      "recall_at_5": 0.3327,
+      "recall_at_10": 0.4259,
+      "mrr_at_50": 0.6981
+    },
+    "hybrid_rrf": {
+      "recall_at_5": 0.2958,
+      "recall_at_10": 0.4161,
+      "mrr_at_50": 0.6663
+    }
+  },
+  "reranker": {
+    "model": "BAAI/bge-reranker-v2-m3",
+    "revision": "953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e",
+    "top_k_candidates": 50,
+    "recall_at_5": 0.4072,
+    "recall_at_10": 0.5296,
+    "mrr_at_50": 0.7101,
+    "recall_at_10_gain": 0.1037,
+    "disposition": "Retain for B1-R based on the receipt-bound pooled retrieval comparison; end-to-end research benefit remains unestablished and deferred."
+  },
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "pairs_sha256": "7ef70e5e65dcedc1e511673fa5ec4eab4ea1709564159c3f70e507547e609438",
+  "report_sha256": "5c82db6d7d9e4efd2ca4e3c6383a95686b9b1fbf74dbd49db0e50e5f9e862825",
+  "metrics_precision": "Rounded to four decimals as emitted in the pilot table. Selection is the actual runner outcome.",
+  "queries": 20,
+  "pool_judgments": 2035,
+  "relevant_judgments": 195,
+  "label_provenance": "Original automated development labels and exact spans are unchanged; Varun reports completing independent/blinded Track A review. The software validates records and attestations, not review conduct or exposure chronology.",
+  "research_acceptance": true,
+  "shared_historical_run_settings_changed": false,
+  "default_for_new_track_a_reproduction": {
+    "corpus": "data/processed/articles.jsonl",
+    "config": "bge_m3",
+    "dense_backend": "faiss",
+    "dense_index": "data/interim/corpus_v7_index_20261026/bge_m3_vectors.json",
+    "embedding_revision": "5617a9f61b028005a4858fdac845db406aefb181",
+    "device": "cpu",
+    "max_length": 1024
+  },
+  "report": "reports/pilot_retriever_v7_attested_20261027.md",
+  "pairs": "data/interim/track_a_attested_review_20261027/relevance_accepted/pairs.jsonl",
+  "review": "data/interim/track_a_attested_review_20261027/assessment/relevance_judgments.json",
+  "acceptance_scope": "Track A pooled retrieval pilot and sampled-corpus review records; no experiment UER/reference-recall or whole-study acceptance.",
+  "review_receipt": "data/interim/track_a_attested_review_20261027/relevance_accepted/receipt.json",
+  "review_receipt_sha256": "5a4ce72530907ba8c82a4333cad3c0b67da35c0938bec31a8d8284e75c0096a0",
+  "reviewer_metadata_report": "reports/track_a_reviewer_identity_20261027.json",
+  "reviewer_metadata_report_sha256": "6f6140e6c0e4ba9b7765b05ec602308294933b4ad0f06cfb709d8f309bfea3ab"
+}

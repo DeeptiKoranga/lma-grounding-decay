@@ -1,0 +1,43 @@
+{
+  "checked_on": "2026-10-23",
+  "status": "local review preparation and acceptance gates complete; independent human decisions pending",
+  "local": {
+    "tests_passed": 600,
+    "tests_skipped": 0,
+    "ruff": "passed",
+    "black": "passed",
+    "log": "/private/tmp/lma-track-a-review-checks-20261023.log"
+  },
+  "new_fixture_tests": 14,
+  "code_sha256": {
+    "src/corpus/review.py": "933cb8b74343ae3c7ac9e39703ec53a7a1685ba3028c83434a1d5c1b286f3c9a",
+    "scripts/prepare_track_a_review.py": "a9e3ee67b031f97686f1ef95e5447772f1d858fb6ae02938745d2ac5884268a5",
+    "notebooks/review_track_a.html": "67bfa88e7e67726ac9e496877e0a7b4fd92b0edce40aeb784d7cdbe41045a007",
+    "tests/unit/test_corpus_review.py": "e972ab8a2ac9b7bf9718307ef5b4856ca55d20639a55a7cd52513f9fc35cc04f"
+  },
+  "actual_blank_extraction_export_refused": true,
+  "browser_load_navigation_original_comparison_download_and_resume": "passed",
+  "human_judgments_added": 0,
+  "data_observations_added": 0,
+  "corpus_changed": false,
+  "research_accepted": false,
+  "reports": [
+    "reports/track_a_reviewer_delivery.json",
+    "reports/corpus_review_gate_validation.json",
+    "reports/track_a_review_browser_validation.json",
+    "reports/track_a_remaining_source_gaps.json"
+  ],
+  "source_commit": "80a6d7a",
+  "clean_clone": {
+    "path": "/private/tmp/lma-grounding-fresh-20261023",
+    "source_commit": "80a6d7a",
+    "tests_passed": 598,
+    "tests_skipped": 2,
+    "skip_reason": "optional PyMuPDF checks in the core-only environment",
+    "ruff": "passed",
+    "black": "passed",
+    "log": "/private/tmp/lma-track-a-review-fresh-checks-20261023.log",
+    "method": "refreshed existing clean clone from local repository; reused its core environment"
+  },
+  "browser_scope": "Actual local HTTP browser workflow verified. Direct file-protocol preview was not allowed by the in-app browser policy; no alternate file access was attempted."
+}

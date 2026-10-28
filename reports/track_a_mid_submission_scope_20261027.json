@@ -1,0 +1,198 @@
+{
+  "recorded_on": "2026-10-27",
+  "status": "Scoped Track A delivery and review records accepted; all five audited integration code findings fixed. Separate study annotation/model/result obligations remain.",
+  "decision_basis": {
+    "user_instruction": "now finish the remaining track a tasks. don\u2019t stop until everything in track a is done; latest follow-up: DO IT",
+    "recorded_by": "assistant",
+    "authority_scope": "Implementation disposition under the instruction to finish Track A; not a signed user review, team/TA acceptance or publisher permission.",
+    "original_plan": "PLAN_MIDSUB.md, Track A A1-A11 and acquisition risk/fallback",
+    "plan_changed": false
+  },
+  "dispositions": {
+    "formal_independent_review": {
+      "status": "record-validation gate passed on explicit user attestations; procedure not independently verified",
+      "user_report_preserved": true,
+      "supplied_files_validated": true,
+      "decisions_identical_to_development_review": 2035,
+      "reviewer_identity_and_date": "Varun; 2026-10-27",
+      "independence_blinding_and_corpus_acceptance": true,
+      "research_receipt_created": true,
+      "actual_export_attempts_rejected": false,
+      "historical_incomplete_export_attempts_rejected": true,
+      "attestation_source": "User explicit declaration of independent review and blinding; recorded in reviewer metadata report.",
+      "verification_limit": "User attestation only; review procedure and timing relative to prior results exposure were not independently observed."
+    },
+    "source_and_pdf_scope": {
+      "status": "closed for scoped mid-submission development handoff with deviations",
+      "retained_sources": {
+        "economic_times": 870,
+        "businessline": 213,
+        "mint": 12,
+        "mospi": 37,
+        "ppac": 14,
+        "oea": 10
+      },
+      "documents": 1156,
+      "passages": 16472,
+      "official_narrative_paragraphs": 949,
+      "acquisition_deviations": [
+        "No Business Standard corpus",
+        "No RBI corpus originals",
+        "No PIB corpus originals",
+        "OEA added outside original official-source list",
+        "ET concentration and sparse Mint coverage"
+      ],
+      "pdf_excluded_scope": [
+        "tables",
+        "charts",
+        "image-only material",
+        "53967 rejected native line groups"
+      ],
+      "publisher_redistribution_permission_granted": false,
+      "full_text_raw_archives_and_vectors_remain_local": true
+    },
+    "historical_series_scope": {
+      "status": "closed for scoped mid-submission development handoff with deviations",
+      "canonical_observations": 161,
+      "retrospective_observations": 317,
+      "canonical_counts": {
+        "brent_usd_bbl": 4,
+        "indian_basket_usd_bbl": 2,
+        "inr_usd": 141,
+        "cpi_headline_yoy": 7,
+        "gsec_10y_pct": 6,
+        "fpi_flows_usd_mn": 1
+      },
+      "complete_original_vintage_histories_claimed": false,
+      "retrospective_values_backdated": false,
+      "series_measure_definitions_changed": false,
+      "missing_values_interpolated": false,
+      "track_b_anchor_acceptance": "separate; confirm, drop or redate unsupported anchors before experimental use"
+    }
+  },
+  "development_retrieval_selection": {
+    "first_stage": "bge_m3",
+    "recall_at_10": 0.4259,
+    "with_reranking_recall_at_10": 0.5296,
+    "queries": 20,
+    "judgments": 2035,
+    "relevant": 195,
+    "independent_human_scores": false,
+    "historical_run_settings_changed": false
+  },
+  "final_bounded_source_check": {
+    "checked_on": "2026-10-27",
+    "method": "Three targeted searches followed by primary-page web inspection; no raw-asset acquisition.",
+    "queries": [
+      "site.ppac.gov.in \"2026\" \"September\" \"Snapshot\"",
+      "site.fbil.org.in \"2026\" \"September\" \"G-Sec\"",
+      "site.sebi.gov.in \"2026\" \"March\" \"Foreign Portfolio\" \"Bulletin\""
+    ],
+    "primary_pages": [
+      {
+        "url": "https://ppac.gov.in/home",
+        "outcome": "Current page read; no original availability established for missing historical price observations."
+      },
+      {
+        "url": "https://www.sebi.gov.in/sebi_data/attachdocs/apr-2026/1775034592968.pdf",
+        "outcome": "March bulletin FPI section reports February and includes mutual-fund investments. Does not supply the missing March-September equity-plus-debt history."
+      },
+      {
+        "url": "https://www.dea.gov.in/",
+        "outcome": "Web fetch timed out; no source data admitted."
+      }
+    ],
+    "new_original_vintage_values_admitted": 0,
+    "exhaustive_source_unavailability_claimed": false
+  },
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+  "scope_report": "reports/track_a_mid_submission_scope_20261027.md",
+  "scope_report_sha256": "c994743ba077b4dd3dfd9a601a8377552566565ad804b55e1fac7f507ef6d6f0",
+  "evidence": {
+    "reports/track_a_mid_submission_validation_20261027.json": "a6714bd2f5bcc8b55c0d3cd2e74e16b3233429da8ac0ef6e2d45b1e364ad03aa",
+    "reports/track_a_retrieval_selection_20261026.json": "0f76a2e2e4f270585bf0d0a1fb6a38a58fa13f9b245a320b232e7aa25643b244",
+    "reports/track_a_series_scope_20261026.json": "b0dc07a2ae9ba47518af88e5eafc1a705220e563691a7523000e781d21437b8b",
+    "reports/track_a_source_scope_20261026.md": "6b5fbb533c97bc3af94d2f0ed093821ed643859ef5db62e0f1820ff4cab003f0",
+    "reports/track_a_submitted_review_validation_20261027.json": "179fbf59fea4aeda12b978ab095ea8aabcd2aad33e65906945c4e9e5ff10ad76",
+    "reports/track_a_submission_wording_revision_20261027.json": "53cf5c1a54081de3692cf1079c415c4c3748c43fed400431f690f56558a075a4",
+    "reports/track_a_reviewer_identity_20261027.json": "6f6140e6c0e4ba9b7765b05ec602308294933b4ad0f06cfb709d8f309bfea3ab",
+    "reports/track_a_retrieval_selection_20261027.json": "127380691fdf7632f8e50a2a712260f7629aa994c5012038912bdf24c511c4ca",
+    "reports/integration_fixes_20261027.json": "5d43419b45a1445af897d8899de2227f0086af1652049bbc32261628694c89da",
+    "reports/fresh_checkout_reproduction_20261028.json": "d3366c0a35eb7565dc6eddb7a82f751ea380e10a9613ab9c8588bb0ea1fbf136"
+  },
+  "formal_independent_acceptance_complete": true,
+  "other_tracks_or_entire_mid_submission_complete": false,
+  "research_acceptance": true,
+  "pull_request_created": false,
+  "formal_independent_acceptance_basis": "Completed record validation on user declarations; not independent observation of review procedure.",
+  "acceptance_scope": "Track A pooled retrieval pilot and sampled-corpus review records; no experiment UER/reference-recall or whole-study acceptance.",
+  "current_reviewed_retrieval_selection": "reports/track_a_retrieval_selection_20261027.json",
+  "current_reviewed_retrieval_selection_sha256": "127380691fdf7632f8e50a2a712260f7629aa994c5012038912bdf24c511c4ca",
+  "standalone_component_engineering_tasks_remaining_after_audit_fixes": 0,
+  "whole_project_integration_complete": false,
+  "whole_project_audit": "reports/whole_project_audit_20261027.md",
+  "whole_project_audit_sha256": "66d52babfd892ac4d2cef7338edfbf0ed648ef20395552e12d4f2791e1352834",
+  "whole_project_validation": "reports/whole_project_validation_20261027.json",
+  "whole_project_validation_sha256": "45c008c9969195bdfdc454acdbba2b347c5e9c65bf227bc7bc9aaf67f21ea0dc",
+  "shared_track_a_work_remaining": [
+    "2.5 double annotation/agreement",
+    "2.6 ten test-query annotations",
+    "3.2 separate dev support review",
+    "3.6 UER/result figures",
+    "3.7 current reviewed failure analysis",
+    "4.1 final mid report contributions",
+    "Other-team-laptop/Kaggle verification; local task 4.3 passed"
+  ],
+  "resolved_integration_findings": [
+    {
+      "id": "F1",
+      "priority": 1,
+      "path": "src/conditions/__main__.py",
+      "title": "Selected BGE-M3 is not wired into the conditions CLI",
+      "owner": "A+C; C runner",
+      "status": "resolved"
+    },
+    {
+      "id": "F2",
+      "priority": 1,
+      "path": "src/conditions/pipeline.py",
+      "title": "Anchor confirmation is copied from input; no series lookup/receipt validation",
+      "owner": "B+C with A series interface",
+      "status": "resolved"
+    },
+    {
+      "id": "F3",
+      "priority": 2,
+      "path": "src/conditions/__main__.py",
+      "title": "Resume hash excludes retrieval, corpus and schema implementation",
+      "owner": "C",
+      "status": "resolved"
+    },
+    {
+      "id": "F4",
+      "priority": 2,
+      "path": "src/eval/run_audit.py",
+      "title": "Empty or partial sweeps are not completeness failures",
+      "owner": "C",
+      "status": "resolved"
+    },
+    {
+      "id": "F5",
+      "priority": 2,
+      "path": "src/verify/aliases.py",
+      "title": "Default verifier alias resource unavailable in installed wheel; configured path not passed through",
+      "owner": "B+C/shared packaging",
+      "status": "resolved"
+    }
+  ],
+  "open_integration_findings": [],
+  "integration_fix_validation": "reports/integration_fixes_20261027.json",
+  "integration_fix_validation_sha256": "5d43419b45a1445af897d8899de2227f0086af1652049bbc32261628694c89da",
+  "last_updated_on": "2026-10-28",
+  "fresh_checkout_reproduction": "reports/fresh_checkout_reproduction_20261028.json",
+  "fresh_checkout_reproduction_sha256": "d3366c0a35eb7565dc6eddb7a82f751ea380e10a9613ab9c8588bb0ea1fbf136",
+  "full_selected_configuration_fresh_checkout_reproduction_complete": true,
+  "fresh_checkout_reproduction_scope": "Task 4.3 local software check: clean committed source, fresh core/dev environment, cached native MLX/retrieval/PDF packages and model weights; all 24 B0/B1/B2/M cases; no other-machine or research acceptance.",
+  "other_team_laptop_reproduction_complete": false
+}

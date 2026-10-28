@@ -7,6 +7,53 @@ PY := $(UV) run
 .DEFAULT_GOAL := help
 .PHONY: help setup test lint fmt schemas fixtures hooks clean
 
+LMA_PYTHON ?= data/raw/llm_env/bin/python
+DEV_OUTPUT ?= runs/local-v7-dev
+RETRIEVAL_PYTHON ?= .venv/bin/python
+RETRIEVER ?= bge_m3
+DENSE_INDEX ?= data/interim/corpus_v7_index_20261026/bge_m3_vectors.json
+MODEL_REVISION ?= 545dc4251c05440727734bcd94334791f6ab0192
+
+.PHONY: run-dev run-all-dev review-dev audit-dev synthetic-faults
+
+run-dev: ## Run B0/B1/B2/M on the six unreviewed development candidates (local model required)
+	HF_HOME="$(CURDIR)/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src $(LMA_PYTHON) -m conditions --queries data/eval/development_candidates.jsonl --conditions B0 B1 B2 M --revision $(MODEL_REVISION) --retriever $(RETRIEVER) --retrieval-python $(RETRIEVAL_PYTHON) --dense-index $(DENSE_INDEX) --output $(DEV_OUTPUT) --resume
+
+run-all-dev: DEV_OUTPUT = runs/local-v7-all-dev
+run-all-dev: ## Run all seven conditions with selected BGE-M3 and the cached cross-encoder
+	HF_HOME="$(CURDIR)/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src $(LMA_PYTHON) -m conditions --queries data/eval/development_candidates.jsonl --revision $(MODEL_REVISION) --retriever $(RETRIEVER) --retrieval-python $(RETRIEVAL_PYTHON) --dense-index $(DENSE_INDEX) --reranker-python .venv/bin/python --output $(DEV_OUTPUT) --resume
+
+review-dev: ## Prepare a fresh local blinded support-review packet
+	PYTHONPATH=src $(PY) python -m eval.review prepare --runs $(DEV_OUTPUT) --output data/interim/support-review
+
+audit-dev: ## Validate generated graphs, safety boundaries, logs and measured compute
+	PYTHONPATH=src $(PY) python -m eval.run_audit --runs $(DEV_OUTPUT) --output reports/integration_validation.json
+
+synthetic-faults: ## Exercise the frozen synthetic tool-fault diagnostic
+	PYTHONPATH=src $(PY) python -m eval.faults --output reports/tool_faults_recheck.json
+
+.PHONY: gold adjudicate kappa rq challenge
+
+gold: ## Re-draft the dev gold graphs and check every span against the corpus
+	PYTHONPATH=src $(PY) python scripts/draft_gold_graphs.py
+	PYTHONPATH=src $(PY) python scripts/check_gold_graphs.py --require
+
+adjudicate: ## Write the two blind adjudication worksheets (keeps started ones)
+	PYTHONPATH=src $(PY) python scripts/prepare_adjudication.py --annotators Deepti Varun
+
+kappa: ## Score two completed worksheets -> reports/adjudication_kappa.md
+	PYTHONPATH=src $(PY) python scripts/score_adjudication.py
+
+rq: ## Write the RQ1/RQ2 findings from a reviewed run (needs #41, #42, #37 first)
+	PYTHONPATH=src $(PY) python scripts/report_rq.py --review-dir data/interim/support-review
+
+challenge: ## Build the challenge set and run the rules-only arm (no model needed)
+	@rm -f data/eval/challenge.jsonl data/eval/challenge_manifest.json
+	PYTHONPATH=src $(PY) python -m eval.challenge --gold data/eval/gold/dev \
+		--corpus data/processed/articles.jsonl --output data/eval/challenge.jsonl \
+		--allow-unreviewed
+	PYTHONPATH=src $(PY) python scripts/run_challenge.py
+
 help: ## Show this help
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-10s\033[0m %s\n", $$1, $$2}'
 
@@ -15,7 +62,7 @@ setup: ## Create .venv (Python 3.12) and install the project + dev tools
 		echo "uv not found. Install it with:  curl -LsSf https://astral.sh/uv/install.sh | sh"; \
 		echo "or:  python3 -m pip install --user uv"; exit 1; }
 	$(UV) python install 3.12
-	$(UV) sync --extra dev
+	$(UV) sync --python 3.12 --extra dev
 	@echo "env ready -> .venv (python 3.12). Run 'make hooks' once - it is required, not optional."
 
 test: ## Run the test suite

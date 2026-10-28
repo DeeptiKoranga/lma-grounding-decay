@@ -1,0 +1,159 @@
+{
+  "series_id": "fpi_flows_usd_mn",
+  "observations": 5,
+  "status": "candidate_only_not_admitted_to_series_store",
+  "accepted_for_historical_use": false,
+  "coverage_complete": false,
+  "frequency": "monthly net flows by custodian reporting month, not trading month",
+  "definition": "Equity + Debt + Debt-VRR + Debt FAR, native USD million; excludes Hybrid, MF, AIF and derivatives",
+  "candidate_availability": "archive-declared month-end reporting date, additionally required as an actual table reporting row; value vintage still unverified",
+  "limitation": "Historical archive is generated on request; CDSL supplies no revision timestamps. Historical vintage stability is unverified.",
+  "sources": [
+    {
+      "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+      "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+      "selectedDate": "April 30, 2026",
+      "requested_as_of": "2026-04-30",
+      "sha256": "c0ee7ba63185bf9dd661aed4d656016c75dec755a5e4daca3ecb7cae2812144e",
+      "bytes": 446271,
+      "fetched_at": "2026-10-22T22:40:32.521141+00:00",
+      "raw_path": "data/raw/series/cdsl/archive_2026-04-30.html",
+      "observation": {
+        "on": "2026-04-30",
+        "value": -7643.5,
+        "available_on": "2026-04-30",
+        "source_url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "unit": "USD million, net"
+      },
+      "components_usd_million": {
+        "Debt": "-826.19",
+        "Debt FAR": "-13.89",
+        "Debt-VRR": "-329.05",
+        "Equity": "-6474.37"
+      },
+      "daily_reporting_rows": 21,
+      "last_reporting_date": "2026-04-30",
+      "monthly_label": "Total for April",
+      "daily_monthly_rounding_tolerance_usd_million": "0.110"
+    },
+    {
+      "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+      "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+      "selectedDate": "June 30, 2026",
+      "requested_as_of": "2026-06-30",
+      "sha256": "f500d4bc9d45300e57966b6f3fbc52090e6e1b769e6a96b7e61c2c4ef23a859a",
+      "bytes": 446625,
+      "fetched_at": "2026-10-22T22:40:44.788941+00:00",
+      "raw_path": "data/raw/series/cdsl/archive_2026-06-30.html",
+      "observation": {
+        "on": "2026-06-30",
+        "value": 690.74,
+        "available_on": "2026-06-30",
+        "source_url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "unit": "USD million, net"
+      },
+      "components_usd_million": {
+        "Debt": "3234.63",
+        "Debt FAR": "2272.73",
+        "Debt-VRR": "340.86",
+        "Equity": "-5157.48"
+      },
+      "daily_reporting_rows": 21,
+      "last_reporting_date": "2026-06-30",
+      "monthly_label": "Total for June",
+      "daily_monthly_rounding_tolerance_usd_million": "0.110"
+    },
+    {
+      "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+      "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+      "selectedDate": "July 31, 2026",
+      "requested_as_of": "2026-07-31",
+      "sha256": "539870914820ef8a48fe965664041c1ff38fbfa78b4a09066acaf1fedc702538",
+      "bytes": 484033,
+      "fetched_at": "2026-10-22T22:40:51.154013+00:00",
+      "raw_path": "data/raw/series/cdsl/archive_2026-07-31.html",
+      "observation": {
+        "on": "2026-07-31",
+        "value": 4070.88,
+        "available_on": "2026-07-31",
+        "source_url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "unit": "USD million, net"
+      },
+      "components_usd_million": {
+        "Debt": "3039.01",
+        "Debt FAR": "321.92",
+        "Debt-VRR": "-1413.20",
+        "Equity": "2123.15"
+      },
+      "daily_reporting_rows": 23,
+      "last_reporting_date": "2026-07-31",
+      "monthly_label": "Total for July",
+      "daily_monthly_rounding_tolerance_usd_million": "0.120"
+    },
+    {
+      "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+      "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+      "selectedDate": "August 31, 2026",
+      "requested_as_of": "2026-08-31",
+      "sha256": "9faefcc8a3ccfc5cee35d6c6ceec8446168920ffe11fb14b8ef1cd29421cb8ca",
+      "bytes": 446376,
+      "fetched_at": "2026-10-22T22:40:57.354079+00:00",
+      "raw_path": "data/raw/series/cdsl/archive_2026-08-31.html",
+      "observation": {
+        "on": "2026-08-31",
+        "value": 2952.09,
+        "available_on": "2026-08-31",
+        "source_url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "unit": "USD million, net"
+      },
+      "components_usd_million": {
+        "Debt": "-232.41",
+        "Debt FAR": "27.74",
+        "Debt-VRR": "52.29",
+        "Equity": "3104.47"
+      },
+      "daily_reporting_rows": 21,
+      "last_reporting_date": "2026-08-31",
+      "monthly_label": "Total for August",
+      "daily_monthly_rounding_tolerance_usd_million": "0.110"
+    },
+    {
+      "url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+      "form_url": "https://www.cdslindia.com/Publications/FIITrends.aspx",
+      "selectedDate": "September 30, 2026",
+      "requested_as_of": "2026-09-30",
+      "sha256": "5088844cd5f856e9ea7b928c52f20086455d9d10c941ab9d71cd14161da41762",
+      "bytes": 446831,
+      "fetched_at": "2026-10-22T22:41:03.616310+00:00",
+      "raw_path": "data/raw/series/cdsl/archive_2026-09-30.html",
+      "observation": {
+        "on": "2026-09-30",
+        "value": -5913.44,
+        "available_on": "2026-09-30",
+        "source_url": "https://www.cdslindia.com/Publications/ArchiveDataAfter2009.aspx",
+        "unit": "USD million, net"
+      },
+      "components_usd_million": {
+        "Debt": "-548.23",
+        "Debt FAR": "-1089.18",
+        "Debt-VRR": "-525.77",
+        "Equity": "-3750.26"
+      },
+      "daily_reporting_rows": 21,
+      "last_reporting_date": "2026-09-30",
+      "monthly_label": "Total for September",
+      "daily_monthly_rounding_tolerance_usd_million": "0.110"
+    }
+  ],
+  "excluded_months": [
+    {
+      "month": "2026-03",
+      "reason": "no actual month-end reporting row; selected calendar date cannot date publication"
+    },
+    {
+      "month": "2026-05",
+      "reason": "no actual month-end reporting row; selected calendar date cannot date publication"
+    }
+  ],
+  "use": "move_confirmation_only"
+}

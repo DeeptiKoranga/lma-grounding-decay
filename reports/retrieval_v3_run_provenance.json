@@ -1,0 +1,16 @@
+{
+  "status": "actual repaired-corpus development retrieval; independent review pending",
+  "corpus_sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+  "passages": 28391,
+  "checkpoint_source": "data/interim/corpus_revision_20261023/bge_m3_checkpoint.json",
+  "checkpoint": "data/interim/corpus_v3_20261023/bge_m3_checkpoint.json",
+  "checkpoint_sha256": "a777f9b613ba4204b8773217a71a0b57fc56facc469148445331635ac7e9da49",
+  "embedding_identity": "[\"retrieval.dense.BGEEmbedder\",\"BAAI/bge-m3\",\"5617a9f61b028005a4858fdac845db406aefb181\",1024,\"title-newline-paragraph;unit-cosine;v2\"]",
+  "unchanged_input_occurrences_available_for_reuse": 26823,
+  "new_input_occurrences_encoded": 1568,
+  "pilot_wall_s": 357.87,
+  "timing_scope": "comparison phase only; excludes earlier encoding/checkpoint precomputation, model downloads and validation",
+  "report": "reports/pilot_retriever_v3_development.md",
+  "saved_index_validation": "reports/retrieval_v3_saved_index_validation.json",
+  "review_readiness": "reports/retrieval_v3_review_readiness.json"
+}

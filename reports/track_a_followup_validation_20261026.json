@@ -1,0 +1,59 @@
+{
+  "checked_on": "2026-10-26",
+  "source_commit": "645b999",
+  "working_tests_passed": 637,
+  "fresh_checkout_tests_passed": 637,
+  "new_tests": 7,
+  "ruff_passed": true,
+  "black_passed": true,
+  "new_source_dependency_install": false,
+  "sebi_assets_checked": 7,
+  "sebi_earliest_monthly_total_candidates": 5,
+  "excluded_assets": 3,
+  "canonical_observations_added": 0,
+  "official_pdf_versions_checked": 61,
+  "official_pdfs_with_comparable_metadata_dates": 61,
+  "known_later_official_pdf_version_conflicts": 0,
+  "fresh_source_audit_sha256": "1510d165e0bfcac8aa8e19555a8084aa421d7b6efe508fcd5158762f736bd01a",
+  "fresh_source_report_identical": true,
+  "original_delivery_integrity": {
+    "checked_on": "2026-10-26",
+    "status": "development-delivery integrity passed; research acceptance pending",
+    "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+    "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+    "documents": 1156,
+    "passages": 16472,
+    "pooled_judgments": 2035,
+    "judgment_counts": {
+      "irrelevant": 1840,
+      "relevant": 195
+    },
+    "all_offsets_exact": true,
+    "all_positive_spans_valid": true,
+    "all_review_candidates_date_eligible": true,
+    "all_index_bytes_verified": true,
+    "new_review_workspace_files_verified": 82,
+    "old_review_workspace_files_unchanged": 83,
+    "human_judgments_and_attestations_blank": true,
+    "canonical_observations": 161,
+    "retrospective_observations": 317,
+    "series_bytes_unchanged": true,
+    "research_acceptance": false
+  },
+  "primary_web_episode_checks": "reports/track_a_followup_20261026.json",
+  "human_records_changed": false,
+  "independent_human_review": false,
+  "research_acceptance": false,
+  "paid_api_requests": 0,
+  "kaggle_executed": false,
+  "logs": [
+    {
+      "path": "/private/tmp/lma-track-a-followup-checks-20261026.log",
+      "sha256": "71142fc0b8eefb54e5f0f66903fa1ba45b1f6d147edd851e503ea42a54a6dfba"
+    },
+    {
+      "path": "/private/tmp/lma-track-a-followup-fresh-checks-20261026.log",
+      "sha256": "a6d4b6e61875923bccaa5486f1c95f22718a2cfbf5fb06aa7125eb22c1956d0b"
+    }
+  ]
+}

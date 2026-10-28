@@ -1,0 +1,9 @@
+{
+  "changes": {
+    "economic_times-b5c173b0dae7aefcab65#p1": "economic_times-b5c173b0dae7aefcab65#p0",
+    "economic_times-b5c173b0dae7aefcab65#p2": "economic_times-b5c173b0dae7aefcab65#p1",
+    "pib-432a9642997bb8bbe0d5#p8": "mospi-5a1b977e356b0b14de7c#p8"
+  },
+  "reason": "Identical evidence text after excluding page recommendations; exact duplicate PIB/MoSPI copies use the retained canonical document. Queries, dates, and positive text were not tuned to rankings.",
+  "pair_file_sha256": "de6c265557d352516bc97cae762e109c5e50c99c315264bc373f7748adb11f8d"
+}

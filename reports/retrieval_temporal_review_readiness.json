@@ -1,0 +1,43 @@
+{
+  "status": "prepared; independent review pending",
+  "corpus_acceptance": "candidate pending extraction/source review; active v1 preserved",
+  "reviewer_assigned": false,
+  "packet_directory": "data/interim/retrieval_review_temporal_v3",
+  "candidate_corpus": "data/interim/corpus_revision_20261023/snapshot/articles.jsonl",
+  "pairs": "reports/retriever_temporal_candidate_pairs.jsonl",
+  "candidate_pool": "data/interim/retrieval_review_candidates_temporal_v3.jsonl",
+  "packet_sha256": "a48cc5d30b75c820730d26288f7c03548f3adabc8d264bdda3fdc8867e75d5bd",
+  "judgments_sha256": "e0d4393a9551a7bb5332997b944b71a29bf2f304a0252ee35c0fc99dc1282d13",
+  "corpus_sha256": "b63a8743e7f227a90f4d08ae73a5f195ac10ceb581ee11060d59815b1e5f80e2",
+  "pairs_sha256": "59a7684d96dbc8c6108da799c459a9258b842a662b59b8c48e41c3c2dfc30ef0",
+  "candidate_pool_sha256": "85b90dfeddda2fa7ba7acd9782721c667837da377f0869a17f7919eea6433960",
+  "queries": 20,
+  "seed_candidates": 43,
+  "review_items": 2057,
+  "query_months": {
+    "2026-03": 3,
+    "2026-04": 3,
+    "2026-05": 3,
+    "2026-06": 3,
+    "2026-07": 3,
+    "2026-08": 3,
+    "2026-09": 2
+  },
+  "checks": {
+    "all_passages_match_candidate_corpus": true,
+    "all_passages_visible_at_cutoff": true,
+    "no_duplicate_items": true,
+    "all_four_way_pool_items_retained": true,
+    "all_seed_candidates_retained": true,
+    "ranks_scores_origins_and_seed_flags_hidden": true,
+    "query_and_candidate_judgments_blank": true,
+    "reviewer_attestations_blank": true,
+    "blank_export_rejected_without_output": true
+  },
+  "blank_export_reason": "all queries need independent acceptance; replace rejected queries",
+  "decisions": {
+    "D-02": "open",
+    "D-03": "open"
+  },
+  "research_scores_generated": false
+}

@@ -1,0 +1,51 @@
+{
+  "date": "2026-10-23",
+  "reviewer_status": "unassigned; user has not decided who will review",
+  "independent_judgments_completed": 0,
+  "assembled_runs": {
+    "path": "runs/development_complete_20261023",
+    "graphs": 42,
+    "conditions": 7,
+    "queries": 6,
+    "phases_sha256": "7c11e7926ca650b3b2342933b79427d03773bf6ac8224636d20e863cce992fbf"
+  },
+  "prose_correction": {
+    "path": "data/interim/prose_corrections_complete_20261023.json",
+    "sha256": "14b9ab958396253fd269628d08c119959c0830216671bf9b4c637c1923c05eca",
+    "items": 18,
+    "completed": 0,
+    "human_attestation": false,
+    "supersedes_blank_packet": "data/interim/prose_corrections_20261023.json",
+    "attached_trusted_passage_occurrences": 20
+  },
+  "support_preview": {
+    "path": "data/interim/support_preview_20261023",
+    "packet_sha256": "ccd7c46bc075ae649ec314c06fc821f2b46a0b43aa1da9a7ea094303b1acf077",
+    "graphs": 42,
+    "edge_items": 227,
+    "completed": 0,
+    "usable_for_final_scoring": false,
+    "next_step": "Correct prose extraction first, export corrected artifacts, then prepare a new final blinded support packet. Do not label this preview."
+  },
+  "retrieval_review": {
+    "path": "data/interim/retrieval_review_v1",
+    "packet_sha256": "88722218b0330d3cd398b6d5a23dc7e963b0ac98eb42e77bb749b32fe4cceb1e",
+    "items": 1988,
+    "queries": 20,
+    "status": "pending independent review",
+    "temporal_scope": "March only; broader coverage remains required"
+  },
+  "reference_graphs": {
+    "accepted_graphs": 0,
+    "independent_review_receipt_required": true
+  },
+  "research_scores_generated": false,
+  "instructions": "reports/review_handoff.md",
+  "synthetic_safety_review": {
+    "path": "data/interim/safety_review_20261023.json",
+    "sha256": "deeaad2a4182e83107036e00b1da0cd5865dc55c3905642322e5749fd05859b1",
+    "items": 25,
+    "human_review_attestation": false,
+    "completed": 0
+  }
+}
