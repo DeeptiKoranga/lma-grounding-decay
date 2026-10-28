@@ -1,12 +1,21 @@
-# Track A delivery status — updated 27 October 2026
+# Track A delivery status — updated 28 October 2026
+
+**Fresh-checkout update — 28 October:** Track A / Varun task 4.3 is complete
+for the local development configuration. A clean GitHub checkout passed setup,
+Ruff/Black and **663 tests with no skips**, then generated **24/24 new graphs**
+(B0/B1/B2/M × six current-v7 candidates). Full audit, independent trace checks
+and unchanged resume (24 cached, no new model calls) passed. Cached model weights,
+native inference environments and the verified PDF distribution were reused;
+other laptops/Kaggle remain unverified. See
+[fresh-checkout evidence](fresh_checkout_reproduction_20261028.md).
 
 **Integration update:** the five code findings in the
 [original audit](whole_project_audit_20261027.md) are repaired. New runs consume
 the selected retriever, log actual series checks, reject stale resumes and
 incomplete sweeps, and load default aliases from the installed package.
 The suite passes 663 tests; see [fix validation](integration_fixes_20261027.md).
-Shared annotation, model selection, UER figures and complete study reproduction
-remain outstanding.
+Shared annotation, model selection, UER figures and other-machine/Kaggle
+verification remain outstanding.
 
 The remaining local engineering, corpus repair, development review, indexing,
 retrieval comparison and reproduction work is complete. The final v7 delivery
@@ -57,7 +66,7 @@ blanket extraction certification is inferred.
 | A6–A7/A11 retrieval and dates | Plain/alias BM25, pinned BGE-M3, FAISS, RRF and pre-ranking date eligibility implemented. Final 16,472-passage index matches the corpus; fresh-process reload and two actual query embeddings/searches pass March/September cutoffs. | Model/preprocessing identity and exact title+text hashes govern vector reuse. Old v1 outputs and v3 review packets retain their original bindings. |
 | A8–A9 development comparison | All six old uncertain items adjudicated as insufficient standalone evidence. Complete final pool: 195 relevant, 1,840 irrelevant, zero uncertain across 20 queries. All prior positives accounted for; final pool adds no candidates beyond the fully read v5 pool. Dense selected by the declared 0.03 rule; Recall@10 0.4259, rising to 0.5296 with reranking. | Original automated labels and prior exposure remain disclosed. Varun's subsequent independence/blinding declarations now pass record validation. Reranker end-to-end benefit is unproven and full-scale B1-R remains deferred. |
 | A10 series and episode support | All six canonical files retain 161 original-vintage observations. Separate 317-observation retrospective snapshot, exact hashes and date exclusions revalidated. Source/measure/episode feasibility audit complete; stricter source checks admitted no additional original-date values. | October captures cannot become March–September evidence. Daily benchmark yield, Brent/basket/FPI histories remain sparse. ATF and RBI policy episodes require the corresponding dated measures/statements; Track B owns anchor acceptance. |
-| Reproduction/integration | 630 tests pass with Ruff/Black clean in the working checkout and a fresh environment with optional PDF/extraction packages. Committed source rebuilds the final corpus/archive from checksummed local originals. Saved-index reload uses two real query embeddings. | Core/PDF dependencies were installed into a new environment from local package cache. Heavy retrieval models/runtime and original data caches were reused; other machines and Kaggle are untested. The earlier 24/24 graph reproduction remains v1. |
+| Reproduction/integration | Task 4.3: clean source at 07f10f0, fresh core environment, 663 tests, Ruff/Black, 24 newly generated current-v7 B0/B1/B2/M graphs; full audit and 24-result cached resume pass. Source rebuild and saved-index reload receipts remain available. | Model weights, native inference environments and verified PDF package files were reused. Other machines/Kaggle are untested. Historical v1 reproductions remain separately bound. See the 28 October evidence above. |
 | Reports, figures and handoff | Current corpus/series figures, selection, provenance, source scope, compute record, reproduction guide and mid-submission draft updated. New 82-file human-review workspace contains 73 sources/originals and all 2,035 candidates; all forms and attestations blank. | All 83 original v3 files and the 82-file blank v7 workspace are unchanged. Blank exports still fail; separate completed user-attested records now pass. No final UER, reference recall or agreement is produced. |
 
 ## Additional source and acceptance work — 26 October follow-up

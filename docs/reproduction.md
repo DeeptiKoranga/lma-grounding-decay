@@ -1,10 +1,50 @@
 # Reproduce the integrated development pipeline
 
-Updated 27 October 2026. Unit checks and development runs are distinct from a
+Updated 28 October 2026. Unit checks and development runs are distinct from a
 reviewed research experiment. Track A review records are accepted on Varun's
 attestations. Experiment annotations, model selection, complete series histories
 and final episode acceptance remain open; see
 `reports/track_a_progress.md`.
+
+## Completed fresh-checkout check — 28 October 2026
+
+Track A / Varun task 4.3 passed at source commit
+`07f10f08870860388ec05207ecfd497f2ed8fad3`: setup, Ruff/Black, 663 tests
+without skips, 24 newly generated B0/B1/B2/M graphs, full matrix/trace audit
+and a 24-result cached resume. See
+[the evidence report](../reports/fresh_checkout_reproduction_20261028.md).
+
+The clean checkout used a fresh core/dev Python 3.12.13 environment prepared
+on 27 October; setup was rechecked on 28 October. Frozen v7
+corpus files and the matching vector index were supplied and checksummed.
+Pretrained weights and the existing native generation/retrieval environments
+were reused through ignored local links. All inference source came from the
+clean checkout. The PDF package was installed from unchanged, hash-verified
+cached distribution files. This does not certify a cold machine, other laptops
+or Kaggle.
+
+After cloning `varun` and checking out that commit, provide the separately
+frozen corpus, index and pinned model assets described below. For the recorded
+layout, `data/raw/retrieval_env` points to the cached native retrieval environment
+and `data/raw/llm_env` to the cached generation environment. Then run:
+
+```sh
+UV_CACHE_DIR=/private/tmp/lma-reproduction-cache make setup
+# Optional PDF checks need the pinned package in the fresh core environment:
+UV_CACHE_DIR=/private/tmp/lma-reproduction-cache uv pip install --python .venv/bin/python pymupdf==2.0
+UV_NO_SYNC=1 make lint test
+UV_NO_SYNC=1 make run-dev RETRIEVAL_PYTHON=data/raw/retrieval_env/bin/python DEV_OUTPUT=runs/my-fresh-dev
+PYTHONPATH=src .venv/bin/python -m eval.run_audit --runs runs/my-fresh-dev --output reports/my-fresh-audit.json
+# Unchanged resume must report 24 cached results and generate no new outputs:
+UV_NO_SYNC=1 make run-dev RETRIEVAL_PYTHON=data/raw/retrieval_env/bin/python DEV_OUTPUT=runs/my-fresh-dev
+```
+
+Use a new, absent output directory for the first execution. The default
+`make run-dev` uses the existing six development candidates; it does not add
+human-reviewed episodes or gold graphs. The receipt records exact commands,
+successful stage logs, two earlier dependency-install attempts, package/input
+hashes, model calls and all 24 output/log hashes. Native-runtime installation
+instructions below remain necessary on a machine without cached environments.
 
 ## Core checks
 
@@ -229,11 +269,12 @@ strength inflation and leaves all challenge outcome labels unfilled for review.
 `eval.agreement` calculates Cohen's kappa and the predeclared strength-collapse
 trigger. It never invents an agreement score when the paired labels are absent.
 
-## Current Track A development corpus and retrieval
+## Historical v3 development corpus and retrieval
 
-The active root corpus is **v3 development**, not a research-accepted freeze.
-It has 1,177 documents and 28,391 passages. `reports/corpus_versions.json` binds
-the current root, archived v1 experiments and superseded v2 candidate.
+This section records the superseded 25 October v3 configuration: 1,177 documents
+and 28,391 passages. For the active v7 corpus and matching index, use the
+current-v7 instructions below. Historical v3 paths and receipts retain their
+original identities.
 
 To rebuild v3 from its checksummed local raw inputs in a new output directory,
 start explicitly from the archived original v1 corpus:
@@ -543,7 +584,7 @@ judgment or previous experiment payload is changed by this command.
 The primary ATF/August MPC web checks, collector failures and all-61-official-PDF
 metadata audit are recorded in `reports/track_a_followup_20261026.json`. Web
 readability does not imply acquisition of a checksummed original for the corpus.
-Current 637-test local/fresh checks are separate from the earlier 630-test
+The 26 October 637-test local/fresh checks are separate from the earlier 630-test
 rebuild receipt; see `reports/track_a_followup_validation_20261026.json`.
 
 
