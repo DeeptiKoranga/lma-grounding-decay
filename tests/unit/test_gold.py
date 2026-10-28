@@ -9,6 +9,7 @@ after the as-of cutoff, or a graph that never touches its own anchor.
 from __future__ import annotations
 
 from datetime import date, datetime
+from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
@@ -16,10 +17,14 @@ from pydantic import ValidationError
 from eval.gold import (
     MAX_EDGES,
     MIN_EDGES,
+    check_against_corpus,
+    load_gold_graph,
     missing_gold_graphs,
     validate_gold_graph,
 )
-from schema import Anchor, Edge, Graph, GraphNode
+from schema import Anchor, Edge, Graph, GraphNode, Passage
+
+CORPUS = Path("data/processed/articles.jsonl")
 
 DEV_QUERIES = ["dev-oil-why", "dev-oil-effects", "dev-rupee-why", "dev-rupee-effects"]
 
@@ -187,16 +192,44 @@ def test_a_mislabelled_graph_is_caught():
 
 
 # ---------------------------------------------------------------------------
-# B4 completion
+# The four dev graphs on disk
 # ---------------------------------------------------------------------------
 
 
-def test_b4_is_not_done_yet_and_says_so():
-    """Fails the day all four gold graphs land, which is the signal to close #15."""
-    missing = missing_gold_graphs(DEV_QUERIES)
-    assert set(missing) <= set(DEV_QUERIES)
-    if not missing:
-        pytest.fail(
-            "all four dev gold graphs exist - remove this test, close #15, "
-            "and run scripts/check_gold_graphs.py --require against the corpus"
-        )
+def test_all_four_dev_gold_graphs_are_present():
+    assert missing_gold_graphs(DEV_QUERIES) == ()
+
+
+@pytest.mark.parametrize("query_id", DEV_QUERIES)
+def test_each_dev_gold_graph_passes_the_structural_checks(query_id):
+    report = validate_gold_graph(load_gold_graph(query_id), expect_query_id=query_id)
+    assert report.ok, [i.problem for i in report.issues]
+
+
+@pytest.mark.parametrize("query_id", DEV_QUERIES)
+def test_each_dev_gold_graph_declares_that_it_is_not_adjudicated(query_id):
+    """The provenance line is load-bearing: it is what stops a draft being cited
+    as a human-annotated gold standard. If adjudication happens, this test is
+    the thing to change, deliberately."""
+    notes = load_gold_graph(query_id).notes or ""
+    assert "MACHINE-DRAFTED, NOT YET ADJUDICATED" in notes
+
+
+def test_the_dev_set_reaches_past_hop_one():
+    """RQ1 slices every headline number by hop distance. A gold set that is all
+    hop 1 cannot measure grounding decay, which is the whole question."""
+    hops = {edge.hop for query_id in DEV_QUERIES for edge in load_gold_graph(query_id).edges}
+    assert max(hops) >= 2, f"gold edges only reach hop {max(hops)}"
+
+
+@pytest.mark.skipif(not CORPUS.is_file(), reason="corpus payload is not in git")
+@pytest.mark.parametrize("query_id", DEV_QUERIES)
+def test_each_dev_gold_span_is_verbatim_in_the_corpus(query_id):
+    passages = [
+        Passage.model_validate_json(line)
+        for line in CORPUS.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    report = check_against_corpus(load_gold_graph(query_id), passages)
+    assert report.corpus_checked
+    assert report.ok, [i.problem for i in report.issues]

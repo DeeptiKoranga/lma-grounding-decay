@@ -1,6 +1,12 @@
 # Reviewer evidence graphs — the dev four (B4, issue #15)
 
-**Status: not written. This is the one thing blocking every Phase 3 number.**
+**Status: drafted, span-exact, NOT adjudicated.** All four files exist and pass
+`scripts/check_gold_graphs.py` against the v7 corpus. They were drafted
+mechanically by `scripts/draft_gold_graphs.py`, which slices every span out of
+the real passage text and runs the B6 rule layer before writing. **That is not
+the same as a gold standard** - see "Why this cannot be generated" below, which
+still applies. The reviewer's sheet is `ADJUDICATION.md`; until it is signed,
+every Phase 3 number measured against these is provisional.
 
 Four files are required, one per dev query:
 
@@ -55,3 +61,14 @@ measured on a subset one person wrote twice is not agreement.
 A gold standard written by the system under test measures the system. The spans
 have to be read out of the corpus by a person. `src/eval/gold.py` deliberately
 validates but cannot write one.
+
+The drafts do not repeal this. What `draft_gold_graphs.py` automates is the
+mechanical half - locating candidate passages and copying spans exactly - and
+the rule layer only confirms that a span is verbatim and that the passage
+mentions both variables. It cannot tell whether the passage **asserts** the
+relation, which way the causation runs, or whether the strength label matches
+the language. Three candidates that passed every rule were dropped by hand for
+exactly those reasons: two cited passages that mention both variables while
+asserting nothing between them, and one whose causation ran backwards. That is
+the work `ADJUDICATION.md` asks for, and it is why the files say
+`MACHINE-DRAFTED, NOT YET ADJUDICATED` in their `notes` field.

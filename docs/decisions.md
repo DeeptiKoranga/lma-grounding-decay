@@ -199,6 +199,16 @@ numbers.** When those branches merge, their rows come with them.
 | **Consequence** | The test half is four queries, so no test-set claim will have a usable confidence interval. Treat the test numbers as descriptive and say so. Both dev anchors are confirmed under as-of discipline, but the oil anchor is the redated one and rests on a news-reported Brent observation, so the dev half is not uniformly official-grade evidence. |
 | **Revisit if** | Track A extends the series store enough to revive the September bond anchor or add a repo-rate series. Either would restore a fifth and sixth anchor and let the test half grow. |
 
+### D-20 — The dev gold graphs are machine-drafted and labelled as such
+
+| | |
+|---|---|
+| **Status** | `open` — drafted 28 Oct 2026, awaiting adjudication |
+| **Decision** | The four dev gold graphs exist and are span-exact, but they are **machine-drafted, not human-annotated**, and each file says so in its `notes` field. `scripts/draft_gold_graphs.py` slices every span out of the real passage text between two markers, so no span is retyped, and runs the B6 rule layer on every edge before writing — a draft that cannot be confirmed verbatim never reaches disk. `data/eval/gold/dev/ADJUDICATION.md` is the reviewer's sheet, generated from the graphs so it cannot drift. Until a sign-off row is filled in, every Phase 3 number measured against these is provisional and the mid report says so. |
+| **Why** | The corpus arrived on 28 October, two days before the submission, and B4 blocks #42, #43, #44, #37, #38 and #40 — the whole remaining research result. The alternative to drafting was six issues left untouched. The alternative to **labelling** the drafts honestly was presenting a generated standard as reviewed evidence, which would make every UER number unfalsifiable. Doing the mechanical half and naming it is the only version of this that is both useful and true. |
+| **Consequence** | The rule layer is not a substitute for judgment and must not be read as one: it confirms a span is verbatim and that the passage mentions both variables, and that is all. Three candidates passed every rule and were dropped by hand — two cited passages that mention both variables while asserting no relation between them, and one whose causation ran backwards (portfolio outflows pressuring the rupee, read as the rupee driving outflows). A reviewer should expect to find more. Twenty edges across four graphs, reaching hop 2; the dropped September anchor (D-18) is still why nothing reaches hop 3, so RQ1's deepest slice stays empty. **Cohen's κ (#37) is not addressable by drafting at all** — it needs two people who have not compared notes. |
+| **Revisit if** | Adjudication happens. The `MACHINE-DRAFTED, NOT YET ADJUDICATED` string is asserted by a test, so removing it is a deliberate act with a diff, not a quiet edit. |
+
 ---
 
 ## Deferred past 30 October

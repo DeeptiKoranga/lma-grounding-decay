@@ -1,0 +1,128 @@
+{
+  "query_id": "dev-rupee-effects",
+  "anchor": {
+    "var": "INR_USD",
+    "direction": "up",
+    "event": "USD/INR at 96.84, the weakest level of the window",
+    "event_date": "2026-05-20",
+    "confirmed_by_series": true,
+    "series_id": "inr_usd"
+  },
+  "as_of": "2026-05-25",
+  "nodes": [
+    {
+      "var": "FISCAL_DEFICIT",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "FUEL_PRICES",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "IMPORTED_INFLATION",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "IMPORT_BILL",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "INR_USD",
+      "direction": "up",
+      "is_anchor": true,
+      "confirmed_by_series": true,
+      "series_id": "inr_usd"
+    },
+    {
+      "var": "RBI_FX_INTERVENTION",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "re1",
+      "src_var": "INR_USD",
+      "dst_var": "IMPORT_BILL",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 1,
+      "evidence_span": "The urgency has grown after the rupee slumped to a record low of nearly 97 per dollar this week, driving up import costs and further eroding investors",
+      "evidence_doc_id": "economic_times-95de6ff7f5c97ba82245",
+      "evidence_passage_id": "economic_times-95de6ff7f5c97ba82245#p2",
+      "evidence_published_at": "2026-05-22T11:46:00+05:30",
+      "candidate_evidence": []
+    },
+    {
+      "edge_id": "re2",
+      "src_var": "INR_USD",
+      "dst_var": "RBI_FX_INTERVENTION",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 1,
+      "evidence_span": "as the rupee came under pressure and the Reserve Bank of India (RBI) had to intervene in the forex market through dollar sales.",
+      "evidence_doc_id": "economic_times-76f04bc5898c1c59b89a",
+      "evidence_passage_id": "economic_times-76f04bc5898c1c59b89a#p2",
+      "evidence_published_at": "2026-05-15T17:39:00+05:30",
+      "candidate_evidence": []
+    },
+    {
+      "edge_id": "re3",
+      "src_var": "INR_USD",
+      "dst_var": "IMPORTED_INFLATION",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 1,
+      "evidence_span": "The weakening rupee is amplifying imported inflation.",
+      "evidence_doc_id": "economic_times-1b2732b34ee05b32bf50",
+      "evidence_passage_id": "economic_times-1b2732b34ee05b32bf50#p1",
+      "evidence_published_at": "2026-04-30T14:13:00+05:30",
+      "candidate_evidence": [],
+      "note": "Same edge and span as rw1 in dev-rupee-why. The two questions share one mechanism over one episode; that overlap is expected, not a duplicate."
+    },
+    {
+      "edge_id": "re4",
+      "src_var": "IMPORT_BILL",
+      "dst_var": "FISCAL_DEFICIT",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "correlational",
+      "hop": 2,
+      "evidence_span": "rising import bill were fuelling worries about inflation and the fiscal deficit",
+      "evidence_doc_id": "economic_times-4b42a45c8f9ff3e13586",
+      "evidence_passage_id": "economic_times-4b42a45c8f9ff3e13586#p0",
+      "evidence_published_at": "2026-05-20T05:43:00+05:30",
+      "candidate_evidence": [],
+      "note": "'were fuelling worries about' is reported concern, not an asserted move, hence correlational."
+    },
+    {
+      "edge_id": "re11",
+      "src_var": "INR_USD",
+      "dst_var": "FUEL_PRICES",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "conditional",
+      "hop": 1,
+      "evidence_span": "Thus, the rupee has already approached a critical depreciation threshold, beyond which further currency weakness could substantially erode the intended benefits of domestic fuel price revisions.",
+      "evidence_doc_id": "economic_times-6339c59bc47085648592",
+      "evidence_passage_id": "economic_times-6339c59bc47085648592#p12",
+      "evidence_published_at": "2026-05-16T09:43:00+05:30",
+      "candidate_evidence": []
+    }
+  ],
+  "paths": [],
+  "schema_version": "1.0.0",
+  "notes": "MACHINE-DRAFTED, NOT YET ADJUDICATED. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge passes the B6 rule layer. Edge selection, direction and strength have not been confirmed by a human reviewer, and issue #37's Cohen's kappa still requires two independent annotators. Treat every number measured against this as provisional until data/eval/gold/dev/ADJUDICATION.md records sign-off."
+}
