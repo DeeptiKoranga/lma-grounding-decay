@@ -219,6 +219,16 @@ numbers.** When those branches merge, their rows come with them.
 | **Consequence** | Corruption-detection and false-alarm rates will rest on 85 items at uneven per-type counts (19 each for reversed relation, unsupported intermediate, wrong date and wrong target; 9 for inflated strength), so **every rate must be printed with its denominator** and no macro average over types is meaningful. Padding the seed pool from the test gold graphs is ruled out: it would leak the test set into a diagnostic the system is tuned against, which is exactly what D-19's split-by-anchor exists to prevent. |
 | **Revisit if** | The series store grows enough to revive a fifth or sixth anchor (D-18's revisit condition). Two more anchors would add up to 12 gold edges and could clear the 25-seed gate honestly. |
 
+### D-22 — The RQ1/RQ2 reporting gates, declared before any results exist
+
+| | |
+|---|---|
+| **Status** | `resolved` · 28 Oct 2026, in commit `5663458`, **before any v7 run has been scored** |
+| **Decision** | Four thresholds govern what the RQ1 and RQ2 reports are allowed to claim. They live in `src/eval/rq.py` and `src/eval/metrics.py`, not in the reporting script, and this row dates them. **`MIN_ESTABLISHED_PER_BUCKET = 10`** — a hop bucket with fewer established edges is printed but cannot support a claim about that hop. **`MIN_BUCKETS_FOR_TREND = 3`** — a monotone trend needs all three buckets usable. **`MIN_QUERIES_FOR_INFERENCE = 10`** — below that, every figure is marked descriptive only. **`minimum_M_minus_B1 = -0.10`** — the H2d recall floor, from the proposal. |
+| **Why** | A threshold chosen after seeing the data is not a threshold. The dev set is four queries (D-19) and the hop ≥3 bucket is expected to be thin or empty (D-18 dropped the September bond sell-off, the only anchor with a yield chain), so the temptation on 30 October will be to report a two-point "trend" over hops 1 and 2 macro-averaged over four queries. That would look exactly like a result while supporting nothing. Fixing the numbers now, with a date and a commit, is what makes the word *pre-declared* true in the report. |
+| **Consequence** | On the dev set `MIN_QUERIES_FOR_INFERENCE` fires **by construction**: no dev figure can be presented as inferential, whatever it turns out to be. If the deep bucket is empty the report states that as the finding and names D-18 as the cause, rather than printing a trend across what remains. RQ2 will not describe a UER drop as a repair while the recall guard is undetermined, because a verifier deleting edges it cannot confirm produces the same headline number. |
+| **Revisit if** | The test half is annotated (#38) or the series store grows enough to revive an anchor (D-18), either of which raises the query count. **Lowering any of these four after a result is seen is not a revisit, it is a different study** — a change here must be dated and justified on its own, with the superseded value kept visible. |
+
 ---
 
 ## Deferred past 30 October

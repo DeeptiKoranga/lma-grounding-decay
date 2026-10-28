@@ -216,6 +216,18 @@ honest statement for the report is that **H1 can be examined at hops 1 and 2, an
 H2d only there**; a claim about hop ≥3 would rest on a slice with no reference
 set behind it.
 
+The scoring that produces both hypothesis results is built and pinned to
+thresholds declared **before any v7 run was scored** (D-22, commit `5663458`): a
+hop bucket needs 10 established edges to carry a claim about that hop, a
+monotone trend needs all three buckets, and an inferential claim needs 10
+queries — which on a four-query dev set fires by construction, so **no dev
+figure will be presented as inferential whatever it turns out to be**.
+`scripts/report_rq.py` runs today and currently writes nothing, naming the three
+preconditions in dependency order: the dev sweep (#41), blind support
+judgements (#42), and the signed reference receipt (#37). RQ2 will not describe
+a UER drop as a repair while the recall guard is undetermined, because a
+verifier deleting edges it cannot confirm produces the same headline number.
+
 ### The gold graphs are drafted, not reviewed
 
 All four pass `scripts/check_gold_graphs.py` against the v7 corpus — spans

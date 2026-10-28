@@ -36,6 +36,10 @@ __all__ = [
     "rq2_finding",
 ]
 
+# The four thresholds below are pre-declared in docs/decisions.md D-22, dated
+# before any v7 run was scored. Lowering one after seeing a result is not a
+# revisit; it is a different study. See that row before changing any of them.
+
 #: Hop buckets, in order. "3+" pools everything at hop 3 or deeper, as the
 #: proposal specifies and issue #43 asks for when deep edges are scarce.
 BUCKETS: tuple[str, ...] = ("1", "2", "3+")
