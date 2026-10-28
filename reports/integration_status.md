@@ -1,4 +1,13 @@
-# Integrated development pipeline — updated 27 October 2026
+# Integrated development pipeline — updated 28 October 2026
+
+**Fresh-checkout update — 28 October:** Track A / Varun task 4.3 is complete
+for the local development configuration. A clean GitHub checkout passed setup,
+Ruff/Black and **663 tests with no skips**, then generated **24/24 new graphs**
+(B0/B1/B2/M × six current-v7 candidates). Full audit, independent trace checks
+and unchanged resume (24 cached, no new model calls) passed. Cached model weights,
+native inference environments and the verified PDF distribution were reused;
+other laptops/Kaggle remain unverified. See
+[fresh-checkout evidence](fresh_checkout_reproduction_20261028.md).
 
 **Latest engineering check:** all five findings from the original audit are
 fixed. The command uses the selected BGE-M3/FAISS first stage, performs logged
@@ -23,16 +32,17 @@ review is complete (195 relevant, 1,840 irrelevant); separate completed records
 now validate on Varun's attestations. Dense retrieval has Recall@10 0.4259 and
 0.5296 after top-50 reranking. See `reports/track_a_progress.md`.
 
-The current checkout passes **663 tests**, Ruff and Black. The earlier clean
-environment check passed 637 tests with optional PDF/extraction packages; it is
-historical evidence. The earlier clean-source reparse reproduces
-the v7 corpus/archive hashes. Historical tools retain 161 original series
+The clean 28 October checkout passes **663 tests**, Ruff and Black. Earlier
+637-test and 659-test/four-skip environment checks remain historical evidence.
+The earlier clean-source reparse reproduces the v7 corpus/archive hashes.
+Historical tools retain 161 original series
 observations; the separate 317-observation October snapshot is excluded at
 March–September cutoffs. New review delivery contains wholly blank human
 judgments; the gates reject blank exports.
 
-The run evidence below remains **v1**, with its archived corpus and old shared
-settings. No historical run is relabelled as a v7 experiment. Independent human
+The 23 October run evidence below remains **v1**, with its archived corpus and
+old shared settings. The 28 October reproduction above uses the current v7
+corpus. No historical run is relabelled as a v7 experiment. Independent human
 support/reference labels, corrected baselines, accepted anchors and final UER
 remain separate research requirements.
 
