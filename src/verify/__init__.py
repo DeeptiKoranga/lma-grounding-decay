@@ -17,6 +17,8 @@ from .normalise import collapse_whitespace, normalise_presentation
 from .rules import (
     RULE_ORDER,
     EdgeScreening,
+    MentionMatch,
+    MentionScope,
     RuleName,
     RuleOutcome,
     RuleReport,
@@ -28,6 +30,7 @@ from .rules import (
     check_on_or_before_as_of,
     check_span_verbatim,
     check_variables_mentioned,
+    preceding_window,
     screen_edge,
 )
 
@@ -36,6 +39,8 @@ __all__ = [
     "RULE_ORDER",
     "AliasTable",
     "EdgeScreening",
+    "MentionMatch",
+    "MentionScope",
     "RuleName",
     "RuleOutcome",
     "RuleReport",
@@ -50,5 +55,6 @@ __all__ = [
     "collapse_whitespace",
     "load_aliases",
     "normalise_presentation",
+    "preceding_window",
     "screen_edge",
 ]

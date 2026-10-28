@@ -27,10 +27,12 @@ from verify import (
     screen_edge,
 )
 
-#: The fixture graph labels e6 `source_asserted` / `supported`, but the passage
-#: it cites names ATF_PRICE only in the *previous* paragraph ("Fuel accounts
-#: for..."). The rule layer rejects it, which is the cross-paragraph case tested
-#: below and a fixture inconsistency flagged for review in the B6 PR.
+#: e6 (ATF_PRICE -> AIRLINE_COSTS) states its relation across a paragraph break:
+#: the cited passage says "the increase", and ATF_PRICE is named in the previous
+#: paragraph. It was first read as a fixture inconsistency; D-17 concluded it is
+#: the normal shape of the copy and widened rule 3 to a two-paragraph window.
+#: The tests below pin the strict path, taken when no `document` is supplied.
+#: The widened path lives in test_verify_mention_window.py.
 CROSS_PARAGRAPH_EDGE = "e6"
 
 
@@ -253,11 +255,12 @@ def test_both_aliases_only_still_passes(by_passage, aliases):
 
 
 def test_variables_in_different_paragraphs_of_one_document_fail(cited, aliases, corpus_doc_ids):
-    """Rule 3 is scoped to the passage, not the document (docs/decisions.md D-14).
+    """With no `document`, rule 3 stays scoped to the single passage (D-17).
 
     `mint-2026-03-16-atf` names ATF in paragraph 0 and airline costs in
-    paragraph 1. Neither paragraph on its own mentions both, so neither can
-    support the ATF_PRICE -> AIRLINE_COSTS edge.
+    paragraph 1. A caller that offers neither neighbour gets the strict result,
+    so the ATF_PRICE -> AIRLINE_COSTS edge fails here. Pass the document and it
+    clears the rules with `scope: window` - see test_verify_mention_window.py.
     """
     edge, cited_passage = one(CROSS_PARAGRAPH_EDGE, cited)
     assert edge.src_var == "ATF_PRICE" and edge.dst_var == "AIRLINE_COSTS"
