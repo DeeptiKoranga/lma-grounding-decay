@@ -30,7 +30,7 @@ from pathlib import Path as FsPath
 from pydantic import BaseModel, ConfigDict, Field
 
 from schema import Edge, Graph, Passage
-from verify import check_edge, load_aliases
+from verify import check_edge, load_aliases, preceding_window
 
 __all__ = [
     "MAX_EDGES",
@@ -150,6 +150,11 @@ def check_against_corpus(
     table = aliases if aliases is not None else load_aliases()
     by_id = {p.passage_id: p for p in passages}
     corpus_doc_ids = {p.doc_id for p in passages}
+    # Grouped once: preceding_window scans whatever it is given, and handing it
+    # the whole corpus per edge would re-walk 16k passages each time.
+    by_doc: dict[str, list[Passage]] = {}
+    for passage in passages:
+        by_doc.setdefault(passage.doc_id, []).append(passage)
 
     for edge in graph.edges:
         passage = by_id.get(edge.evidence_passage_id or "")
@@ -162,16 +167,17 @@ def check_against_corpus(
                 )
             )
             continue
-        # Strict, single-passage mention scope: this branch predates D-17's
-        # two-paragraph window. Once b/mention-window merges, pass
-        # `document=preceding_window(passage, passages)` here, or gold edges
-        # whose relation spans a paragraph break will be reported as failures.
+        # D-17: rule 3 searches the cited paragraph plus the one before it, so
+        # an edge whose relation carries across a paragraph break ("the
+        # increase", "that move") is not rejected for anaphora. The verbatim
+        # span still has to sit in the cited passage.
         report = check_edge(
             edge,
             passage,
             as_of=graph.as_of,
             corpus_doc_ids=corpus_doc_ids,
             aliases=table,
+            document=preceding_window(passage, by_doc.get(passage.doc_id, ())),
         )
         if not report.passed:
             issues.append(

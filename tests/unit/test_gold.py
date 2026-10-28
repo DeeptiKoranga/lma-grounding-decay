@@ -233,3 +233,75 @@ def test_each_dev_gold_span_is_verbatim_in_the_corpus(query_id):
     report = check_against_corpus(load_gold_graph(query_id), passages)
     assert report.corpus_checked
     assert report.ok, [i.problem for i in report.issues]
+
+
+# ---------------------------------------------------------------------------
+# D-17: the gold checker searches the cited paragraph plus the one before it
+# ---------------------------------------------------------------------------
+
+
+def test_the_gold_checker_accepts_a_relation_that_spans_a_paragraph_break():
+    """D-17. An edge whose source is named only in the preceding paragraph -
+    picked up downstream as "the increase" - is anaphora, not a missing
+    mention. Under the strict scope these were rejected, which under-labelled
+    source_asserted and depressed reference-edge recall against H2d.
+
+    The document alternates: a paragraph naming Brent, then one naming a
+    destination without naming Brent again. Every edge cites the second of its
+    pair, so each one passes only because rule 3 looks one paragraph back.
+    """
+    published = datetime.fromisoformat("2026-04-02T10:00:00+05:30")
+    targets = [
+        ("IMPORT_BILL", "the oil import bill"),
+        ("FUEL_PRICES", "retail fuel prices"),
+        ("TRADE_DEFICIT", "the trade deficit"),
+        ("CURRENT_ACCOUNT_DEFICIT", "the current account deficit"),
+    ]
+    paragraphs = []
+    for _, phrase in targets:
+        paragraphs.append("Brent crude climbed above $100 a barrel on Wednesday.")
+        paragraphs.append(f"The increase is already lifting {phrase}, traders said.")
+
+    document, offset = [], 0
+    for index, text in enumerate(paragraphs):
+        document.append(
+            Passage(
+                passage_id=f"et-x#p{index}",
+                doc_id="et-x",
+                text=text,
+                char_start=offset,
+                char_end=offset + len(text),
+                para_idx=index,
+                published_at=published,
+                source="economic_times",
+                source_kind="news",
+                title="Crude climbs",
+                url="https://example.invalid/x",
+            )
+        )
+        offset += len(text) + 1  # the join character between paragraphs
+
+    edges = [
+        _edge(
+            n,
+            "BRENT",
+            var,
+            hop=1,
+            evidence_span=f"The increase is already lifting {phrase}",
+            evidence_doc_id="et-x",
+            evidence_passage_id=f"et-x#p{2 * n + 1}",
+            evidence_published_at=published,
+        )
+        for n, (var, phrase) in enumerate(targets)
+    ]
+
+    report = check_against_corpus(_graph(edges), document)
+    assert report.corpus_checked
+    assert report.ok, [i.problem for i in report.issues]
+
+    # Without the preceding paragraph, every one of them fails: the cited
+    # paragraph never names BRENT. That is what D-17 changed.
+    cited_only = [p for p in document if p.para_idx % 2 == 1]
+    strict = check_against_corpus(_graph(edges), cited_only)
+    assert not strict.ok
+    assert all("BRENT" in issue.problem for issue in strict.issues)
