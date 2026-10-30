@@ -121,6 +121,50 @@ def test_cli_forwards_and_binds_vllm_thinking_settings(monkeypatch, tmp_path):
     assert exc.value.code == 2
 
 
+def test_local_cli_uses_the_completed_model_selection_record(monkeypatch, tmp_path):
+    monkeypatch.setattr(command, "supports_mlx", lambda: True)
+    _output, argv = execute(monkeypatch, tmp_path)
+    selection = tmp_path / "selection.json"
+    model_path = tmp_path / "pinned-model"
+    model_path.mkdir()
+    (model_path / "config.json").write_text('{"fixture":true}')
+    selection.write_text(
+        json.dumps(
+            {"model": "chosen-local", "revision": "pinned-revision", "model_path": str(model_path)}
+        )
+    )
+    new_output = tmp_path / "selected-runs"
+    chosen = [*argv]
+    for flag in ("--revision", "--base-url"):
+        index = chosen.index(flag)
+        del chosen[index : index + 2]
+    chosen[chosen.index("--backend") + 1] = "mlx"
+    chosen[chosen.index("--output") + 1] = str(new_output)
+    chosen += ["--model-selection", str(selection)]
+    calls = []
+
+    def generator(path, *, model_id, revision):
+        calls.append((path, model_id, revision))
+        return EmptyGenerator()
+
+    monkeypatch.setattr(command, "MLXGenerator", generator)
+    monkeypatch.setattr(sys, "argv", chosen)
+    command.main()
+    assert calls == [(model_path, "chosen-local", "pinned-revision")]
+    assert audit(runs=new_output, corpus=CORPUS)["complete"]
+
+
+def test_non_macos_runner_rejects_mlx_with_an_actionable_error(monkeypatch, capsys):
+    monkeypatch.setattr(command, "supports_mlx", lambda: False)
+    monkeypatch.setattr(
+        sys, "argv", ["conditions", "--queries", "unused.jsonl", "--backend", "mlx"]
+    )
+    with pytest.raises(SystemExit) as exc:
+        command.main()
+    assert exc.value.code == 2
+    assert "On Windows/Linux select --backend llama.cpp or vllm" in capsys.readouterr().err
+
+
 @pytest.mark.parametrize("changed", ["graph", "log", "source", "retrieval_setting"])
 def test_resume_refuses_changed_artifacts_code_and_runtime_settings(monkeypatch, tmp_path, changed):
     output, argv = execute(monkeypatch, tmp_path)

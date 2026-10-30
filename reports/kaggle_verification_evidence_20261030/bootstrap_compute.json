@@ -1,0 +1,17 @@
+{
+  "started_at": "2026-10-30T14:11:51.129641+00:00",
+  "status": "passed: fresh vLLM, selected retrieval, 14 graphs, bound audit and unchanged resume",
+  "purpose": "C11 fresh engineering smoke; independent of the C2 model-choice experiment",
+  "maximum_notebook_seconds": 3600,
+  "maximum_allocated_gpu_hours": 2,
+  "devices": [
+    "Tesla T4",
+    "Tesla T4"
+  ],
+  "gpu_count": 2,
+  "finished_at": "2026-10-30T14:48:11.114953+00:00",
+  "elapsed_seconds": 2179.98540535,
+  "visible_allocated_gpu_hours": 1.211103002972222,
+  "gpu_active_hours": null,
+  "scope": "measured entrypoint interval including setup; provider startup/teardown outside code is excluded"
+}

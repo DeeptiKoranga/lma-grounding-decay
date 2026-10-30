@@ -1,0 +1,32 @@
+{
+  "commit": "245e0fd5a8694f85479d89df03f15e724d71ba2a",
+  "run_id": 41068721649,
+  "url": "https://github.com/DeeptiKoranga/lma-grounding-decay/actions/runs/41068721649",
+  "status": "all three native platforms passed full tests, Ruff and notebook-inclusive Black",
+  "jobs": [
+    {
+      "platform": "track-c-macos-latest",
+      "tests": 722,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 722
+    },
+    {
+      "platform": "track-c-ubuntu-latest",
+      "tests": 722,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 722
+    },
+    {
+      "platform": "track-c-windows-latest",
+      "tests": 722,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 722
+    }
+  ]
+}

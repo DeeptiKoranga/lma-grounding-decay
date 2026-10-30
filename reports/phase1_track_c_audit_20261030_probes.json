@@ -1,0 +1,70 @@
+{
+  "audit_date": "2026-10-30",
+  "branch": "varun",
+  "commit": "b76f6b1",
+  "scope": "PLAN_MIDSUB.md Phase 1 Track C, C1 through C11",
+  "verdict": "incomplete",
+  "existing_test_suite": {
+    "passed": 701,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 3.68
+  },
+  "ruff": "passed",
+  "black": {
+    "python_files_unchanged": 154,
+    "passed": true,
+    "notebook_check": "skipped because optional Jupyter dependencies are absent"
+  },
+  "claude_pipeline": {
+    "passed": false,
+    "condition": "B0",
+    "error_type": "ValidationError",
+    "location": ["model_call", "backend"],
+    "input": "claude",
+    "allowed": ["mlx", "llama.cpp", "vllm", "api"],
+    "network": "mocked; no external API call"
+  },
+  "strength_only_relabel": {
+    "allowed": true,
+    "verifier_approved_strength": "conditional",
+    "final_strength": "direct",
+    "final_provenance": "source_asserted",
+    "verified_by": "rules+llm",
+    "additional_verifier_calls": 0,
+    "scope": "tool-interface defect; normal deterministic controller does not issue this request"
+  },
+  "fault_recheck": {
+    "faults": 20,
+    "passed": 20,
+    "scope": "synthetic tool-boundary diagnostic; not model recovery"
+  },
+  "pilot_artifact_checks": {
+    "unique_cases": 100,
+    "unique_model_case_outputs": 200,
+    "cases_per_task": 20,
+    "dataset_hash_matches": true,
+    "raw_json_exact_match_flags_reproduce": true,
+    "strength_gold_labels": ["contradicted", "direct_support", "insufficient_evidence", "partial_support"],
+    "project_strength_labels": ["direct", "conditional", "correlational"],
+    "extraction_gold_fields": ["object", "relation", "subject", "time"]
+  },
+  "frozen_fixture_counts": {
+    "agent_states": 40,
+    "tool_faults": 20,
+    "safety_prompts": 25
+  },
+  "notebook_execution_counts": {
+    "kaggle_run.ipynb": {"code_cells": 5, "executed": 0},
+    "c1_live_verification.ipynb": {"code_cells": 11, "executed": 11, "saved_error_outputs": 1},
+    "c2_model_pilot.ipynb": {"code_cells": 14, "executed": 14, "saved_error_outputs": 0}
+  },
+  "repository_python_inventory": {
+    "src": {"files": 69, "lines": 9576},
+    "scripts": {"files": 34, "lines": 6230},
+    "tests": {"files": 51, "lines": 7569}
+  },
+  "original_probe_directory": "/private/tmp/lma-phase1-track-c-01gepiup",
+  "source_code_changed": false,
+  "new_paid_or_gpu_inference": false
+}

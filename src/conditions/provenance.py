@@ -131,6 +131,7 @@ def validate_cached(payload: dict, *, query, condition: str, inputs_sha256: str)
         raise ValueError("cached artifact does not match its query, condition or run inputs")
     if (
         not isinstance(payload.get("log_file"), str)
+        or any(separator in payload["log_file"] for separator in ("/", "\\"))
         or Path(payload["log_file"]).name != payload["log_file"]
         or payload.get("log_sha256") is None
     ):

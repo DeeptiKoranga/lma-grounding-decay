@@ -1,0 +1,18 @@
+{
+  "audit.json": {
+    "bytes": 11020,
+    "sha256": "eef5c3b23568f399c93ddf7583bd4f92ee949d2e6cc2f151c1f9b5a95d069575"
+  },
+  "bootstrap_compute.json": {
+    "bytes": 666,
+    "sha256": "6b494b37210e4c70bf22538ea6979757b887431b8c68cfa2d15e655b649f3b9c"
+  },
+  "compute-20261030T142047.json": {
+    "bytes": 61202,
+    "sha256": "d2729d7af1983698db85255fe5f0a83e6de86bc1423465803cc665f9d1d2e3cc"
+  },
+  "resume.txt": {
+    "bytes": 408,
+    "sha256": "3a09bfff91fb6e202111bdf500604cd81ff02fa9d92e629928543273bcd94cef"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "status": "dispatched private two-T4 verification",
+  "source_commit": "245e0fd5a8694f85479d89df03f15e724d71ba2a",
+  "kernel": "varunpatil50/lma-track-c-verification-20261030",
+  "kernel_version": 1,
+  "private": true,
+  "source_dataset": "varunpatil50/lma-track-c-source-20261030",
+  "data_dataset": "varunpatil50/lma-track-c-frozen-v7-20261030",
+  "timeout_seconds": 3600,
+  "authorized_max_allocated_gpu_hours": 2,
+  "model": "JunHowie/Qwen3-8B-GPTQ-Int4",
+  "revision": "f08c8ea5f60e1fe34ff4a45edb58e8ca958560c3",
+  "purpose": "C11 engineering verification; not a frozen scientific sweep or C2 selection result"
+}

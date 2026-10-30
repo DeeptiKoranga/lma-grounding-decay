@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import subprocess
+import sys
 import uuid
 from pathlib import Path
 
@@ -53,6 +54,10 @@ class WorkerScorer:
         return json.loads(result.stdout)
 
 
+def supports_mlx():
+    return sys.platform == "darwin"
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--queries", type=Path, required=True)
@@ -68,7 +73,10 @@ def main():
     parser.add_argument(
         "--backend", choices=["mlx", "llama.cpp", "vllm", "api", "claude"], default="mlx"
     )
-    parser.add_argument("--model-path", type=Path, default=Path("data/raw/generator/qwen3-8b-4bit"))
+    parser.add_argument("--model-path", type=Path)
+    parser.add_argument(
+        "--model-selection", type=Path, default=Path("configs/model_selection.json")
+    )
     parser.add_argument("--model")
     parser.add_argument("--revision")
     parser.add_argument("--base-url")
@@ -96,6 +104,25 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("runs/development"))
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
+    if args.backend == "mlx" and not supports_mlx():
+        parser.error(
+            "MLX requires macOS. On Windows/Linux select --backend llama.cpp or vllm "
+            "with --base-url pointing to your inference server; no backend is switched automatically."
+        )
+    if (
+        args.backend == "mlx"
+        and args.model is None
+        and args.revision is None
+        and args.model_path is None
+    ):
+        if not args.model_selection.is_file():
+            parser.error(
+                "supply an explicit model/revision or the completed --model-selection record"
+            )
+        selected = json.loads(args.model_selection.read_text(encoding="utf-8"))
+        args.model, args.revision = selected["model"], selected["revision"]
+        args.model_path = Path(selected["model_path"])
+    args.model_path = args.model_path or Path("data/raw/generator/qwen3-8b-4bit")
     if args.chat_template_kwargs is not None and not isinstance(args.chat_template_kwargs, dict):
         parser.error("--chat-template-kwargs must be a JSON object")
     chat_settings = args.chat_template_kwargs
@@ -175,7 +202,10 @@ def main():
     if args.output.exists() and not args.resume:
         parser.error("output already exists; select a new directory or --resume")
     if provenance.exists() and json.loads(provenance.read_text(encoding="utf-8")) != inputs:
-        parser.error("resume input settings/hashes differ from the saved run")
+        parser.error(
+            "resume input settings/hashes differ from the saved run; choose a new --output "
+            "directory after changing code, data, model or runtime"
+        )
     if args.output.exists() and any(args.output.iterdir()) and not provenance.exists():
         parser.error("cannot resume a nonempty directory without bound inputs")
     args.output.mkdir(parents=True, exist_ok=True)

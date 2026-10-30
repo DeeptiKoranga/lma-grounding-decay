@@ -1,0 +1,35 @@
+{
+  "status": "fresh private Kaggle vLLM verification passed and independently re-audited locally",
+  "source_commit": "245e0fd5a8694f85479d89df03f15e724d71ba2a",
+  "kernel_url": "https://www.kaggle.com/code/varunpatil50/lma-track-c-verification-20261030",
+  "kernel_version": 1,
+  "complete": true,
+  "completed_graphs": 14,
+  "conditions": {
+    "A-NoLoop": 2,
+    "A-NoVerify": 2,
+    "B0": 2,
+    "B1": 2,
+    "B1-R": 2,
+    "B2": 2,
+    "M": 2
+  },
+  "resume_passed": true,
+  "resume_evidence": "All 14 cached result lines captured in the execution log; runner returns before loading the generator when the pending matrix is empty.",
+  "gpu_count": 2,
+  "devices": [
+    "Tesla T4",
+    "Tesla T4"
+  ],
+  "visible_allocated_gpu_hours": 1.211103002972222,
+  "elapsed_seconds_including_setup": 2179.98540535,
+  "run_visible_allocated_gpu_hours": 0.91218919551,
+  "gpu_active_hours": null,
+  "source_model": "JunHowie/Qwen3-8B-GPTQ-Int4",
+  "model_revision": "f08c8ea5f60e1fe34ff4a45edb58e8ca958560c3",
+  "bootstrap_receipt_sha256": "6b494b37210e4c70bf22538ea6979757b887431b8c68cfa2d15e655b649f3b9c",
+  "run_receipt_sha256": "d2729d7af1983698db85255fe5f0a83e6de86bc1423465803cc665f9d1d2e3cc",
+  "remote_audit_sha256": "eef5c3b23568f399c93ddf7583bd4f92ee949d2e6cc2f151c1f9b5a95d069575",
+  "local_audit_sha256": "eef5c3b23568f399c93ddf7583bd4f92ee949d2e6cc2f151c1f9b5a95d069575",
+  "scope": "C11 fresh engineering execution using the historically verified Qwen3-8B GPTQ backend; not a frozen research sweep or C2 model-selection claim"
+}

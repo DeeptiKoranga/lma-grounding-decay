@@ -1,3 +1,26 @@
+# Compute log — current Track C update, 30 October 2026
+
+The 28 October Kaggle C1 and C2 executions are now reconciled in
+`reports/kaggle_compute_evidence_20261030.json`. Their saved execution intervals
+sum to 501.008 and 1,006.978 cell-wall seconds, respectively. These are not
+GPU-active or billed hours; those historical measurements were not captured.
+The earlier statements below describe their original local-run scope and are
+preserved as history, not as a current claim that Kaggle has never run.
+
+A fresh private Kaggle verification was explicitly authorized on 30 October,
+with at most two T4 GPUs and two allocated GPU-hours. Its source snapshot,
+verified data archive and eventual compute/audit receipts are recorded in the
+Track C closeout. The bounded entrypoint records setup and run wall time, device
+count, failures and cleanup. No paid API request is made.
+
+The project-specific local C2 pilot uses pinned MLX 4-bit Qwen3-8B and
+Qwen3.5-9B sequentially on the same Apple M4, 16 GB device. Actual per-call tokens,
+latency and model-file identities are retained. An interrupted preliminary
+prompt-ambiguity attempt remains excluded and its completed usage is recorded
+in `reports/model_pilot_excluded_attempt_20261030.json`.
+
+---
+
 # Compute log — updated 25 October 2026
 
 Actual completed-call usage from validated local logs. All generation used pinned
