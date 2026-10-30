@@ -179,3 +179,61 @@ def test_source_identity_survives_windows_line_endings_and_json_bytes_are_fixed(
     write_json(target, {"text": "rupee ₹ →"})
     assert b"\r\n" not in target.read_bytes()
     assert json.loads(target.read_text(encoding="utf-8"))["text"] == "rupee ₹ →"
+
+
+def test_new_rejected_verification_invalidates_old_approval():
+    class ChangingVerifier:
+        calls = 0
+
+        def verify(self, edge, *, passage, span, as_of, call_id):
+            self.calls += 1
+            if self.calls == 1:
+                return VerifyEdgeResult(
+                    call_id=call_id,
+                    edge_id=edge.edge_id,
+                    verdict="supported",
+                    provenance="source_asserted",
+                    strength="conditional",
+                    direction="up",
+                    evidence_span=span,
+                    evidence_passage_id=passage.passage_id,
+                )
+            return VerifyEdgeResult(
+                call_id=call_id,
+                edge_id=edge.edge_id,
+                verdict="unsupported",
+                provenance="model_inferred",
+            )
+
+    retriever = BM25Retriever.from_jsonl(ROOT / "tests/fixtures/passages.jsonl")
+    q = query()
+    edge = Edge(
+        edge_id="e",
+        src_var="BRENT",
+        dst_var="INDIAN_BASKET",
+        direction="up",
+        strength="conditional",
+        provenance="model_inferred",
+        hop=1,
+    )
+    tools = ToolRuntime(
+        graph=rebuild(query_id=q.query_id, anchor=q.anchor, as_of=q.as_of, edges=[edge]),
+        retriever=retriever,
+        series=SeriesStore({}),
+        verifier=ChangingVerifier(),
+    )
+    pid = "bl-2026-03-12-brent100#p1"
+    tools.seen.add(pid)
+    assert (
+        tools.call("verify_edge", edge_id="e", passage_ids=[pid], as_of=q.as_of).verdict
+        == "supported"
+    )
+    assert tools.approved
+    assert (
+        tools.call("verify_edge", edge_id="e", passage_ids=[pid], as_of=q.as_of).verdict
+        == "unsupported"
+    )
+    assert not tools.approved
+    assert not tools.call(
+        "update_graph", op="relabel_edge", edge_id="e", provenance="source_asserted"
+    ).ok

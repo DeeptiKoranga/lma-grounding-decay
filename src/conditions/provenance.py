@@ -34,6 +34,8 @@ def artifact_receipts(path: Path) -> dict[str, str]:
         raise ValueError("artifact receipts must be an object")
     result = {}
     for address, checksum in raw.items():
+        if not isinstance(address, str):
+            raise ValueError("artifact receipt address must be a string")
         key = address.replace("\\", "/")
         parts = PurePosixPath(key).parts
         if (

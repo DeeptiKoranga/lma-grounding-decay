@@ -3,7 +3,7 @@
   "notebooks": [
     {
       "notebook": "notebooks/c1_live_verification.ipynb",
-      "sha256": "1f6b59eace6efcc18a3833847ca94efe4d88a5c82fe308e13ebc7af3dfdacdf0",
+      "sha256": "1e1fd4d0296694d4ff06693a25422ab21063746b2cea102770f85754f4d83176",
       "executed_intervals": [
         {
           "cell": 0,
@@ -79,7 +79,7 @@
     },
     {
       "notebook": "notebooks/c2_model_pilot.ipynb",
-      "sha256": "ad3e4686620f43c888c7005b8724f3302b1eef458a62d9b6a087c1e364b868b7",
+      "sha256": "b77814b81464136eaa3c06265e9d9fef446a921cbe289af321878e0efa00d686",
       "executed_intervals": [
         {
           "cell": 0,

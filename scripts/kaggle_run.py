@@ -46,9 +46,12 @@ def main():
     parser.add_argument("--queries", default="data/eval/development_candidates.jsonl")
     parser.add_argument("--conditions", nargs="+", default=["B0", "B1", "B2", "M"])
     parser.add_argument("--verify-only", action="store_true")
+    parser.add_argument("--max-run-seconds", type=int, default=3000)
     args = parser.parse_args()
     if re.fullmatch(r"[0-9a-f]{40}", args.revision) is None:
         parser.error("--revision must be the immutable 40-character model commit")
+    if not 60 <= args.max_run_seconds <= 3300:
+        parser.error("--max-run-seconds must be between 60 and 3300")
     verified = verify_assets(Path.cwd(), args.manifest)
     if args.verify_only:
         print(json.dumps({"verified_assets": verified}, indent=2))
@@ -58,6 +61,8 @@ def main():
     count = torch.cuda.device_count()
     if count < 1:
         raise RuntimeError("Kaggle GPU acceleration is not enabled")
+    if count > 2:
+        raise RuntimeError("this verification is authorized for at most two GPUs")
     args.output.mkdir(parents=True, exist_ok=True)
     allocation_path = args.output / f"compute-{datetime.now(UTC):%Y%m%dT%H%M%S}.json"
     record = {
@@ -71,6 +76,13 @@ def main():
         "scope": "visible GPU allocation interval; GPU-active time and prior notebook allocation excluded",
     }
     started, server = time.monotonic(), None
+
+    def remaining_seconds():
+        remaining = args.max_run_seconds - (time.monotonic() - started)
+        if remaining <= 0:
+            raise TimeoutError("Kaggle verification reached its execution budget")
+        return remaining
+
     write_json(allocation_path, {**record, "status": "running"})
     env = {**os.environ, "PYTHONPATH": str(Path("src").resolve())}
     try:
@@ -92,12 +104,19 @@ def main():
                     "12000",
                     "--port",
                     "8000",
+                    "--max-num-seqs",
+                    "1",
+                    "--gpu-memory-utilization",
+                    "0.85",
+                    "--enforce-eager",
                 ],
                 stdout=log,
                 stderr=subprocess.STDOUT,
                 env=env,
             )
-        record["served_models"] = wait_for_server(server, "http://127.0.0.1:8000/v1")
+        record["served_models"] = wait_for_server(
+            server, "http://127.0.0.1:8000/v1", timeout=min(600, remaining_seconds())
+        )
         command = [
             sys.executable,
             "-m",
@@ -122,7 +141,7 @@ def main():
         ]
         if "B1-R" in args.conditions:
             command += ["--reranker-python", sys.executable]
-        subprocess.run(command, check=True, env=env)
+        subprocess.run(command, check=True, env=env, timeout=remaining_seconds())
         subprocess.run(
             [
                 sys.executable,
@@ -135,8 +154,9 @@ def main():
             ],
             check=True,
             env=env,
+            timeout=remaining_seconds(),
         )
-        subprocess.run(command, check=True, env=env)
+        subprocess.run(command, check=True, env=env, timeout=remaining_seconds())
         record["status"] = "passed: complete matrix, bound audit and unchanged resume"
     except Exception as exc:
         record.update(status="failed", error=str(exc))

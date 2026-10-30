@@ -1,0 +1,33 @@
+{
+  "commit": "4e60d0b62638048350655a52caf49cbe37ff5aa2",
+  "run_id": 41067576889,
+  "url": "https://github.com/DeeptiKoranga/lma-grounding-decay/actions/runs/41067576889",
+  "status": "passed all three native operating systems",
+  "jobs": [
+    {
+      "platform": "track-c-macos-latest",
+      "tests": 721,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 4,
+      "passed": 717
+    },
+    {
+      "platform": "track-c-ubuntu-latest",
+      "tests": 721,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 4,
+      "passed": 717
+    },
+    {
+      "platform": "track-c-windows-latest",
+      "tests": 721,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 4,
+      "passed": 717
+    }
+  ],
+  "scope": "core/dev install; four optional PDF checks skipped on hosted runners; local full environment has no skips"
+}

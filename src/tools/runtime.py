@@ -210,6 +210,8 @@ class ToolRuntime:
                 )
             if self.verifier is None:
                 raise ValueError("verifier is not configured")
+            # A later verification attempt replaces approval, including a rejection.
+            self.approved.pop(edge.edge_id, None)
 
             result = VerifyEdgeResult(
                 call_id=cid,

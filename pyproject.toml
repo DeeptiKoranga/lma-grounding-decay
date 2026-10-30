@@ -24,7 +24,7 @@ dependencies = [
 dev = [
     "pytest>=8.3",
     "ruff>=0.7",
-    "black>=24.10",
+    "black[jupyter]>=24.10",
     "pre-commit>=4.0",
 ]
 # Track A / Track C pull these in from Phase 1 onward. Do NOT move anything here

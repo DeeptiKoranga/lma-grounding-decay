@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "passages": 16472,
+  "dimensions": 1024,
+  "index_sha256": "5345b8a3384f759f73a7fee6c58ef544a4ad6ad47f04262fc81efafb5e038d2c",
+  "all_index_passages_equal_frozen_corpus": true,
+  "archive_members_verified": 9,
+  "verified_assets": {
+    "data/processed/articles.jsonl": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+    "data/aliases.yaml": "826f0e59c3ad98b2ca3d6ff08027ead08c917fed36d9d0a711cf802a1eebe843",
+    "data/interim/corpus_v7_index_20261026/bge_m3_vectors.json": "5345b8a3384f759f73a7fee6c58ef544a4ad6ad47f04262fc81efafb5e038d2c",
+    "data/series/brent_usd_bbl.csv": "07b92e9762cf03460f7dedaa1186796bd5c781feb3418b4f9fd58296bb82a9fa",
+    "data/series/cpi_headline_yoy.csv": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+    "data/series/fpi_flows_usd_mn.csv": "94c24a79a038b34c510c2f93bdcd0b5ef2540d2756b129c8d5ba32f5666c9a4d",
+    "data/series/gsec_10y_pct.csv": "7b12e2cf5f9254f1b7b648a33803b1f5ea381b96a7f61ebab150ed14911a2be6",
+    "data/series/indian_basket_usd_bbl.csv": "17f3e0f0919727bd0ebba18d46f50e98509dea35e5ebc0be018e1b431d1b23b7",
+    "data/series/inr_usd.csv": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c"
+  }
+}
