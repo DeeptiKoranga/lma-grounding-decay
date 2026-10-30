@@ -72,7 +72,7 @@ def audit(
                     condition=graph.condition,
                     inputs_sha256=digest(inputs_path),
                 )
-                if digest(path) != receipts.get(str(path.relative_to(runs))):
+                if digest(path) != receipts.get(path.relative_to(runs).as_posix()):
                     raise ValueError("artifact checksum mismatch or missing receipt")
                 log = path.parent / payload["log_file"]
                 if log.parent != path.parent or digest(log) != payload["log_sha256"]:
@@ -173,7 +173,7 @@ def audit(
         "graphs": graphs,
         "compute": dict(compute),
         "unbound_logs": [
-            str(p.relative_to(runs)) for p in sorted(set(runs.glob("*/*.jsonl")) - logs)
+            p.relative_to(runs).as_posix() for p in sorted(set(runs.glob("*/*.jsonl")) - logs)
         ],
         "compute_note": "completed artifacts' bound logs only for v2; legacy logs are unbound. Measured model-call wall times and actual token counts, excluding failed/orphan attempts; not GPU-active time or full phase time",
         "research_acceptance": "separate from structural completion; model selection, human correction/support review, independent gold and episode acceptance required",

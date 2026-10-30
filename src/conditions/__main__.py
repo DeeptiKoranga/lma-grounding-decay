@@ -238,7 +238,7 @@ def main():
                     inputs_sha256=inputs_sha256, log_file=log_path.name, log_sha256=digest(log_path)
                 )
                 target.write_text(json.dumps(result, indent=2) + "\n")
-                receipts[str(target.relative_to(args.output))] = digest(target)
+                receipts[target.relative_to(args.output).as_posix()] = digest(target)
                 receipts_path.write_text(json.dumps(receipts, indent=2) + "\n")
                 print(
                     f"completed {condition} {query.query_id}: {len(result['graph']['edges'])} edges, {result['tool_calls']} tool calls",

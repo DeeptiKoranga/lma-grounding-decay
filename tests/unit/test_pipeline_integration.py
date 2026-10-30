@@ -167,6 +167,71 @@ def test_rules_passing_never_promotes_without_a_fresh_semantic_judgment(query, r
         ).verdict
         == "out_of_corpus"
     )
+def test_rejected_verification_is_saved_as_candidate_evidence(query, retriever):
+    class Opposite(FixtureGenerator):
+        def generate(self, *args, **kwargs):
+            return Completion(
+                json.dumps({
+                    "verdict": "supported",
+                    "direction": "down",
+                    "strength": "direct",
+                    "reason": "opposite direction",
+                }
+      ),
+                "fixture",
+                "api",
+                0,
+                0,
+                0,
+            )
+
+    edge = Edge(
+        edge_id="e",
+        src_var="BRENT",
+        dst_var="INDIAN_BASKET",
+        direction="up",
+        strength="direct",
+        provenance="model_inferred",
+        hop=1,
+    )
+
+    graph = rebuild(
+        query_id=query.query_id,
+        anchor=query.anchor,
+        as_of=query.as_of,
+        edges=[edge],
+    )
+
+    verifier = Verifier(Opposite(), list(retriever.passages))
+
+    tools = ToolRuntime(
+        graph=graph,
+        retriever=retriever,
+        series=SeriesStore({}),
+        verifier=verifier,
+    )
+
+    passage = next(
+        p for p in retriever.passages
+        if p.passage_id == "bl-2026-03-12-brent100#p1"
+    )
+    tools.seen.add(passage.passage_id)
+
+    result = tools.call(
+        "verify_edge",
+        edge_id="e",
+        passage_ids=[passage.passage_id],
+        as_of=query.as_of,
+    )
+
+    assert result.verdict.value == "contradicted"
+
+    saved = tools.graph.edges[0]
+    assert saved.provenance == Provenance.MODEL_INFERRED
+    assert saved.evidence_span is None
+    assert len(saved.candidate_evidence) == 1
+    assert saved.candidate_evidence[0].passage_id == passage.passage_id
+    assert saved.candidate_evidence[0].verdict.value == "contradicted"
 
 
 def test_graph_mutations_recompute_hops_paths_and_protect_verified_labels(query, retriever):

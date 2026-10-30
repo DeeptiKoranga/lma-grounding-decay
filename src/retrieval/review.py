@@ -334,7 +334,7 @@ def export_review(
     )
     # Validate before creating either artifact and refuse existing output directories.
     output.mkdir(parents=True, exist_ok=False)
-    (output / "pairs.jsonl").write_text(pairs_text, encoding="utf-8")
+    (output / "pairs.jsonl").write_bytes(pairs_text.encode("utf-8"))
     (output / "receipt.json").write_text(_dump(receipt.model_dump(mode="json")), encoding="utf-8")
     return receipt
 

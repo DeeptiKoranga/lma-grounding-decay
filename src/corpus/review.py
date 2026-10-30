@@ -100,7 +100,7 @@ def prepare(*, snapshot: Path, sample: Path, curator: str, output: Path) -> dict
         ],
     )
     output.mkdir(parents=True, exist_ok=False)
-    (output / "packet.json").write_text(packet_text)
+    (output / "packet.json").write_bytes(packet_text.encode("utf-8"))
     (output / "judgments.json").write_text(dump(blank.model_dump(mode="json")))
     return {
         "status": "pending independent sample review",

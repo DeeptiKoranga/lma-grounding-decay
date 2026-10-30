@@ -5,7 +5,15 @@ from __future__ import annotations
 import time
 
 from retrieval.filters import checked_hits
-from schema import MAX_TOOL_CALLS, Edge, Provenance, ToolName, VerifyVerdict, parse_tool_call
+from schema import (
+    MAX_TOOL_CALLS,
+    CandidateEvidence,
+    Edge,
+    Provenance,
+    ToolName,
+    VerifyVerdict,
+    parse_tool_call,
+)
 from schema.tools import (
     CounterSearchResult,
     GetSeriesResult,
@@ -202,20 +210,30 @@ class ToolRuntime:
                 )
             if self.verifier is None:
                 raise ValueError("verifier is not configured")
+
             result = VerifyEdgeResult(
                 call_id=cid,
                 edge_id=edge.edge_id,
                 verdict=VerifyVerdict.UNSUPPORTED,
                 provenance=Provenance.MODEL_INFERRED,
             )
+            candidates = list(edge.candidate_evidence)
+
             for pid in args.passage_ids:
                 if pid not in self.seen or pid not in self.corpus:
                     continue
+
                 passage = self.corpus[pid]
                 span = self.spans.get((edge.edge_id, pid), passage.text)
+
                 result = self.verifier.verify(
-                    edge, passage=passage, span=span, as_of=self.graph.as_of, call_id=cid
+                    edge,
+                    passage=passage,
+                    span=span,
+                    as_of=self.graph.as_of,
+                    call_id=cid,
                 )
+
                 if result.provenance == Provenance.SOURCE_ASSERTED:
                     self.approved[edge.edge_id] = Edge.model_validate(
                         {
@@ -226,11 +244,43 @@ class ToolRuntime:
                             "evidence_doc_id": passage.doc_id,
                             "evidence_passage_id": passage.passage_id,
                             "evidence_published_at": passage.published_at,
+                            "candidate_evidence": candidates,
                             "verified_by": "rules+llm",
                             "verdict": result.verdict,
                         }
                     )
                     break
+
+                if result.verdict is not None:
+                    candidate = CandidateEvidence(
+                        passage_id=passage.passage_id,
+                        doc_id=passage.doc_id,
+                        span=span,
+                        verdict=result.verdict,
+                        reason=", ".join(result.rule_failures) or None,
+                    )
+
+                    key = (candidate.passage_id, candidate.span, candidate.verdict)
+                    existing = {
+                        (c.passage_id, c.span, c.verdict) for c in candidates
+                    }
+
+                    if key not in existing:
+                        candidates.append(candidate)
+
+            if candidates != list(edge.candidate_evidence):
+                updated = Edge.model_validate(
+                    {
+                        **edge.model_dump(),
+                        "candidate_evidence": candidates,
+                    }
+                )
+                edges = [
+                    updated if e.edge_id == edge.edge_id else e
+                    for e in self.graph.edges
+                ]
+                self.set_edges(edges)
+
             return result
         if call.tool == ToolName.UPDATE_GRAPH:
             edges = list(self.graph.edges)
