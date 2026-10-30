@@ -1,23 +1,44 @@
-# Compute log — current Track C update, 30 October 2026
+# Compute log — Track C closeout, 30 October 2026
 
-The 28 October Kaggle C1 and C2 executions are now reconciled in
-`reports/kaggle_compute_evidence_20261030.json`. Their saved execution intervals
-sum to 501.008 and 1,006.978 cell-wall seconds, respectively. These are not
-GPU-active or billed hours; those historical measurements were not captured.
-The earlier statements below describe their original local-run scope and are
-preserved as history, not as a current claim that Kaggle has never run.
+No paid API request was made. The two local model pilots ran sequentially on
+Apple M4 / 16 GB under pinned MLX affine 4-bit. The frozen raw outputs include
+actual backend-reported token counts and measured model-call wall times.
+These local durations exclude setup/model loading and are not GPU-active or
+total allocated device hours.
 
-A fresh private Kaggle verification was explicitly authorized on 30 October,
-with at most two T4 GPUs and two allocated GPU-hours. Its source snapshot,
-verified data archive and eventual compute/audit receipts are recorded in the
-Track C closeout. The bounded entrypoint records setup and run wall time, device
-count, failures and cleanup. No paid API request is made.
+| Work | Completed calls | Prompt tokens | Completion tokens | Model-call seconds |
+|---|---:|---:|---:|---:|
+| Project-schema C2 qwen3-8b | 100 | 156,889 | 7,661 | 2035.586 |
+| Project-schema C2 qwen3.5-9b | 100 | 156,999 | 10,480 | 2661.630 |
+| Selected-model C10 safety | 25 | 2,375 | 1,365 | 252.964 |
+| Excluded prompt-ambiguity attempt | 13 | 19,116 | 1,832 | 253.519 |
 
-The project-specific local C2 pilot uses pinned MLX 4-bit Qwen3-8B and
-Qwen3.5-9B sequentially on the same Apple M4, 16 GB device. Actual per-call tokens,
-latency and model-file identities are retained. An interrupted preliminary
-prompt-ambiguity attempt remains excluded and its completed usage is recorded
-in `reports/model_pilot_excluded_attempt_20261030.json`.
+The excluded attempt and its interrupted in-flight call remain separate. The
+unfinished call has no complete usage measurement and no invented token/time
+entry. Included C2 cases/rules were frozen before the two included runs. Model
+bytes, source hashes and runtime packages are in
+`reports/project_model_pilot_inputs_20261030.json` and the safety input receipt.
+
+The private two-T4 C11 execution at source `245e0fd` measured **2,179.985 wall
+seconds including setup**, or **1.211103 visible allocated GPU-hours**. The
+inner run interval was 1,641.941 seconds / 0.912189 GPU-hours and is a subset,
+not additional usage. All 14 graphs and their bound logs passed the remote and
+local audits; all 14 were cached on unchanged resume. The two-GPU/two-hour limit
+was respected. Provider startup/teardown outside the entrypoint, GPU-active
+time and exact billed hours are not measured. See
+`reports/kaggle_verification_evidence_20261030/` and
+`reports/kaggle_live_verification_20261030.json`.
+
+The account quota observation after completion was 2,186.168 seconds (0.607269
+hours) out of 30 hours. This provider quota is recorded separately from the
+two-device allocation measure; it is not labelled GPU-active time or a billing
+receipt. See `reports/kaggle_quota_observation_20261030.json`.
+
+The older 28 October Kaggle C1/C2 notebook execution intervals sum to 501.008
+and 1,006.978 cell-wall seconds. Their GPU-active/allocation/billed hours were
+not captured and remain unknown. See
+`reports/kaggle_compute_evidence_20261030.json`. Earlier local-only statements
+below keep their original scope and do not deny the subsequent Kaggle runs.
 
 ---
 

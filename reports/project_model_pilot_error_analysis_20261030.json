@@ -1,0 +1,24 @@
+{
+  "status": "post-run descriptive field analysis; no change to frozen scores or selection rule",
+  "scope": "synthetic project-schema extraction; mismatch categories may overlap",
+  "models": {
+    "mlx-community/Qwen3-8B-4bit": {
+      "cases": 20,
+      "field_failures": {
+        "nonverbatim_or_missing_quote": 10,
+        "strength_mismatch": 7,
+        "evidence_passage_id_mismatch": 17,
+        "direction_mismatch": 1
+      },
+      "strict_extraction_correct": 1
+    },
+    "mlx-community/Qwen3.5-9B-4bit": {
+      "cases": 20,
+      "field_failures": {
+        "strength_mismatch": 6,
+        "direction_mismatch": 1
+      },
+      "strict_extraction_correct": 13
+    }
+  }
+}

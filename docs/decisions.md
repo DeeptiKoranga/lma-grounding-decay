@@ -6,7 +6,7 @@ the evidence that closes it**: write the number, link the report, and date it.
 
 Status is one of `open` · `resolved` · `deferred`.
 
-Last reviewed: **27 Oct 2026** (Track A mid-submission scope closed with deviations;
+Last reviewed: **30 Oct 2026** (Track A mid-submission scope closed with deviations;
 development selections complete; subsequent user-attested Track A review records
 pass acceptance validation, with procedure-verification limits retained).
 
@@ -21,10 +21,10 @@ pass, with original label provenance preserved; procedure and exposure timing
 are not independently verified. See
 `reports/track_a_reviewer_identity_20261027.json`.
 
-The subsequent whole-project audit confirms that D-02's selected BGE-M3 is not
-yet wired into the conditions command. A resolved pilot choice does not mean
-its integration is complete. See `reports/whole_project_audit_20261027.md` for
-that gap and four other integration/reproduction findings.
+The original whole-project integration findings were subsequently fixed. The
+30 October Phase 1 Track C closeout adds the project-schema model decision,
+complete four-risk safety review, native Windows/Linux/macOS checks and fresh
+private Kaggle execution. See `reports/phase1_track_c_closeout_20261030.md`.
 
 ---
 
@@ -34,14 +34,14 @@ that gap and four other integration/reproduction findings.
 
 | | |
 |---|---|
-| **Status** | `open` |
+| **Status** | `resolved` · 30 Oct 2026 |
 | **Question** | Qwen3-8B at 4-bit (the prior choice) or Qwen3.5-9B, for every condition? |
 | **Where** | Proposal §8, "Model and retrieval" |
 | **How it gets decided** | C2: 20 examples × 5 tasks — extraction, strength labelling, JSON validity, tool choice, rejecting unsupported edges. Run on the laptop under MLX at 4-bit. |
 | **Owner / due** | C · by Sat 24 Oct |
-| **Evidence** | `reports/pilot_model.md` |
+| **Evidence** | `reports/pilot_model_project_20261030.md`; `reports/project_model_pilot_20261030.json`; `configs/model_selection.json` |
 | **Blocks** | Everything downstream of `src/llm/`. One model is used for *all seven* conditions, so this cannot be split per condition. |
-| **Resolution** | *(unresolved)* |
+| **Resolution** | `mlx-community/Qwen3-8B-4bit` at `545dc4251c05440727734bcd94334791f6ab0192`, MLX affine 4-bit. Both models completed the same 100 project-schema cases. Highest mean task accuracy; within 0.03, choose lower mean generation latency. Selected mean 61.0%. This is synthetic development selection; weak extraction/tool outputs remain limitations. All seven conditions must use the same pinned model within a sweep. Different backend weight formats are recorded separately. |
 
 ### D-02 — Which first-stage retriever? `[needs pilot]`
 

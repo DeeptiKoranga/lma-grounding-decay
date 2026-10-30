@@ -1,5 +1,5 @@
 status: Declared condition flags; source of truth is conditions.config.SETTINGS; research
-  selection pending
+  outcomes require separate research review
 conditions:
   B0:
     retrieve: false
@@ -53,3 +53,5 @@ conditions:
 tool_budget: 12
 decoding: greedy
 development_model_revision: 545dc4251c05440727734bcd94334791f6ab0192
+development_model: mlx-community/Qwen3-8B-4bit
+model_selection: configs/model_selection.json

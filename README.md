@@ -74,33 +74,29 @@ differs from the current series. Dated primary announcements now support the
 April ATF announcement and August RBI meeting; final anchor acceptance remains
 with Track B. See [the follow-up record](reports/track_a_followup_20261026.json).
 
-## Track C progress - 30 October 2026
+## Track C Phase 1 — completed 30 October 2026
 
-**Implementation and development verification: C1?C9 completed.** Track C
-generation, agent, evaluation and integration work has been implemented and
-committed on the `c/agent-controller` branch.
+**All eleven C1–C11 deliverables are complete on `varun`.** The agent-controller
+work is merged; Claude logging, verified-strength relabelling, `verify_edge`,
+Windows worker and resume/checksum portability defects are fixed.
 
-- **C1 - Unified generation:** A common `generate()` interface supports MLX,
-  llama.cpp and vLLM backends. Kaggle vLLM live verification passed, including
-  JSON generation and project integration. Generator contract tests: 17/17 passed.
-- **C2 - Model pilot:** The Qwen3-8B versus Qwen3.5-9B pilot artifacts and
-  report are available in `reports/pilot_model.md`.
-- **C3-C8:** Completed and previously checked against `PLAN_MIDSUB.md`.
-- **C9 - Agent-state and tool-fault diagnostics:** The repository includes
-  40 synthetic agent-state cases and 20 scripted tool faults. The fault
-  diagnostic passed 20/20 checks. These synthetic diagnostics are not
-  human-annotated research results or independent research acceptance.
-- **Windows integration:** Retrieval-worker and pipeline compatibility fixes
-  were added with regression tests. The unit test suite passed locally.
+- **Model decision:** `mlx-community/Qwen3-8B-4bit` at `545dc4251c05440727734bcd94334791f6ab0192`. Both models completed the
+  same 100 project-schema pilot cases; all 200 raw scores reproduce.
+- **Safety:** 25 new selected-model responses reviewed across all four risks,
+  with assistant reviewer provenance and per-response reasons.
+- **Kaggle:** the private two-T4 vLLM run completed all 14 graphs and cached
+  all 14 on resume; measured allocation including setup was 1.211103 GPU-hours.
+- **Checks:** 724 passing tests on each native Windows, Ubuntu and macOS
+  runner, with no skips; Ruff and notebook-inclusive Black pass.
+- **Data handoff:** the exact v7 dense index and passages are supplied in a
+  separately checksummed frozen-data archive and private Kaggle dataset.
 
-**Remaining Track C work:** C10 (safety evaluation and its review) and C11
-(Kaggle run and compute log) remain outstanding. Safety-screening code and
-prompt fixtures are present, but implementation availability should not be
-confused with completed evaluation or human adjudication.
-
-The latest Track C integration changes are committed on
-`c/agent-controller`; see the Git history for the corresponding implementation
-and verification commits.
+See [the C1–C11 closeout](reports/phase1_track_c_closeout_20261030.md),
+[model pilot](reports/pilot_model_project_20261030.md) and
+[Kaggle/Windows handoff](docs/track_c_kaggle_handoff.md).
+`make validate-track-c` rechecks the saved completion evidence. Synthetic
+diagnostics and assistant safety review do not establish human-reviewed research
+results; full gold sweeps and headline UER remain later-phase work.
 
 ## What this is
 
@@ -130,13 +126,14 @@ remain required. All six macro series are populated; basket, Brent, benchmark yi
 coverage remain partial and do not confirm the planned anchor episodes.
 
 The 23 October local integration completed all 42 graphs across six unreviewed
-v1 candidates; current checks pass 663 tests. The separate synthetic tool-choice probe succeeded
-on only 5/40 expected actions, so model selection remains open. Execution and
-structural validity do not establish research performance. See
+v1 candidates. The archived synthetic tool-choice probe succeeded on only 5/40
+expected actions. The separate two-model project pilot now resolves D-01;
+execution, model selection and structural validity do not establish research performance. See
 [the validation and remaining gates](reports/integration_status.md).
 
-The local Qwen3-8B run uses pinned public weights and no paid API. It is an
-integration model, not the result of the completed Track C two-model selection pilot.
+Current local runs read the pinned D-01 selection from
+`configs/model_selection.json`. Historical Qwen3-8B integration runs keep their
+original model identity; no paid API was used.
 The six source-backed queries in `data/eval/development_candidates.jsonl` are
 unreviewed candidates, not the frozen development gold set. See
 [docs/reproduction.md](docs/reproduction.md), [PLAN_MIDSUB.md](PLAN_MIDSUB.md),

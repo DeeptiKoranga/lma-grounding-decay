@@ -1,9 +1,9 @@
 # Reproduce the integrated development pipeline
 
-Updated 28 October 2026. Unit checks and development runs are distinct from a
-reviewed research experiment. Track A review records are accepted on Varun's
-attestations. Experiment annotations, model selection, complete series histories
-and final episode acceptance remain open; see
+Updated 30 October 2026. Phase 1 Track C is complete; unit/development checks
+remain distinct from a reviewed research experiment. D-01 is resolved by the
+project-schema pilot. Track A review records are accepted on Varun's attestations.
+Experiment annotations, complete series histories and final episode acceptance remain open; see
 `reports/track_a_progress.md`.
 
 ## Completed fresh-checkout check — 28 October 2026
@@ -45,6 +45,20 @@ human-reviewed episodes or gold graphs. The receipt records exact commands,
 successful stage logs, two earlier dependency-install attempts, package/input
 hashes, model calls and all 24 output/log hashes. Native-runtime installation
 instructions below remain necessary on a machine without cached environments.
+## Current Track C acceptance
+
+Run `make validate-track-c` after the standard checks to validate the frozen
+pilot outputs and decision, safety response-bound review, fresh tool faults,
+Kaggle allocation/audit/resume receipts and source-bound native CI report.
+The validator refuses missing or changed evidence. No model inference or
+network request is needed for this saved-evidence gate.
+
+Transfer the exact nine-asset v7 bundle described in
+[the handoff](track_c_kaggle_handoff.md); it supplies the large dense-index file
+excluded from Git. Use a fresh output directory after changing source, runtime,
+model or inputs. To override model arguments explicitly, pass `MODEL_ARGS` to
+Make or use the conditions command directly; record the same pinned model for
+all conditions. Historical source commits and their receipts remain unchanged.
 
 ## Core checks
 
@@ -60,8 +74,10 @@ independence of a reviewer or manufacture missing support judgments.
 ## Local model and optional retrieval runtime
 
 The default development model is `mlx-community/Qwen3-8B-4bit`, revision
-`545dc4251c05440727734bcd94334791f6ab0192`. This is an integration choice; D-01
-is still open. Keep it the same across all conditions. Its download and optional
+`545dc4251c05440727734bcd94334791f6ab0192`, selected by the completed
+[project-schema pilot](../reports/pilot_model_project_20261030.md).
+`make run-dev` and `make run-all-dev` read `configs/model_selection.json`.
+Keep one pinned model across all conditions in a sweep. Downloads and optional
 dependencies stay under ignored `data/raw/`.
 
 ```sh
@@ -79,7 +95,7 @@ New runs default to the selected BGE-M3 first stage with the pinned v7 FAISS
 index. All retrieved conditions share this first stage; B1-R adds the pinned
 cross-encoder over its top 50 eligible candidates. The original v1 BM25 runs
 remain historical. D-02 is resolved by the receipt-bound retrieval pilot; the
-end-to-end reranker comparison and D-01 model selection remain separate.
+end-to-end scientific reranker comparison remains separate from these resolved development choices.
 
 `make run-dev` and `make run-all-dev` use `.venv/bin/python` for a persistent
 retrieval worker, keeping native retrieval dependencies outside the MLX runtime.
@@ -145,8 +161,10 @@ unbound output is rejected; start a new directory rather than relabelling it.
 `make run-dev` requires Metal access and downloaded weights; it is not a fixture
 substitute for a research sweep. `--backend llama.cpp` and `--backend vllm` accept
 an explicitly configured local `/v1` chat endpoint. Remote endpoints require
-`--allow-remote`; no paid fallback occurs automatically. Native HTTP backends
-are transport adapters and have not been validated on Kaggle in this session.
+`--allow-remote`; no paid fallback occurs automatically. The vLLM adapter has completed a fresh private two-T4 Kaggle execution with
+14 graphs and an unchanged cached resume. See the [Kaggle and Windows handoff](track_c_kaggle_handoff.md)
+for verified source/data hashes and explicit backend-format identities. Windows/Linux
+use llama.cpp or vLLM endpoints; MLX itself requires macOS.
 
 ## Anchor checks
 

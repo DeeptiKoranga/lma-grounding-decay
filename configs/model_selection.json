@@ -1,0 +1,19 @@
+{
+  "decision": "D-01",
+  "resolved_on": "2026-10-30",
+  "selected": "qwen3-8b",
+  "model": "mlx-community/Qwen3-8B-4bit",
+  "revision": "545dc4251c05440727734bcd94334791f6ab0192",
+  "model_path": "data/raw/generator/qwen3-8b-4bit",
+  "backend": "mlx",
+  "quantization": "affine 4-bit",
+  "vllm": {
+    "model": "JunHowie/Qwen3-8B-GPTQ-Int4",
+    "revision": "f08c8ea5f60e1fe34ff4a45edb58e8ca958560c3",
+    "precision": "GPTQ Int4",
+    "live_engineering_evidence": "reports/c1_live_verification_20261030.md"
+  },
+  "pilot_report": "reports/project_model_pilot_20261030.json",
+  "selection_rule": "Highest unweighted mean accuracy across the five project tasks; within 0.03 choose the model with lower mean generation latency. Report schema validity separately. Selection is for this development protocol, not a claim of general capability or accepted hypothesis results.",
+  "scope": "one pinned model for all conditions within a sweep; format changes are separately recorded"
+}

@@ -1,0 +1,229 @@
+{
+  "model": "mlx-community/Qwen3-8B-4bit",
+  "revision": "545dc4251c05440727734bcd94334791f6ab0192",
+  "backend": "mlx",
+  "model_files": {
+    "added_tokens.json": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680",
+    "config.json": "e5485285fd7e289e76e9cffa112f6dc2e3426519082f7db9b69041589f81a218",
+    "merges.txt": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+    "model.safetensors": "f2d29621aab300336ad645567ff38c42aac755513006ef4e8a579cf7ef5256d8",
+    "model.safetensors.index.json": "3fb25463b4078b1fc27159daa605190029c2e965f533bf0b1b594f96cbfceb8a",
+    "special_tokens_map.json": "76862e765266b85aa9459767e33cbaf13970f327a0e88d1c65846c2ddd3a1ecd",
+    "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+    "tokenizer_config.json": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+    "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+  },
+  "runtime": {
+    "python": "3.12.3",
+    "packages": [
+      [
+        "Jinja2",
+        "3.1.6"
+      ],
+      [
+        "MarkupSafe",
+        "3.0.4"
+      ],
+      [
+        "PyYAML",
+        "6.0.3"
+      ],
+      [
+        "Pygments",
+        "2.21.0"
+      ],
+      [
+        "annotated-doc",
+        "0.0.5"
+      ],
+      [
+        "annotated-types",
+        "0.8.0"
+      ],
+      [
+        "anyio",
+        "4.15.1"
+      ],
+      [
+        "certifi",
+        "2026.10.19"
+      ],
+      [
+        "click",
+        "8.5.0"
+      ],
+      [
+        "contourpy",
+        "1.4.0"
+      ],
+      [
+        "cycler",
+        "0.12.1"
+      ],
+      [
+        "filelock",
+        "4.2.4"
+      ],
+      [
+        "fonttools",
+        "4.67.0"
+      ],
+      [
+        "fsspec",
+        "2026.9.0"
+      ],
+      [
+        "h11",
+        "0.16.0"
+      ],
+      [
+        "hf-xet",
+        "1.7.0"
+      ],
+      [
+        "httpcore2",
+        "2.16.0"
+      ],
+      [
+        "httpx2",
+        "2.16.0"
+      ],
+      [
+        "huggingface_hub",
+        "2.2.0"
+      ],
+      [
+        "idna",
+        "3.20"
+      ],
+      [
+        "kiwisolver",
+        "1.5.1"
+      ],
+      [
+        "markdown-it-py",
+        "4.2.0"
+      ],
+      [
+        "matplotlib",
+        "3.11.2"
+      ],
+      [
+        "mdurl",
+        "0.1.2"
+      ],
+      [
+        "mlx",
+        "0.32.4"
+      ],
+      [
+        "mlx-lm",
+        "0.32.2"
+      ],
+      [
+        "mlx-metal",
+        "0.32.4"
+      ],
+      [
+        "numpy",
+        "2.5.4"
+      ],
+      [
+        "packaging",
+        "26.3"
+      ],
+      [
+        "pillow",
+        "13.0.0"
+      ],
+      [
+        "protobuf",
+        "7.36.2"
+      ],
+      [
+        "pydantic",
+        "2.14.1"
+      ],
+      [
+        "pydantic_core",
+        "2.50.1"
+      ],
+      [
+        "pyparsing",
+        "3.3.3"
+      ],
+      [
+        "python-dateutil",
+        "3.0.0"
+      ],
+      [
+        "regex",
+        "2026.9.29"
+      ],
+      [
+        "rich",
+        "15.0.0"
+      ],
+      [
+        "safetensors",
+        "0.8.0"
+      ],
+      [
+        "sentencepiece",
+        "0.2.2"
+      ],
+      [
+        "shellingham",
+        "1.5.4"
+      ],
+      [
+        "six",
+        "1.17.0"
+      ],
+      [
+        "tokenizers",
+        "0.23.3"
+      ],
+      [
+        "tqdm",
+        "4.70.1"
+      ],
+      [
+        "transformers",
+        "5.20.2"
+      ],
+      [
+        "truststore",
+        "0.10.5"
+      ],
+      [
+        "typer",
+        "0.27.3"
+      ],
+      [
+        "typing-inspection",
+        "0.4.4"
+      ],
+      [
+        "typing_extensions",
+        "4.16.0"
+      ],
+      [
+        "tzdata",
+        "2026.5"
+      ]
+    ],
+    "executable": "/Users/varunpatil/Desktop/LMA grounding decay/data/raw/llm_env/bin/python",
+    "executable_sha256": "80ee2dd97bc26259d4e30853336f72ad38aa4aa0531bb196cc444d899422689d"
+  },
+  "safety_only": true,
+  "status": "synthetic diagnostics; no human labels or research acceptance",
+  "input_sha256": {
+    "/Users/varunpatil/Desktop/LMA grounding decay/scripts/run_capability_diagnostics.py": "5f22fd6517f22b1bb841f39999665e642f09ba28b43ad3b5761253c036af7bda",
+    "src/eval/capabilities.py": "54938db8d44f212fb9331cb91bb6ed2a3ed339e80b9e2e642d3dedabf252da87",
+    "src/eval/safety.py": "71ee93033ec002d4836f8347b068eea451b14aea416fd8fc828e518bf4d582a1",
+    "src/llm/generate.py": "4bd28e8efc3b7faba6a07909d819c8675854112329d1355e413bc02bbd5a3d27",
+    "data/eval/synthetic/agent_states.jsonl": "cc3ae11003e66b67dd76937727f03243e78bff210732d479686325a275a91d65",
+    "data/eval/synthetic/safety_prompts.jsonl": "0c8b691a2ecd6205a8ae97572c7afe43dc8dce1a4b5e46a032e19f2cbbf981d3"
+  }
+}

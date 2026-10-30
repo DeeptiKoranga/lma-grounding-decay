@@ -1,4 +1,16 @@
-# Integrated development pipeline — updated 28 October 2026
+# Integrated development pipeline — updated 30 October 2026
+
+**Current Track C disposition — 30 October:** all Phase 1 C1–C11 deliverables
+are complete. The project-schema pilot resolves D-01 to `mlx-community/Qwen3-8B-4bit` at
+`545dc4251c05440727734bcd94334791f6ab0192`; all 200 raw case scores reproduce.
+The selected model's 25-response safety evaluation covers all four risks with
+explicit assistant review. A fresh private Kaggle run completed all 14 graphs
+and cached all 14 on resume, using 1.211103 measured allocated GPU-hours.
+Native Windows, Ubuntu and macOS each pass 724 tests without skips, plus
+Ruff and notebook-inclusive Black. See [the closeout](phase1_track_c_closeout_20261030.md).
+The dated development history below retains its original model/source scope.
+Independent gold/support judgments, full scientific sweeps and headline UER
+remain later-phase requirements.
 
 **Fresh-checkout update — 28 October:** Track A / Varun task 4.3 is complete
 for the local development configuration. A clean GitHub checkout passed setup,
@@ -124,10 +136,13 @@ visually checked, and marked as awaiting independent review. No UER chart has
 been fabricated. Five observed trace/extraction cases are documented in
 `reports/development_failure_analysis.md`; they are not ranked human UER cases.
 The completed 40-state synthetic model probe chose the expected tool in only
-5/40 cases (12.5%); 34/40 calls (85%) passed schema/cutoff checks. This development diagnostic leaves D-01 open; the full two-model, five-task
-pilot remains required. The executed controller uses deterministic priority.
+5/40 cases (12.5%); 34/40 calls (85%) passed schema/cutoff checks. This historical
+diagnostic did not resolve D-01; the completed 30 October project-schema pilot
+and decision are recorded above. The executed controller uses deterministic priority.
 The 25-prompt safety screen found zero regex advice/own-forecast flags; all
-responses still need human adjudication. A fresh-clone B0/B1/B2/M probe on one
+responses were subsequently reviewed across all four risks with explicit
+assistant provenance; independent human certification is not claimed.
+A fresh-clone B0/B1/B2/M probe on one
 query completed four valid graphs, identical to the original graphs after
 excluding run IDs. It reused the heavy runtime and corpus, and is not a full
 frozen-gold reproduction. See `reports/capability_diagnostics.json`,
@@ -137,36 +152,34 @@ current verification is recorded in `reports/track_a_validation_20261026.json`.
 
 ## Research gates still open
 
-1. Model selection: the two-model, five-task selection pilot is not complete.
-   The downloaded model is for development integration, not an accepted D-01.
-2. Corpus acceptance: RBI coverage, publisher balance, broader extraction review
+1. Corpus acceptance: RBI coverage, publisher balance, broader extraction review
    and reproduction terms remain incomplete. The saved corpus is a convenience
    collection with integrity checks, not a representative accepted sample.
-3. Series and episodes: all six historical files have observations, but Brent, benchmark
+2. Series and episodes: all six historical files have observations, but Brent, benchmark
    yields, FPI and Indian basket have sparse histories with explicit measurement
    limitations. Eight
    anchor episodes have not been independently confirmed from complete original-vintage series.
    The separate October-captured backfills cover all seven months with explicit
    measurement differences; they cannot repair historical availability or daily
    resolution gaps automatically.
-4. Annotation: the six new queries span six months and are source-backed, but
+3. Annotation: the six new queries span six months and are source-backed, but
    remain candidates. They do not replace the planned 30-query split, six
    reviewer gold graphs, ten annotated test queries, independent support labels,
    double annotation/kappa or the public-dataset strength/direction checks.
-5. Retriever/reranker acceptance: the current v7 2,035-item pool covers 20
+4. Retriever/reranker acceptance: the current v7 2,035-item pool covers 20
    questions across March–September. Development judgments and dense/reranker
    selection are complete; separate records now carry Varun's explicit
    independent/blinded review attestations and validate successfully. Original
    blank v7/v3 workspaces remain unchanged. This is recorded-attestation
    acceptance, not independent verification of procedure or end-to-end benefit.
-6. Results: human correction of baseline extraction and blinded support review
+5. Results: human correction of baseline extraction and blinded support review
    are required before reporting UER or strength inflation. The recall guard
    also needs independently reviewed reference graphs. No zero-denominator
    shortcut or verifier self-judgment is accepted as research truth.
-7. Deployment/reproduction: the Kaggle notebook is an unexecuted handoff template;
-   all-laptop and Kaggle verification remain open. A fresh-clone local check is
-   reported separately and cannot certify other machines or a frozen gold sweep.
-8. TA decisions D-05/D-06/D-07 and final report acceptance are still human decisions.
+6. Frozen research reproduction remains separate: native three-platform tests
+   and the 14-graph Kaggle engineering execution now pass. They do not certify
+   a reviewed-gold experiment or every team laptop configuration.
+7. TA decisions D-05/D-06/D-07 and final report acceptance are still human decisions.
 
 These gates require actual data, judgments or decisions. The implementation
 does not fabricate them or mark the corresponding research issues complete.

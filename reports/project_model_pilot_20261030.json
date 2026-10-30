@@ -1,0 +1,103 @@
+{
+  "status": "complete project-schema C2 pilot",
+  "cases_sha256": "28a1553021807da70dd587d347a4aec847eb547960d6aadaa959431d470d92fd",
+  "selection_rule": "Highest unweighted mean accuracy across the five project tasks; within 0.03 choose the model with lower mean generation latency. Report schema validity separately. Selection is for this development protocol, not a claim of general capability or accepted hypothesis results.",
+  "models": {
+    "qwen3-8b": {
+      "model": "mlx-community/Qwen3-8B-4bit",
+      "revision": "545dc4251c05440727734bcd94334791f6ab0192",
+      "cases": 100,
+      "tasks": {
+        "extraction": {
+          "n": 20,
+          "accuracy": 0.05,
+          "strict_json_validity": 1.0,
+          "schema_validity": 1.0
+        },
+        "strength": {
+          "n": 20,
+          "accuracy": 0.95,
+          "strict_json_validity": 1.0,
+          "schema_validity": 1.0
+        },
+        "json_validity": {
+          "n": 20,
+          "accuracy": 1.0,
+          "strict_json_validity": 1.0,
+          "schema_validity": 1.0
+        },
+        "tool_choice": {
+          "n": 20,
+          "accuracy": 0.1,
+          "strict_json_validity": 1.0,
+          "schema_validity": 0.8
+        },
+        "unsupported_edges": {
+          "n": 20,
+          "accuracy": 0.95,
+          "strict_json_validity": 1.0,
+          "schema_validity": 1.0
+        }
+      },
+      "mean_task_accuracy": 0.61,
+      "prompt_tokens": 156889,
+      "completion_tokens": 7661,
+      "model_call_seconds": 2035.5860570115037,
+      "mean_latency_ms": 20355.860570115037,
+      "current_invocation_wall_seconds": 2036.872361625079,
+      "inputs_sha256": "08db7935842d4fa4e89bd0a40bb4096a4b798e39680a8394a79c42524d9f0771",
+      "selection_rule": "Highest unweighted mean accuracy across the five project tasks; within 0.03 choose the model with lower mean generation latency. Report schema validity separately. Selection is for this development protocol, not a claim of general capability or accepted hypothesis results.",
+      "status": "complete synthetic project-schema pilot; not research evaluation"
+    },
+    "qwen3.5-9b": {
+      "model": "mlx-community/Qwen3.5-9B-4bit",
+      "revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+      "cases": 100,
+      "tasks": {
+        "extraction": {
+          "n": 20,
+          "accuracy": 0.65,
+          "strict_json_validity": 1.0,
+          "schema_validity": 1.0
+        },
+        "strength": {
+          "n": 20,
+          "accuracy": 0.75,
+          "strict_json_validity": 0.95,
+          "schema_validity": 1.0
+        },
+        "json_validity": {
+          "n": 20,
+          "accuracy": 1.0,
+          "strict_json_validity": 1.0,
+          "schema_validity": 1.0
+        },
+        "tool_choice": {
+          "n": 20,
+          "accuracy": 0.05,
+          "strict_json_validity": 0.8,
+          "schema_validity": 0.55
+        },
+        "unsupported_edges": {
+          "n": 20,
+          "accuracy": 0.6,
+          "strict_json_validity": 1.0,
+          "schema_validity": 0.6
+        }
+      },
+      "mean_task_accuracy": 0.61,
+      "prompt_tokens": 156999,
+      "completion_tokens": 10480,
+      "model_call_seconds": 2661.6303801678587,
+      "mean_latency_ms": 26616.303801678587,
+      "current_invocation_wall_seconds": 2663.088340334012,
+      "inputs_sha256": "30d46bb50c45d4522f0d885fcc7e2cb5281e552270b88702b9c7dafcf4d743cf",
+      "selection_rule": "Highest unweighted mean accuracy across the five project tasks; within 0.03 choose the model with lower mean generation latency. Report schema validity separately. Selection is for this development protocol, not a claim of general capability or accepted hypothesis results.",
+      "status": "complete synthetic project-schema pilot; not research evaluation"
+    }
+  },
+  "selected": "qwen3-8b",
+  "selection_scope": "synthetic development selection; no human research gold or hypothesis result",
+  "raw_outputs": 200,
+  "raw_scores_reproduced": true
+}

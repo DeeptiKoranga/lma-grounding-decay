@@ -1,3 +1,17 @@
+# C2 current project model decision — 30 October 2026
+
+**D-01 is resolved:** `mlx-community/Qwen3-8B-4bit`, revision `545dc4251c05440727734bcd94334791f6ab0192`, under MLX affine 4-bit.
+Both models completed 100 identical project-schema cases (20 × five tasks), and
+all 200 raw scores reproduce. Selection follows the rule recorded before the
+included runs. See [the project pilot](pilot_model_project_20261030.md),
+`project_model_pilot_20261030.json` and `../configs/model_selection.json`.
+
+The earlier Kaggle NF4 pilot below is preserved with its original generic labels,
+prompts and runtime. Its numbers do not substitute for the current project-schema
+pilot and are not combined with the local scores.
+
+---
+
 # C2 Model Pilot: Qwen3-8B vs Qwen3.5-9B
 
 - Run time (UTC): 2026-10-28T16:59:40.590722+00:00
