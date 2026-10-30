@@ -74,6 +74,14 @@ PYTHONPATH=src .venv/bin/python -m scripts.fetch.news_series \
   --report reports/news_series_recheck.json
 ```
 
+The current default binds `news_series_seeds_v7_20261030.json` to the exact v7
+corpus. The original v3 seed file and provenance remain historical. Invisible
+publisher format controls are ignored only for numeric matching; source text
+and citation hashes remain unchanged. The 30 October offline replay reproduces
+all six canonical CSVs byte for byte, including all eleven news observations.
+See `reports/phase1_ac_news_series_migration_20261030.json` and
+`reports/phase1_ac_series_replay_20261030.json`.
+
 Raw CPI/FX responses are retained under `data/raw/series/`; PPAC originals remain
 under `data/raw/ppac/` locally.
 The CSVs and provenance records are tracked. These observations only confirm

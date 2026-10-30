@@ -93,6 +93,17 @@ def test_closing_benchmark_yield_is_not_coupon_high_or_previous(news_series, pas
     assert info["security"] == "6.48% GS 2035"
 
 
+@pytest.mark.parametrize("control", ["\u200b", "\u200c", "\u2060"])
+def test_publisher_format_controls_do_not_change_the_yield_or_source_text(
+    news_series, passages, control
+):
+    text = f"The yield on the benchmark 6.48% {control}2035 bond ended the session at 6.9395%, up 2 basis points."
+    p = passage(passages[0], text, "2026-04-13")
+    row, info = news_series.extract_claim("gsec_close", p, date(2026, 4, 13))
+    assert row.value == 6.9395 and info["security"] == "6.48% GS 2035"
+    assert p.text == text and len(p.text) == p.char_end - p.char_start
+
+
 @pytest.mark.parametrize(
     "text",
     [

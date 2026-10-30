@@ -1,0 +1,39 @@
+{
+  "status": "all six canonical series reproduce byte for byte from retained source caches; no network used",
+  "files": {
+    "brent_usd_bbl.csv": {
+      "sha256": "07b92e9762cf03460f7dedaa1186796bd5c781feb3418b4f9fd58296bb82a9fa",
+      "matches_canonical": true
+    },
+    "cpi_headline_yoy.csv": {
+      "sha256": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+      "matches_canonical": true
+    },
+    "fpi_flows_usd_mn.csv": {
+      "sha256": "94c24a79a038b34c510c2f93bdcd0b5ef2540d2756b129c8d5ba32f5666c9a4d",
+      "matches_canonical": true
+    },
+    "gsec_10y_pct.csv": {
+      "sha256": "7b12e2cf5f9254f1b7b648a33803b1f5ea381b96a7f61ebab150ed14911a2be6",
+      "matches_canonical": true
+    },
+    "indian_basket_usd_bbl.csv": {
+      "sha256": "17f3e0f0919727bd0ebba18d46f50e98509dea35e5ebc0be018e1b431d1b23b7",
+      "matches_canonical": true
+    },
+    "inr_usd.csv": {
+      "sha256": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c",
+      "matches_canonical": true
+    }
+  },
+  "observations": {
+    "brent_usd_bbl": 4,
+    "cpi_headline_yoy": 7,
+    "fpi_flows_usd_mn": 1,
+    "gsec_10y_pct": 6,
+    "indian_basket_usd_bbl": 2,
+    "inr_usd": 141
+  },
+  "total": 161,
+  "initial_replay_failure": "Old v3 seeds did not match current parser-preserved v7 text. Current v7 seed binding and format-control lookup now pass; old seeds and canonical CSV bytes are preserved."
+}

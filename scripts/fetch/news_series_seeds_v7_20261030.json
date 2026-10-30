@@ -1,0 +1,66 @@
+{
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "claims": [
+    {
+      "kind": "brent_expiry_quote",
+      "passage_id": "businessline-e6e5cf16b0f8620910f7#p1",
+      "on": "2026-05-29"
+    },
+    {
+      "kind": "brent_expiry_quote",
+      "passage_id": "economic_times-736394ec7b8f2c65ea24#p1",
+      "on": "2026-06-30"
+    },
+    {
+      "kind": "brent_front_quote",
+      "passage_id": "economic_times-4c5208a532a2a7e689ad#p1",
+      "on": "2026-08-04"
+    },
+    {
+      "kind": "gsec_close",
+      "passage_id": "businessline-469aabd081e5b5594ab2#p7",
+      "on": "2026-03-09"
+    },
+    {
+      "kind": "gsec_close",
+      "passage_id": "businessline-6a0ed15b9a4761115dc7#p3",
+      "on": "2026-03-27"
+    },
+    {
+      "kind": "gsec_close",
+      "passage_id": "economic_times-5aa3a984a8cd96018fa3#p1",
+      "on": "2026-06-11"
+    },
+    {
+      "kind": "fpi_monthly_net",
+      "passage_id": "businessline-229f1dddd86b622b74a1#p5",
+      "on": "2026-03-31"
+    },
+    {
+      "kind": "brent_front_quote",
+      "passage_id": "economic_times-17471b277ed706bc6360#p1",
+      "on": "2026-04-01"
+    },
+    {
+      "kind": "gsec_close",
+      "passage_id": "economic_times-69029a10fac1dfec4e3d#p2",
+      "on": "2026-04-13"
+    },
+    {
+      "kind": "gsec_close",
+      "passage_id": "economic_times-6886e143ca56b49b3f0d#p0",
+      "on": "2026-07-02"
+    },
+    {
+      "kind": "gsec_close",
+      "passage_id": "economic_times-c6c67f614f4281de7b1d#p1",
+      "on": "2026-08-31"
+    }
+  ],
+  "migration": {
+    "previous_seed_file": "scripts/fetch/news_series_seeds.json",
+    "previous_seed_sha256": "67fa5777eddfee3fd702e511bdf8df74c1c78d2fe685aabc5f20313ed235fc0d",
+    "previous_corpus_sha256": "1df503a6101471a8646f6521f7c44ffbd946661ea79e63057f1bedf06c2a9164",
+    "scope": "Same eleven source observations and passage IDs; v7 presentation text bound to current exact corpus. Original v3 seeds and historical provenance remain unchanged."
+  }
+}

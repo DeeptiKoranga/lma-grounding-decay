@@ -12,6 +12,7 @@ import calendar
 import hashlib
 import json
 import re
+import unicodedata
 from datetime import date
 from pathlib import Path
 
@@ -31,7 +32,8 @@ SPECS = {
 def extract_claim(kind: str, passage: Passage, on: date) -> tuple[Observation, dict]:
     if kind not in SPECS:
         raise ValueError("unknown news series claim kind")
-    text = passage.text
+    # Match presentation-only format controls without changing the archived quote.
+    text = "".join(c for c in passage.text if unicodedata.category(c) != "Cf")
     published = passage.published_at.date()
     if on > published or (kind != "fpi_monthly_net" and on != published):
         raise ValueError("news quote/close must date to its publication day")
@@ -110,20 +112,23 @@ def extract_claim(kind: str, passage: Passage, on: date) -> tuple[Observation, d
 
 
 def acquire(*, seeds: Path, corpus: Path, raw: Path, output: Path, report: Path) -> dict:
-    specification = json.loads(seeds.read_text())
+    specification = json.loads(seeds.read_text(encoding="utf-8"))
     corpus_digest = hashlib.sha256(corpus.read_bytes()).hexdigest()
     if specification["corpus_sha256"] != corpus_digest:
         raise ValueError("claim corpus hash mismatch")
     passages = {
         p.passage_id: p
-        for p in (Passage.model_validate_json(line) for line in corpus.read_text().splitlines())
+        for p in (
+            Passage.model_validate_json(line)
+            for line in corpus.read_text(encoding="utf-8").splitlines()
+        )
     }
     records, sources = {}, []
     for claim in specification["claims"]:
         passage = passages[claim["passage_id"]]
         key = hashlib.sha256(passage.url.encode()).hexdigest()[:20]
         sidecar = raw / passage.source / f"{key}.meta.json"
-        meta = json.loads(sidecar.read_text())
+        meta = json.loads(sidecar.read_text(encoding="utf-8"))
         payload = sidecar.with_name(f"{key}.html").read_bytes()
         if (
             not meta.get("accepted")
@@ -178,17 +183,19 @@ def acquire(*, seeds: Path, corpus: Path, raw: Path, output: Path, report: Path)
     for series_id, rows in records.items():
         write_csv(output / f"{series_id}.csv", series_id=series_id, records=rows)
     report.parent.mkdir(parents=True, exist_ok=True)
-    report.write_text(json.dumps(result, indent=2) + "\n")
+    report.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     return result
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--seeds", type=Path, default=Path("scripts/fetch/news_series_seeds.json"))
+    parser.add_argument(
+        "--seeds", type=Path, default=Path("scripts/fetch/news_series_seeds_v7_20261030.json")
+    )
     parser.add_argument(
         "--corpus",
         type=Path,
-        default=Path("data/interim/corpus_v3_20261023/snapshot/articles.jsonl"),
+        default=Path("data/processed/articles.jsonl"),
     )
     parser.add_argument("--raw", type=Path, default=Path("data/raw"))
     parser.add_argument("--output", type=Path, default=Path("data/series"))

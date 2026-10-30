@@ -1,0 +1,161 @@
+{
+  "status": "eleven original observations preserved with v7 source identity; no values, dates, units or URLs changed",
+  "checks": [
+    {
+      "passage_id": "businessline-e6e5cf16b0f8620910f7#p1",
+      "text_changed": false,
+      "old_text_sha256": "b8cb6bdc8516fff41076ec9a73a4bb6e222ede82583ab06acd451f02f9728c1b",
+      "new_text_sha256": "b8cb6bdc8516fff41076ec9a73a4bb6e222ede82583ab06acd451f02f9728c1b",
+      "observation": {
+        "on": "2026-05-29",
+        "value": 93.36,
+        "available_on": "2026-05-29",
+        "source_url": "https://www.thehindubusinessline.com/markets/commodities/crude-oil-falls-slightly-on-reports-of-potential-us-iran-ceasefire-deal/article71035749.ece",
+        "unit": "USD per barrel"
+      },
+      "values_dates_units_sources_identical": true
+    },
+    {
+      "passage_id": "economic_times-736394ec7b8f2c65ea24#p1",
+      "text_changed": false,
+      "old_text_sha256": "b9f989184d2852798a01dae7d07b1e6ba5c779fa49008d5fa884c479ac5f8a2a",
+      "new_text_sha256": "b9f989184d2852798a01dae7d07b1e6ba5c779fa49008d5fa884c479ac5f8a2a",
+      "observation": {
+        "on": "2026-06-30",
+        "value": 73.31,
+        "available_on": "2026-06-30",
+        "source_url": "https://economictimes.indiatimes.com/news/international/us/why-are-oil-prices-up-today-and-will-brent-and-us-wti-crude-futures-continue-to-rise-or-fall-again-oil-market-reacts-to-us-iran-talks-strait-of-hormuz-developments-and-supply-outlook/articleshow/132094189.cms",
+        "unit": "USD per barrel"
+      },
+      "values_dates_units_sources_identical": true
+    },
+    {
+      "passage_id": "economic_times-4c5208a532a2a7e689ad#p1",
+      "text_changed": false,
+      "old_text_sha256": "cdf20f12b196ed88d9b88258b532008e84f62728ff3c456305b67639efd2053b",
+      "new_text_sha256": "cdf20f12b196ed88d9b88258b532008e84f62728ff3c456305b67639efd2053b",
+      "observation": {
+        "on": "2026-08-04",
+        "value": 84.5,
+        "available_on": "2026-08-04",
+        "source_url": "https://economictimes.indiatimes.com/markets/commodities/news/oil-price-today-august-4-crude-oil-nears-85-as-peace-talks-uncertainty-loom-after-fresh-attacks-what-are-experts-saying/articleshow/132844010.cms",
+        "unit": "USD per barrel"
+      },
+      "values_dates_units_sources_identical": true
+    },
+    {
+      "passage_id": "businessline-469aabd081e5b5594ab2#p7",
+      "text_changed": false,
+      "old_text_sha256": "d1cdd97a139988c9f1804699a948a7bf16662f6cef760113d642fbf6cc46c3cc",
+      "new_text_sha256": "d1cdd97a139988c9f1804699a948a7bf16662f6cef760113d642fbf6cc46c3cc",
+      "observation": {
+        "on": "2026-03-09",
+        "value": 6.72,
+        "available_on": "2026-03-09",
+        "source_url": "https://www.thehindubusinessline.com/money-and-banking/rupee-closes-at-record-low-g-sec-yields-rise/article70723317.ece",
+        "unit": "percent"
+      },
+      "values_dates_units_sources_identical": true
+    },
+    {
+      "passage_id": "businessline-6a0ed15b9a4761115dc7#p3",
+      "text_changed": false,
+      "old_text_sha256": "e4a0b9b4c3061bac99ad50d9c2d34cffcfdcec03bfa0bdae044741e3938d097f",
+      "new_text_sha256": "e4a0b9b4c3061bac99ad50d9c2d34cffcfdcec03bfa0bdae044741e3938d097f",
+      "observation": {
+        "on": "2026-03-27",
+        "value": 6.94,
+        "available_on": "2026-03-27",
+        "source_url": "https://www.thehindubusinessline.com/money-and-banking/iran-war-rupee-closes-at-all-time-low-bond-yields-harden-equities-take-a-beating/article70793146.ece",
+        "unit": "percent"
+      },
+      "values_dates_units_sources_identical": true
+    },
+    {
+      "passage_id": "economic_times-5aa3a984a8cd96018fa3#p1",
+      "text_changed": false,
+      "old_text_sha256": "77641a1df73087285d90e04e24d36585d9032c9695b4757030033238c73a3b52",
+      "new_text_sha256": "77641a1df73087285d90e04e24d36585d9032c9695b4757030033238c73a3b52",
+      "observation": {
+        "on": "2026-06-11",
+        "value": 6.924,
+        "available_on": "2026-06-11",
+        "source_url": "https://economictimes.indiatimes.com/markets/bonds/india-bonds-end-higher-as-oil-eases-focus-shifts-to-debt-sale-inflation/articleshow/131659094.cms",
+        "unit": "percent"
+      },
+      "values_dates_units_sources_identical": true
+    },
+    {
+      "passage_id": "businessline-229f1dddd86b622b74a1#p5",
+      "text_changed": false,
+      "old_text_sha256": "c72d1d511f4f9a370b4f292abe54df922478ce531104e80ad598f85eea76f7e9",
+      "new_text_sha256": "c72d1d511f4f9a370b4f292abe54df922478ce531104e80ad598f85eea76f7e9",
+      "observation": {
+        "on": "2026-03-31",
+        "value": -13600.0,
+        "available_on": "2026-04-13",
+        "source_url": "https://www.thehindubusinessline.com/markets/forex/rupee-falls-most-in-two-weeks-as-oil-spikes-on-us-move-to-blockade-iran-ports/article70857133.ece",
+        "unit": "USD million, net"
+      },
+      "values_dates_units_sources_identical": true
+    },
+    {
+      "passage_id": "economic_times-17471b277ed706bc6360#p1",
+      "text_changed": true,
+      "old_text_sha256": "d37b14e961adf9c3eed703b50b52bac456aa12ff6ebbd8949c0e9cc12efa0844",
+      "new_text_sha256": "dfab0f4caf792e2de1eb4ee21bc29c51b0f20747819a97792c22a26b405e51b2",
+      "observation": {
+        "on": "2026-04-01",
+        "value": 104.63,
+        "available_on": "2026-04-01",
+        "source_url": "https://economictimes.indiatimes.com/markets/commodities/news/front-month-brent-oil-futures-extend-gains-after-record-monthly-rise-in-march/articleshow/129939258.cms",
+        "unit": "USD per barrel"
+      },
+      "values_dates_units_sources_identical": true
+    },
+    {
+      "passage_id": "economic_times-69029a10fac1dfec4e3d#p2",
+      "text_changed": true,
+      "old_text_sha256": "a56a900a1123eb447f095e2572aa73d3debe519697c83f54ee7a84931dc983ac",
+      "new_text_sha256": "b425e76be72d1ed2c3f2aa7647328d17b853a4a2cabe93e3234f2131042f83d0",
+      "observation": {
+        "on": "2026-04-13",
+        "value": 6.9395,
+        "available_on": "2026-04-13",
+        "source_url": "https://economictimes.indiatimes.com/markets/bonds/india-bonds-trim-losses-as-soft-cpi-spurs-value-buying/articleshow/130237111.cms",
+        "unit": "percent"
+      },
+      "values_dates_units_sources_identical": true
+    },
+    {
+      "passage_id": "economic_times-6886e143ca56b49b3f0d#p0",
+      "text_changed": false,
+      "old_text_sha256": "6b4f296c1324c671ada07433e192b6f938f42e457cf84a8dd45f5afe430d2b22",
+      "new_text_sha256": "6b4f296c1324c671ada07433e192b6f938f42e457cf84a8dd45f5afe430d2b22",
+      "observation": {
+        "on": "2026-07-02",
+        "value": 6.718,
+        "available_on": "2026-07-02",
+        "source_url": "https://economictimes.indiatimes.com/markets/bonds/india-bonds-india-bonds-surge-on-bloomberg-index-hopes-oil-led-inflation-relief/articleshow/132139035.cms",
+        "unit": "percent"
+      },
+      "values_dates_units_sources_identical": true
+    },
+    {
+      "passage_id": "economic_times-c6c67f614f4281de7b1d#p1",
+      "text_changed": true,
+      "old_text_sha256": "21711f42aa3168508f8cac96689015d632d2c0fb5722b7fda79189ca9ce5b09f",
+      "new_text_sha256": "a8240df9c2a72497f8dbfb786b79666b987014706107b7e8e035bcef49adbe9f",
+      "observation": {
+        "on": "2026-08-31",
+        "value": 6.9452,
+        "available_on": "2026-08-31",
+        "source_url": "https://economictimes.indiatimes.com/markets/bonds/india-10-year-bond-yield-sees-biggest-monthly-rise-in-fy27-on-rising-rate-hike-bets/articleshow/133653440.cms",
+        "unit": "percent"
+      },
+      "values_dates_units_sources_identical": true
+    }
+  ],
+  "new_seed_sha256": "89c9306f0a60ea9e8cecd16aebc31085e72bb7d26a0b252b7c5c4e1808169a7e",
+  "previous_seed_sha256": "67fa5777eddfee3fd702e511bdf8df74c1c78d2fe685aabc5f20313ed235fc0d"
+}
