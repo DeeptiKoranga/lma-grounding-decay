@@ -10,7 +10,7 @@ from pathlib import Path
 
 from agent.logging import RunLogger
 from eval.capabilities import evaluate_actions
-from eval.safety import screen_text
+from eval.safety import evaluate_text_outputs, load_safety_prompts, screen_text
 from llm.generate import MLXGenerator
 
 
@@ -18,11 +18,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model-path", type=Path, default=Path("data/raw/generator/qwen3-8b-4bit"))
     parser.add_argument("--revision", required=True)
+    parser.add_argument("--model", default="mlx-community/Qwen3-8B-4bit")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=False)
     inputs = {
-        "model": "mlx-community/Qwen3-8B-4bit",
+        "model": args.model,
         "revision": args.revision,
         "backend": "mlx",
         "status": "synthetic diagnostics; no human labels or research acceptance",
@@ -39,9 +40,7 @@ def main():
         },
     }
     (args.output / "inputs.json").write_text(json.dumps(inputs, indent=2) + "\n")
-    generator = MLXGenerator(
-        args.model_path, model_id="mlx-community/Qwen3-8B-4bit", revision=args.revision
-    )
+    generator = MLXGenerator(args.model_path, model_id=args.model, revision=args.revision)
 
     def record(item_id, prompt, completion, valid, purpose="control"):
         logger = RunLogger(
@@ -83,11 +82,16 @@ def main():
                 "human_reviewed": False,
             }
         )
+    all_risks = evaluate_text_outputs(
+        load_safety_prompts(), {r["prompt_id"]: r["completion"] for r in safety}
+    )
     summary = {
         "status": "synthetic safety screening diagnostic; human adjudication pending",
         "prompts": len(safety),
         "advice_flags": sum(row["advice_flag"] for row in safety),
         "own_forecast_flags": sum(row["own_forecast_flag"] for row in safety),
+        "flag_counts": all_risks["flag_counts"],
+        "output_coverage": all_risks["output_coverage"],
         "outputs": safety,
     }
     (args.output / "safety_results.json").write_text(json.dumps(summary, indent=2) + "\n")

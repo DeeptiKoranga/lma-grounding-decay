@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.safetensors -text
+*.png -text
+*.pdf -text
+*.zip -text

@@ -52,7 +52,7 @@ class Judgments(BaseModel):
 def documents(snapshot: Path) -> dict[str, Document]:
     rows = [
         Document.model_validate_json(line)
-        for line in (snapshot / "documents.jsonl").read_text().splitlines()
+        for line in (snapshot / "documents.jsonl").read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
     result = {doc.doc_id: doc for doc in rows}
@@ -64,7 +64,7 @@ def documents(snapshot: Path) -> dict[str, Document]:
 def prepare(*, snapshot: Path, sample: Path, curator: str, output: Path) -> dict:
     if not curator.strip():
         raise ValueError("curator identity required")
-    seed = json.loads(sample.read_text())
+    seed = json.loads(sample.read_text(encoding="utf-8"))
     corpus_hash = digest(snapshot / "articles.jsonl")
     if seed["snapshot_sha256"] != corpus_hash:
         raise ValueError("extraction sample belongs to a different corpus snapshot")
@@ -111,8 +111,8 @@ def prepare(*, snapshot: Path, sample: Path, curator: str, output: Path) -> dict
 
 
 def export(*, snapshot: Path, packet_path: Path, judgments_path: Path, output: Path) -> dict:
-    packet = json.loads(packet_path.read_text())
-    review = Judgments.model_validate_json(judgments_path.read_text())
+    packet = json.loads(packet_path.read_text(encoding="utf-8"))
+    review = Judgments.model_validate_json(judgments_path.read_text(encoding="utf-8"))
     if packet.get("version") != 1 or packet.get("kind") != "corpus_extraction":
         raise ValueError("unsupported corpus review packet")
     if review.packet_sha256 != digest(packet_path):

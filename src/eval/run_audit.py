@@ -9,7 +9,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 from conditions.pipeline import Query
-from conditions.provenance import digest, validate_cached
+from conditions.provenance import artifact_receipts, digest, validate_cached
 from corpus.bindings import require_run_corpus
 from schema import Condition, Graph, Passage, iter_run_log
 
@@ -27,12 +27,12 @@ def audit(
     require_run_corpus(runs, corpus)
     passages = [
         Passage.model_validate_json(line)
-        for line in corpus.read_text().splitlines()
+        for line in corpus.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
     graphs, conditions, failures = [], Counter(), []
     inputs_path = runs / "inputs.json"
-    inputs = json.loads(inputs_path.read_text()) if inputs_path.exists() else {}
+    inputs = json.loads(inputs_path.read_text(encoding="utf-8")) if inputs_path.exists() else {}
     if (
         expected_conditions
         and inputs.get("conditions")
@@ -53,11 +53,11 @@ def audit(
         failures.append({"kind": "expected_run_matrix_not_declared"})
     observed, successful_logs = Counter(), set()
     receipts_path = runs / "artifacts.json"
-    receipts = json.loads(receipts_path.read_text()) if receipts_path.exists() else {}
+    receipts = artifact_receipts(receipts_path)
 
     for path in sorted(runs.glob("*/*.json")):
         try:
-            payload = json.loads(path.read_text())
+            payload = json.loads(path.read_text(encoding="utf-8"))
             if not isinstance(payload, dict):
                 raise ValueError("graph artifact must be an object")
             if "graph" not in payload:
@@ -132,9 +132,12 @@ def audit(
         if expected:
             failures.append({"kind": "unexpected_graph", "condition": c, "query_id": q})
     failed_path = runs / "failures.json"
-    if failed_path.exists() and json.loads(failed_path.read_text()):
+    if failed_path.exists() and json.loads(failed_path.read_text(encoding="utf-8")):
         failures.append(
-            {"kind": "recorded_run_failures", "records": json.loads(failed_path.read_text())}
+            {
+                "kind": "recorded_run_failures",
+                "records": json.loads(failed_path.read_text(encoding="utf-8")),
+            }
         )
     compute = defaultdict(
         lambda: {
@@ -196,7 +199,7 @@ def main():
     query_ids = (
         [
             Query.model_validate_json(line).query_id
-            for line in args.queries.read_text().splitlines()
+            for line in args.queries.read_text(encoding="utf-8").splitlines()
             if line.strip()
         ]
         if args.queries

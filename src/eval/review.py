@@ -44,13 +44,13 @@ def prepare(*, runs: Path, corpus: Path, output: Path):
     require_run_corpus(runs, corpus)
     passages = {
         p.passage_id: p
-        for line in corpus.read_text().splitlines()
+        for line in corpus.read_text(encoding="utf-8").splitlines()
         if line.strip()
         if (p := Passage.model_validate_json(line))
     }
     items, mapping, artifacts = [], {}, {}
     for path in sorted(runs.glob("*/*.json")):
-        payload = json.loads(path.read_text())
+        payload = json.loads(path.read_text(encoding="utf-8"))
         if "graph" not in payload:
             continue
         graph = Graph.model_validate(payload["graph"])
@@ -108,9 +108,9 @@ def evaluate(
     corpus: Path = Path("data/processed/articles.jsonl"),
 ):
     packet_path = review_dir / "packet.json"
-    packet = json.loads(packet_path.read_text())
-    review = Review.model_validate_json((review_dir / "judgments.json").read_text())
-    private = json.loads((review_dir / "private_mapping.json").read_text())
+    packet = json.loads(packet_path.read_text(encoding="utf-8"))
+    review = Review.model_validate_json((review_dir / "judgments.json").read_text(encoding="utf-8"))
+    private = json.loads((review_dir / "private_mapping.json").read_text(encoding="utf-8"))
     if review.packet_sha256 != digest(packet_path):
         raise ValueError("support packet hash mismatch")
     if (
@@ -150,7 +150,7 @@ def evaluate(
         path = Path(address)
         if digest(path) != expected_hash:
             raise ValueError("run artifact changed after support review was prepared")
-        payload = json.loads(path.read_text())
+        payload = json.loads(path.read_text(encoding="utf-8"))
         graph = Graph.model_validate(payload["graph"])
         if payload.get("prose_answer") is not None:
             correction = payload.get("baseline_correction_receipt", {})

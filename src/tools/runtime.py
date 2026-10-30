@@ -310,7 +310,10 @@ class ToolRuntime:
                 if args.op == "drop_edge":
                     edges.pop(index)
                     self.approved.pop(args.edge_id, None)
-                elif args.provenance == Provenance.SOURCE_ASSERTED and self.require_verification:
+                elif self.require_verification and (
+                    args.provenance == Provenance.SOURCE_ASSERTED
+                    or (args.provenance is None and edges[index].is_asserted)
+                ):
                     proof = self.approved.get(args.edge_id)
                     current = edges[index]
                     if proof is None or (proof.src_var, proof.dst_var, proof.direction) != (
@@ -321,6 +324,8 @@ class ToolRuntime:
                         raise ValueError("asserted relabel has no matching verification result")
                     if args.strength is not None and args.strength != proof.strength:
                         raise ValueError("relabel cannot overrule verifier strength")
+                    if args.edge is not None and args.edge != proof:
+                        raise ValueError("relabel cannot replace verifier-approved evidence")
                     edges[index] = proof
                 else:
                     data = edges[index].model_dump()
@@ -351,7 +356,9 @@ class ToolRuntime:
                             evidence_passage_id=None,
                             evidence_published_at=None,
                             verdict=VerifyVerdict.UNSUPPORTED,
+                            verified_by=None,
                         )
+                        self.approved.pop(args.edge_id, None)
                     edges[index] = Edge.model_validate(data)
             self.set_edges(edges)
             return UpdateGraphResult(call_id=cid, applied=True, graph_version=self.graph_version)

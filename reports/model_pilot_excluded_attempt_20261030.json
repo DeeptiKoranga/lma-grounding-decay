@@ -1,0 +1,11 @@
+{
+  "status": "excluded preliminary attempt; interrupted because JSON-copy target was ambiguous",
+  "reason": "The prompt wrapped target and schema in one object; the model copied both. No results used for model selection.",
+  "cases_sha256": "6beb7d14904b215b6445d7a2d5d1ab6eb508bb6cf01c853cf7a85f2d7676e605",
+  "completed_calls": 13,
+  "prompt_tokens": 19116,
+  "completion_tokens": 1832,
+  "completed_model_call_seconds": 253.51939204102382,
+  "unmeasured_interrupted_call": "not included in completed-call totals",
+  "preserved_directory": "runs/project_model_pilot_excluded_20261030"
+}

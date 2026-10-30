@@ -14,7 +14,7 @@ from .references import digest, validate
 def build(*, gold: Path, corpus: Path, output: Path):
     passages = {
         p.passage_id: p
-        for line in corpus.read_text().splitlines()
+        for line in corpus.read_text(encoding="utf-8").splitlines()
         if line.strip()
         if (p := Passage.model_validate_json(line))
     }

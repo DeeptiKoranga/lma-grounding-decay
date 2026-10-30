@@ -167,10 +167,10 @@ def main():
     if bool(args.graph) == bool(args.reviewed_scores):
         parser.error("choose exactly one of --graph or --reviewed-scores")
     if args.graph:
-        payload = json.loads(args.graph.read_text())
+        payload = json.loads(args.graph.read_text(encoding="utf-8"))
         graph_figure(Graph.model_validate(payload.get("graph", payload)), args.output)
     else:
-        uer_figure(json.loads(args.reviewed_scores.read_text()), args.output)
+        uer_figure(json.loads(args.reviewed_scores.read_text(encoding="utf-8")), args.output)
 
 
 if __name__ == "__main__":

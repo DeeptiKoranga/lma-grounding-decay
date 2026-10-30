@@ -267,6 +267,27 @@ class VerifyEdgeResult(_ResultEnvelope):
         default_factory=list, description="Which of the rule-layer checks (B6) failed."
     )
 
+    @model_validator(mode="after")
+    def _asserted_requires_verification(self) -> Self:
+        if self.provenance == Provenance.SOURCE_ASSERTED:
+            if (
+                not self.ok
+                or self.verdict != VerifyVerdict.SUPPORTED
+                or self.strength is None
+                or self.direction is None
+                or not self.edge_id
+                or not self.evidence_passage_id
+                or not self.evidence_span
+                or not self.evidence_span.strip()
+                or self.rule_failures
+            ):
+                raise ValueError(
+                    "asserted verification requires supported verdict and complete evidence"
+                )
+        elif self.evidence_span is not None or self.evidence_passage_id is not None:
+            raise ValueError("unasserted verification cannot carry accepted evidence")
+        return self
+
 
 class CounterSearchResult(_ResultEnvelope):
     tool: Literal[ToolName.COUNTER_SEARCH] = ToolName.COUNTER_SEARCH

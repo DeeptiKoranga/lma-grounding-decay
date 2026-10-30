@@ -93,6 +93,34 @@ def test_command_binds_complete_matrix_and_resumes_without_loading_model(monkeyp
     command.main()
 
 
+def test_old_windows_receipt_keys_resume_and_audit_without_disabling_checks(monkeypatch, tmp_path):
+    output, argv = execute(monkeypatch, tmp_path)
+    receipt = output / "artifacts.json"
+    old = json.loads(receipt.read_text(encoding="utf-8"))
+    receipt.write_text(
+        json.dumps({k.replace("/", "\\"): v for k, v in old.items()}), encoding="utf-8"
+    )
+    assert audit(runs=output, corpus=CORPUS)["complete"]
+    monkeypatch.setattr(sys, "argv", [*argv, "--resume"])
+    monkeypatch.setattr(
+        command, "ChatCompletionsGenerator", lambda **_: pytest.fail("model reloaded")
+    )
+    command.main()
+
+
+def test_cli_forwards_and_binds_vllm_thinking_settings(monkeypatch, tmp_path):
+    output, argv = execute(monkeypatch, tmp_path)
+    assert json.loads((output / "inputs.json").read_text())["chat_template_kwargs"] == {
+        "enable_thinking": False
+    }
+    monkeypatch.setattr(
+        sys, "argv", [*argv, "--chat-template-kwargs", '{"enable_thinking":true}', "--resume"]
+    )
+    with pytest.raises(SystemExit) as exc:
+        command.main()
+    assert exc.value.code == 2
+
+
 @pytest.mark.parametrize("changed", ["graph", "log", "source", "retrieval_setting"])
 def test_resume_refuses_changed_artifacts_code_and_runtime_settings(monkeypatch, tmp_path, changed):
     output, argv = execute(monkeypatch, tmp_path)

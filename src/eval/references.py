@@ -30,7 +30,7 @@ class ReferenceReview(BaseModel):
 def inspect(references: Path, corpus: Path):
     passages = {
         p.passage_id: p
-        for line in corpus.read_text().splitlines()
+        for line in corpus.read_text(encoding="utf-8").splitlines()
         if line.strip()
         if (p := Passage.model_validate_json(line))
     }
@@ -38,7 +38,7 @@ def inspect(references: Path, corpus: Path):
     for path in sorted(references.glob("*.json")):
         if path.name == "review_receipt.json":
             continue
-        graph = Graph.model_validate_json(path.read_text())
+        graph = Graph.model_validate_json(path.read_text(encoding="utf-8"))
         if path.stem != graph.query_id or graph.query_id in graphs or not graph.edges:
             raise ValueError("reference files must contain unique, nonempty query graphs")
         for edge in graph.edges:
@@ -68,7 +68,9 @@ def prepare(*, references: Path, corpus: Path):
 
 
 def validate(*, references: Path, corpus: Path, expected_corpus_sha256: str):
-    review = ReferenceReview.model_validate_json((references / "review_receipt.json").read_text())
+    review = ReferenceReview.model_validate_json(
+        (references / "review_receipt.json").read_text(encoding="utf-8")
+    )
     if (
         not review.reviewer.strip()
         or review.reviewed_on is None

@@ -12,7 +12,7 @@ def recorded_corpus_sha256(runs: Path) -> str | None:
         path = runs / name
         if not path.exists():
             continue
-        value = json.loads(path.read_text())
+        value = json.loads(path.read_text(encoding="utf-8"))
         if name == "phases.json":
             value = value.get("shared_inputs", {})
         digest = value.get("corpus_sha256")

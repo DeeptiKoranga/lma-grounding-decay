@@ -674,7 +674,8 @@
             "mlx",
             "llama.cpp",
             "vllm",
-            "api"
+            "api",
+            "claude"
           ],
           "title": "Backend",
           "type": "string"

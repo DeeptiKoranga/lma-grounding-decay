@@ -23,7 +23,7 @@ def prepare(runs: Path, output: Path, *, corpus: Path | None = None):
     passages = (
         {
             p.passage_id: p
-            for line in corpus.read_text().splitlines()
+            for line in corpus.read_text(encoding="utf-8").splitlines()
             if line.strip()
             if (p := Passage.model_validate_json(line))
         }
@@ -32,7 +32,7 @@ def prepare(runs: Path, output: Path, *, corpus: Path | None = None):
     )
     items = []
     for path in sorted(runs.glob("*/*.json")):
-        payload = json.loads(path.read_text())
+        payload = json.loads(path.read_text(encoding="utf-8"))
         if payload.get("prose_answer") is None:
             continue
         ids = set(re.findall(r"\b[A-Za-z0-9_.:-]+#p\d+\b", payload["prose_answer"]))
@@ -71,7 +71,7 @@ def prepare(runs: Path, output: Path, *, corpus: Path | None = None):
 
 
 def export(*, runs: Path, corrections: Path, output: Path):
-    review = json.loads(corrections.read_text())
+    review = json.loads(corrections.read_text(encoding="utf-8"))
     expected_corpus = recorded_corpus_sha256(runs)
     if expected_corpus is not None and review.get("corpus_sha256") != expected_corpus:
         raise ValueError("correction packet corpus differs from source run provenance")
@@ -86,7 +86,7 @@ def export(*, runs: Path, corrections: Path, output: Path):
     paths = {
         str(path.resolve()): path
         for path in runs.glob("*/*.json")
-        if json.loads(path.read_text()).get("prose_answer") is not None
+        if json.loads(path.read_text(encoding="utf-8")).get("prose_answer") is not None
     }
     items = {row["source_path"]: row for row in review["items"]}
     if not paths or len(items) != len(review["items"]) or set(items) != set(paths):
@@ -95,7 +95,7 @@ def export(*, runs: Path, corrections: Path, output: Path):
     for address, item in items.items():
         if not item["correction_complete"] or digest(paths[address]) != item["source_sha256"]:
             raise ValueError("incomplete or stale prose correction")
-        original = json.loads(paths[address].read_text())
+        original = json.loads(paths[address].read_text(encoding="utf-8"))
         old, new = Graph.model_validate(original["graph"]), Graph.model_validate(
             item["corrected_graph"]
         )
@@ -126,7 +126,10 @@ def export(*, runs: Path, corrections: Path, output: Path):
         target = output / path.relative_to(runs)
         target.parent.mkdir(exist_ok=True)
         target.write_text(
-            json.dumps(corrected.get(str(path.resolve()), json.loads(path.read_text())), indent=2)
+            json.dumps(
+                corrected.get(str(path.resolve()), json.loads(path.read_text(encoding="utf-8"))),
+                indent=2,
+            )
             + "\n"
         )
     receipt = {

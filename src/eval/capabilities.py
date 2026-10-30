@@ -11,7 +11,9 @@ from schema.tools import ToolCallAdapter
 
 
 def evaluate_actions(generator, states: Path, *, on_completion=None) -> dict:
-    records = [json.loads(line) for line in states.read_text().splitlines() if line.strip()]
+    records = [
+        json.loads(line) for line in states.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
     if not records or len({r["state_id"] for r in records}) != len(records):
         raise ValueError("frozen states must be nonempty and uniquely identified")
     outputs = []

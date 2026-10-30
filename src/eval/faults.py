@@ -15,7 +15,9 @@ from verify.paths import rebuild
 
 
 def evaluate(*, specs: Path, corpus: Path, aliases: Path) -> dict:
-    records = [json.loads(line) for line in specs.read_text().splitlines() if line.strip()]
+    records = [
+        json.loads(line) for line in specs.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
     outcomes = []
     for i, record in enumerate(records):
         retriever = BM25Retriever.from_jsonl(corpus, aliases=Aliases.load(aliases))

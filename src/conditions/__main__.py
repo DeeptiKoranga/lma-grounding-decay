@@ -25,7 +25,15 @@ from schema import Condition
 from verify.aliases import load_aliases
 
 from .pipeline import Pipeline, Query
-from .provenance import digest, model_identity, runtime_identity, source_identity, validate_cached
+from .provenance import (
+    artifact_receipts,
+    digest,
+    model_identity,
+    runtime_identity,
+    source_identity,
+    validate_cached,
+    write_json,
+)
 
 
 class WorkerScorer:
@@ -65,6 +73,11 @@ def main():
     parser.add_argument("--revision")
     parser.add_argument("--base-url")
     parser.add_argument("--allow-remote", action="store_true")
+    parser.add_argument(
+        "--chat-template-kwargs",
+        type=json.loads,
+        help="JSON object of server chat-template settings (vLLM disables thinking by default)",
+    )
     parser.add_argument("--retriever", choices=CONFIG_ORDER, default="bge_m3")
     parser.add_argument("--retrieval-python", help="Optional separate retrieval environment")
     parser.add_argument("--embedding-model", default="BAAI/bge-m3")
@@ -83,6 +96,11 @@ def main():
     parser.add_argument("--output", type=Path, default=Path("runs/development"))
     parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
+    if args.chat_template_kwargs is not None and not isinstance(args.chat_template_kwargs, dict):
+        parser.error("--chat-template-kwargs must be a JSON object")
+    chat_settings = args.chat_template_kwargs
+    if chat_settings is None and args.backend == "vllm":
+        chat_settings = {"enable_thinking": False}
     if args.model is None:
         args.model = (
             ANTHROPIC_HAIKU_45 if args.backend == "claude" else "mlx-community/Qwen3-8B-4bit"
@@ -97,7 +115,7 @@ def main():
         )
     queries = [
         Query.model_validate_json(line)
-        for line in args.queries.read_text().splitlines()
+        for line in args.queries.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
     if not queries or len({q.query_id for q in queries}) != len(queries):
@@ -134,6 +152,7 @@ def main():
         "local_model_files": model_identity(args.model_path) if args.backend == "mlx" else None,
         "base_url": args.base_url,
         "allow_remote": args.allow_remote,
+        "chat_template_kwargs": chat_settings,
         "runtime": runtime_identity(),
         "conditions": args.conditions,
         "retrieval": settings,
@@ -155,15 +174,15 @@ def main():
     provenance = args.output / "inputs.json"
     if args.output.exists() and not args.resume:
         parser.error("output already exists; select a new directory or --resume")
-    if provenance.exists() and json.loads(provenance.read_text()) != inputs:
+    if provenance.exists() and json.loads(provenance.read_text(encoding="utf-8")) != inputs:
         parser.error("resume input settings/hashes differ from the saved run")
     if args.output.exists() and any(args.output.iterdir()) and not provenance.exists():
         parser.error("cannot resume a nonempty directory without bound inputs")
     args.output.mkdir(parents=True, exist_ok=True)
-    provenance.write_text(json.dumps(inputs, indent=2) + "\n")
+    write_json(provenance, inputs)
     inputs_sha256 = digest(provenance)
     receipts_path = args.output / "artifacts.json"
-    receipts = json.loads(receipts_path.read_text()) if receipts_path.exists() else {}
+    receipts = artifact_receipts(receipts_path)
     pending = []
     for condition in args.conditions:
         for query in queries:
@@ -173,7 +192,7 @@ def main():
                 try:
                     if digest(target) != receipts.get(address):
                         raise ValueError("cached artifact checksum mismatch or missing receipt")
-                    payload = json.loads(target.read_text())
+                    payload = json.loads(target.read_text(encoding="utf-8"))
                     validate_cached(
                         payload, query=query, condition=condition, inputs_sha256=inputs_sha256
                     )
@@ -198,6 +217,7 @@ def main():
             backend=args.backend,
             allow_remote=args.allow_remote,
             revision=args.revision,
+            chat_template_kwargs=chat_settings,
         )
     first_stage = (
         WorkerRetriever(
@@ -242,9 +262,9 @@ def main():
                 result.update(
                     inputs_sha256=inputs_sha256, log_file=log_path.name, log_sha256=digest(log_path)
                 )
-                target.write_text(json.dumps(result, indent=2) + "\n")
+                write_json(target, result)
                 receipts[target.relative_to(args.output).as_posix()] = digest(target)
-                receipts_path.write_text(json.dumps(receipts, indent=2) + "\n")
+                write_json(receipts_path, receipts)
                 print(
                     f"completed {condition} {query.query_id}: {len(result['graph']['edges'])} edges, {result['tool_calls']} tool calls",
                     flush=True,
@@ -257,7 +277,7 @@ def main():
     finally:
         if isinstance(first_stage, WorkerRetriever):
             first_stage.close()
-    (args.output / "failures.json").write_text(json.dumps(failures, indent=2) + "\n")
+    write_json(args.output / "failures.json", failures)
     if failures:
         raise SystemExit(1)
 

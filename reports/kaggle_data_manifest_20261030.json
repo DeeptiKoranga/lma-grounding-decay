@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "scope": "frozen v7 development inputs; no model weights",
+  "files": {
+    "data/processed/articles.jsonl": {
+      "sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+      "bytes": 14163728
+    },
+    "data/aliases.yaml": {
+      "sha256": "826f0e59c3ad98b2ca3d6ff08027ead08c917fed36d9d0a711cf802a1eebe843",
+      "bytes": 7175
+    },
+    "data/interim/corpus_v7_index_20261026/bge_m3_vectors.json": {
+      "sha256": "5345b8a3384f759f73a7fee6c58ef544a4ad6ad47f04262fc81efafb5e038d2c",
+      "bytes": 389082352
+    },
+    "data/series/brent_usd_bbl.csv": {
+      "sha256": "07b92e9762cf03460f7dedaa1186796bd5c781feb3418b4f9fd58296bb82a9fa",
+      "bytes": 1001
+    },
+    "data/series/cpi_headline_yoy.csv": {
+      "sha256": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+      "bytes": 1346
+    },
+    "data/series/fpi_flows_usd_mn.csv": {
+      "sha256": "94c24a79a038b34c510c2f93bdcd0b5ef2540d2756b129c8d5ba32f5666c9a4d",
+      "bytes": 237
+    },
+    "data/series/gsec_10y_pct.csv": {
+      "sha256": "7b12e2cf5f9254f1b7b648a33803b1f5ea381b96a7f61ebab150ed14911a2be6",
+      "bytes": 1129
+    },
+    "data/series/indian_basket_usd_bbl.csv": {
+      "sha256": "17f3e0f0919727bd0ebba18d46f50e98509dea35e5ebc0be018e1b431d1b23b7",
+      "bytes": 344
+    },
+    "data/series/inr_usd.csv": {
+      "sha256": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c",
+      "bytes": 21174
+    }
+  },
+  "archive": {
+    "path": "data/processed/kaggle_data_v7_20261030.zip",
+    "sha256": "248cd59d731d8b056d99a5b0ae1819f9df8aba022eb92d312799e3f79c3f0da4",
+    "bytes": 161489938
+  }
+}

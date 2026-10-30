@@ -4,9 +4,10 @@ import hashlib
 import importlib.metadata
 import json
 import platform
+import re
 import subprocess
 import sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from schema import Graph
 
@@ -19,10 +20,42 @@ def digest(path: Path) -> str:
     return hasher.hexdigest()
 
 
+def write_json(path: Path, value) -> None:
+    """Write identical UTF-8/LF bytes on every platform before computing receipts."""
+    path.write_bytes((json.dumps(value, indent=2, ensure_ascii=False) + "\n").encode("utf-8"))
+
+
+def artifact_receipts(path: Path) -> dict[str, str]:
+    """Read older Windows receipt keys without relaxing artifact byte checks."""
+    if not path.exists():
+        return {}
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict):
+        raise ValueError("artifact receipts must be an object")
+    result = {}
+    for address, checksum in raw.items():
+        key = address.replace("\\", "/")
+        parts = PurePosixPath(key).parts
+        if (
+            len(parts) != 2
+            or PurePosixPath(key).is_absolute()
+            or any(part in {".", ".."} or ":" in part for part in parts)
+            or not key.endswith(".json")
+            or not isinstance(checksum, str)
+            or re.fullmatch(r"[0-9a-f]{64}", checksum) is None
+            or key in result
+        ):
+            raise ValueError("invalid or duplicate artifact receipt address/checksum")
+        result[key] = checksum
+    return result
+
+
 def source_identity(root: Path | None = None) -> dict:
     root = root or Path(__file__).resolve().parents[1]
     files = {
-        str(p.relative_to(root)): digest(p)
+        p.relative_to(root)
+        .as_posix(): hashlib.sha256(p.read_bytes().replace(b"\r\n", b"\n"))
+        .hexdigest()
         for package in (
             "agent",
             "conditions",
@@ -49,7 +82,7 @@ def model_identity(path: Path) -> dict:
     if not path.is_dir():
         raise ValueError(f"local model directory does not exist: {path}")
     return {
-        str(p.relative_to(path)): digest(p)
+        p.relative_to(path).as_posix(): digest(p)
         for p in sorted(path.rglob("*"))
         if p.is_file() and not any(part.startswith(".") for part in p.relative_to(path).parts)
     }
