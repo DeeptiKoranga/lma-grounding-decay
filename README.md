@@ -74,6 +74,34 @@ differs from the current series. Dated primary announcements now support the
 April ATF announcement and August RBI meeting; final anchor acceptance remains
 with Track B. See [the follow-up record](reports/track_a_followup_20261026.json).
 
+## Track C progress ? 30 October 2026
+
+**Implementation and development verification: C1?C9 completed.** Track C
+generation, agent, evaluation and integration work has been implemented and
+committed on the `c/agent-controller` branch.
+
+- **C1 ? Unified generation:** A common `generate()` interface supports MLX,
+  llama.cpp and vLLM backends. Kaggle vLLM live verification passed, including
+  JSON generation and project integration. Generator contract tests: 17/17 passed.
+- **C2 ? Model pilot:** The Qwen3-8B versus Qwen3.5-9B pilot artifacts and
+  report are available in `reports/pilot_model.md`.
+- **C3?C8:** Completed and previously checked against `PLAN_MIDSUB.md`.
+- **C9 ? Agent-state and tool-fault diagnostics:** The repository includes
+  40 synthetic agent-state cases and 20 scripted tool faults. The fault
+  diagnostic passed 20/20 checks. These synthetic diagnostics are not
+  human-annotated research results or independent research acceptance.
+- **Windows integration:** Retrieval-worker and pipeline compatibility fixes
+  were added with regression tests. The unit test suite passed locally.
+
+**Remaining Track C work:** C10 (safety evaluation and its review) and C11
+(Kaggle run and compute log) remain outstanding. Safety-screening code and
+prompt fixtures are present, but implementation availability should not be
+confused with completed evaluation or human adjudication.
+
+The latest Track C integration changes are committed on
+`c/agent-controller`; see the Git history for the corresponding implementation
+and verification commits.
+
 ## What this is
 
 Given a question like *"Brent crossed $100 on 12 March 2026; what effects on India were
@@ -108,7 +136,7 @@ structural validity do not establish research performance. See
 [the validation and remaining gates](reports/integration_status.md).
 
 The local Qwen3-8B run uses pinned public weights and no paid API. It is an
-integration model, not the result of the still-pending two-model selection pilot.
+integration model, not the result of the completed Track C two-model selection pilot.
 The six source-backed queries in `data/eval/development_candidates.jsonl` are
 unreviewed candidates, not the frozen development gold set. See
 [docs/reproduction.md](docs/reproduction.md), [PLAN_MIDSUB.md](PLAN_MIDSUB.md),

@@ -75,17 +75,19 @@ def prepare(*, runs: Path, corpus: Path, output: Path):
         raise ValueError("no completed graph artifacts found")
     items.sort(key=lambda row: row["item_id"])
     private_text = json.dumps({"mapping": mapping, "artifacts": artifacts}, indent=2) + "\n"
+    private_bytes = private_text.encode("utf-8")
+
     packet = {
         "version": 1,
         "corpus_sha256": digest(corpus),
-        "private_mapping_sha256": hashlib.sha256(private_text.encode()).hexdigest(),
+        "private_mapping_sha256": hashlib.sha256(private_bytes).hexdigest(),
         "items": items,
         "instructions": "Judge attached support, direction and evidence strength. No attached eligible source means unsupported. Conditions/model labels are hidden. Do not consult run outputs before reviewing.",
     }
     output.mkdir(parents=True, exist_ok=False)
     packet_path = output / "packet.json"
     packet_path.write_text(json.dumps(packet, indent=2) + "\n")
-    (output / "private_mapping.json").write_text(private_text)
+    (output / "private_mapping.json").write_bytes(private_bytes)
     review = Review(
         packet_sha256=digest(packet_path),
         judgments=[Judgment(item_id=row["item_id"]) for row in items],
@@ -111,8 +113,6 @@ def evaluate(
     private = json.loads((review_dir / "private_mapping.json").read_text())
     if review.packet_sha256 != digest(packet_path):
         raise ValueError("support packet hash mismatch")
-    if packet["private_mapping_sha256"] != digest(review_dir / "private_mapping.json"):
-        raise ValueError("private support mapping hash mismatch")
     if (
         not review.reviewer.strip()
         or review.reviewed_on is None
@@ -120,6 +120,8 @@ def evaluate(
         or not review.blinded_to_condition
     ):
         raise ValueError("complete independent blinded review attestation is required")
+    if packet["private_mapping_sha256"] != digest(review_dir / "private_mapping.json"):
+        raise ValueError("private support mapping hash mismatch")
     judgments = {row.item_id: row for row in review.judgments}
     expected = {row["item_id"] for row in packet["items"]}
     if (

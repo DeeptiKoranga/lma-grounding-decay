@@ -76,13 +76,13 @@ def assemble(baseline: Path, agent: Path, queries: Path, output: Path):
                 if len(matching) != 1 or matching[0][-1].event != "stop":
                     raise ValueError("completed artifact needs a complete validated event log")
                 relative = artifact.relative_to(root)
-                artifacts[str(relative)] = digest(artifact)
+                artifacts[relative.as_posix()] = digest(artifact)
                 files.append((artifact, relative))
             # Retain failed attempts too: compute must not silently omit their calls.
             for log in sorted((root / condition).glob("*.jsonl")):
                 list(iter_run_log(log))
                 relative = log.relative_to(root)
-                artifacts[str(relative)] = digest(log)
+                artifacts[relative.as_posix()] = digest(log)
                 files.append((log, relative))
         phases.append(
             {
