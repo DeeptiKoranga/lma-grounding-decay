@@ -226,6 +226,8 @@ def _headline_key(value: str, source: str) -> str:
 
 def publication_time(value: str) -> datetime:
     """Publication date, never sitemap lastmod/dateModified or a guessed URL date."""
+    if not isinstance(value, str) or not value.strip():
+        raise ParseError("publication date must be nonempty text")
     try:
         stamp = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
     except ValueError:

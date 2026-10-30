@@ -120,6 +120,8 @@ def evaluate(
         or not review.blinded_to_condition
     ):
         raise ValueError("complete independent blinded review attestation is required")
+    if review.reviewed_on > date.today():
+        raise ValueError("support review date cannot be in the future")
     if packet["private_mapping_sha256"] != digest(review_dir / "private_mapping.json"):
         raise ValueError("private support mapping hash mismatch")
     judgments = {row.item_id: row for row in review.judgments}

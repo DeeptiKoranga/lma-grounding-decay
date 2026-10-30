@@ -52,8 +52,12 @@ def _read_json_response(response) -> dict:
 
 def json_object(text: str) -> dict:
     """Allow a JSON code fence, never silently select JSON from arbitrary prose."""
+    if not isinstance(text, str):
+        raise ValueError("model response must be text")
     text = text.strip()
     if text.startswith("```") and text.endswith("```"):
+        if "\n" not in text:
+            raise ValueError("JSON code fence must have a separate opening line")
         text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
     result = json.loads(text)
     if not isinstance(result, dict):

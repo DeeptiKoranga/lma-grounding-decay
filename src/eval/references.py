@@ -78,6 +78,8 @@ def validate(*, references: Path, corpus: Path, expected_corpus_sha256: str):
         or not review.all_relations_and_strengths_reviewed
     ):
         raise ValueError("complete independent reference-review attestation is required")
+    if review.reviewed_on > date.today():
+        raise ValueError("reference review date cannot be in the future")
     if review.corpus_sha256 != digest(corpus) or review.corpus_sha256 != expected_corpus_sha256:
         raise ValueError("reference/support corpus hash mismatch")
     graphs, hashes = inspect(references, corpus)

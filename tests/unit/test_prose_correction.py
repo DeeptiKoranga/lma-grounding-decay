@@ -9,6 +9,41 @@ from eval.prose_review import digest, export, prepare
 from schema import Graph
 
 
+@pytest.mark.parametrize("invalid", ["attestation", "completion", "future_date"])
+def test_correction_gate_rejects_false_text_flags_and_future_dates(tmp_path, invalid):
+    fixture = Path(__file__).parents[1] / "fixtures/graph_brent_hormuz.json"
+    graph = Graph.model_validate_json(fixture.read_text())
+    graph.condition = "B1"
+    folder = tmp_path / "runs/B1"
+    folder.mkdir(parents=True)
+    (folder / "q.json").write_text(
+        json.dumps(
+            {
+                "graph": graph.model_dump(mode="json"),
+                "prose_answer": "Fixture only",
+                "established_edge_ids": ["e1"],
+            }
+        )
+    )
+    corrections = tmp_path / "corrections.json"
+    prepare(folder.parent, corrections)
+    reviewed = json.loads(corrections.read_text())
+    reviewed.update(
+        reviewer="Fixture reviewer", reviewed_on="2026-10-23", human_correction_attestation=True
+    )
+    reviewed["items"][0]["correction_complete"] = True
+    if invalid == "attestation":
+        reviewed["human_correction_attestation"] = "false"
+    elif invalid == "completion":
+        reviewed["items"][0]["correction_complete"] = "false"
+    else:
+        reviewed["reviewed_on"] = "9999-12-31"
+    corrections.write_text(json.dumps(reviewed))
+    with pytest.raises(ValueError):
+        export(runs=folder.parent, corrections=corrections, output=tmp_path / "export")
+    assert not (tmp_path / "export").exists()
+
+
 def test_correction_gate_preserves_original_and_rejects_stale_or_incomplete_work(tmp_path):
     fixture = Path(__file__).parents[1] / "fixtures/graph_brent_hormuz.json"
     graph = Graph.model_validate_json(fixture.read_text())

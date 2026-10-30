@@ -20,6 +20,12 @@ class FakeResponse:
         return self.data[:limit]
 
 
+@pytest.mark.parametrize("response", ["``````", "```json```", '```{"edges":[]}```', None, {}, 1])
+def test_malformed_model_output_raises_a_validation_error(response):
+    with pytest.raises(ValueError):
+        gen.json_object(response)
+
+
 def test_completion_includes_optional_revision():
     item = gen.Completion("ok", "model", "test", 2, 3, 1.0, "rev-1")
     assert item.revision == "rev-1"

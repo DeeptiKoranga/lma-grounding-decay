@@ -54,6 +54,42 @@ def test_blank_receipt_cannot_establish_reference_review(tmp_path):
         build_challenge(gold=folder, corpus=corpus, output=tmp_path / "challenge.jsonl")
 
 
+def test_reference_review_rejects_a_future_review_date(tmp_path):
+    folder, _, corpus = reference(tmp_path)
+    prepare(references=folder, corpus=corpus)
+    attest(folder)
+    path = folder / "review_receipt.json"
+    review = json.loads(path.read_text())
+    review["reviewed_on"] = "9999-12-31"
+    path.write_text(json.dumps(review))
+    with pytest.raises(ValueError, match="future"):
+        validate(references=folder, corpus=corpus, expected_corpus_sha256=digest(corpus))
+
+
+def test_support_review_rejects_a_future_review_date(tmp_path):
+    _folder, path, corpus = reference(tmp_path)
+    runs = tmp_path / "runs/M"
+    runs.mkdir(parents=True)
+    (runs / path.name).write_text(
+        json.dumps({"graph": json.loads(path.read_text()), "established_edge_ids": []})
+    )
+    output = tmp_path / "support"
+    prepare_support(runs=runs.parent, corpus=corpus, output=output)
+    p = output / "judgments.json"
+    review = json.loads(p.read_text())
+    review.update(
+        reviewer="Fixture reviewer",
+        reviewed_on="9999-12-31",
+        independent_review=True,
+        blinded_to_condition=True,
+    )
+    for row in review["judgments"]:
+        row["supported"] = False
+    p.write_text(json.dumps(review))
+    with pytest.raises(ValueError, match="future"):
+        evaluate(review_dir=output, corpus=corpus)
+
+
 def test_completed_receipt_binds_both_reference_files_and_support_corpus(tmp_path):
     folder, path, corpus = reference(tmp_path)
     prepare(references=folder, corpus=corpus)

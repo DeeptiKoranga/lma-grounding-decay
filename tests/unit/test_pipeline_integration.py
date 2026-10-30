@@ -100,6 +100,27 @@ def runtime(query, retriever, *, budget=12):
     return ToolRuntime(graph=graph, retriever=retriever, series=SeriesStore({}), budget=budget)
 
 
+def test_malformed_code_fence_is_logged_and_retried(query, retriever, tmp_path):
+    class MalformedFirst(FixtureGenerator):
+        calls = 0
+
+        def generate(self, prompt, *, max_tokens=1500):
+            self.calls += 1
+            if self.calls == 1:
+                return Completion("```json```", "fixture-only", "api", 1, 1, 0)
+            return super().generate(prompt, max_tokens=max_tokens)
+
+    generator = MalformedFirst()
+    path = tmp_path / "retry.jsonl"
+    result = Pipeline(generator=generator, retriever=retriever, series=SeriesStore({})).run(
+        query, condition="B2", run_id="fence-retry", log_path=path
+    )
+    calls = [row for row in iter_run_log(path) if row.event == "model_call"]
+    assert generator.calls == 2 and result["graph"]["edges"]
+    assert [row.json_valid for row in calls] == [False, True]
+    assert calls[0].completion == "```json```"
+
+
 def test_cutoff_cannot_be_widened_and_backend_cannot_forge_passages(query, retriever):
     tools = runtime(query, retriever)
     failed = tools.call("search_corpus", query="oil", as_of=date(2026, 9, 30))

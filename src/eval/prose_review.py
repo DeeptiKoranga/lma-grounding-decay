@@ -78,11 +78,12 @@ def export(*, runs: Path, corrections: Path, output: Path):
     reviewer = review.get("reviewer", "").strip()
     if (
         not reviewer
-        or not review.get("human_correction_attestation")
+        or review.get("human_correction_attestation") is not True
         or not review.get("reviewed_on")
     ):
         raise ValueError("human correction identity/date/attestation required")
-    date.fromisoformat(review["reviewed_on"])
+    if date.fromisoformat(review["reviewed_on"]) > date.today():
+        raise ValueError("correction review date cannot be in the future")
     paths = {
         str(path.resolve()): path
         for path in runs.glob("*/*.json")
@@ -93,7 +94,10 @@ def export(*, runs: Path, corrections: Path, output: Path):
         raise ValueError("corrections must cover exactly all prose baseline artifacts")
     corrected = {}
     for address, item in items.items():
-        if not item["correction_complete"] or digest(paths[address]) != item["source_sha256"]:
+        if (
+            item["correction_complete"] is not True
+            or digest(paths[address]) != item["source_sha256"]
+        ):
             raise ValueError("incomplete or stale prose correction")
         original = json.loads(paths[address].read_text(encoding="utf-8"))
         old, new = Graph.model_validate(original["graph"]), Graph.model_validate(

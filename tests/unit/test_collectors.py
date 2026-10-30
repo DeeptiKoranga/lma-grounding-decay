@@ -169,3 +169,36 @@ def test_resuming_uses_checked_raw_cache_and_advances_to_new_urls(fetch, tmp_pat
     ]
     assert events[-1]["status"] == "rejected"
     assert "checksum" in events[-1]["reason"]
+
+
+@pytest.mark.parametrize("modified", [123, ["2026-03-12"], {"date": "2026-03-12"}])
+def test_malformed_publisher_date_is_rejected_without_aborting_the_batch(fetch, tmp_path, modified):
+    body = "Brent crude rose as import costs increased and the rupee weakened. " * 5
+    record = {"@type": "NewsArticle", "datePublished": "2026-03-12", "dateModified": modified}
+    base = (
+        '<meta property="article:published_time" content="2026-03-12">'
+        '<meta property="og:title" content="Oil and rupee">'
+        f"<article><p>{body}</p></article>"
+    )
+
+    def get(url):
+        extra = (
+            '<script type="application/ld+json">' + json.dumps(record) + "</script>"
+            if url.endswith("/bad")
+            else ""
+        )
+        return fetch.client.Response(url, (base + extra).encode(), "text/html", "utf-8")
+
+    client = SimpleNamespace(source=fetch.sources.SOURCES["mint"], get=get)
+    counts = fetch.collect.collect(
+        client,
+        ["https://www.livemint.com/bad", "https://www.livemint.com/good"],
+        tmp_path,
+        max_articles=2,
+    )
+    events = [
+        json.loads(line) for line in (tmp_path / "collection_log.jsonl").read_text().splitlines()
+    ]
+    assert counts == {"downloaded": 2, "rejected": 1, "accepted": 1}
+    assert events[0]["status"] == "rejected" and "publication date" in events[0]["reason"]
+    assert events[1]["status"] == "accepted"
