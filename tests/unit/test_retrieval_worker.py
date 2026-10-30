@@ -52,3 +52,32 @@ def test_worker_timeout_terminates_a_child_that_never_replies(monkeypatch):
     with pytest.raises(RuntimeError, match="retrieval worker timed out"):
         worker.search("crude", as_of=date(2026, 3, 20))
     assert worker.process is None
+
+
+def test_worker_restarts_after_a_failed_child_without_reusing_stale_responses(monkeypatch):
+    real_popen = subprocess.Popen
+    attempts = []
+
+    def first_child_fails(command, **options):
+        attempts.append(command)
+        if len(attempts) == 1:
+            return real_popen([sys.executable, "-c", "raise SystemExit(1)"], **options)
+        return real_popen(command, **options)
+
+    monkeypatch.setattr("retrieval.worker.subprocess.Popen", first_child_fails)
+    monkeypatch.setenv("PYTHONPATH", str(ROOT / "src"))
+    worker = WorkerRetriever(
+        python=sys.executable,
+        corpus=ROOT / "tests/fixtures/passages.jsonl",
+        aliases=ROOT / "data/aliases.yaml",
+        settings={"config": "bm25"},
+        timeout=15,
+    )
+    with pytest.raises(RuntimeError, match="exited"):
+        worker.search("crude", as_of=date(2026, 3, 20))
+    assert worker.process is None
+    try:
+        assert worker.search("crude", as_of=date(2026, 3, 20))
+        assert len(attempts) == 2
+    finally:
+        worker.close()

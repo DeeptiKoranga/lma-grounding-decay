@@ -1,0 +1,182 @@
+{
+  "status": "reconciled historical Kaggle execution evidence",
+  "notebooks": [
+    {
+      "notebook": "notebooks/c1_live_verification.ipynb",
+      "sha256": "1f6b59eace6efcc18a3833847ca94efe4d88a5c82fe308e13ebc7af3dfdacdf0",
+      "executed_intervals": [
+        {
+          "cell": 0,
+          "start": "2026-10-28T17:53:49.315164Z",
+          "end": "2026-10-28T17:57:41.790615Z",
+          "seconds": 232.475451
+        },
+        {
+          "cell": 1,
+          "start": "2026-10-28T17:58:53.697313Z",
+          "end": "2026-10-28T18:00:53.835572Z",
+          "seconds": 120.138259
+        },
+        {
+          "cell": 2,
+          "start": "2026-10-28T18:02:10.395003Z",
+          "end": "2026-10-28T18:02:16.536312Z",
+          "seconds": 6.141309
+        },
+        {
+          "cell": 3,
+          "start": "2026-10-28T18:03:55.468743Z",
+          "end": "2026-10-28T18:03:57.126328Z",
+          "seconds": 1.657585
+        },
+        {
+          "cell": 4,
+          "start": "2026-10-28T18:04:08.652788Z",
+          "end": "2026-10-28T18:04:08.709377Z",
+          "seconds": 0.056589
+        },
+        {
+          "cell": 5,
+          "start": "2026-10-28T18:04:34.519647Z",
+          "end": "2026-10-28T18:06:49.600887Z",
+          "seconds": 135.08124
+        },
+        {
+          "cell": 6,
+          "start": "2026-10-28T18:18:37.746664Z",
+          "end": "2026-10-28T18:18:38.967249Z",
+          "seconds": 1.220585
+        },
+        {
+          "cell": 7,
+          "start": "2026-10-28T18:19:15.058318Z",
+          "end": "2026-10-28T18:19:16.884834Z",
+          "seconds": 1.826516
+        },
+        {
+          "cell": 8,
+          "start": "2026-10-28T18:20:20.335441Z",
+          "end": "2026-10-28T18:20:20.345089Z",
+          "seconds": 0.009648
+        },
+        {
+          "cell": 9,
+          "start": "2026-10-28T18:20:42.010600Z",
+          "end": "2026-10-28T18:20:43.188530Z",
+          "seconds": 1.17793
+        },
+        {
+          "cell": 10,
+          "start": "2026-10-28T18:40:59.747206Z",
+          "end": "2026-10-28T18:41:00.970005Z",
+          "seconds": 1.222799
+        }
+      ],
+      "summed_cell_wall_seconds": 501.007911,
+      "gpu_active_hours": null,
+      "billed_or_allocated_gpu_hours": null,
+      "scope": "saved cell wall timestamps; inter-cell idle and full session allocation are not measured"
+    },
+    {
+      "notebook": "notebooks/c2_model_pilot.ipynb",
+      "sha256": "ad3e4686620f43c888c7005b8724f3302b1eef458a62d9b6a087c1e364b868b7",
+      "executed_intervals": [
+        {
+          "cell": 0,
+          "start": "2026-10-28T16:41:46.532584Z",
+          "end": "2026-10-28T16:42:09.537796Z",
+          "seconds": 23.005212
+        },
+        {
+          "cell": 1,
+          "start": "2026-10-28T16:44:36.548584Z",
+          "end": "2026-10-28T16:44:41.243624Z",
+          "seconds": 4.69504
+        },
+        {
+          "cell": 2,
+          "start": "2026-10-28T16:44:52.918808Z",
+          "end": "2026-10-28T16:44:55.978665Z",
+          "seconds": 3.059857
+        },
+        {
+          "cell": 3,
+          "start": "2026-10-28T16:45:52.425679Z",
+          "end": "2026-10-28T16:47:59.322463Z",
+          "seconds": 126.896784
+        },
+        {
+          "cell": 4,
+          "start": "2026-10-28T16:48:25.458326Z",
+          "end": "2026-10-28T16:48:28.370888Z",
+          "seconds": 2.912562
+        },
+        {
+          "cell": 5,
+          "start": "2026-10-28T16:49:38.905489Z",
+          "end": "2026-10-28T16:49:39.326657Z",
+          "seconds": 0.421168
+        },
+        {
+          "cell": 6,
+          "start": "2026-10-28T16:50:15.406386Z",
+          "end": "2026-10-28T16:52:58.110094Z",
+          "seconds": 162.703708
+        },
+        {
+          "cell": 7,
+          "start": "2026-10-28T16:53:24.040811Z",
+          "end": "2026-10-28T16:53:28.643323Z",
+          "seconds": 4.602512
+        },
+        {
+          "cell": 8,
+          "start": "2026-10-28T16:54:46.023450Z",
+          "end": "2026-10-28T16:54:46.031147Z",
+          "seconds": 0.007697
+        },
+        {
+          "cell": 9,
+          "start": "2026-10-28T16:56:59.617663Z",
+          "end": "2026-10-28T16:56:59.635897Z",
+          "seconds": 0.018234
+        },
+        {
+          "cell": 10,
+          "start": "2026-10-28T16:57:43.115695Z",
+          "end": "2026-10-28T16:57:43.126222Z",
+          "seconds": 0.010527
+        },
+        {
+          "cell": 11,
+          "start": "2026-10-28T16:59:40.528491Z",
+          "end": "2026-10-28T17:10:59.149660Z",
+          "seconds": 678.621169
+        },
+        {
+          "cell": 12,
+          "start": "2026-10-28T17:11:57.426500Z",
+          "end": "2026-10-28T17:11:57.436382Z",
+          "seconds": 0.009882
+        },
+        {
+          "cell": 13,
+          "start": "2026-10-28T17:15:03.565814Z",
+          "end": "2026-10-28T17:15:03.579587Z",
+          "seconds": 0.013773
+        }
+      ],
+      "summed_cell_wall_seconds": 1006.978125,
+      "gpu_active_hours": null,
+      "billed_or_allocated_gpu_hours": null,
+      "scope": "saved cell wall timestamps; inter-cell idle and full session allocation are not measured"
+    }
+  ],
+  "new_kaggle_runs": 0,
+  "notes": [
+    "The exported notebook GPU-enabled metadata is false, but saved CUDA/device and successful inference outputs establish earlier GPU execution.",
+    "C1 saved output detects two visible GPUs; the pilot reports Tesla T4, with no complete allocation receipt.",
+    "Cell wall time is not converted into invented GPU-active or billed hours.",
+    "scripts/kaggle_run.py now records visible allocated GPU-hours from its own measured interval and visible device count, including failure cleanup."
+  ]
+}

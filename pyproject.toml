@@ -17,6 +17,7 @@ authors = [
 dependencies = [
     "pydantic>=2.9,<3",
     "pyyaml>=6.0",
+    "tzdata>=2025.2; sys_platform == 'win32'",
 ]
 
 [project.optional-dependencies]
