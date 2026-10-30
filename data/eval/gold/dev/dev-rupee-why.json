@@ -1,0 +1,101 @@
+{
+  "query_id": "dev-rupee-why",
+  "anchor": {
+    "var": "INR_USD",
+    "direction": "up",
+    "event": "USD/INR at 96.84, the weakest level of the window",
+    "event_date": "2026-05-20",
+    "confirmed_by_series": true,
+    "series_id": "inr_usd"
+  },
+  "as_of": "2026-05-25",
+  "nodes": [
+    {
+      "var": "FUEL_PRICES",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "IMPORTED_INFLATION",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "IMPORT_BILL",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "INR_USD",
+      "direction": "up",
+      "is_anchor": true,
+      "confirmed_by_series": true,
+      "series_id": "inr_usd"
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "rw1",
+      "src_var": "INR_USD",
+      "dst_var": "IMPORTED_INFLATION",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 1,
+      "evidence_span": "The weakening rupee is amplifying imported inflation.",
+      "evidence_doc_id": "economic_times-1b2732b34ee05b32bf50",
+      "evidence_passage_id": "economic_times-1b2732b34ee05b32bf50#p1",
+      "evidence_published_at": "2026-04-30T14:13:00+05:30",
+      "candidate_evidence": []
+    },
+    {
+      "edge_id": "rw2",
+      "src_var": "INR_USD",
+      "dst_var": "IMPORT_BILL",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 1,
+      "evidence_span": "A depreciating rupee increases the domestic cost of imports, especially crude oil",
+      "evidence_doc_id": "economic_times-1b2732b34ee05b32bf50",
+      "evidence_passage_id": "economic_times-1b2732b34ee05b32bf50#p11",
+      "evidence_published_at": "2026-04-30T14:13:00+05:30",
+      "candidate_evidence": []
+    },
+    {
+      "edge_id": "rw3",
+      "src_var": "IMPORT_BILL",
+      "dst_var": "IMPORTED_INFLATION",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 2,
+      "evidence_span": "increases the domestic cost of imports, especially crude oil, thereby reinforcing inflationary pressures.",
+      "evidence_doc_id": "economic_times-1b2732b34ee05b32bf50",
+      "evidence_passage_id": "economic_times-1b2732b34ee05b32bf50#p11",
+      "evidence_published_at": "2026-04-30T14:13:00+05:30",
+      "candidate_evidence": [],
+      "note": "Same sentence as rw2. It states rupee -> import cost -> inflationary pressures, so the middle link is asserted, not inferred."
+    },
+    {
+      "edge_id": "rw9",
+      "src_var": "IMPORT_BILL",
+      "dst_var": "FUEL_PRICES",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "conditional",
+      "hop": 2,
+      "evidence_span": "pushing the landed import cost that fully offsets the gains from the current fuel price hike",
+      "evidence_doc_id": "economic_times-6339c59bc47085648592",
+      "evidence_passage_id": "economic_times-6339c59bc47085648592#p12",
+      "evidence_published_at": "2026-05-16T09:43:00+05:30",
+      "candidate_evidence": []
+    }
+  ],
+  "paths": [],
+  "schema_version": "1.0.0",
+  "notes": "MACHINE-DRAFTED, NOT YET ADJUDICATED. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge passes the B6 rule layer. Edge selection, direction and strength have not been confirmed by a human reviewer, and issue #37's Cohen's kappa still requires two independent annotators. Treat every number measured against this as provisional until data/eval/gold/dev/ADJUDICATION.md records sign-off."
+}

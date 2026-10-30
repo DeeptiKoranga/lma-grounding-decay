@@ -73,7 +73,9 @@ default-groups = []
 [tool.pytest.ini_options]
 minversion = "8.0"
 testpaths = ["tests"]
-pythonpath = ["src"]
+# "." so tests can import the scripts/ entry points, which are modules the
+# project ships and therefore worth testing rather than only running by hand.
+pythonpath = ["src", "."]
 addopts = "-q --strict-markers --strict-config"
 filterwarnings = ["error"]
 markers = [

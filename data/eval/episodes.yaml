@@ -1,0 +1,137 @@
+# Candidate anchor episodes (B2).
+#
+# The proposal anchors its 30 queries on eight 2026 episodes. Each one must be
+# confirmed against the macro series store before it can carry a query, and the
+# check is done under as-of discipline: an observation counts only if its
+# `available_on` date falls on or before the episode's as-of date. A series that
+# was published in June cannot confirm an anchor for a query dated March.
+#
+# Series confirm that a move happened. They are never evidence for an edge
+# (proposal section 10). An episode with no series behind it is not thereby
+# false - it is document-confirmed, which is a weaker and explicitly labelled
+# basis, recorded as `no_series` by the checker.
+#
+# `scripts/confirm_episodes.py` reads this file and writes data/eval/episodes.md.
+# Re-run it whenever Track A extends the series store (A10); the dispositions
+# are derived, never hand-written.
+
+version: "1.0.0"
+checked_on: "2026-10-27"
+
+# The window the whole study is frozen to.
+window_start: "2026-03-01"
+window_end: "2026-09-30"
+
+episodes:
+  - id: ep-mar-oil-shock
+    label: "March 2026 crude oil shock"
+    claim: "Brent crude at or above $100 a barrel"
+    anchor_var: BRENT
+    direction: up
+    series_id: brent_usd_bbl
+    threshold: 100.0
+    comparison: at_or_above
+    claimed_on: "2026-03-12"
+    proposed_as_of: "2026-03-20"
+    note: >-
+      The proposal's worked example (Figure 1) and the episode the whole
+      illustration rests on.
+
+  - id: ep-apr-atf-increase
+    label: "April 2026 ATF price increase"
+    claim: "Aviation turbine fuel prices raised for the fortnight"
+    anchor_var: ATF_PRICE
+    direction: up
+    series_id: null
+    threshold: null
+    comparison: null
+    claimed_on: "2026-04-15"
+    proposed_as_of: "2026-04-30"
+    note: >-
+      Administered price announced by the oil marketing companies. No ATF series
+      is held in the store, so this anchor can only be document-confirmed.
+
+  - id: ep-may-rupee-low
+    label: "May 2026 rupee record low"
+    claim: "USD/INR at or above 96.8, the weakest level of the window"
+    anchor_var: INR_USD
+    direction: up
+    series_id: inr_usd
+    threshold: 96.8
+    comparison: at_or_above
+    claimed_on: "2026-05-20"
+    proposed_as_of: "2026-05-25"
+    note: >-
+      The proposal cites a record low near INR 96.9 per USD.
+
+  - id: ep-jun-rbi-meeting
+    label: "June 2026 RBI policy meeting"
+    claim: "The MPC announced its June policy decision"
+    anchor_var: REPO_RATE
+    direction: stable
+    series_id: null
+    threshold: null
+    comparison: null
+    claimed_on: "2026-06-05"
+    proposed_as_of: "2026-06-15"
+    note: >-
+      A policy decision, not a market move. No repo-rate series is held, and the
+      RBI statements and minutes are absent from the corpus (A2 shortfall), so
+      both legs of confirmation are weak.
+
+  - id: ep-aug-rbi-meeting
+    label: "August 2026 RBI policy meeting"
+    claim: "The MPC announced its August policy decision"
+    anchor_var: REPO_RATE
+    direction: stable
+    series_id: null
+    threshold: null
+    comparison: null
+    claimed_on: "2026-08-05"
+    proposed_as_of: "2026-08-15"
+    note: >-
+      Track A reports a dated primary announcement supporting this meeting
+      (reports/track_a_followup_20261026.json).
+
+  - id: ep-sep-bond-selloff
+    label: "September 2026 bond sell-off"
+    claim: "Ten-year G-sec yield at or above 7.0 per cent"
+    anchor_var: GSEC_10Y
+    direction: up
+    series_id: gsec_10y_pct
+    threshold: 7.0
+    comparison: at_or_above
+    claimed_on: "2026-09-18"
+    proposed_as_of: "2026-09-25"
+    note: >-
+      The yield series ends on 31 August, so there is nothing in September to
+      confirm against.
+
+  - id: ep-cpi-acceleration
+    label: "Mid-2026 CPI acceleration past 4 per cent"
+    claim: "Headline CPI inflation at or above 4.0 per cent year on year"
+    anchor_var: CPI_HEADLINE
+    direction: up
+    series_id: cpi_headline_yoy
+    threshold: 4.0
+    comparison: at_or_above
+    claimed_on: "2026-06-30"
+    proposed_as_of: "2026-07-20"
+    note: >-
+      Official MOSPI releases, monthly, with a release lag of about two weeks.
+      Added here in place of one unnamed episode because it is the best-covered
+      official series in the store.
+
+  - id: ep-mar-fpi-outflow
+    label: "March 2026 foreign portfolio outflow"
+    claim: "Net FPI flows at or below -10,000 USD million for the month"
+    anchor_var: FPI_FLOWS
+    direction: down
+    series_id: fpi_flows_usd_mn
+    threshold: -10000.0
+    comparison: at_or_below
+    claimed_on: "2026-03-31"
+    proposed_as_of: "2026-04-20"
+    note: >-
+      The single FPI observation in the store, released on 13 April. Added in
+      place of one unnamed episode; its as-of date must clear the release lag.
