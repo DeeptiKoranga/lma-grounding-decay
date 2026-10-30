@@ -74,19 +74,19 @@ differs from the current series. Dated primary announcements now support the
 April ATF announcement and August RBI meeting; final anchor acceptance remains
 with Track B. See [the follow-up record](reports/track_a_followup_20261026.json).
 
-## Track C progress ? 30 October 2026
+## Track C progress - 30 October 2026
 
 **Implementation and development verification: C1?C9 completed.** Track C
 generation, agent, evaluation and integration work has been implemented and
 committed on the `c/agent-controller` branch.
 
-- **C1 ? Unified generation:** A common `generate()` interface supports MLX,
+- **C1 - Unified generation:** A common `generate()` interface supports MLX,
   llama.cpp and vLLM backends. Kaggle vLLM live verification passed, including
   JSON generation and project integration. Generator contract tests: 17/17 passed.
-- **C2 ? Model pilot:** The Qwen3-8B versus Qwen3.5-9B pilot artifacts and
+- **C2 - Model pilot:** The Qwen3-8B versus Qwen3.5-9B pilot artifacts and
   report are available in `reports/pilot_model.md`.
-- **C3?C8:** Completed and previously checked against `PLAN_MIDSUB.md`.
-- **C9 ? Agent-state and tool-fault diagnostics:** The repository includes
+- **C3-C8:** Completed and previously checked against `PLAN_MIDSUB.md`.
+- **C9 - Agent-state and tool-fault diagnostics:** The repository includes
   40 synthetic agent-state cases and 20 scripted tool faults. The fault
   diagnostic passed 20/20 checks. These synthetic diagnostics are not
   human-annotated research results or independent research acceptance.
