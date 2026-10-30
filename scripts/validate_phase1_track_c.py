@@ -22,6 +22,67 @@ def read(path):
     return json.loads(Path(path).read_text(encoding="utf-8"))
 
 
+def validate_native_ci(ci: dict, source_sha256: str) -> None:
+    """Allow only the explicitly optional Track B cases in a portable checkout."""
+    expected_platforms = {
+        "track-c-macos-latest",
+        "track-c-ubuntu-latest",
+        "track-c-windows-latest",
+    }
+    corpus_cases = {
+        ("tests.unit.test_challenge_set", name)
+        for name in (
+            "test_building_refuses_a_gold_set_too_small_to_be_worth_quoting",
+            "test_unreviewed_gold_needs_the_flag",
+            "test_the_rule_layer_catches_every_citation_corruption",
+            "test_the_rule_layer_raises_no_false_alarm_on_the_clean_controls",
+            "test_the_rule_layer_cannot_see_a_reversed_relation",
+            "test_the_rule_layer_cannot_see_an_inflated_strength_label",
+            "test_a_third_of_the_corruptions_need_a_model",
+        )
+    } | {
+        (
+            "tests.unit.test_gold",
+            f"test_each_dev_gold_span_is_verbatim_in_the_corpus[{query_id}]",
+        )
+        for query_id in (
+            "dev-oil-why",
+            "dev-oil-effects",
+            "dev-rupee-why",
+            "dev-rupee-effects",
+        )
+    }
+    allowed = dict.fromkeys(corpus_cases, "corpus payload is not in git")
+    allowed[("tests.unit.test_gold", "test_the_edge_count_must_sit_in_the_reviewed_range[0]")] = (
+        "an empty graph is rejected by the Graph model itself"
+    )
+    jobs = ci.get("jobs", [])
+    if (
+        ci.get("source_sha256") != source_sha256
+        or ci.get("conclusion") != "success"
+        or len(jobs) != 3
+        or {j["platform"] for j in jobs} != expected_platforms
+    ):
+        raise ValueError("native Windows/Linux/macOS acceptance matrix is incomplete")
+    for job in jobs:
+        skipped = job.get("skipped_cases", [])
+        identities = [(case["classname"], case["name"]) for case in skipped]
+        if (
+            job["errors"]
+            or job["failures"]
+            or job["passed"] < 724
+            or job["skipped"] != len(skipped)
+            or len(set(identities)) != len(identities)
+            or any(
+                identity not in allowed or allowed[identity] != case["reason"]
+                for identity, case in zip(identities, skipped, strict=True)
+            )
+        ):
+            raise ValueError(
+                "native acceptance requires passing tests and only named Track B skips"
+            )
+
+
 def validate() -> dict:
     gates = {}
     required = [
@@ -151,21 +212,7 @@ def validate() -> dict:
         "private live vLLM run, checked assets, complete matrix/resume and measured GPU allocation"
     )
     ci = read("reports/track_c_portable_ci_final_20261030.json")
-    expected_platforms = {
-        "track-c-macos-latest",
-        "track-c-ubuntu-latest",
-        "track-c-windows-latest",
-    }
-    if (
-        ci["source_sha256"] != source_identity()["sha256"]
-        or ci["conclusion"] != "success"
-        or len(ci["jobs"]) != 3
-        or {j["platform"] for j in ci["jobs"]} != expected_platforms
-        or any(
-            j["errors"] or j["failures"] or j["skipped"] or j["passed"] < 724 for j in ci["jobs"]
-        )
-    ):
-        raise ValueError("native Windows/Linux/macOS acceptance matrix is incomplete")
+    validate_native_ci(ci, source_identity()["sha256"])
     return {
         "status": "Phase 1 Track C deliverables complete",
         "passed": True,
