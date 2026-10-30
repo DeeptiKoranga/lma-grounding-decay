@@ -40,6 +40,24 @@ not captured and remain unknown. See
 `reports/kaggle_compute_evidence_20261030.json`. Earlier local-only statements
 below keep their original scope and do not deny the subsequent Kaggle runs.
 
+## Additional full A/C review execution
+
+The fresh 20-query four-way retrieval/top-50 reranker replay measured **143.85
+CPU wall seconds**, including model/index loading for that replay and excluding
+earlier index precomputation. Complete raw-source/PDF rebuild and six-series
+replay also finished with byte-identical outputs; their total wall times were
+not instrumented and are not estimated.
+
+The current local MLX seven-condition/two-query review completed 14 new graphs:
+**22 model calls**, **77,146 prompt
+tokens**, **10,328 completion tokens** and
+**1775.634 summed model-call wall seconds**. The full
+audit passed and unchanged resume cached all 14 without new model calls. These
+are successful bound-log totals, not GPU-active or total allocated device time.
+See `reports/phase1_ac_live_run_20261030.json`. No additional Kaggle GPU quota or
+paid API request was used for this review; prior failed probes/replays remain
+described in the review findings.
+
 ---
 
 # Compute log — updated 25 October 2026

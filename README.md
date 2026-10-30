@@ -7,7 +7,28 @@ Deepti Koranga (2025204033).
 
 ---
 
-## Latest Track A delivery — 28 October 2026
+## Phase 1 Track A and C review — 30 October 2026
+
+All 22 A1–A11/C1–C11 implementation deliverables and their artifacts are present.
+The full review repaired malformed model/publisher input handling, review-gate
+validation and A10 source replay. **742 tests pass on native Windows, Ubuntu
+and macOS**, with no skips, plus lint and notebook formatting.
+
+The entire corpus and all six canonical series reproduce byte for byte from
+retained originals. A fresh 20-query retrieval comparison reproduces the
+selection and reranker results. The current local model completed all 14 smoke
+graphs across seven conditions and reused all 14 on unchanged resume.
+
+Track A retains the accepted source-mix and sparse-history deviations: Business
+Standard/RBI/PIB corpus coverage is absent, and four historical series remain
+sparse. Model quality is also limited (5% strict extraction, 10% tool choice in
+the selected model's small pilot). These checks do not establish human-reviewed
+research results or completion of the entire mid-submission.
+
+See [the full 22-deliverable review](reports/phase1_tracks_a_c_review_20261030.md)
+for findings, exact plan comparison, execution evidence and reproduction limits.
+
+## Track A handoff snapshot — 28 October 2026
 
 **Fresh-checkout update — 28 October:** Track A / Varun task 4.3 is complete
 for the local development configuration. A clean GitHub checkout passed setup,
@@ -51,7 +72,7 @@ span has changed.
 All six macro series retain their 161 dated original observations. A separate
 317-observation retrospective snapshot remains excluded at historical cutoffs.
 Source gaps, permissions and anchor limitations are explicitly documented.
-The current suite passes **663 tests** after optional PDF/extraction dependencies
+That snapshot’s suite passed **663 tests** after optional PDF/extraction dependencies
 are installed; committed-source reparse reproduces the archive hash.
 
 The new independent-review workspace is
@@ -86,7 +107,7 @@ Windows worker and resume/checksum portability defects are fixed.
   with assistant reviewer provenance and per-response reasons.
 - **Kaggle:** the private two-T4 vLLM run completed all 14 graphs and cached
   all 14 on resume; measured allocation including setup was 1.211103 GPU-hours.
-- **Checks:** 724 passing tests on each native Windows, Ubuntu and macOS
+- **Checks:** 742 passing tests on each native Windows, Ubuntu and macOS
   runner, with no skips; Ruff and notebook-inclusive Black pass.
 - **Data handoff:** the exact v7 dense index and passages are supplied in a
   separately checksummed frozen-data archive and private Kaggle dataset.

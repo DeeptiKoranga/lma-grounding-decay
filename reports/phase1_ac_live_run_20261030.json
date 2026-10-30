@@ -1,0 +1,140 @@
+{
+  "status": "fresh real local MLX/BGE-M3/FAISS/reranker integration passed; development candidates, not research gold",
+  "complete": true,
+  "completed_graphs": 14,
+  "conditions": {
+    "A-NoLoop": 2,
+    "A-NoVerify": 2,
+    "B0": 2,
+    "B1": 2,
+    "B1-R": 2,
+    "B2": 2,
+    "M": 2
+  },
+  "resume_cached": 14,
+  "all_artifact_and_log_bytes_unchanged_on_resume": true,
+  "source_sha256": "5c15b22454e4c0bb364a774e5d537f0e8073eb99f2a52e4e0ba842c8f3571bf4",
+  "source_commit_with_runtime_fixes": "55d83487be7ceea07980451b47c397db7fdebecb",
+  "current_native_tested_commit": "1b584fd94eaf3c585b4aab5657cae98030e755e1",
+  "query_sha256": "a34e0cd8ac04737ee032c4ab56578a723c3c004b2f9b34ac760d4354d39a0039",
+  "model": "mlx-community/Qwen3-8B-4bit",
+  "revision": "545dc4251c05440727734bcd94334791f6ab0192",
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "inputs_sha256": "c4543fec1066f7da3c42b9c14114d49c2f3f93a7ea5c5b023df759c3d2b00a54",
+  "audit_sha256": "f593d4e824f8839ab1b1cb4c4d63fbacffc280544b222099204a7cb963a795d6",
+  "artifact_checksums": {
+    "failures.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "inputs.json": "c4543fec1066f7da3c42b9c14114d49c2f3f93a7ea5c5b023df759c3d2b00a54",
+    "artifacts.json": "191f5e18e22659885adf9ea39dcaa51ec9f40d9604899bf68016c2ff15296bdc",
+    "B2/dev-candidate-02-d6fe55b2.jsonl": "0c29b55b0505b9f731627ac33dd52adcd8c3b11e3c2b608397eb8adc0ee29e54",
+    "B2/dev-candidate-02.json": "3032fb717b752f83481a0c648ca2103e53007788ee3dcc53da39bf9f3a7524cf",
+    "B2/dev-candidate-01-1382d689.jsonl": "4ace50b80a5a69a4bb811f31203d274da698ca9d6d1d07ca0dce02952fcb9ced",
+    "B2/dev-candidate-01.json": "b78c2e525dceaf6f9b422e8246385f9ac2eee93ceda1500140829fd9039f0bad",
+    "A-NoLoop/dev-candidate-02.json": "5a9e59a3c705c21cdd1e38b474eb0b26ea3e1fbe5e6cf97881352adb1468433d",
+    "A-NoLoop/dev-candidate-02-d336b8a1.jsonl": "24abac8f296044679c7e72bc02bb66041925ddb861c37b3df213c50a666da2b2",
+    "A-NoLoop/dev-candidate-01.json": "bcd5e29a1ac6600fa01d8be23dd15c99b378dd65d25bc5c570175dd27b4106e9",
+    "A-NoLoop/dev-candidate-01-b2afda2d.jsonl": "1f5127ae316fbf67f0516b346d7b94e93feaf5ea7c45ee93736d06aa300d5fc7",
+    "A-NoVerify/dev-candidate-02.json": "8bf11e7cccdbccbf15c93a6e43ae6ba36b4300ad7b9989a4a70fd85fd3727025",
+    "A-NoVerify/dev-candidate-02-7667ea96.jsonl": "dfc85030d465f3eaca5e1de7aebc6d2251821abe6ddc4ca587e2501d643f0370",
+    "A-NoVerify/dev-candidate-01-43454059.jsonl": "80ce07f3b3cda18ce6ae69c2d553cec64e23bf387e07295f192e8277983fc41e",
+    "A-NoVerify/dev-candidate-01.json": "70e67ffe458452f2a44a2365f1adf707867386fdb7413d40411521790a2320da",
+    "B1/dev-candidate-02.json": "56d3111a7a6bbe2af5379b44aad32ab640d77f5050fa9ed10b3c2cbdeb566092",
+    "B1/dev-candidate-02-cdd49061.jsonl": "f1fbc55c406a3f59c3df5b6126481265ee6efbf78ed63df4619b64655182274f",
+    "B1/dev-candidate-01.json": "a2fe261ab764e7d7caa8866e545a634ebfd774afda813a9126b033914a160f16",
+    "B1/dev-candidate-01-adb862e2.jsonl": "107830852aecd132ad32b8a5e1654f3d91acd89b890fee4402a2a30ab84ff57c",
+    "B0/dev-candidate-02-04b204ea.jsonl": "05bcb2fd266feea0fecd680031aa43566dbb9e42c1c648d904cd35bbe0f4d4e3",
+    "B0/dev-candidate-02.json": "0f8c73cac79ab46afff11dbde1b307e1f0ed0153014c5843dd1f73f138d1421b",
+    "B0/dev-candidate-01-1a1e91ca.jsonl": "3bcbf6219a482cfd6f38ecd5e120bc9f38e75526cdcb1b3319fd545a2be1ad66",
+    "B0/dev-candidate-01.json": "7882c964c6c5b7fb77929fd2d4bf182c541348dfe5bd8233ed415b6055fcf267",
+    "M/dev-candidate-02.json": "71fb5ae6a698056d944db869864e2d546bba2ecd8f1b0771f5e7a72d55ca3586",
+    "M/dev-candidate-02-70847c03.jsonl": "f4c797ff85e147815cb08a3b974d52bf5653c887f6395608e5f372e15ceacbd9",
+    "M/dev-candidate-01-0252401a.jsonl": "3575a2a34a08f6cde5136d583496e451bc3d11de1c83dab6e23ccbbba067a6e2",
+    "M/dev-candidate-01.json": "7b34229217c2bc08b8b34cf9351a098a1d0984707826788847086b2565645bf1",
+    "B1-R/dev-candidate-01-efbd0609.jsonl": "b0be690425928b523a7a687d5290965c0ef130c9bee54d94a84d94177029b245",
+    "B1-R/dev-candidate-02.json": "525d6c4c192292a5921a912780f2d05ecc1c4c7f1f09f0db42a3d818eb1f7d09",
+    "B1-R/dev-candidate-02-72c7e77e.jsonl": "422cf2c2b84e7c0f376fcdf40fef3fdfc649626d5abce9ca2a46cf3ce370487a",
+    "B1-R/dev-candidate-01.json": "83166ff7e1438f19358f6c7c32f6ae425f49a9c15d1e134154265160de39a1ca"
+  },
+  "compute_total": {
+    "model_calls": 22,
+    "prompt_tokens": 77146,
+    "completion_tokens": 10328,
+    "model_call_wall_s": 1775.6339082875056,
+    "tool_calls": 65,
+    "invalid_json_calls": 0
+  },
+  "unbound_logs": [],
+  "baseline_source_check_failures": {
+    "A-NoVerify/dev-candidate-01": [
+      {
+        "edge_id": "edge-4",
+        "kind": "nonverbatim_span"
+      },
+      {
+        "edge_id": "edge-5",
+        "kind": "nonverbatim_span"
+      }
+    ],
+    "B1/dev-candidate-01": [
+      {
+        "edge_id": "edge-4",
+        "kind": "nonverbatim_span"
+      }
+    ],
+    "B1-R/dev-candidate-01": [
+      {
+        "edge_id": "edge-1",
+        "kind": "nonverbatim_span"
+      },
+      {
+        "edge_id": "edge-3",
+        "kind": "nonverbatim_span"
+      }
+    ],
+    "B1-R/dev-candidate-02": [
+      {
+        "edge_id": "edge-2",
+        "kind": "nonverbatim_span"
+      },
+      {
+        "edge_id": "edge-3",
+        "kind": "nonverbatim_span"
+      },
+      {
+        "edge_id": "edge-5",
+        "kind": "nonverbatim_span"
+      },
+      {
+        "edge_id": "edge-6",
+        "kind": "nonverbatim_span"
+      }
+    ],
+    "B2/dev-candidate-01": [
+      {
+        "edge_id": "edge-4",
+        "kind": "nonverbatim_span"
+      },
+      {
+        "edge_id": "edge-5",
+        "kind": "nonverbatim_span"
+      }
+    ]
+  },
+  "resume_lines": [
+    "cached B0 dev-candidate-01",
+    "cached B0 dev-candidate-02",
+    "cached B1 dev-candidate-01",
+    "cached B1 dev-candidate-02",
+    "cached B1-R dev-candidate-01",
+    "cached B1-R dev-candidate-02",
+    "cached B2 dev-candidate-01",
+    "cached B2 dev-candidate-02",
+    "cached A-NoVerify dev-candidate-01",
+    "cached A-NoVerify dev-candidate-02",
+    "cached A-NoLoop dev-candidate-01",
+    "cached A-NoLoop dev-candidate-02",
+    "cached M dev-candidate-01",
+    "cached M dev-candidate-02"
+  ],
+  "scope": "All conditions share the same pinned local model and retrieval. Verified graphs pass structural source/date/span checks. Raw baseline/ablation quotation errors remain visible outcomes. No human support or UER judgment is inferred."
+}

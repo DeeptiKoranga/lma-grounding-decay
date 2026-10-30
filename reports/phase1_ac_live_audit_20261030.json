@@ -1,0 +1,378 @@
+{
+  "status": "development integration audit; no human support scores",
+  "passed": true,
+  "complete": true,
+  "allow_partial": false,
+  "expected_graphs": 14,
+  "completed_graphs": 14,
+  "conditions": {
+    "A-NoLoop": 2,
+    "A-NoVerify": 2,
+    "B0": 2,
+    "B1": 2,
+    "B1-R": 2,
+    "B2": 2,
+    "M": 2
+  },
+  "failures": [],
+  "graphs": [
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "A-NoLoop",
+      "edges": 6,
+      "established_edges": 0,
+      "paths": 3,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 1,
+      "verifier_verdicts": {
+        "unsupported": 5
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "bcd5e29a1ac6600fa01d8be23dd15c99b378dd65d25bc5c570175dd27b4106e9"
+    },
+    {
+      "query_id": "dev-candidate-02",
+      "condition": "A-NoLoop",
+      "edges": 6,
+      "established_edges": 1,
+      "paths": 3,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 1,
+      "verifier_verdicts": {
+        "supported": 1,
+        "unsupported": 4
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "5a9e59a3c705c21cdd1e38b474eb0b26ea3e1fbe5e6cf97881352adb1468433d"
+    },
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "A-NoVerify",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 3,
+      "tool_calls": 4,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [
+          {
+            "edge_id": "edge-4",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-5",
+            "kind": "nonverbatim_span"
+          }
+        ],
+        "passed": false,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "70e67ffe458452f2a44a2365f1adf707867386fdb7413d40411521790a2320da"
+    },
+    {
+      "query_id": "dev-candidate-02",
+      "condition": "A-NoVerify",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 2,
+      "tool_calls": 3,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "8bf11e7cccdbccbf15c93a6e43ae6ba36b4300ad7b9989a4a70fd85fd3727025"
+    },
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "B0",
+      "edges": 8,
+      "established_edges": 5,
+      "paths": 2,
+      "tool_calls": 1,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 8,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "7882c964c6c5b7fb77929fd2d4bf182c541348dfe5bd8233ed415b6055fcf267"
+    },
+    {
+      "query_id": "dev-candidate-02",
+      "condition": "B0",
+      "edges": 0,
+      "established_edges": 0,
+      "paths": 0,
+      "tool_calls": 1,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "0f8c73cac79ab46afff11dbde1b307e1f0ed0153014c5843dd1f73f138d1421b"
+    },
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "B1",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 3,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [
+          {
+            "edge_id": "edge-4",
+            "kind": "nonverbatim_span"
+          }
+        ],
+        "passed": false,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "a2fe261ab764e7d7caa8866e545a634ebfd774afda813a9126b033914a160f16"
+    },
+    {
+      "query_id": "dev-candidate-02",
+      "condition": "B1",
+      "edges": 1,
+      "established_edges": 1,
+      "paths": 1,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "56d3111a7a6bbe2af5379b44aad32ab640d77f5050fa9ed10b3c2cbdeb566092"
+    },
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "B1-R",
+      "edges": 4,
+      "established_edges": 4,
+      "paths": 2,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [
+          {
+            "edge_id": "edge-1",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-3",
+            "kind": "nonverbatim_span"
+          }
+        ],
+        "passed": false,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "83166ff7e1438f19358f6c7c32f6ae425f49a9c15d1e134154265160de39a1ca"
+    },
+    {
+      "query_id": "dev-candidate-02",
+      "condition": "B1-R",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 6,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [
+          {
+            "edge_id": "edge-2",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-3",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-5",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-6",
+            "kind": "nonverbatim_span"
+          }
+        ],
+        "passed": false,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "525d6c4c192292a5921a912780f2d05ecc1c4c7f1f09f0db42a3d818eb1f7d09"
+    },
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "B2",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 3,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [
+          {
+            "edge_id": "edge-4",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-5",
+            "kind": "nonverbatim_span"
+          }
+        ],
+        "passed": false,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "b78c2e525dceaf6f9b422e8246385f9ac2eee93ceda1500140829fd9039f0bad"
+    },
+    {
+      "query_id": "dev-candidate-02",
+      "condition": "B2",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 2,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "3032fb717b752f83481a0c648ca2103e53007788ee3dcc53da39bf9f3a7524cf"
+    },
+    {
+      "query_id": "dev-candidate-01",
+      "condition": "M",
+      "edges": 6,
+      "established_edges": 0,
+      "paths": 3,
+      "tool_calls": 8,
+      "stop_reason": "two_searches_added_nothing",
+      "unchecked_inferred_edges": 5,
+      "verifier_verdicts": {
+        "unsupported": 1
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "7b34229217c2bc08b8b34cf9351a098a1d0984707826788847086b2565645bf1"
+    },
+    {
+      "query_id": "dev-candidate-02",
+      "condition": "M",
+      "edges": 6,
+      "established_edges": 1,
+      "paths": 3,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 2,
+      "verifier_verdicts": {
+        "supported": 1,
+        "unsupported": 3
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "71fb5ae6a698056d944db869864e2d546bba2ecd8f1b0771f5e7a72d55ca3586"
+    }
+  ],
+  "compute": {
+    "A-NoLoop": {
+      "model_calls": 3,
+      "prompt_tokens": 10368,
+      "completion_tokens": 1598,
+      "model_call_wall_s": 261.3555163741112,
+      "tool_calls": 24,
+      "invalid_json_calls": 0
+    },
+    "A-NoVerify": {
+      "model_calls": 2,
+      "prompt_tokens": 9835,
+      "completion_tokens": 1500,
+      "model_call_wall_s": 241.68460625002626,
+      "tool_calls": 7,
+      "invalid_json_calls": 0
+    },
+    "B0": {
+      "model_calls": 4,
+      "prompt_tokens": 5525,
+      "completion_tokens": 715,
+      "model_call_wall_s": 75.84085333312396,
+      "tool_calls": 2,
+      "invalid_json_calls": 0
+    },
+    "B1": {
+      "model_calls": 4,
+      "prompt_tokens": 15511,
+      "completion_tokens": 1783,
+      "model_call_wall_s": 330.5519972491311,
+      "tool_calls": 4,
+      "invalid_json_calls": 0
+    },
+    "B1-R": {
+      "model_calls": 4,
+      "prompt_tokens": 15704,
+      "completion_tokens": 1634,
+      "model_call_wall_s": 337.38899445708375,
+      "tool_calls": 4,
+      "invalid_json_calls": 0
+    },
+    "B2": {
+      "model_calls": 2,
+      "prompt_tokens": 9835,
+      "completion_tokens": 1500,
+      "model_call_wall_s": 266.9657245409908,
+      "tool_calls": 4,
+      "invalid_json_calls": 0
+    },
+    "M": {
+      "model_calls": 3,
+      "prompt_tokens": 10368,
+      "completion_tokens": 1598,
+      "model_call_wall_s": 261.8462160830386,
+      "tool_calls": 20,
+      "invalid_json_calls": 0
+    }
+  },
+  "unbound_logs": [],
+  "compute_note": "completed artifacts' bound logs only for v2; legacy logs are unbound. Measured model-call wall times and actual token counts, excluding failed/orphan attempts; not GPU-active time or full phase time",
+  "research_acceptance": "separate from structural completion; model selection, human correction/support review, independent gold and episode acceptance required"
+}

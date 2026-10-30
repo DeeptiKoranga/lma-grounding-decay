@@ -6,6 +6,31 @@ project-schema pilot. Track A review records are accepted on Varun's attestation
 Experiment annotations, complete series histories and final episode acceptance remain open; see
 `reports/track_a_progress.md`.
 
+## Full Phase 1 A/C review replay
+
+The [30 October review](../reports/phase1_tracks_a_c_review_20261030.md) records
+742 passing tests per native platform, a full source rebuild, byte-identical
+six-series regeneration and fresh retrieval/model execution. Standard checks
+remain `make lint test validate-track-c` after setup.
+
+The exact two development smoke inputs are committed in
+`data/eval/phase1_ac_smoke_queries_20261030.jsonl`. With the pinned local model,
+retrieval environment, model caches and frozen v7 inputs supplied, run all seven
+conditions into a new directory:
+
+```sh
+HF_HOME="$PWD/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src data/raw/llm_env/bin/python -m conditions --queries data/eval/phase1_ac_smoke_queries_20261030.jsonl --model-selection configs/model_selection.json --retrieval-python .venv/bin/python --reranker-python .venv/bin/python --output runs/my-phase1-ac-smoke
+PYTHONPATH=src .venv/bin/python -m eval.run_audit --runs runs/my-phase1-ac-smoke --output reports/my-phase1-ac-audit.json
+# Repeat the same conditions command with --resume; all 14 results must be cached.
+```
+
+The canonical news-series replay now defaults to v7-bound seeds. It retains the
+original v3 seed file and existing canonical CSV bytes; use the fresh output
+directory command in `data/series/README.md`. Full raw-source corpus/series
+reproduction requires retained originals in addition to the smaller runtime
+bundle. Windows/Linux inference uses the explicit HTTP backend instructions
+below; the local MLX command requires macOS.
+
 ## Completed fresh-checkout check — 28 October 2026
 
 Track A / Varun task 4.3 passed at source commit

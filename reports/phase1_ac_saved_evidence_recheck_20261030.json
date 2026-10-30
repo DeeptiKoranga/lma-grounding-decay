@@ -1,0 +1,14 @@
+{
+  "status": "saved pilot, safety and Kaggle evidence rechecked; no new Kaggle or paid API inference in this review",
+  "project_pilot_outputs": 200,
+  "model_pilot_outputs_sha256": "02a8588a6cdfa04fb61c3bc9f5e6d18e9e910db2c332b1aaa740a78b5aa20816",
+  "safety_responses": 25,
+  "safety_outputs_sha256": "7e0d02aeec63e21d247747e5c5e2025d8767eb434033baf6edc31a5a656ab634",
+  "safety_review_sha256": "608f62ab67c460d23b6e981f28ec425f2911fc78ebb8cc1bae4ffc9675f82640",
+  "kaggle_graphs_reaudited": 14,
+  "kaggle_audit_passed": true,
+  "kaggle_reaudit_sha256": "eef5c3b23568f399c93ddf7583bd4f92ee949d2e6cc2f151c1f9b5a95d069575",
+  "fresh_fault_cases": 20,
+  "track_c_gate_passed": true,
+  "scope": "Current completion gate reproduces scores and verifies response/receipt bindings; original model-generation source/runtime identities remain preserved."
+}

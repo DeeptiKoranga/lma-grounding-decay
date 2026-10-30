@@ -1,7 +1,9 @@
 # Retriever pilot
 
-**Current entry point — 27 October:** the receipt-bound comparison is
-[pilot_retriever_v7_attested_20261027.md](pilot_retriever_v7_attested_20261027.md).
+**Current entry point — 30 October:** the fresh complete replay is
+[phase1_ac_retriever_pilot_20261030.md](phase1_ac_retriever_pilot_20261030.md).
+It reuses the original hash-bound 27 October review receipt; the earlier
+[pilot](pilot_retriever_v7_attested_20261027.md) remains historical.
 It records Varun's supplied review declarations and reproduces the metrics below.
 The selected first stage is BGE-M3; retain top-50 reranking for B1-R. See
 [the selection](track_a_retrieval_selection_20261027.json) and

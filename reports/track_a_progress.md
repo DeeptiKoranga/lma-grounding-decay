@@ -1,4 +1,14 @@
-# Track A delivery status — updated 28 October 2026
+# Track A delivery status — updated 30 October 2026
+
+**Full Phase 1 A/C review — 30 October:** the full original-source corpus and
+all six canonical series now reproduce byte for byte under current code. The
+20-query retrieval/reranker rerun matches the recorded selection. All 742 tests
+pass on native Windows, Ubuntu and macOS. Additional parser, review-gate and
+news-series reproduction defects were fixed. Source-mix and sparse-series
+deviations remain explicit; this is the adopted scoped handoff, not a claim of
+complete named-source acquisition or complete histories. See
+[the review](phase1_tracks_a_c_review_20261030.md). The dated history below keeps
+its original model/source/test scope.
 
 **Fresh-checkout update — 28 October:** Track A / Varun task 4.3 is complete
 for the local development configuration. A clean GitHub checkout passed setup,

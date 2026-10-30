@@ -1,12 +1,19 @@
 # Integrated development pipeline — updated 30 October 2026
 
+**Full Phase 1 A/C review:** five reproduced validation/reproduction defects
+were fixed; 742 tests pass on each native platform. The exact v7 corpus and all
+six series regenerate from source caches, the 20-query retrieval comparison
+reproduces, and a new local seven-condition/two-query run passes audit and cached
+resume. See [the current review](phase1_tracks_a_c_review_20261030.md). Original
+source-mix, sparse-history and model-accuracy limitations remain disclosed.
+
 **Current Track C disposition — 30 October:** all Phase 1 C1–C11 deliverables
 are complete. The project-schema pilot resolves D-01 to `mlx-community/Qwen3-8B-4bit` at
 `545dc4251c05440727734bcd94334791f6ab0192`; all 200 raw case scores reproduce.
 The selected model's 25-response safety evaluation covers all four risks with
 explicit assistant review. A fresh private Kaggle run completed all 14 graphs
 and cached all 14 on resume, using 1.211103 measured allocated GPU-hours.
-Native Windows, Ubuntu and macOS each pass 724 tests without skips, plus
+Native Windows, Ubuntu and macOS each pass 742 tests without skips, plus
 Ruff and notebook-inclusive Black. See [the closeout](phase1_track_c_closeout_20261030.md).
 The dated development history below retains its original model/source scope.
 Independent gold/support judgments, full scientific sweeps and headline UER
@@ -21,7 +28,7 @@ native inference environments and the verified PDF distribution were reused;
 other laptops/Kaggle remain unverified. See
 [fresh-checkout evidence](fresh_checkout_reproduction_20261028.md).
 
-**Latest engineering check:** all five findings from the original audit are
+**27 October engineering check:** all five findings from the original audit are
 fixed. The command uses the selected BGE-M3/FAISS first stage, performs logged
 series checks, rejects stale resumes and incomplete sweeps, and installs its
 default verifier alias resource. The suite passes 663 tests, Ruff and Black.

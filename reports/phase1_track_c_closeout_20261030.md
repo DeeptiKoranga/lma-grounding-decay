@@ -1,3 +1,9 @@
+> This closeout preserves the `9084e52` snapshot. The subsequent same-day
+> [full A/C review](phase1_tracks_a_c_review_20261030.md) fixes additional boundary
+> cases, passes 742 native tests per platform and completes a fresh local
+> 14-graph execution/resume. Earlier pilot, safety and Kaggle source bindings
+> remain unchanged.
+
 # Phase 1 Track C closeout — 30 October 2026
 
 **C1–C11 are complete on `varun`.** Harshal’s `c/agent-controller` changes were merged, the reported defects were fixed, and the remaining project-specific pilot, four-risk safety review and bounded private Kaggle execution have actual saved evidence.

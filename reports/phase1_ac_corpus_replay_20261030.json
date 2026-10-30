@@ -1,0 +1,79 @@
+{
+  "executed_on": "2026-10-30",
+  "status": "complete offline original-source replay matches the active v7 snapshot byte for byte",
+  "method": "Current parser and PDF narrative extraction applied to checksummed retained originals referenced by archived v3; original active data untouched. The underlying build script retains its historical built_on constant; this wrapper records the actual review execution date.",
+  "documents": 1156,
+  "passages": 16472,
+  "sources": {
+    "businessline": 213,
+    "eaindustry": 10,
+    "economic_times": 870,
+    "mint": 12,
+    "mospi": 37,
+    "ppac": 14
+  },
+  "source_month_counts": {
+    "businessline/2026-03": 30,
+    "businessline/2026-04": 30,
+    "businessline/2026-05": 34,
+    "businessline/2026-06": 33,
+    "businessline/2026-07": 28,
+    "businessline/2026-08": 24,
+    "businessline/2026-09": 34,
+    "eaindustry/2026-03": 1,
+    "eaindustry/2026-04": 1,
+    "eaindustry/2026-05": 1,
+    "eaindustry/2026-06": 2,
+    "eaindustry/2026-07": 2,
+    "eaindustry/2026-08": 1,
+    "eaindustry/2026-09": 2,
+    "economic_times/2026-03": 153,
+    "economic_times/2026-04": 122,
+    "economic_times/2026-05": 118,
+    "economic_times/2026-06": 118,
+    "economic_times/2026-07": 118,
+    "economic_times/2026-08": 114,
+    "economic_times/2026-09": 127,
+    "mint/2026-03": 2,
+    "mint/2026-04": 2,
+    "mint/2026-05": 2,
+    "mint/2026-06": 1,
+    "mint/2026-07": 2,
+    "mint/2026-08": 2,
+    "mint/2026-09": 1,
+    "mospi/2026-03": 6,
+    "mospi/2026-04": 2,
+    "mospi/2026-05": 6,
+    "mospi/2026-06": 5,
+    "mospi/2026-07": 5,
+    "mospi/2026-08": 7,
+    "mospi/2026-09": 6,
+    "ppac/2026-03": 1,
+    "ppac/2026-04": 2,
+    "ppac/2026-06": 5,
+    "ppac/2026-07": 2,
+    "ppac/2026-08": 4
+  },
+  "all_offsets_exact": true,
+  "pdf_layout_audits": 61,
+  "reverse_input_archive_identical": true,
+  "files": {
+    "articles.jsonl": {
+      "sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+      "matches_active": true
+    },
+    "documents.jsonl": {
+      "sha256": "d4d371d1b769b9c980a8f8c802f430dae2879c2e4b84f2d4adab3ffd2422eae0",
+      "matches_active": true
+    },
+    "duplicates.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches_active": true
+    },
+    "corpus-v7-narrative-development.zip": {
+      "sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+      "matches_active": true
+    }
+  },
+  "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037"
+}

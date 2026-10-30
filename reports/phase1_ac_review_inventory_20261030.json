@@ -1,0 +1,1020 @@
+{
+  "syntax_passed": true,
+  "runtime_source_sha256": "5c15b22454e4c0bb364a774e5d537f0e8073eb99f2a52e4e0ba842c8f3571bf4",
+  "inventory": {
+    "src": {
+      "modules": 71,
+      "lines": 10021,
+      "files": [
+        {
+          "file": "src/agent/__init__.py",
+          "sha256": "dbaea21b4f5731de0e3ee9634117b4ee998b0a795af5ced7d66af9dfe97a3475",
+          "lines": 1,
+          "functions": 0
+        },
+        {
+          "file": "src/agent/controller.py",
+          "sha256": "f856bbc9b3ca7736506a405ec587c85d08fd564a080e258f3cf47fe96bb80303",
+          "lines": 90,
+          "functions": 2
+        },
+        {
+          "file": "src/agent/logging.py",
+          "sha256": "41e1719df1441f331e3df34326e2ab268f06d8b2fe0bb434f9acc9a489baebbd",
+          "lines": 43,
+          "functions": 4
+        },
+        {
+          "file": "src/conditions/__init__.py",
+          "sha256": "26c196ce0c6818883732b758eed3c795c860d9af90fb04381feb13f50938080f",
+          "lines": 1,
+          "functions": 0
+        },
+        {
+          "file": "src/conditions/__main__.py",
+          "sha256": "526ad2614bc83831ef375f0a7414df4c2ab0487a1a6b4f29586ebf0fd28a4db9",
+          "lines": 316,
+          "functions": 4
+        },
+        {
+          "file": "src/conditions/anchors.py",
+          "sha256": "ab64b61b708684021e37d593d833e115030a0218d5ca41ca0d26a10edb0f48fe",
+          "lines": 74,
+          "functions": 2
+        },
+        {
+          "file": "src/conditions/assets.py",
+          "sha256": "ef54a2af453a8a7e92f18ae8005553ec8eda86556a6b015576ec16e96e6fcdab",
+          "lines": 24,
+          "functions": 1
+        },
+        {
+          "file": "src/conditions/config.py",
+          "sha256": "c6c1ea69fbdaf71f89a7a35d641659106cc748ef835e6f3bb82e8618316ff699",
+          "lines": 26,
+          "functions": 0
+        },
+        {
+          "file": "src/conditions/pipeline.py",
+          "sha256": "369469fdb850c26969c51c8b6f328639500e21e639f9c7170d23f50222da7585",
+          "lines": 280,
+          "functions": 6
+        },
+        {
+          "file": "src/conditions/provenance.py",
+          "sha256": "5ae94a03433a5588ad947bebb64597b27c41591538cc17ed10578335934a3a7a",
+          "lines": 141,
+          "functions": 7
+        },
+        {
+          "file": "src/corpus/__init__.py",
+          "sha256": "f9dee4ff06171287682b41e2bd02cb79982c8e6fb594d15378f0e551d00c4715",
+          "lines": 6,
+          "functions": 0
+        },
+        {
+          "file": "src/corpus/__main__.py",
+          "sha256": "e4680754cbf65368dffc19eb9c276651cd1767b76cf391bf9677f241a3233ff2",
+          "lines": 78,
+          "functions": 1
+        },
+        {
+          "file": "src/corpus/bindings.py",
+          "sha256": "f4cc469beb19095848244b737eff42b34031c3537903bf581bd0257cc57f1412",
+          "lines": 34,
+          "functions": 2
+        },
+        {
+          "file": "src/corpus/dedup.py",
+          "sha256": "bf0ab5f89247de8ed0912a6b5c2c26f4d3ffecbcc9e07ba048b90a6990b6bf42",
+          "lines": 128,
+          "functions": 5
+        },
+        {
+          "file": "src/corpus/documents.py",
+          "sha256": "666853487706c57cb440d36d3911bc05d4e38d030710ce8541815515cff3df8f",
+          "lines": 67,
+          "functions": 4
+        },
+        {
+          "file": "src/corpus/freeze.py",
+          "sha256": "3a3940be8cbb4be1e71a13acb26d27d45eecfd501fb39ee972456f152e3ce380",
+          "lines": 229,
+          "functions": 6
+        },
+        {
+          "file": "src/corpus/official.py",
+          "sha256": "3723cbd13cae5784eeacdc663cd711b20978908163cb5e394caf04f9b488d2c9",
+          "lines": 149,
+          "functions": 5
+        },
+        {
+          "file": "src/corpus/parser.py",
+          "sha256": "3d12f1da8b98aadd4a6e2012e6cc219172aef3645d36d6d7da6f9c2b1e7641a5",
+          "lines": 464,
+          "functions": 25
+        },
+        {
+          "file": "src/corpus/pdf_layout.py",
+          "sha256": "01f9486e8efd60e23f68063e02bb76951c32ead1739395603e7b1affd57c8851",
+          "lines": 143,
+          "functions": 3
+        },
+        {
+          "file": "src/corpus/quality.py",
+          "sha256": "81e019344643b30d3df6574c4a76700fec8ff1f28b1f08bd690fb5681eb69182",
+          "lines": 51,
+          "functions": 1
+        },
+        {
+          "file": "src/corpus/review.py",
+          "sha256": "b0c47fd681e12045158c50bcefd2d433f6963d9b08a1239d4ae20ce9abc44e1e",
+          "lines": 226,
+          "functions": 7
+        },
+        {
+          "file": "src/corpus/series.py",
+          "sha256": "f2d52c381c900629ae02e56b63b8dc020fd4800dc583b1eadb892dbc42996a0e",
+          "lines": 192,
+          "functions": 10
+        },
+        {
+          "file": "src/eval/__init__.py",
+          "sha256": "001460cc2a102753ae2a2a5ffc07001ca86b5937f849e709117afe930a38ec0c",
+          "lines": 1,
+          "functions": 0
+        },
+        {
+          "file": "src/eval/agent_states.py",
+          "sha256": "f4ab2a26a728f1fccf42f0bff14bc33ba29e1480e2789c8f925bc2dd79549dac",
+          "lines": 93,
+          "functions": 4
+        },
+        {
+          "file": "src/eval/agreement.py",
+          "sha256": "efca41e5001cd7128f17a767bff9a3910dcd63f6106b82258682d39a258dded2",
+          "lines": 38,
+          "functions": 3
+        },
+        {
+          "file": "src/eval/capabilities.py",
+          "sha256": "54938db8d44f212fb9331cb91bb6ed2a3ed339e80b9e2e642d3dedabf252da87",
+          "lines": 61,
+          "functions": 1
+        },
+        {
+          "file": "src/eval/challenge.py",
+          "sha256": "175c75cf7b41c2869ad21081236fd75a1efb177b2054f243723734ee6044fbfc",
+          "lines": 119,
+          "functions": 2
+        },
+        {
+          "file": "src/eval/faults.py",
+          "sha256": "b45523a55097f1c0c3f1ebfa6b30265f99253c7f1eba3c5552ffca09b8882e95",
+          "lines": 101,
+          "functions": 3
+        },
+        {
+          "file": "src/eval/figures.py",
+          "sha256": "289a620d422aa214a0ca0251a4b77189c071b1c9ac6e3eefbba189d35476e5fd",
+          "lines": 177,
+          "functions": 4
+        },
+        {
+          "file": "src/eval/metrics.py",
+          "sha256": "ca6fb43280fe0376cd9ac1752e72f365f59d58a41df3b597ecd1cf0041d3e978",
+          "lines": 160,
+          "functions": 6
+        },
+        {
+          "file": "src/eval/model_pilot.py",
+          "sha256": "d603bfd620df46a559c1630250c807c761e6d66b575d7f6d2aed406241aa7d01",
+          "lines": 234,
+          "functions": 2
+        },
+        {
+          "file": "src/eval/prose_review.py",
+          "sha256": "340f57fcd0a2356e4c1ef007e886c7e999c45908cfd17ca5c7d5b3d9b3ba79ae",
+          "lines": 168,
+          "functions": 4
+        },
+        {
+          "file": "src/eval/references.py",
+          "sha256": "79a581d5a9d76dc832c7402bcca750f7cc723a9cfd2b8e9789ea4cc451377bdf",
+          "lines": 100,
+          "functions": 5
+        },
+        {
+          "file": "src/eval/review.py",
+          "sha256": "655c5a28a2de906c6eac4feef3af1abc76e3156d95a91a8f017bcb5ee3573fd2",
+          "lines": 228,
+          "functions": 4
+        },
+        {
+          "file": "src/eval/run_audit.py",
+          "sha256": "83451a84f87f4e5e3d21bc913013e28fd9876ec9acd2fbcc68abb9fad3039285",
+          "lines": 228,
+          "functions": 2
+        },
+        {
+          "file": "src/eval/safety.py",
+          "sha256": "71ee93033ec002d4836f8347b068eea451b14aea416fd8fc828e518bf4d582a1",
+          "lines": 143,
+          "functions": 6
+        },
+        {
+          "file": "src/eval/stats.py",
+          "sha256": "bdf0b47f53870772c697208934a488af00a8a4977a2ee477081a5294159ab17c",
+          "lines": 63,
+          "functions": 2
+        },
+        {
+          "file": "src/extract/__init__.py",
+          "sha256": "ec0172001803baa5fe623c458335cf84315075e49d2e1c85d3cc54e02e116568",
+          "lines": 1,
+          "functions": 0
+        },
+        {
+          "file": "src/extract/candidates.py",
+          "sha256": "cf6e7e51274dd8ed3936ee1c81feb40f651d03427fe152105bc9008f38a8b6e8",
+          "lines": 119,
+          "functions": 3
+        },
+        {
+          "file": "src/llm/__init__.py",
+          "sha256": "d4aa2790c23b373252c2012c428647f7876aa275951d57da112de79d51d3e6a1",
+          "lines": 1,
+          "functions": 0
+        },
+        {
+          "file": "src/llm/generate.py",
+          "sha256": "1b95a1fb5a78f416221a551bc94242e64407e709b751799d7ae58127a8682820",
+          "lines": 294,
+          "functions": 10
+        },
+        {
+          "file": "src/retrieval/__init__.py",
+          "sha256": "cd92b951e68f9bb450a2eef81f261bbcb9388119914aab176be302cfb12d5818",
+          "lines": 17,
+          "functions": 0
+        },
+        {
+          "file": "src/retrieval/__main__.py",
+          "sha256": "5884740c487373fc0deba5b88ec5dc2de6b409ee1e27fc3f87635f9f26f2e35e",
+          "lines": 78,
+          "functions": 1
+        },
+        {
+          "file": "src/retrieval/automated_review.py",
+          "sha256": "e816add3cc2f32fbaeb9d6667d61374e948280b9b0770e346622e8e602c89f1d",
+          "lines": 278,
+          "functions": 6
+        },
+        {
+          "file": "src/retrieval/bm25.py",
+          "sha256": "7a990292d2dbdec2ff671f3cf46b8eb5fac13834fe637af99950d4fadbe7aba8",
+          "lines": 189,
+          "functions": 12
+        },
+        {
+          "file": "src/retrieval/checkpoint.py",
+          "sha256": "b3a3931d6a7e83471f1af8e702df12c8151af99dbae605e6cb4df57c0affa990",
+          "lines": 99,
+          "functions": 2
+        },
+        {
+          "file": "src/retrieval/dense.py",
+          "sha256": "0ed339438512c95e5f11b9c9315c73bbab8ee5a0a55abf9b57312f44db10e20e",
+          "lines": 261,
+          "functions": 12
+        },
+        {
+          "file": "src/retrieval/factory.py",
+          "sha256": "f2c124e0a21de7309875499796b5c59275c5156ac67ec5b9c3ffd1427476165c",
+          "lines": 94,
+          "functions": 1
+        },
+        {
+          "file": "src/retrieval/filters.py",
+          "sha256": "986454a7d2015e761ef46879f33af11d768d903df62f5646db3cb0d06d6b4b77",
+          "lines": 59,
+          "functions": 4
+        },
+        {
+          "file": "src/retrieval/hybrid.py",
+          "sha256": "62746be06d8f66bb5af6f1aa3cfcfc9d13e17454b919e619e5a190f374846072",
+          "lines": 51,
+          "functions": 2
+        },
+        {
+          "file": "src/retrieval/pilot.py",
+          "sha256": "247716182325845520ffabc182c364af66d7407e7ce8d129b6c831cf2d9f20f0",
+          "lines": 125,
+          "functions": 5
+        },
+        {
+          "file": "src/retrieval/pilot_runner.py",
+          "sha256": "f057f0a7469e034c197932d48a9c41b0adb3c23fef40df40d59839eac6fa32c3",
+          "lines": 290,
+          "functions": 5
+        },
+        {
+          "file": "src/retrieval/rerank.py",
+          "sha256": "2ffb5edadd654a7081839f893c80d2470eb5186a508e3b1137374e982a07a4cf",
+          "lines": 102,
+          "functions": 6
+        },
+        {
+          "file": "src/retrieval/review.py",
+          "sha256": "b261294ff1b4b1f0c4872a421b627d6a2a8ee9415330234532aa0eabed3eaf05",
+          "lines": 400,
+          "functions": 9
+        },
+        {
+          "file": "src/retrieval/score_cli.py",
+          "sha256": "a8f979b8db41fc5b18866c7a01c107ca288ed5155bed486eeab2003df63d7e48",
+          "lines": 22,
+          "functions": 1
+        },
+        {
+          "file": "src/retrieval/worker.py",
+          "sha256": "a0e71db6dc7042e8bba099d2ef886094ebd8e47b10e07d30850d948d115d068b",
+          "lines": 156,
+          "functions": 5
+        },
+        {
+          "file": "src/schema/__init__.py",
+          "sha256": "b9302717d6a1d6d0421f4ecf4e32c6005d27a7fd7debda0c8da4af4fd3669b63",
+          "lines": 78,
+          "functions": 0
+        },
+        {
+          "file": "src/schema/enums.py",
+          "sha256": "3bbb005bbd52fd51d3b5baa75be10675b67da55924ba0fd65f4e9643e0e03366",
+          "lines": 105,
+          "functions": 2
+        },
+        {
+          "file": "src/schema/export_schemas.py",
+          "sha256": "ec1ee59743a5f836622f2bfe9939835de4c87dee6b5e5fa399e3ccfca5cda9c5",
+          "lines": 72,
+          "functions": 4
+        },
+        {
+          "file": "src/schema/models.py",
+          "sha256": "a108339e4b61ae802e8e9749feabf166e4df336d347f97878c7a6570c4814ee6",
+          "lines": 470,
+          "functions": 22
+        },
+        {
+          "file": "src/schema/ontology.py",
+          "sha256": "b820df8ece9bd7cde8192eb349f0cdab844d93ea409cda6ff8605d9ec42627e2",
+          "lines": 83,
+          "functions": 7
+        },
+        {
+          "file": "src/schema/runlog.py",
+          "sha256": "5a6c1cc771274352d3109da6f2d258e35c45166090cb47dbf34ab710bb6cfa4a",
+          "lines": 121,
+          "functions": 2
+        },
+        {
+          "file": "src/schema/tools.py",
+          "sha256": "108ac8bdd2ac6c3db342133be9792ef31334a0b3521f8aecf3bb2b8adeb4023f",
+          "lines": 326,
+          "functions": 6
+        },
+        {
+          "file": "src/tools/__init__.py",
+          "sha256": "cbee864eba44dc92386f80d6471769e57f23a1de0468cd0346fa0efb2f97ecfd",
+          "lines": 1,
+          "functions": 0
+        },
+        {
+          "file": "src/tools/runtime.py",
+          "sha256": "074b94fe1f6b6239e3d94ac1a366cb9f078bfdf33f646edd71259d294538feab",
+          "lines": 392,
+          "functions": 8
+        },
+        {
+          "file": "src/verify/__init__.py",
+          "sha256": "0cf2fdc4309b116a622800355ce907db9eb761e92aeccb6795ddf6ab89f2c7e8",
+          "lines": 54,
+          "functions": 0
+        },
+        {
+          "file": "src/verify/aliases.py",
+          "sha256": "c7b8771fb77aaa5f550350208da4c0cb88b23155a9086003098fcbd136fddde3",
+          "lines": 195,
+          "functions": 11
+        },
+        {
+          "file": "src/verify/llm_verifier.py",
+          "sha256": "36d4a8283559776c9b63776f45290ed39dc6bf24de198a5b138d6119ff26ea3d",
+          "lines": 119,
+          "functions": 2
+        },
+        {
+          "file": "src/verify/normalise.py",
+          "sha256": "56150227ab4fb2898554e466c9f27a84b22b73fb1c2d31a59d3f2f22026d1146",
+          "lines": 116,
+          "functions": 2
+        },
+        {
+          "file": "src/verify/paths.py",
+          "sha256": "245d100081cb583f9e49a4e981c8a622abe887185e04d610af21632b9910af53",
+          "lines": 71,
+          "functions": 2
+        },
+        {
+          "file": "src/verify/rules.py",
+          "sha256": "5c61d01447117800864a66992bf2083e71906c5136ecec11365d317c8b48fb5a",
+          "lines": 505,
+          "functions": 24
+        }
+      ]
+    },
+    "scripts": {
+      "modules": 41,
+      "lines": 7253,
+      "files": [
+        {
+          "file": "scripts/apply_source_review.py",
+          "sha256": "518d5535be8c4bd7f801c2bd3e7b3efc1d5faf1ce3e7690fc96e86844d31719a",
+          "lines": 126,
+          "functions": 2
+        },
+        {
+          "file": "scripts/assemble_development_phases.py",
+          "sha256": "b137c92a1f3c3fd67501d76d28a3ef068f5250d7b6ade31549ee25bc745d5fae",
+          "lines": 131,
+          "functions": 3
+        },
+        {
+          "file": "scripts/audit_retrieval_seeds.py",
+          "sha256": "bf7a4ead176e88d3fff35e536b1d868a27ad51388c504e64b5c7bf9e06617913",
+          "lines": 326,
+          "functions": 3
+        },
+        {
+          "file": "scripts/audit_sebi_fpi.py",
+          "sha256": "e05f42c4a4f3a159041af6abb901d0822d2c2b9e9534d1fcbaa08e6c312906a4",
+          "lines": 179,
+          "functions": 2
+        },
+        {
+          "file": "scripts/build_capability_fixtures.py",
+          "sha256": "fad8e0a95c4f3ea30f1ed1f4e9081e4fae0a8731deccb96d8baf6bc0faf3d774",
+          "lines": 114,
+          "functions": 2
+        },
+        {
+          "file": "scripts/build_fixtures.py",
+          "sha256": "ebf33eb28de820ceda73dfde341b18cb98c41546f475f2ae0a14ce351d8ac7ed",
+          "lines": 841,
+          "functions": 7
+        },
+        {
+          "file": "scripts/build_track_a_index.py",
+          "sha256": "87ada41fd77f3c485b02111047ddd2803301b8ba070a59fa0d628ab011d6227e",
+          "lines": 115,
+          "functions": 3
+        },
+        {
+          "file": "scripts/fetch/__init__.py",
+          "sha256": "eab31c191894f694d4a33fa9c3486f4ddb100df54c42dec5ed58bb0e611d7f74",
+          "lines": 1,
+          "functions": 0
+        },
+        {
+          "file": "scripts/fetch/cdsl_series.py",
+          "sha256": "05900dfd9a24852790cda50c2f95d9b512e4ff85856a0b7bb71e05c4131d5aef",
+          "lines": 340,
+          "functions": 9
+        },
+        {
+          "file": "scripts/fetch/client.py",
+          "sha256": "110bec516f962cad2d46b718c8a1267668ffbaf71c8278cabe0dc1894ca8d23a",
+          "lines": 153,
+          "functions": 7
+        },
+        {
+          "file": "scripts/fetch/collect.py",
+          "sha256": "33b048e788f5cce69f06c1d5c63ac4cab0519c3277529a6a054269f3f5148624",
+          "lines": 162,
+          "functions": 2
+        },
+        {
+          "file": "scripts/fetch/cpi_series.py",
+          "sha256": "213e08be9cd90946d9f23a7e674c30834968dcd41f37ea6382dd15039e53fd32",
+          "lines": 187,
+          "functions": 4
+        },
+        {
+          "file": "scripts/fetch/discovery.py",
+          "sha256": "c7b672c7f29226d528171cc1679cf30304988c7e46bc85d536b1aa6cae7f5755",
+          "lines": 160,
+          "functions": 6
+        },
+        {
+          "file": "scripts/fetch/fbil_newsletters.py",
+          "sha256": "4641abca3876bd9725b0601ffc255fb4699724e0701a253ffd26d43f697a76c2",
+          "lines": 144,
+          "functions": 3
+        },
+        {
+          "file": "scripts/fetch/fbil_series.py",
+          "sha256": "05eda2c8e13f4dbf927b47978ec7f5d3afc330f6d6b7e27ca149a0427e7cf89d",
+          "lines": 155,
+          "functions": 3
+        },
+        {
+          "file": "scripts/fetch/news_batch.py",
+          "sha256": "37084fb6ef05d395ebfdddbc7b2b2e236d6722c50cee33996fdae99c31b39654",
+          "lines": 174,
+          "functions": 2
+        },
+        {
+          "file": "scripts/fetch/news_series.py",
+          "sha256": "e079001f17c3064263b8ead83ce9c4216517267e5ab7b1de39b1b0a51d657a45",
+          "lines": 213,
+          "functions": 3
+        },
+        {
+          "file": "scripts/fetch/oea_releases.py",
+          "sha256": "d953bd1491c70c35d8b9fe10b40039bd4a8b07ad5f1f70e86d35ea11cb0af891",
+          "lines": 154,
+          "functions": 4
+        },
+        {
+          "file": "scripts/fetch/official.py",
+          "sha256": "9ed5cdb50b6a27e54f88bf6dfefd8364ce83b02db3beae91522e54b282bf3597",
+          "lines": 207,
+          "functions": 4
+        },
+        {
+          "file": "scripts/fetch/ppac_series.py",
+          "sha256": "efe3b3c0438706d19a3b4921e0e1171d1e094a454b4b9c54ca60767b9b11a877",
+          "lines": 273,
+          "functions": 8
+        },
+        {
+          "file": "scripts/fetch/retrospective_series.py",
+          "sha256": "e0b0a3a38f3274beeeea48300cb81a5d90964db5e7dd55abe8e68e831edbf13e",
+          "lines": 311,
+          "functions": 8
+        },
+        {
+          "file": "scripts/fetch/retrospective_sources.py",
+          "sha256": "a94a2f80b068d33af4b2bf1ede2ba96c6522af6db33c5c7a6ec83b0c30a00fae",
+          "lines": 170,
+          "functions": 2
+        },
+        {
+          "file": "scripts/fetch/series.py",
+          "sha256": "36239c01a3d538bc3fb110a66a0c4f90136c3b557022a4b05bfbb27ecf0ad5a5",
+          "lines": 89,
+          "functions": 2
+        },
+        {
+          "file": "scripts/fetch/sources.py",
+          "sha256": "d0543f8b32e807d6049abd427978ad0c6e4e8ab38ceefc47b084f6498cc12165",
+          "lines": 41,
+          "functions": 1
+        },
+        {
+          "file": "scripts/finalize_model_pilot.py",
+          "sha256": "de67cc51fb802bd6312573078b9e38b783ef54e4c4bc36cd24c1bf29c57d2f4e",
+          "lines": 201,
+          "functions": 1
+        },
+        {
+          "file": "scripts/finalize_track_a_corpus.py",
+          "sha256": "168bcd6c8f8d9765a113270f1dcef10231e45b0970b2f4d5b06aafc2d4a73809",
+          "lines": 161,
+          "functions": 3
+        },
+        {
+          "file": "scripts/kaggle_bootstrap.py",
+          "sha256": "496aaef06d5e2cbd1bbba1140fc3526e61f234f25d6231f3269748a75c88882e",
+          "lines": 163,
+          "functions": 3
+        },
+        {
+          "file": "scripts/kaggle_run.py",
+          "sha256": "8bec0eb8ed778d3556630f17a4d018e092efa7404967ad2ae069a9e0de157e45",
+          "lines": 183,
+          "functions": 3
+        },
+        {
+          "file": "scripts/migrate_track_a_review.py",
+          "sha256": "8a5d69b6595e5a9b7363bdc2fef8948321c3f8c2915fa05862551c96c3a07e57",
+          "lines": 148,
+          "functions": 4
+        },
+        {
+          "file": "scripts/plot_corpus_coverage.py",
+          "sha256": "4b5c218da17c577dda6171daa2c1c61507a60ba8e2469d9c09236550d72c04c7",
+          "lines": 102,
+          "functions": 1
+        },
+        {
+          "file": "scripts/plot_series_coverage.py",
+          "sha256": "2637cced54c6e1e64dd4f1ac75f80005935d950fa9bdacc43954ae8ade4582e2",
+          "lines": 91,
+          "functions": 1
+        },
+        {
+          "file": "scripts/prepare_corpus_revision.py",
+          "sha256": "d6a3e378876549b74ee29813810734fc787d506c058a319bc7d6975503c8a05c",
+          "lines": 265,
+          "functions": 3
+        },
+        {
+          "file": "scripts/prepare_kaggle_data.py",
+          "sha256": "f4eaffa3d068987d52b2785b9eb30e7d13f4950425a499e4afa4d863f21312d4",
+          "lines": 67,
+          "functions": 1
+        },
+        {
+          "file": "scripts/prepare_track_a_review.py",
+          "sha256": "a9e3ee67b031f97686f1ef95e5447772f1d858fb6ae02938745d2ac5884268a5",
+          "lines": 234,
+          "functions": 4
+        },
+        {
+          "file": "scripts/record_compute_evidence.py",
+          "sha256": "d254c833e8d645f5cdf3d70d72c1a02b774d7b7d9731a93ab3d000d1ce0dcb2f",
+          "lines": 54,
+          "functions": 2
+        },
+        {
+          "file": "scripts/run_capability_diagnostics.py",
+          "sha256": "5f22fd6517f22b1bb841f39999665e642f09ba28b43ad3b5761253c036af7bda",
+          "lines": 112,
+          "functions": 2
+        },
+        {
+          "file": "scripts/run_model_pilot.py",
+          "sha256": "84c8a166e0c06a89ebb2917e74ee2791894c6220ab47bdc021ca738842c92a39",
+          "lines": 127,
+          "functions": 1
+        },
+        {
+          "file": "scripts/validate_phase1_track_c.py",
+          "sha256": "30f7beb61a038b42099c2b2360d7f1aad592126b926bf2b747b94ef375eb1230",
+          "lines": 207,
+          "functions": 3
+        },
+        {
+          "file": "scripts/validate_retrospective_series.py",
+          "sha256": "23e1841ebd255a10eb9070ed4781a183d5e736f9fd4e96c6a5725ea7eaf0005e",
+          "lines": 83,
+          "functions": 2
+        },
+        {
+          "file": "scripts/validate_source_review.py",
+          "sha256": "75a9d8bb6439246130652143200f748c46e37f44de46d33b7f3a293bdc9157ee",
+          "lines": 162,
+          "functions": 3
+        },
+        {
+          "file": "scripts/validate_track_a_delivery.py",
+          "sha256": "db8a16928bca13ceb21e89a409f560261cf827effc71755c2799a1c7a52f4f8b",
+          "lines": 127,
+          "functions": 2
+        }
+      ]
+    },
+    "tests": {
+      "modules": 54,
+      "lines": 8185,
+      "files": [
+        {
+          "file": "tests/conftest.py",
+          "sha256": "1d9f344998a17365f50a8cba4514e8703a4794a2215a700f4128f0d7ec41f100",
+          "lines": 54,
+          "functions": 8
+        },
+        {
+          "file": "tests/unit/test_agent_states.py",
+          "sha256": "b02f3d1d1cff492f08406b89d9d666c56365399bef8b8167f88508df3f3a379c",
+          "lines": 40,
+          "functions": 4
+        },
+        {
+          "file": "tests/unit/test_agreement_and_backends.py",
+          "sha256": "e972ec8e6fca623befd36b2fc726cfe6fc489abe51db2dc1c7d2627e70a20f1c",
+          "lines": 45,
+          "functions": 5
+        },
+        {
+          "file": "tests/unit/test_archive_discovery.py",
+          "sha256": "0af4c4df1c32a9034e7d50166454ee7e6bef0629828fcd9a62545dee719532aa",
+          "lines": 186,
+          "functions": 12
+        },
+        {
+          "file": "tests/unit/test_automated_relevance_review.py",
+          "sha256": "42140e21f62aa0e1d4c63b9ec421b04682f63ac51f61f8f2869b61171f368a9c",
+          "lines": 116,
+          "functions": 7
+        },
+        {
+          "file": "tests/unit/test_cdsl_acquisition.py",
+          "sha256": "b6cb2336b0bc36fc66adb6749e5f784b5e07b98071a51397be4c45353a62853a",
+          "lines": 175,
+          "functions": 11
+        },
+        {
+          "file": "tests/unit/test_client_concurrency.py",
+          "sha256": "c87fafb7b0d6ff3de34e8bf5c525b463e9e074c8cd2953fe5b407feaf859f679",
+          "lines": 47,
+          "functions": 5
+        },
+        {
+          "file": "tests/unit/test_collectors.py",
+          "sha256": "6b55b33a86849a1e1e446d6e8f256ad56c88b8b63f8728c741671a8be43870f9",
+          "lines": 204,
+          "functions": 16
+        },
+        {
+          "file": "tests/unit/test_connected_runs.py",
+          "sha256": "14c4658873c0d9fc46d95baeb3aa0453de7b7b3880a5247b099688d70b1b578a",
+          "lines": 396,
+          "functions": 25
+        },
+        {
+          "file": "tests/unit/test_corpus_bindings.py",
+          "sha256": "6eb56875da957c104ec9ffe14d57d07afe447080a7f79f49f161829bb339139a",
+          "lines": 51,
+          "functions": 2
+        },
+        {
+          "file": "tests/unit/test_corpus_freeze.py",
+          "sha256": "44c289f2f3f6073031db201c19619519f28c7151aa4dd8b52a01f7806de7b781",
+          "lines": 180,
+          "functions": 11
+        },
+        {
+          "file": "tests/unit/test_corpus_pipeline.py",
+          "sha256": "9c63008ea1a72fc5de2ec888aef37aa89920683fafb03b912c8ce341ade78898",
+          "lines": 333,
+          "functions": 23
+        },
+        {
+          "file": "tests/unit/test_corpus_quality.py",
+          "sha256": "dd77448ee05c2b7ef8767848e01ca8c9c2efe537c163bff25cd1fcf478a7abe7",
+          "lines": 146,
+          "functions": 8
+        },
+        {
+          "file": "tests/unit/test_corpus_review.py",
+          "sha256": "e972ab8a2ac9b7bf9718307ef5b4856ca55d20639a55a7cd52513f9fc35cc04f",
+          "lines": 173,
+          "functions": 6
+        },
+        {
+          "file": "tests/unit/test_corpus_revision.py",
+          "sha256": "9c2f8854f8aa06067b23a56998aa11193c51a3cb0025caca139e93836846a4b1",
+          "lines": 126,
+          "functions": 4
+        },
+        {
+          "file": "tests/unit/test_cpi_acquisition.py",
+          "sha256": "336f97c9dc56c72fc03a2655c10b777c4e84cfdafcb26fbe74cc7f249be2ab18",
+          "lines": 45,
+          "functions": 3
+        },
+        {
+          "file": "tests/unit/test_dense_hybrid_rerank.py",
+          "sha256": "87b74d37cc0b52ba7181cc5c2eeb912779a4ff092a2efe1c357d12938da7053c",
+          "lines": 212,
+          "functions": 21
+        },
+        {
+          "file": "tests/unit/test_development_assembly.py",
+          "sha256": "5739e7960e77a8dd01fe376554f2f38ff699c76f77929a9c1f1ad55ef46b625a",
+          "lines": 94,
+          "functions": 3
+        },
+        {
+          "file": "tests/unit/test_evaluation.py",
+          "sha256": "aeb64fbb7036e3645658b547933ab39c5b3e74f08a96edc2eb56ee0ff26630e5",
+          "lines": 142,
+          "functions": 10
+        },
+        {
+          "file": "tests/unit/test_exported_schemas.py",
+          "sha256": "550308183d8ebf2f64e345c2380b9f7704682ad935ff2fff6482a41d2c6e3df3",
+          "lines": 56,
+          "functions": 6
+        },
+        {
+          "file": "tests/unit/test_fbil_acquisition.py",
+          "sha256": "4f8f2dedc12ac558c773ca82ee9b2761d830ecc3528a6ec4d84e4cbf352390ca",
+          "lines": 59,
+          "functions": 5
+        },
+        {
+          "file": "tests/unit/test_fbil_newsletters.py",
+          "sha256": "8429454df4155542a2352ac13a39986ec2d1a63bc1bb4d9191dac7e9038de17a",
+          "lines": 44,
+          "functions": 4
+        },
+        {
+          "file": "tests/unit/test_fixtures.py",
+          "sha256": "e1415d97d743dfa2d366a96d154f0ff123ecf6dcd6bac412dc9c1d6fec9d6557",
+          "lines": 252,
+          "functions": 34
+        },
+        {
+          "file": "tests/unit/test_generator_contract.py",
+          "sha256": "f77479b429ff00d9d775e88e0825d95936c5e486389a340b402ed5e5443062c4",
+          "lines": 208,
+          "functions": 22
+        },
+        {
+          "file": "tests/unit/test_kaggle_handoff.py",
+          "sha256": "cacb660cb3cbc85c05587cf6cb45f62aab80ed3767fbca1e9fab9a34d6482057",
+          "lines": 83,
+          "functions": 3
+        },
+        {
+          "file": "tests/unit/test_models.py",
+          "sha256": "d7c3eda69585e62ca71f87d6c1b1a02474e8291596d3093fb65814ec0ddf7981",
+          "lines": 341,
+          "functions": 39
+        },
+        {
+          "file": "tests/unit/test_news_batch_resume.py",
+          "sha256": "4296191da1356efaa31144a5d22344e43354baf69c03916baea9f4facf992cf6",
+          "lines": 64,
+          "functions": 2
+        },
+        {
+          "file": "tests/unit/test_news_series.py",
+          "sha256": "39d711370c2257362d064487fefe3646a78dd2678e923daef227706823d80d9b",
+          "lines": 148,
+          "functions": 13
+        },
+        {
+          "file": "tests/unit/test_oea_dates.py",
+          "sha256": "4897869fc7d639d784ec1d8f7d70b5b68f1b278fca92be18dec7161249e1c672",
+          "lines": 30,
+          "functions": 3
+        },
+        {
+          "file": "tests/unit/test_official_documents.py",
+          "sha256": "c7f5ef7cedc35afebcc5dd216a7dbb64a1362217b51c50ccd5adf1c9f7dccd23",
+          "lines": 356,
+          "functions": 27
+        },
+        {
+          "file": "tests/unit/test_ontology.py",
+          "sha256": "fd0f95b48d512d501a9549885a3f70f54f1f27c7c5f2841ff88f85e5a89f53e8",
+          "lines": 116,
+          "functions": 9
+        },
+        {
+          "file": "tests/unit/test_pdf_layout.py",
+          "sha256": "d91ef3e1a03252dbf7e61ed3f62eb4564918e88ce356137f5405b9a0b630fa59",
+          "lines": 60,
+          "functions": 2
+        },
+        {
+          "file": "tests/unit/test_phase1_track_c_regressions.py",
+          "sha256": "c983df4c29812231e76081119c5e1d9b91575a3e69ce7f2928a5cc9f25da77e3",
+          "lines": 239,
+          "functions": 12
+        },
+        {
+          "file": "tests/unit/test_pipeline_integration.py",
+          "sha256": "4bbf27bf4cdb3ffbdefffad3ce9cd8e0861fdf15e0a4b9c564da59f5bfbd0004",
+          "lines": 370,
+          "functions": 18
+        },
+        {
+          "file": "tests/unit/test_ppac_acquisition.py",
+          "sha256": "ee59a5793111be9e39857040e21b15d6c11121315acb6db09d22d8c202810875",
+          "lines": 168,
+          "functions": 13
+        },
+        {
+          "file": "tests/unit/test_project_model_pilot.py",
+          "sha256": "4ab006195cc6d15976c6de5999c14d7f689383ba2ddf9af9cfd19eb83441cd39",
+          "lines": 51,
+          "functions": 3
+        },
+        {
+          "file": "tests/unit/test_prose_correction.py",
+          "sha256": "3ffbbce314087f6fd2366bd1ce31b9e36cf05a65d617a72886faf5ddd12011e3",
+          "lines": 82,
+          "functions": 2
+        },
+        {
+          "file": "tests/unit/test_reference_review.py",
+          "sha256": "f2127e6236ca00dca1a438e182339dfef4e4815e5c3420c051a636039e9bf886",
+          "lines": 150,
+          "functions": 8
+        },
+        {
+          "file": "tests/unit/test_retrieval.py",
+          "sha256": "affdc772fb83c057cb7d9b6d742f1fe26c9b6c3b24c0d32589316bad20015071",
+          "lines": 98,
+          "functions": 8
+        },
+        {
+          "file": "tests/unit/test_retrieval_checkpoints.py",
+          "sha256": "4b7dac1ec5c3c47fa17956baf47a04a325be7af8d44f2c03bd9b3601c9cf2247",
+          "lines": 157,
+          "functions": 15
+        },
+        {
+          "file": "tests/unit/test_retrieval_cli.py",
+          "sha256": "fe141eb0475994f593187a872691b08971fba103b80562c2773ce4a6870d6a8e",
+          "lines": 140,
+          "functions": 8
+        },
+        {
+          "file": "tests/unit/test_retrieval_pilot.py",
+          "sha256": "852a3a559420ed2cda9204c5a5eb9895b64449b4f721a67522fc0519bba8c2d5",
+          "lines": 82,
+          "functions": 6
+        },
+        {
+          "file": "tests/unit/test_retrieval_review.py",
+          "sha256": "e375f6c252901a6c7c181af125d8fbfe081a63369296b2abbc8196dcabcd9437",
+          "lines": 346,
+          "functions": 16
+        },
+        {
+          "file": "tests/unit/test_retrieval_worker.py",
+          "sha256": "f6083fa19ad2fecf742802a62ef273b7c22b055c930b939e637a79650c5903d9",
+          "lines": 83,
+          "functions": 6
+        },
+        {
+          "file": "tests/unit/test_retrospective_series.py",
+          "sha256": "58970e9d4973c145d9711785ec482f0eedf1d298142982919d417823a2c839a1",
+          "lines": 118,
+          "functions": 8
+        },
+        {
+          "file": "tests/unit/test_safety_eval.py",
+          "sha256": "b3c65cb024669e8e915aa323c1dca735a7834daeb7c704383c536d9fb4ca4348",
+          "lines": 52,
+          "functions": 5
+        },
+        {
+          "file": "tests/unit/test_sebi_fpi_audit.py",
+          "sha256": "c1dcb9de00771874f8b2e3db9d1214299bb52f04dc0f7069b9648df4dd8421fb",
+          "lines": 112,
+          "functions": 9
+        },
+        {
+          "file": "tests/unit/test_series_store.py",
+          "sha256": "fce71c5d40269fe7d772c743176e946b1bdacbc177450b245390beaa934398d4",
+          "lines": 183,
+          "functions": 13
+        },
+        {
+          "file": "tests/unit/test_tools_and_runlog.py",
+          "sha256": "a9ac71a245760255483fcf3696f77449b407e710666c9bbac87ffd4e60522dd3",
+          "lines": 253,
+          "functions": 27
+        },
+        {
+          "file": "tests/unit/test_track_a_regressions.py",
+          "sha256": "206c4335b8fbcc6ac20d2ee7d76b0611359872bf5fe53413cb23988492d6c5d7",
+          "lines": 60,
+          "functions": 4
+        },
+        {
+          "file": "tests/unit/test_uer_figures.py",
+          "sha256": "c65baaaaf65797638850b1a256aca382b63ccca477a7c179faec40514d0de530",
+          "lines": 58,
+          "functions": 4
+        },
+        {
+          "file": "tests/unit/test_verify_aliases.py",
+          "sha256": "d8eb373215ae27407183c4c965e4ddef924644f33fb7c4fc18b2da40ab64431c",
+          "lines": 192,
+          "functions": 21
+        },
+        {
+          "file": "tests/unit/test_verify_normalise.py",
+          "sha256": "92302eade06ee2c6016468168aaafd6cc22654eb2d8f6289387ebc502d133642",
+          "lines": 94,
+          "functions": 5
+        },
+        {
+          "file": "tests/unit/test_verify_rules.py",
+          "sha256": "b5c5efe4d2648b17d4d01e7cb59843bcd7e93941b4f1ad7bd1e6abde713f8247",
+          "lines": 515,
+          "functions": 39
+        }
+      ]
+    }
+  }
+}

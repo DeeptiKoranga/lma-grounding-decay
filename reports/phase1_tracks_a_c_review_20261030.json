@@ -1,0 +1,611 @@
+{
+  "reviewed_on": "2026-10-30",
+  "timezone": "Asia/Calcutta",
+  "baseline_commit": "9084e52bcd4d5c50849dd3f7c84d1ea21ae640f6",
+  "tested_commit": "1b584fd94eaf3c585b4aab5657cae98030e755e1",
+  "verdict": "All 22 Phase 1 A/C implementation deliverables and artifacts are present; checks pass. Track A retains explicit source-mix and sparse-series deviations from the original data ambition. Track C C1-C11 completion gate passes.",
+  "unqualified_original_data_scope_complete": false,
+  "scoped_track_a_handoff_complete": true,
+  "track_c_complete": true,
+  "requirements": {
+    "A1": {
+      "requirement": "Four publisher collectors",
+      "status": "Implemented; source-mix exception",
+      "result": "Collectors and sitemap/RSS discovery exist for all four publishers. Actual retained news: ET 870, BusinessLine 213, Mint 12, Business Standard 0. No missing publisher text was invented.",
+      "evidence": [
+        "scripts/fetch/collect.py",
+        "scripts/fetch/discovery.py",
+        "scripts/fetch/sources.py",
+        "reports/phase1_ac_corpus_replay_20261030.json"
+      ]
+    },
+    "A2": {
+      "requirement": "Official-document fetcher and PDFs",
+      "status": "Implemented; source-mix exception",
+      "result": "61 official documents meet the count target, with 37 MoSPI, 14 PPAC and 10 OEA. RBI and PIB are absent from this frozen corpus. All 61 retained PDFs were reparsed in the current replay.",
+      "evidence": [
+        "scripts/fetch/official.py",
+        "src/corpus/official.py",
+        "src/corpus/pdf_layout.py",
+        "reports/phase1_ac_corpus_replay_20261030.json"
+      ]
+    },
+    "A3": {
+      "requirement": "Parser and normalized Passage output",
+      "status": "Present and rechecked",
+      "result": "The current parser rebuilds the exact active corpus from retained originals. Malformed publisher date types now become logged rejections instead of aborting a batch.",
+      "evidence": [
+        "src/corpus/parser.py",
+        "src/corpus/__main__.py",
+        "tests/unit/test_collectors.py",
+        "reports/phase1_ac_corpus_replay_20261030.json"
+      ]
+    },
+    "A4": {
+      "requirement": "MinHash deduplication, freeze and manifest",
+      "status": "Present and rechecked",
+      "result": "1,156 documents: 1,095 news and 61 official; target counts met. Source/month counts, licence notes, hashes and duplicate audit exist. Payloads and archive reproduce byte for byte, including reverse input order.",
+      "evidence": [
+        "src/corpus/dedup.py",
+        "src/corpus/freeze.py",
+        "data/processed/MANIFEST.md",
+        "reports/phase1_ac_corpus_replay_20261030.json"
+      ]
+    },
+    "A5": {
+      "requirement": "Paragraph chunks with character offsets",
+      "status": "Present and rechecked",
+      "result": "All 16,472 Passage records match their exact parent text slices. Narrative-only PDF scope remains explicit; tables and charts are not falsely represented as certified prose.",
+      "evidence": [
+        "src/corpus/documents.py",
+        "src/corpus/pdf_layout.py",
+        "reports/phase1_ac_corpus_replay_20261030.json"
+      ]
+    },
+    "A6": {
+      "requirement": "BM25 and aliases",
+      "status": "Present and rechecked",
+      "result": "Plain and alias-expanded BM25 run on the same date-visible corpus; closed-variable alias matching and deterministic ties are tested and included in the fresh four-way pilot.",
+      "evidence": [
+        "src/retrieval/bm25.py",
+        "data/aliases.yaml",
+        "reports/phase1_ac_retriever_pilot_20261030.md"
+      ]
+    },
+    "A7": {
+      "requirement": "BGE-M3, FAISS and hybrid RRF",
+      "status": "Present and rechecked",
+      "result": "The 16,472-passage, 1,024-dimensional pinned index matches the corpus. Actual BGE query embeddings, FAISS and RRF were exercised in the fresh 20-query comparison.",
+      "evidence": [
+        "src/retrieval/dense.py",
+        "src/retrieval/hybrid.py",
+        "src/retrieval/checkpoint.py",
+        "reports/phase1_ac_retriever_pilot_20261030.md"
+      ]
+    },
+    "A8": {
+      "requirement": "Twenty-query four-way retrieval pilot",
+      "status": "Present and rechecked",
+      "result": "The complete receipt-bound rerun reproduces the metrics and BGE-M3 selection: Recall@10 0.4259. User-attested review declarations are preserved; software does not independently verify review conduct.",
+      "evidence": [
+        "src/retrieval/pilot.py",
+        "src/retrieval/pilot_runner.py",
+        "reports/phase1_ac_retriever_pilot_20261030.md",
+        "reports/track_a_reviewer_identity_20261027.json"
+      ]
+    },
+    "A9": {
+      "requirement": "Top-50 cross-encoder reranker",
+      "status": "Present and rechecked",
+      "result": "Fresh real top-50 BGE reranking reproduces Recall@10 0.5296 versus dense 0.4259. End-to-end scientific benefit is separate from this component comparison.",
+      "evidence": [
+        "src/retrieval/rerank.py",
+        "reports/phase1_ac_retriever_pilot_20261030.md"
+      ]
+    },
+    "A10": {
+      "requirement": "Six-series store and read layer",
+      "status": "Present; sparse historical coverage",
+      "result": "All six CSVs and 161 observations reproduce byte for byte from source caches after the repaired v7 news bindings. Brent 4, basket 2, FX 141, CPI 7, yield 6, FPI 1. These are not complete histories or proof of all anchor episodes.",
+      "evidence": [
+        "src/corpus/series.py",
+        "scripts/fetch/news_series.py",
+        "data/series/README.md",
+        "reports/phase1_ac_series_replay_20261030.json"
+      ]
+    },
+    "A11": {
+      "requirement": "Enforced publication cutoff",
+      "status": "Present and rechecked",
+      "result": "Cutoffs are enforced before lexical/dense ranking and rechecked at worker/fusion/tool boundaries. The retrospective-series validator confirms October captures remain unavailable at September cutoffs.",
+      "evidence": [
+        "src/retrieval/filters.py",
+        "src/retrieval/worker.py",
+        "src/corpus/series.py",
+        "reports/phase1_ac_series_cutoffs_20261030.json"
+      ]
+    },
+    "C1": {
+      "requirement": "Unified generation interface",
+      "status": "Present and rechecked",
+      "result": "MLX live run, retained live vLLM evidence, and native Claude/llama.cpp transport contracts. Malformed one-line fences now trigger normal validation/retry and retain the failed raw response. No paid API request was made.",
+      "evidence": [
+        "src/llm/generate.py",
+        "tests/unit/test_generator_contract.py",
+        "tests/unit/test_pipeline_integration.py",
+        "reports/phase1_ac_live_run_20261030.json"
+      ]
+    },
+    "C2": {
+      "requirement": "Two-model five-task pilot and decision",
+      "status": "Present and scores rechecked",
+      "result": "Two completed 100-case project-schema pilots retain all 200 raw outputs. Scores reproduce under current code and the fixed tie rule still selects pinned Qwen3-8B. Its 5% strict extraction and 10% tool-choice scores remain serious limitations.",
+      "evidence": [
+        "reports/pilot_model_project_20261030.md",
+        "reports/project_model_pilot_error_analysis_20261030.json",
+        "configs/model_selection.json",
+        "reports/phase1_track_c_acceptance_20261030.json"
+      ]
+    },
+    "C3": {
+      "requirement": "Six schemas and validated read-only tools",
+      "status": "Present and rechecked",
+      "result": "All six tools enforce arguments, trusted corpus identity, fixed cutoff and 12-call budget. Approved evidence/strength cannot be overwritten, stale proof is invalidated, and result proofs are complete. Existing exploit regressions still pass.",
+      "evidence": [
+        "src/tools/runtime.py",
+        "src/schema/tools.py",
+        "tests/unit/test_phase1_track_c_regressions.py"
+      ]
+    },
+    "C4": {
+      "requirement": "State, priority, loop and stops",
+      "status": "Present and rechecked",
+      "result": "Deterministic shallow-first controller tracks open edges/searches/budget and stops on resolution, two searches adding nothing, or budget exhaustion. Fixtures and current real model execution exercise it.",
+      "evidence": [
+        "src/agent/controller.py",
+        "tests/unit/test_pipeline_integration.py",
+        "reports/phase1_ac_live_run_20261030.json"
+      ]
+    },
+    "C5": {
+      "requirement": "Seven conditions in one pipeline",
+      "status": "Present and live rechecked",
+      "result": "All seven SETTINGS configurations use one Pipeline.run. The current selected model and actual retrieval completed 14/14 new graphs, with unchanged resume caching all 14.",
+      "evidence": [
+        "src/conditions/config.py",
+        "src/conditions/pipeline.py",
+        "configs/conditions.yaml",
+        "reports/phase1_ac_live_run_20261030.json"
+      ]
+    },
+    "C6": {
+      "requirement": "Full run logging",
+      "status": "Present and rechecked",
+      "result": "Typed prompts, completions, usage, latency, tool calls/results, state and stops are bound to graph receipts. Claude logging and malformed-output retry logging are covered. Fresh run logs pass the full audit.",
+      "evidence": [
+        "src/agent/logging.py",
+        "src/schema/runlog.py",
+        "reports/phase1_ac_live_audit_20261030.json"
+      ]
+    },
+    "C7": {
+      "requirement": "All five metrics by hop",
+      "status": "Present and rechecked",
+      "result": "UER, strength inflation, reference recall, provenance accuracy and strict path validity preserve hop 1/2/3+ slices and null denominators. Support/reference review and prose-correction gates now reject future dates and false text flags. No research score was fabricated.",
+      "evidence": [
+        "src/eval/metrics.py",
+        "src/eval/review.py",
+        "src/eval/references.py",
+        "src/eval/prose_review.py",
+        "tests/unit/test_evaluation.py"
+      ]
+    },
+    "C8": {
+      "requirement": "Paired bootstrap and 95% intervals",
+      "status": "Present and rechecked",
+      "result": "Query-level paired bootstrap is restricted to the two predeclared contrasts, with explicit missing-pair and finite-value handling. Both supported metrics are covered by the tests.",
+      "evidence": [
+        "src/eval/stats.py",
+        "tests/unit/test_evaluation.py"
+      ]
+    },
+    "C9": {
+      "requirement": "Forty frozen states and twenty faults",
+      "status": "Present and freshly validated",
+      "result": "All 40 synthetic states exist under data/eval/synthetic/ rather than the plan’s illustrative root filename; all loaders use this location. All 20 scripted faults executed again. Archived action-model results remain 5/40 correct, without claims of human gold or model-led recovery.",
+      "evidence": [
+        "data/eval/synthetic/agent_states.jsonl",
+        "data/eval/synthetic/tool_faults.jsonl",
+        "reports/phase1_track_c_acceptance_20261030.json"
+      ]
+    },
+    "C10": {
+      "requirement": "Twenty-five prompts, four safety outcomes",
+      "status": "Present and response binding rechecked",
+      "result": "All 25 actual selected-model responses and four-risk judgments remain hash-bound. Assistant review found zero observed leaks; four regex flags quote attacks inside refusals. This review did not manufacture independent human certification.",
+      "evidence": [
+        "data/eval/safety_outputs_selected_20261030.json",
+        "data/eval/safety_review_selected_20261030.json",
+        "reports/safety_evaluation_selected_20261030.json"
+      ]
+    },
+    "C11": {
+      "requirement": "Kaggle setup and compute record",
+      "status": "Present; live evidence re-audited",
+      "result": "The completed private two-T4 vLLM run retains 14/14 graphs, cached resume and 1.211103 measured allocated GPU-hours. Asset hashes/receipts were checked again. This review uses fresh local inference and no additional Kaggle quota.",
+      "evidence": [
+        "notebooks/kaggle_run.ipynb",
+        "scripts/kaggle_bootstrap.py",
+        "reports/kaggle_live_verification_20261030.json",
+        "reports/compute_log.md"
+      ]
+    }
+  },
+  "fixed_findings": [
+    {
+      "id": "F1",
+      "severity": "P2",
+      "problem": "Malformed one-line fenced model output raised IndexError, bypassing invalid-JSON retry and response logging.",
+      "fix": "Reject malformed fences and non-text responses with ValueError; test the actual pipeline retry and preserved failed completion.",
+      "files": [
+        "src/llm/generate.py",
+        "tests/unit/test_generator_contract.py",
+        "tests/unit/test_pipeline_integration.py"
+      ],
+      "commit": "55d8348"
+    },
+    {
+      "id": "F2",
+      "severity": "P2",
+      "problem": "Non-text JSON-LD dateModified values raised AttributeError and aborted news collection.",
+      "fix": "Validate date text and return ParseError; a batch records the rejection and processes its next article.",
+      "files": [
+        "src/corpus/parser.py",
+        "tests/unit/test_collectors.py"
+      ],
+      "commit": "55d8348"
+    },
+    {
+      "id": "F3",
+      "severity": "P2",
+      "problem": "Text \"false\" was truthy in prose correction attestation/completion flags and could be exported as completed human correction.",
+      "fix": "Require literal True before export; no real review files were altered.",
+      "files": [
+        "src/eval/prose_review.py",
+        "tests/unit/test_prose_correction.py"
+      ],
+      "commit": "55d8348"
+    },
+    {
+      "id": "F4",
+      "severity": "P2",
+      "problem": "Prose, support and reference review gates accepted future review dates.",
+      "fix": "Reject future dates across all three gates with fixture regressions.",
+      "files": [
+        "src/eval/prose_review.py",
+        "src/eval/review.py",
+        "src/eval/references.py",
+        "tests/unit/test_reference_review.py"
+      ],
+      "commit": "55d8348"
+    },
+    {
+      "id": "F5",
+      "severity": "P2",
+      "problem": "A real offline A10 replay failed because default v3 passage text was incompatible with the repaired parser, and current preserved format controls blocked yield parsing.",
+      "fix": "Bind the default seed set to v7, ignore only invisible format controls during numeric lookup, retain original source text and v3 seeds, and use UTF-8. All eleven source observations and all six CSV byte hashes remain identical.",
+      "files": [
+        "scripts/fetch/news_series.py",
+        "scripts/fetch/news_series_seeds_v7_20261030.json",
+        "tests/unit/test_news_series.py",
+        "reports/phase1_ac_news_series_migration_20261030.json"
+      ],
+      "commit": "1b584fd"
+    }
+  ],
+  "new_regression_cases": 18,
+  "native_ci": {
+    "commit": "1b584fd94eaf3c585b4aab5657cae98030e755e1",
+    "source_sha256": "5c15b22454e4c0bb364a774e5d537f0e8073eb99f2a52e4e0ba842c8f3571bf4",
+    "run_id": 41095942116,
+    "url": "https://github.com/DeeptiKoranga/lma-grounding-decay/actions/runs/41095942116",
+    "conclusion": "success",
+    "status": "all three native platforms passed all 742 tests, Ruff and notebook-inclusive Black",
+    "jobs": [
+      {
+        "platform": "track-c-macos-latest",
+        "tests": 742,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "passed": 742,
+        "junit_sha256": "a55b3b999ea194157f4d7ee0f587a10f108b552201913da8927bede27a151327"
+      },
+      {
+        "platform": "track-c-ubuntu-latest",
+        "tests": 742,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "passed": 742,
+        "junit_sha256": "feadd7afc352aac9afb4b6c8d1b0be2a28137c888a2a031a6782ba372e7b4274"
+      },
+      {
+        "platform": "track-c-windows-latest",
+        "tests": 742,
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "passed": 742,
+        "junit_sha256": "632d37d5172cfc460bf4597e7a3b6a98e5829e58756460f29de959406571bb18"
+      }
+    ]
+  },
+  "fresh_corpus": {
+    "executed_on": "2026-10-30",
+    "status": "complete offline original-source replay matches the active v7 snapshot byte for byte",
+    "method": "Current parser and PDF narrative extraction applied to checksummed retained originals referenced by archived v3; original active data untouched. The underlying build script retains its historical built_on constant; this wrapper records the actual review execution date.",
+    "documents": 1156,
+    "passages": 16472,
+    "sources": {
+      "businessline": 213,
+      "eaindustry": 10,
+      "economic_times": 870,
+      "mint": 12,
+      "mospi": 37,
+      "ppac": 14
+    },
+    "source_month_counts": {
+      "businessline/2026-03": 30,
+      "businessline/2026-04": 30,
+      "businessline/2026-05": 34,
+      "businessline/2026-06": 33,
+      "businessline/2026-07": 28,
+      "businessline/2026-08": 24,
+      "businessline/2026-09": 34,
+      "eaindustry/2026-03": 1,
+      "eaindustry/2026-04": 1,
+      "eaindustry/2026-05": 1,
+      "eaindustry/2026-06": 2,
+      "eaindustry/2026-07": 2,
+      "eaindustry/2026-08": 1,
+      "eaindustry/2026-09": 2,
+      "economic_times/2026-03": 153,
+      "economic_times/2026-04": 122,
+      "economic_times/2026-05": 118,
+      "economic_times/2026-06": 118,
+      "economic_times/2026-07": 118,
+      "economic_times/2026-08": 114,
+      "economic_times/2026-09": 127,
+      "mint/2026-03": 2,
+      "mint/2026-04": 2,
+      "mint/2026-05": 2,
+      "mint/2026-06": 1,
+      "mint/2026-07": 2,
+      "mint/2026-08": 2,
+      "mint/2026-09": 1,
+      "mospi/2026-03": 6,
+      "mospi/2026-04": 2,
+      "mospi/2026-05": 6,
+      "mospi/2026-06": 5,
+      "mospi/2026-07": 5,
+      "mospi/2026-08": 7,
+      "mospi/2026-09": 6,
+      "ppac/2026-03": 1,
+      "ppac/2026-04": 2,
+      "ppac/2026-06": 5,
+      "ppac/2026-07": 2,
+      "ppac/2026-08": 4
+    },
+    "all_offsets_exact": true,
+    "pdf_layout_audits": 61,
+    "reverse_input_archive_identical": true,
+    "files": {
+      "articles.jsonl": {
+        "sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+        "matches_active": true
+      },
+      "documents.jsonl": {
+        "sha256": "d4d371d1b769b9c980a8f8c802f430dae2879c2e4b84f2d4adab3ffd2422eae0",
+        "matches_active": true
+      },
+      "duplicates.jsonl": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "matches_active": true
+      },
+      "corpus-v7-narrative-development.zip": {
+        "sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037",
+        "matches_active": true
+      }
+    },
+    "archive_sha256": "88ae396dc390ff562684e5ab642d09523315e4de01a208ad0608ecc0b3194037"
+  },
+  "fresh_series": {
+    "status": "all six canonical series reproduce byte for byte from retained source caches; no network used",
+    "files": {
+      "brent_usd_bbl.csv": {
+        "sha256": "07b92e9762cf03460f7dedaa1186796bd5c781feb3418b4f9fd58296bb82a9fa",
+        "matches_canonical": true
+      },
+      "cpi_headline_yoy.csv": {
+        "sha256": "07dbe9ce72b79312f490ccc58bea2920f25c5ad4a0b34be1082356daca57a6bb",
+        "matches_canonical": true
+      },
+      "fpi_flows_usd_mn.csv": {
+        "sha256": "94c24a79a038b34c510c2f93bdcd0b5ef2540d2756b129c8d5ba32f5666c9a4d",
+        "matches_canonical": true
+      },
+      "gsec_10y_pct.csv": {
+        "sha256": "7b12e2cf5f9254f1b7b648a33803b1f5ea381b96a7f61ebab150ed14911a2be6",
+        "matches_canonical": true
+      },
+      "indian_basket_usd_bbl.csv": {
+        "sha256": "17f3e0f0919727bd0ebba18d46f50e98509dea35e5ebc0be018e1b431d1b23b7",
+        "matches_canonical": true
+      },
+      "inr_usd.csv": {
+        "sha256": "587b6e06e37dde4cf2092d8ce58db64ca74afb8282fb843ea46ae33b647cf98c",
+        "matches_canonical": true
+      }
+    },
+    "observations": {
+      "brent_usd_bbl": 4,
+      "cpi_headline_yoy": 7,
+      "fpi_flows_usd_mn": 1,
+      "gsec_10y_pct": 6,
+      "indian_basket_usd_bbl": 2,
+      "inr_usd": 141
+    },
+    "total": 161,
+    "initial_replay_failure": "Old v3 seeds did not match current parser-preserved v7 text. Current v7 seed binding and format-control lookup now pass; old seeds and canonical CSV bytes are preserved."
+  },
+  "fresh_live_model": {
+    "status": "fresh real local MLX/BGE-M3/FAISS/reranker integration passed; development candidates, not research gold",
+    "complete": true,
+    "completed_graphs": 14,
+    "conditions": {
+      "A-NoLoop": 2,
+      "A-NoVerify": 2,
+      "B0": 2,
+      "B1": 2,
+      "B1-R": 2,
+      "B2": 2,
+      "M": 2
+    },
+    "resume_cached": 14,
+    "all_artifact_and_log_bytes_unchanged_on_resume": true,
+    "source_sha256": "5c15b22454e4c0bb364a774e5d537f0e8073eb99f2a52e4e0ba842c8f3571bf4",
+    "source_commit_with_runtime_fixes": "55d83487be7ceea07980451b47c397db7fdebecb",
+    "current_native_tested_commit": "1b584fd94eaf3c585b4aab5657cae98030e755e1",
+    "query_sha256": "a34e0cd8ac04737ee032c4ab56578a723c3c004b2f9b34ac760d4354d39a0039",
+    "model": "mlx-community/Qwen3-8B-4bit",
+    "revision": "545dc4251c05440727734bcd94334791f6ab0192",
+    "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+    "inputs_sha256": "c4543fec1066f7da3c42b9c14114d49c2f3f93a7ea5c5b023df759c3d2b00a54",
+    "audit_sha256": "f593d4e824f8839ab1b1cb4c4d63fbacffc280544b222099204a7cb963a795d6",
+    "artifact_checksums": {
+      "failures.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "inputs.json": "c4543fec1066f7da3c42b9c14114d49c2f3f93a7ea5c5b023df759c3d2b00a54",
+      "artifacts.json": "191f5e18e22659885adf9ea39dcaa51ec9f40d9604899bf68016c2ff15296bdc",
+      "B2/dev-candidate-02-d6fe55b2.jsonl": "0c29b55b0505b9f731627ac33dd52adcd8c3b11e3c2b608397eb8adc0ee29e54",
+      "B2/dev-candidate-02.json": "3032fb717b752f83481a0c648ca2103e53007788ee3dcc53da39bf9f3a7524cf",
+      "B2/dev-candidate-01-1382d689.jsonl": "4ace50b80a5a69a4bb811f31203d274da698ca9d6d1d07ca0dce02952fcb9ced",
+      "B2/dev-candidate-01.json": "b78c2e525dceaf6f9b422e8246385f9ac2eee93ceda1500140829fd9039f0bad",
+      "A-NoLoop/dev-candidate-02.json": "5a9e59a3c705c21cdd1e38b474eb0b26ea3e1fbe5e6cf97881352adb1468433d",
+      "A-NoLoop/dev-candidate-02-d336b8a1.jsonl": "24abac8f296044679c7e72bc02bb66041925ddb861c37b3df213c50a666da2b2",
+      "A-NoLoop/dev-candidate-01.json": "bcd5e29a1ac6600fa01d8be23dd15c99b378dd65d25bc5c570175dd27b4106e9",
+      "A-NoLoop/dev-candidate-01-b2afda2d.jsonl": "1f5127ae316fbf67f0516b346d7b94e93feaf5ea7c45ee93736d06aa300d5fc7",
+      "A-NoVerify/dev-candidate-02.json": "8bf11e7cccdbccbf15c93a6e43ae6ba36b4300ad7b9989a4a70fd85fd3727025",
+      "A-NoVerify/dev-candidate-02-7667ea96.jsonl": "dfc85030d465f3eaca5e1de7aebc6d2251821abe6ddc4ca587e2501d643f0370",
+      "A-NoVerify/dev-candidate-01-43454059.jsonl": "80ce07f3b3cda18ce6ae69c2d553cec64e23bf387e07295f192e8277983fc41e",
+      "A-NoVerify/dev-candidate-01.json": "70e67ffe458452f2a44a2365f1adf707867386fdb7413d40411521790a2320da",
+      "B1/dev-candidate-02.json": "56d3111a7a6bbe2af5379b44aad32ab640d77f5050fa9ed10b3c2cbdeb566092",
+      "B1/dev-candidate-02-cdd49061.jsonl": "f1fbc55c406a3f59c3df5b6126481265ee6efbf78ed63df4619b64655182274f",
+      "B1/dev-candidate-01.json": "a2fe261ab764e7d7caa8866e545a634ebfd774afda813a9126b033914a160f16",
+      "B1/dev-candidate-01-adb862e2.jsonl": "107830852aecd132ad32b8a5e1654f3d91acd89b890fee4402a2a30ab84ff57c",
+      "B0/dev-candidate-02-04b204ea.jsonl": "05bcb2fd266feea0fecd680031aa43566dbb9e42c1c648d904cd35bbe0f4d4e3",
+      "B0/dev-candidate-02.json": "0f8c73cac79ab46afff11dbde1b307e1f0ed0153014c5843dd1f73f138d1421b",
+      "B0/dev-candidate-01-1a1e91ca.jsonl": "3bcbf6219a482cfd6f38ecd5e120bc9f38e75526cdcb1b3319fd545a2be1ad66",
+      "B0/dev-candidate-01.json": "7882c964c6c5b7fb77929fd2d4bf182c541348dfe5bd8233ed415b6055fcf267",
+      "M/dev-candidate-02.json": "71fb5ae6a698056d944db869864e2d546bba2ecd8f1b0771f5e7a72d55ca3586",
+      "M/dev-candidate-02-70847c03.jsonl": "f4c797ff85e147815cb08a3b974d52bf5653c887f6395608e5f372e15ceacbd9",
+      "M/dev-candidate-01-0252401a.jsonl": "3575a2a34a08f6cde5136d583496e451bc3d11de1c83dab6e23ccbbba067a6e2",
+      "M/dev-candidate-01.json": "7b34229217c2bc08b8b34cf9351a098a1d0984707826788847086b2565645bf1",
+      "B1-R/dev-candidate-01-efbd0609.jsonl": "b0be690425928b523a7a687d5290965c0ef130c9bee54d94a84d94177029b245",
+      "B1-R/dev-candidate-02.json": "525d6c4c192292a5921a912780f2d05ecc1c4c7f1f09f0db42a3d818eb1f7d09",
+      "B1-R/dev-candidate-02-72c7e77e.jsonl": "422cf2c2b84e7c0f376fcdf40fef3fdfc649626d5abce9ca2a46cf3ce370487a",
+      "B1-R/dev-candidate-01.json": "83166ff7e1438f19358f6c7c32f6ae425f49a9c15d1e134154265160de39a1ca"
+    },
+    "compute_total": {
+      "model_calls": 22,
+      "prompt_tokens": 77146,
+      "completion_tokens": 10328,
+      "model_call_wall_s": 1775.6339082875056,
+      "tool_calls": 65,
+      "invalid_json_calls": 0
+    },
+    "unbound_logs": [],
+    "baseline_source_check_failures": {
+      "A-NoVerify/dev-candidate-01": [
+        {
+          "edge_id": "edge-4",
+          "kind": "nonverbatim_span"
+        },
+        {
+          "edge_id": "edge-5",
+          "kind": "nonverbatim_span"
+        }
+      ],
+      "B1/dev-candidate-01": [
+        {
+          "edge_id": "edge-4",
+          "kind": "nonverbatim_span"
+        }
+      ],
+      "B1-R/dev-candidate-01": [
+        {
+          "edge_id": "edge-1",
+          "kind": "nonverbatim_span"
+        },
+        {
+          "edge_id": "edge-3",
+          "kind": "nonverbatim_span"
+        }
+      ],
+      "B1-R/dev-candidate-02": [
+        {
+          "edge_id": "edge-2",
+          "kind": "nonverbatim_span"
+        },
+        {
+          "edge_id": "edge-3",
+          "kind": "nonverbatim_span"
+        },
+        {
+          "edge_id": "edge-5",
+          "kind": "nonverbatim_span"
+        },
+        {
+          "edge_id": "edge-6",
+          "kind": "nonverbatim_span"
+        }
+      ],
+      "B2/dev-candidate-01": [
+        {
+          "edge_id": "edge-4",
+          "kind": "nonverbatim_span"
+        },
+        {
+          "edge_id": "edge-5",
+          "kind": "nonverbatim_span"
+        }
+      ]
+    },
+    "resume_lines": [
+      "cached B0 dev-candidate-01",
+      "cached B0 dev-candidate-02",
+      "cached B1 dev-candidate-01",
+      "cached B1 dev-candidate-02",
+      "cached B1-R dev-candidate-01",
+      "cached B1-R dev-candidate-02",
+      "cached B2 dev-candidate-01",
+      "cached B2 dev-candidate-02",
+      "cached A-NoVerify dev-candidate-01",
+      "cached A-NoVerify dev-candidate-02",
+      "cached A-NoLoop dev-candidate-01",
+      "cached A-NoLoop dev-candidate-02",
+      "cached M dev-candidate-01",
+      "cached M dev-candidate-02"
+    ],
+    "scope": "All conditions share the same pinned local model and retrieval. Verified graphs pass structural source/date/span checks. Raw baseline/ablation quotation errors remain visible outcomes. No human support or UER judgment is inferred."
+  },
+  "scope_limits": [
+    "Business Standard, RBI and PIB are absent from the frozen corpus; ET concentration and OEA substitution remain explicit.",
+    "Four original-vintage series are sparse; no retrospective values were backdated or used to confirm missing anchors.",
+    "Qwen3-8B strict extraction 5% and tool choice 10% are poor despite its 61% mean score and fixed-rule selection. The deterministic controller and verifier guards remain necessary.",
+    "Corpus/relevance review is accepted on existing user attestations, not independent observation of review conduct. Safety review is by an assistant.",
+    "MLX and current retrieval were executed freshly. Today's two-model raw pilot outputs and private Kaggle execution were revalidated, not falsely relabelled as new executions in this review. Claude/llama.cpp use offline transport/integration tests; no paid live API call was made.",
+    "This is Phase 1 A/C review. Track B, independent experimental gold/support annotation, Cohen's kappa, headline UER, full scientific sweeps and release acceptance remain separate.",
+    "Passing checked executions does not prove the absence of every possible future error."
+  ]
+}

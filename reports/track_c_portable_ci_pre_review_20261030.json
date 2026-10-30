@@ -1,0 +1,37 @@
+{
+  "commit": "b2cfed78fa013371c57d016bb0dab5084df12886",
+  "source_sha256": "7b00a079f85da21ae09190c763cb36021ca19ae2fe5b45609d7028b8d9ef78ff",
+  "run_id": 41080230770,
+  "url": "https://github.com/DeeptiKoranga/lma-grounding-decay/actions/runs/41080230770",
+  "conclusion": "success",
+  "status": "all three native platforms passed full tests, Ruff and notebook-inclusive Black",
+  "jobs": [
+    {
+      "platform": "track-c-macos-latest",
+      "tests": 724,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 724,
+      "junit_sha256": "bc4881a61641b4b219afd5713ca2aee551c2edbb6846bdd796d82ca4b95bf45c"
+    },
+    {
+      "platform": "track-c-ubuntu-latest",
+      "tests": 724,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 724,
+      "junit_sha256": "76ab221f9e5fbb3b42ddc6839ab65dc8724b91bf6527b87568a5f8a752abaa2b"
+    },
+    {
+      "platform": "track-c-windows-latest",
+      "tests": 724,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 724,
+      "junit_sha256": "3157018da91c8c347a501c1e1e23a41b65831f698f7531bf748abe5dc2a9e23d"
+    }
+  ]
+}
