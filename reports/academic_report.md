@@ -1,0 +1,453 @@
+% Does Grounding Decay with Distance? Measuring and Repairing Weak Links in LLM Causal Explanations of Indian Macroeconomic News
+% Varun Patil (2025204013) · Harshal Bhansali (2026909007) · Deepti Koranga (2025204033)
+% Language Models & Agents (LMA) Group Project 2026 — Interim Report, 31 October 2026
+
+## Abstract
+
+When a language model explains how economic events are connected, links far from
+the original event may rest on less evidence while being stated just as
+confidently. We ask whether that degradation is real and measurable (RQ1), and
+whether an agent that verifies each link and searches for evidence on weak links
+repairs it (RQ2). Explanations are represented as event-impact graphs in which
+every edge is labelled `source_asserted` or `model_inferred` and carries a
+causal-strength level, which makes support measurable hop by hop.
+
+This interim report describes a complete, tested implementation and five
+measured results. It does **not** report the primary metric. The unsupported
+established-edge rate (UER) requires blind human support judgements that are
+scheduled and not yet performed, and we report that as a gap rather than
+estimating it.
+
+Three findings stand without it. First, corruption detection divides cleanly
+between deterministic rules and semantic judgement: on a 104-item challenge set
+the rule layer flags 57 of 57 citation corruptions with zero false alarms, and
+zero of 28 corruptions that alter meaning without altering text. Second, the
+full system establishes only 8 of 35 edges and the no-loop ablation establishes
+none, which is the failure mode our risk register anticipated. Third, and
+newly, a model pilot shows the selected generator failing on exactly the two
+fields the verifier checks — 17 of 20 citations name the wrong passage and 10 of
+20 quotations are not verbatim — which suggests the low establishment rate is
+substantially an extraction failure rather than verifier over-conservatism.
+
+## 1. Introduction
+
+Readers increasingly ask assistants to connect events reported separately in the
+news: an oil shock, a weaker rupee, a central-bank decision. Early links in such
+an explanation may be directly supported by retrieved evidence, while later
+links increasingly rely on unsupported model reasoning, and hedged source
+language may harden into firm causal claims along the chain. A fluent answer
+presents all of it with equal confidence, and the reader cannot see where the
+explanation stops being grounded.
+
+The domain is Indian macro-financial news on crude oil, the rupee, RBI policy
+and bond yields, over a frozen corpus spanning 1 March to 30 September 2026.
+
+**RQ1 (phenomenon).** In LLM-generated explanations of Indian macro-financial
+events, do unsupported causal links and strength inflation increase with hop
+distance from the queried event?
+
+**RQ2 (intervention).** Can a graph-and-repair system reduce unsupported links
+and strength inflation, especially at deeper hops, while keeping useful recall,
+compared with standard retrieval-augmented generation?
+
+**Hypotheses.** H1: in standard RAG, UER and strength inflation increase with
+hop distance. H2a: the full system has at least 10 percentage points lower
+overall UER than standard RAG. H2b: the increase from shallow to deeper hops is
+smaller for the full system. H2c: it has lower UER and strength inflation than
+RAG prompted to label its own links. H2d (recall guard): its reference-edge
+recall is no more than 10 points below standard RAG's.
+
+H2d is not decoration. A verifier can lower UER by discarding every link it
+cannot confirm, which produces a better headline number and a worse answer. The
+guard is what separates repair from deletion, and Section 6 shows why that
+distinction has already become the central question of the project.
+
+## 2. Method
+
+### 2.1 Representing an explanation as an inspectable graph
+
+Each answer is an event-impact graph over a **closed ontology of 44 variables**
+(for example `BRENT`, `INR_USD`, `CPI_HEADLINE`), each edge carrying a direction,
+a provenance label and a causal-strength level. The ontology is closed and
+enforced in the schema, so a model cannot invent a variable to make a chain look
+complete.
+
+| Label | Meaning |
+|---|---|
+| `source_asserted` | A passage published by the as-of date states the relation in this direction. Set only by the verifier. |
+| `model_inferred` | No supporting passage was found under the permitted search procedure. |
+| `direct` | Unhedged causal language: caused, due to, driven by. |
+| `conditional` | Hedged or conditional: could, may, if, upside risk. |
+| `correlational` | Co-occurrence or sequence only: amid, as, after. |
+
+`hop` is breadth-first distance from the anchor event and is recomputed by the
+schema, so a mislabelled hop fails at load rather than silently distorting a
+hop-sliced metric.
+
+### 2.2 Verification in two layers
+
+A deterministic rule layer runs first and an LLM judges only what survives it.
+The four rules are: the cited passage must be in the corpus; it must be
+published on or before the as-of date; it must mention both variables (searching
+the cited paragraph and the one before it, so that anaphora across a paragraph
+break is not mistaken for a missing mention); and it must contain the quoted
+span word for word.
+
+Passing the rule layer means **eligible**, never **supported**. Only the LLM
+verifier, in a fresh context and without the generator's reasoning, may mark an
+edge `source_asserted`.
+
+### 2.3 Agent loop and tools
+
+A controller keeps a state of open edges, search counts and remaining budget. It
+verifies unverified edges first, then searches specifically for evidence on the
+most important `model_inferred` edge. It stops when the important edges are
+resolved, when two searches add nothing new, or at 12 tool calls. Six tools —
+`search_corpus`, `get_series`, `verify_edge`, `counter_search`, `update_graph`,
+`stop` — are read-only and schema-validated, with the date filter and budget
+enforced in code rather than in the prompt.
+
+### 2.4 Conditions
+
+Seven conditions share one model, corpus, date filter, retriever, query set and
+prompt budget, and run through a single code path, so they differ by
+configuration rather than by implementation.
+
+| Condition | Description | Role |
+|---|---|---|
+| B0 | Query only, no retrieval | reference |
+| B1 | Standard RAG, prose with citations | main baseline |
+| B1-R | B1 plus a top-50 cross-encoder reranker | retrieval ablation |
+| B2 | RAG emitting its own provenance and strength labels | prompting control |
+| A-NoVerify | Full system, verifier replaced by self-labels | verifier ablation |
+| A-NoLoop | Full system, retrieving once, no agent loop | agentic ablation |
+| M | Graph, labels, verifier, agent loop, weakest-link paths | proposed method |
+
+## 3. Experimental setup
+
+### 3.1 Corpus
+
+A frozen snapshot of **1,156 documents** (1,095 news, 61 official) and **16,472
+passages**, published between 1 March and 30 September 2026, hash-pinned in
+`data/processed/MANIFEST.md`. Deduplication used exact full-text hashing for all
+sources and, for news, MinHash over title and first-paragraph word trigrams with
+128 permutations and an exact Jaccard threshold of 0.85.
+
+| Source | Documents |
+|---|---:|
+| Economic Times | 870 |
+| BusinessLine | 213 |
+| MOSPI | 37 |
+| PPAC | 14 |
+| Mint | 12 |
+| eaindustry | 10 |
+| Business Standard, RBI, PIB | 0 |
+
+Every passage carries exact character offsets into its parent document. Without
+them, verbatim span checking — on which the entire provenance distinction rests
+— would not be possible.
+
+### 3.2 Macro series
+
+Six series, **161 original-vintage observations**, each with an `available_on`
+date. A series confirms only that a move happened; it is never evidence for a
+causal edge. Coverage is uneven: 141 observations are USD/INR, while FPI flows
+contribute one.
+
+### 3.3 Evaluation sets
+
+Eight anchored queries over four episodes, split four development and four test
+**by episode**, so the two halves share no event, no as-of date and no passages.
+Four reviewer evidence graphs hold 20 source-asserted edges with verbatim spans.
+A challenge set holds 104 items: 19 clean controls and 85 mechanically corrupted
+edges across five families. Synthetic diagnostics add 40 frozen agent states, 25
+adversarial safety prompts and 20 tool-fault scenarios.
+
+Two public datasets are used as diagnostics and never for training: the
+causal-language data of Yu et al. (2019) and FinCausal 2020 task 1, 200 sampled
+items each.
+
+### 3.4 Model and compute
+
+`mlx-community/Qwen3-8B-4bit`, revision `545dc425`, selected by the pilot in
+Section 4.1. All development ran locally on an Apple M5 via MLX. A private
+two-T4 Kaggle execution consumed **1.211 visible allocated GPU-hours**. **No
+paid API request was made.**
+
+## 4. Results
+
+### 4.1 Model selection
+
+Both candidate models completed 100 identical project-schema cases, 20 in each
+of five tasks.
+
+| Model | Extraction | Strength | JSON validity | Tool choice | Unsupported edges | Mean | Latency (s) |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Qwen3-8B-4bit | 5.0% | 95.0% | 100.0% | 10.0% | 95.0% | 61.0% | 20.4 |
+| Qwen3.5-9B-4bit | 65.0% | 75.0% | 100.0% | 5.0% | 60.0% | 61.0% | 26.6 |
+
+The selection rule, recorded before the runs, took the highest unweighted mean
+across the five tasks and broke ties within 0.03 on latency. The means tied
+exactly at 61.0%, so the faster 8B model was selected.
+
+A post-run field analysis, which did not alter the frozen rule or scores, shows
+where each model failed.
+
+| Failure category | Qwen3-8B | Qwen3.5-9B |
+|---|---:|---:|
+| Citation names the wrong passage | **17 / 20** | 0 / 20 |
+| Quotation not verbatim or missing | **10 / 20** | 0 / 20 |
+| Strength mismatch | 7 / 20 | 6 / 20 |
+| Direction mismatch | 1 / 20 | 1 / 20 |
+| Strictly correct extractions | 1 / 20 | 13 / 20 |
+
+### 4.2 Retrieval
+
+Twenty query–evidence pairs across four configurations, 2,035 pooled relevance
+judgements. The decision rule — take the simplest configuration within 0.03
+Recall@10 of the best — was fixed before the comparison.
+
+| Configuration | Recall@10 |
+|---|---:|
+| BM25 | 0.3518 |
+| BM25 with alias expansion | 0.3551 |
+| Hybrid (reciprocal rank fusion) | 0.4161 |
+| BGE-M3 (selected) | 0.4259 |
+| BGE-M3 with top-50 cross-encoder | 0.5296 |
+
+The 2,035 relevance judgements are single automated judgements made with prior
+exposure to results, not independent human scores. This is adequate for a
+development selection and is not presented as reviewed evidence.
+
+### 4.3 Causal strength and detection on public data
+
+A deterministic cue classifier built from the project's own cue lists, scored on
+data nobody on the project wrote. It exists to give the model arm a floor to
+clear.
+
+| Check | Result |
+|---|---|
+| Strength, 3-class (Yu et al.) | macro-F1 0.414, accuracy 0.350, 81/200 abstentions |
+| Detection, binary (FinCausal) | F1 0.497, accuracy 0.525 |
+
+Per class the baseline is lopsided: conditional recall 0.920 at precision 0.377,
+correlational precision 0.886 at recall 0.333, direct F1 0.222. It over-fires on
+hedging and under-detects plain causal language. For scale, Yu et al. report
+macro-F1 near 0.86 with a fine-tuned BERT on their own task.
+
+### 4.4 Challenge set
+
+104 items run against the rule layer with no model involved.
+
+| Corruption family | Items | Flagged | Rate |
+|---|---:|---:|---:|
+| Unsupported intermediate hop | 19 | 19 | 1.000 |
+| Wrong date | 19 | 19 | 1.000 |
+| Wrong target | 19 | 19 | 1.000 |
+| Reversed relation | 19 | 0 | 0.000 |
+| Inflated strength | 9 | 0 | 0.000 |
+| Clean controls | 19 | 0 | — |
+
+Fifty-seven of 57 citation corruptions are caught with zero false alarms, and
+none of the 28 semantic corruptions. The two misses are structural: reversing an
+edge leaves the same two variables in the same passage with the same verbatim
+span, so every rule still passes, and no rule reads the strength field. The test
+suite asserts these misses, so a rule cannot silently acquire a capability it
+does not document.
+
+### 4.5 Capability, safety and tool calling
+
+| Metric | Result |
+|---|---|
+| Tool-selection accuracy, standalone model choice, 40 states | 0.125 |
+| Argument validity (schema and unchanged cutoff) | 0.850 |
+| Investment-advice leakage, 25 adversarial prompts | 0 |
+| Own-forecast leakage, 25 prompts | 0 |
+| Post-as-of evidence use, 25 prompts | 0 |
+| Asserted labels without a verbatim span, 25 prompts | 0 |
+| Synthetic tool-fault recovery | 20 / 20 |
+
+Two qualifications. The 0.125 measures the model's standalone next-action choice
+on scripted states; the executed controller uses deterministic priority, so this
+is not the accuracy of the agent as it runs. And the safety screen was reviewed
+by an assistant rather than an independent human, which the record discloses; it
+is a descriptive screen, not certification.
+
+### 4.6 Structural outcome by condition
+
+From a complete 42-graph sweep, seven conditions over six development
+candidates, logged and audited with zero failures. These are structural counts,
+not support scores, and they were produced on an archived earlier corpus
+revision rather than the current one.
+
+| Condition | Graphs | Edges | Established | Unverified inferred |
+|---|---:|---:|---:|---:|
+| B0 | 6 | 20 | 12 | 20 |
+| B1 | 6 | 34 | 34 | 10 |
+| B1-R | 6 | 31 | 31 | 12 |
+| B2 | 6 | 36 | 36 | 18 |
+| A-NoVerify | 6 | 36 | 36 | 16 |
+| A-NoLoop | 6 | 35 | 0 | 5 |
+| M | 6 | 35 | 8 | 18 |
+
+### 4.7 What has no value yet
+
+UER, strength inflation and reference-edge recall — the primary metric and both
+secondary metrics — have no values. They require blind human support judgements
+on generated edges. The scoring code is written and runs today; given no
+reviewed input it writes nothing and names its missing preconditions, so the gap
+stays visible rather than becoming an empty section in a report.
+
+## 5. Discussion
+
+### 5.1 Where deterministic checking ends and judgement begins
+
+The challenge-set result is the clearest evidence the project has, and it points
+in both directions at once. Roughly a third of the corruptions — reversed
+relations and inflated strength labels, which are also the two a careless graph
+is most likely to contain — cannot be detected by matching text at all. That is
+an argument for the semantic verifier made from data rather than from
+expectation. Equally, the three families the rules do catch are caught
+deterministically, at no model cost, so a verifier that spends calls
+re-checking citations is spending them where a regular expression already wins.
+
+This is a reusable design result: in a verification pipeline of this shape, rules
+should own provenance and dating, and the model should own direction and
+strength.
+
+### 5.2 Does verification repair, or does it delete?
+
+The ablations make the mechanism visible. Removing the verifier leaves the
+generator's self-labels and 36 of 36 edges are established. Keeping the verifier
+but removing the search loop leaves 0 of 35. The full system establishes 8 of 35.
+
+Read alone, this looks like a verifier that is too conservative, and that is how
+we first read it. The model pilot in Section 4.1 suggests a different reading.
+The selected generator fails on precisely the two fields the rule layer checks:
+17 of 20 citations name the wrong passage, which fails the in-corpus rule, and
+10 of 20 quotations are not verbatim, which fails the span rule. The rejected
+alternative model had **zero** failures in both categories.
+
+If the generator's citations are mostly wrong, then a verifier that rejects them
+is behaving correctly, and the low establishment rate is substantially an
+**extraction** failure rather than a **verification** failure. The two
+observations are independent — one from a synthetic pilot, one from a corpus
+sweep — and they agree.
+
+This has a direct consequence for the selection in 4.1. The rule averaged five
+tasks unweighted and tied at exactly 61.0%, so latency chose the model. But the
+five tasks are not equally important to this pipeline: extraction quality
+determines whether any edge can be established at all, and on extraction the two
+models differ by 60 percentage points. A tie broken on speed selected the model
+that is weaker at the thing the architecture most depends on. We flag this as a
+decision to revisit with evidence, not as an error in following the rule — the
+rule was recorded in advance and was followed, which is what makes the
+consequence visible now rather than arguable later.
+
+### 5.3 What the design cost us
+
+Reality reduced the study. Of eight candidate anchor episodes, three confirm as
+declared and only two against official data; the March oil shock had to be
+redated because the Brent series holds no March observation, and the September
+bond sell-off was dropped because the yield series ends in August and never
+reaches the threshold. That reduced 30 planned queries to 8, which in turn caps
+the gold set at 24 edges and left the challenge set unable to reach its
+specified size.
+
+The compounding is worth stating plainly, because it is the kind that is easy to
+hide: a sparse series store did not merely weaken one measurement, it propagated
+through anchors to queries to the gold standard to the challenge set, and
+finally to the hop coverage that RQ1 is defined over.
+
+## 6. Limitations
+
+**No primary result.** UER is unmeasured. Everything in Section 4 is
+infrastructure, diagnostics or structure.
+
+**The gold set reaches hop 2.** Fifteen of 20 gold edges are at hop 1 and five
+at hop 2, with none deeper. UER can still be reported at hop 3 or more because
+it is measured over generated edges, but reference-edge recall — the H2d guard —
+has no denominator there, so the guard is unavailable in exactly the slice where
+H1 predicts grounding is worst.
+
+**Source concentration.** 870 of 1,095 news documents, 79%, come from one
+publisher. Business Standard and the RBI refuse `robots.txt` to our client while
+serving it to browsers; closing that gap would mean presenting a browser
+user-agent to defeat the distinction, which is bot-check circumvention, and we
+declined. Mint is reachable and permitted but admitted none of six candidates
+under a bounded probe.
+
+**The reviewer evidence graphs are not adjudicated.** They are span-exact and
+machine-drafted, and every file records that status. The scoring pipeline
+refuses them until a receipt names a reviewer.
+
+**Pilot scale.** The model pilot uses 20 synthetic cases per task and the
+capability diagnostic uses 40 states that are five variants of eight scenarios.
+Both are development diagnostics, not benchmarks.
+
+**Self-review.** The relevance judgements and the safety screen were produced
+with assistant review rather than independent human review, which the records
+disclose.
+
+**Schedule.** The blind double annotation planned for 30 October did not take
+place. It is the first step of the dependency chain in Section 7, and the
+remaining schedule assumes it happens immediately.
+
+## 7. Remaining work
+
+The final submission is 15 November, with work winding up on 12 November.
+
+| Dates | Work |
+|---|---|
+| Immediate | Blind double annotation of the 20 development gold edges; inter-annotator agreement |
+| 1–2 Nov | Extend the series store; re-confirm anchors; draft and adjudicate the test gold graphs |
+| 2–5 Nov | Development sweep on the current corpus; blind support judgements; first UER, strength inflation and reference-edge recall |
+| 6 Nov | Decision point: one round of verifier tuning on development data only, recorded |
+| 7–8 Nov | Challenge-set and strength model arms; stability check |
+| 9 Nov | Freeze settings; test sweep |
+| 10–12 Nov | Test judgements; final results with intervals; failure analysis; reproduction from a clean clone |
+
+Each step depends on the one before it. The annotation is the only step with no
+slack, because every downstream number is measured against the standard it
+produces.
+
+Given Section 5.2, we add one item: re-examine the D-01 selection against
+extraction quality specifically, rather than against an unweighted mean of five
+tasks. If the development sweep on the current corpus reproduces a low
+establishment rate, the model choice is the first hypothesis to test, ahead of
+loosening the verifier.
+
+## 8. Conclusion
+
+We have built and tested the apparatus for a measurement that, to our knowledge,
+has not been made: how evidential support and causal strength change hop by hop
+in LLM explanations of real financial news. The pipeline is complete and
+reproducible, and five independent results characterise its parts.
+
+The primary measurement has not been made. We report that rather than estimating
+it, and the tooling enforces the same discipline by refusing to emit a number it
+cannot justify.
+
+What the work already shows is that the verification question is sharper than we
+posed it. Deterministic rules and semantic judgement divide cleanly and
+measurably, with rules owning provenance and the model owning meaning. And the
+striking scarcity of established edges, which we first attributed to an
+over-cautious verifier, appears instead to trace to a generator that cites the
+wrong passage in 17 of 20 cases — which is a different problem, with a different
+fix, and one we would not have seen without running both diagnostics.
+
+## References
+
+Asai et al. (2024). Self-RAG. ICLR.
+Chen et al. (2024). BGE M3-Embedding. arXiv:2402.03216.
+Chi et al. (2026). WorldReasoner. arXiv:2606.11816.
+Cormack, Clarke and Büttcher (2009). Reciprocal rank fusion. SIGIR.
+Gendron et al. (2025). Causal Cartographer. arXiv:2505.14396.
+Mariko et al. (2020). FinCausal 2020. FNP.
+Prasad et al. (2023). ReCEval. EMNLP.
+Qwen Team (2025). Qwen3 technical report. arXiv:2505.09388.
+Romanou et al. (2023). CRAB. EMNLP.
+Tan et al. (2022). The Causal News Corpus. LREC.
+Wang et al. (2025). CausalRAG. Findings of ACL.
+Xie et al. (2025). FIRE. Findings of NAACL.
+Yu, Li and Wang (2019). Detecting causal language use in science findings. EMNLP-IJCNLP.
