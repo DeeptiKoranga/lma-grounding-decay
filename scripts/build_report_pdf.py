@@ -281,12 +281,14 @@ def build(source: Path, output: Path) -> int:
         # so keep it whole. Carry its heading and one-line introduction down
         # with it too: a heading left stranded above a half-page of white,
         # with its table overleaf, is the worse of the two faults.
+        # Carry a heading down with the table only when it sits directly on it,
+        # with no body text in between - that is the case where leaving the
+        # table behind strands the heading above white space. A heading that
+        # already has its paragraph is not stranded, and dragging the whole
+        # section down just moves the hole further up the page.
         carried = []
-        while story and len(carried) < 2 and isinstance(story[-1], Paragraph):
-            style = story[-1].style.name
+        while story and isinstance(story[-1], Paragraph) and story[-1].style.name in {"h1", "h2"}:
             carried.insert(0, story.pop())
-            if style in {"h1", "h2"}:
-                break
         story.append(KeepTogether(carried + block))
         table_rows.clear()
 

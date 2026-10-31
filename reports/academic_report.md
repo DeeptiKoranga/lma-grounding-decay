@@ -3,33 +3,6 @@
 % Language Models & Agents (LMA) Group Project 2026 — Mid Submission Report
 % GitHub: https://github.com/DeeptiKoranga/lma-grounding-decay
 
-## Abstract
-
-When a language model explains how economic events are connected, links far from
-the original event may rest on less evidence while being stated just as
-confidently. We ask whether that degradation is real and measurable (RQ1), and
-whether an agent that verifies each link and searches for evidence on weak links
-repairs it (RQ2). Explanations are represented as event-impact graphs in which
-every edge is labelled `source_asserted` or `model_inferred` and carries a
-causal-strength level, which makes support measurable hop by hop.
-
-This interim report describes a complete, tested implementation and five
-measured results. It does **not** report the primary metric. The unsupported
-established-edge rate (UER) requires blind human support judgements that are
-scheduled and not yet performed, and we report that as a gap rather than
-estimating it.
-
-Three findings stand without it. First, corruption detection divides cleanly
-between deterministic rules and semantic judgement: on a 104-item challenge set
-the rule layer flags 57 of 57 citation corruptions with zero false alarms, and
-zero of 28 corruptions that alter meaning without altering text. Second, the
-full system establishes only 8 of 35 edges and the no-loop ablation establishes
-none, which is the failure mode our risk register anticipated. Third, and
-newly, a model pilot shows the selected generator failing on exactly the two
-fields the verifier checks — 17 of 20 citations name the wrong passage and 10 of
-20 quotations are not verbatim — which suggests the low establishment rate is
-substantially an extraction failure rather than verifier over-conservatism.
-
 ## 1. Introduction
 
 Readers increasingly ask assistants to connect events reported separately in the
