@@ -1,6 +1,7 @@
 % Does Grounding Decay with Distance? Measuring and Repairing Weak Links in LLM Causal Explanations of Indian Macroeconomic News
 % Varun Patil (2025204013) · Harshal Bhansali (2026909007) · Deepti Koranga (2025204033)
-% Language Models & Agents (LMA) Group Project 2026 — Interim Report, 31 October 2026
+% Language Models & Agents (LMA) Group Project 2026 — Mid Submission Report
+% GitHub: https://github.com/DeeptiKoranga/lma-grounding-decay
 
 ## Abstract
 

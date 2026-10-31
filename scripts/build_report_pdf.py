@@ -142,7 +142,7 @@ def inline(text: str) -> str:
     out = escape(text)
     out = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", out)
     out = re.sub(r"(?<!\*)\*([^*]+?)\*(?!\*)", r"<i>\1</i>", out)
-    out = re.sub(r"`(.+?)`", r'<font face="Courier" size="8.6">\1</font>', out)
+    out = re.sub(r"`(.+?)`", r'<font face="Courier" size="8.8">\1</font>', out)
     return out
 
 
@@ -173,9 +173,9 @@ def _column_widths(rows: list[list[str]], total: float) -> list[float]:
             if set(text) <= set("-: "):
                 continue
             font = "Times-Bold" if row is rows[0] else "Times-Roman"
-            longest_cell[i] = max(longest_cell[i], stringWidth(text, font, 8.6))
+            longest_cell[i] = max(longest_cell[i], stringWidth(text, font, 8.8))
             for word in text.split():
-                longest_word[i] = max(longest_word[i], stringWidth(word, font, 8.6))
+                longest_word[i] = max(longest_word[i], stringWidth(word, font, 8.8))
 
     floors = [w + pad for w in longest_word]
     if sum(floors) >= total:  # pathological; fall back to equal shares
@@ -218,8 +218,8 @@ def _table(rows: list[list[str]], st, width: float) -> Table:
                 ("LINEBELOW", (0, -1), (-1, -1), 0.6, INK),
                 ("INNERGRID", (0, 1), (-1, -1), 0.25, RULE),
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
-                ("TOPPADDING", (0, 0), (-1, -1), 3.5),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 3.5),
+                ("TOPPADDING", (0, 0), (-1, -1), 5),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
                 ("LEFTPADDING", (0, 0), (-1, -1), 5),
                 ("RIGHTPADDING", (0, 0), (-1, -1), 5),
             ]
@@ -271,14 +271,23 @@ def build(source: Path, output: Path) -> int:
         if not table_rows:
             return
         table = _table(list(table_rows), st, width)
-        block = [Spacer(1, 3), table, Spacer(1, 9)]
-        # A short table that splits two rows before a page break reads badly.
-        # Keep those whole and let them move down; long ones still split, with
-        # the header repeated.
-        story.append(KeepTogether(block) if len(table_rows) <= 12 else block[1])
+        block = [Spacer(1, 6), table, Spacer(1, 13)]
         if len(table_rows) > 12:
-            story.insert(-1, block[0])
-            story.append(block[2])
+            story.extend(block)
+            table_rows.clear()
+            return
+
+        # A short table that splits two rows before a page break reads badly,
+        # so keep it whole. Carry its heading and one-line introduction down
+        # with it too: a heading left stranded above a half-page of white,
+        # with its table overleaf, is the worse of the two faults.
+        carried = []
+        while story and len(carried) < 2 and isinstance(story[-1], Paragraph):
+            style = story[-1].style.name
+            carried.insert(0, story.pop())
+            if style in {"h1", "h2"}:
+                break
+        story.append(KeepTogether(carried + block))
         table_rows.clear()
 
     for raw in source.read_text(encoding="utf-8").splitlines():
@@ -325,7 +334,7 @@ def build(source: Path, output: Path) -> int:
         head = [Paragraph(inline(meta[0]), st["title"])]
         for row in meta[1:]:
             head.append(Paragraph(inline(row), st["byline"]))
-        head.append(Spacer(1, 14))
+        head.append(Spacer(1, 18))
         story = [KeepTogether(head), *story]
 
     doc.build(story)
