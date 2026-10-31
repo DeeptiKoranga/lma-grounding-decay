@@ -295,6 +295,16 @@ blocks anything today.
 | **Consequence** | Two claims the mid report can make, in opposite directions. **For the verifier:** 28 of 85 corruptions — a third, and the two families a careless graph is most likely to contain — cannot be caught by matching text, which is the project's clearest evidence that the semantic step earns its budget. **Against spending budget badly:** the other three families are caught deterministically, for free, with no model, so a verifier re-checking citations is spending calls where a regex already wins. The per-type denominators are uneven (D-21) so every rate is quoted with its own; a macro average over families would be meaningless. |
 | **Caveat** | Corruption detection is sound on un-adjudicated gold because each corruption is applied mechanically and known by construction. **The 0.000 false-alarm rate is not**: a control is clean only if its gold edge was right, so that figure inherits whatever adjudication changes. `gold_adjudicated: false` is recorded on every row. |
 
+### D-24 — `main` is protected client-side, not server-side
+
+| | |
+|---|---|
+| **Status** | `resolved` · 19 Oct 2026 |
+| **Decision** | A tracked `pre-push` hook (`scripts/git-hooks/pre-push`, installed by `make hooks`) refuses direct pushes to `main`. Override with `PUSH_TO_MAIN=1` for a genuine emergency. |
+| **Why** | GitHub requires Pro for branch protection and rulesets on a *private* repository, and the repo stays private until submission. The hook catches the accidental push, which is the failure that actually happens; it is not a security boundary and anyone can bypass it. |
+| **Revisit if** | The repo moves to GitHub Pro — free via the Student Developer Pack. Then add real branch protection (PR + 1 approval, no force-push, no deletion) and keep the hook as a local fast-fail. |
+| **Renumbered** | Taken as D-13 on this branch on 19 Oct, the same number `b/verifier-rules` took that day for the span-tolerance row. That branch has since merged into the Track B line, so this row moves to **D-24**. Nothing else referred to it by number. |
+
 ---
 
 ## Deferred past 30 October — revised 29 Oct for a 15 November final
