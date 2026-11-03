@@ -20,7 +20,7 @@ passage that names a variable need not say anything about it.
 
 | variable | alias forms tried |
 |---|---|
-| `AIRLINE_SHARES` | 'shares of listed indian carriers', 'aviation stocks', 'aviation shares', 'carrier shares', 'aviation stock', 'aviation index', 'airline shares', 'carrier share', 'airline share' |
+| `AIRLINE_SHARES` | 'shares of listed indian carriers', 'aviation shares', 'aviation stocks', 'airline shares', 'aviation index', 'aviation stock', 'carrier shares', 'airline share', 'carrier share' |
 | `CORPORATE_BOND_SPREAD` | 'corporate bond spreads', 'corporate bond spread', 'credit spreads', 'credit spread', 'aaa spreads', 'aaa spread' |
 | `CPI_FUEL_LIGHT` | 'fuel and light sub-index', 'fuel and light group', 'fuel and light index', 'fuel light index', 'fuel and light' |
 

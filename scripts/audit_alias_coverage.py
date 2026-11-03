@@ -53,7 +53,10 @@ def main(argv: list[str] | None = None) -> int:
     aliases = yaml.safe_load(ALIASES.read_text(encoding="utf-8"))["aliases"]
 
     folded = {
-        var: sorted({form.lower() for form in aliases.get(var, [])}, key=len, reverse=True)
+        # Longest first so the most specific form wins, then alphabetically:
+        # ties broken by set order vary between runs under hash randomisation,
+        # which made this generated report differ from itself.
+        var: sorted({form.lower() for form in aliases.get(var, [])}, key=lambda f: (-len(f), f))
         for var in ontology
     }
 
