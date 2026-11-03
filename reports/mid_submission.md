@@ -33,7 +33,7 @@ Work is split by directory so three people can commit in parallel:
 
 **Built and tested:** a frozen 1,156-document corpus with exact character
 offsets; BM25, alias-expanded BM25, BGE-M3 and reciprocal-rank-fusion retrieval
-with a cross-encoder reranker; a closed 44-variable ontology; a four-rule
+with a cross-encoder reranker; a closed 46-variable ontology; a four-rule
 deterministic verifier plus an LLM verifier downstream of it; six read-only,
 schema-validated tools under a 12-call budget; all seven experimental conditions
 sharing one code path; and the scoring harness for both research questions.

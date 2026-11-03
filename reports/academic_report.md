@@ -40,7 +40,7 @@ distinction has already become the central question of the project.
 
 ### 2.1 Representing an explanation as an inspectable graph
 
-Each answer is an event-impact graph over a **closed ontology of 44 variables**
+Each answer is an event-impact graph over a **closed ontology of 46 variables**
 (for example `BRENT`, `INR_USD`, `CPI_HEADLINE`), each edge carrying a direction,
 a provenance label and a causal-strength level. The ontology is closed and
 enforced in the schema, so a model cannot invent a variable to make a chain look
@@ -350,6 +350,30 @@ serving it to browsers; closing that gap would mean presenting a browser
 user-agent to defeat the distinction, which is bot-check circumvention, and we
 declined. Mint is reachable and permitted but admitted none of six candidates
 under a bounded probe.
+
+**Alias coverage caps reference-edge recall before any model runs.** Rule 3
+requires both variables of an edge to be named in the cited passage, through a
+hand-written alias table. Auditing that table against all 16,472 passages
+(`reports/alias_coverage.md`), **three of the 46 ontology variables are never
+named at all** — `AIRLINE_SHARES`, `CORPORATE_BOND_SPREAD` and `CPI_FUEL_LIGHT`
+— and five more appear in fewer than ten passages. A variable the corpus never
+names cannot carry a source-asserted edge however much the sources discuss the
+underlying quantity.
+
+This has a specific and uncomfortable consequence. The proposal's own
+illustrative chain runs crude → ATF price → airline costs → airline shares, and
+its last two links are exactly the unevidenceable ones: `AIRLINE_COSTS` appears
+in two passages and `AIRLINE_SHARES` in none. **The worked example used to
+motivate the study cannot be built from the corpus the study froze.** It is also
+a deep-hop chain, so this compounds the hop-2 ceiling above rather than being
+separate from it.
+
+Two causes are possible and they need opposite fixes: either the corpus does not
+discuss these quantities, in which case queries touching them must be rescoped,
+or the sources use wording the alias table lacks, in which case the table is
+incomplete. Distinguishing them requires reading the corpus. We have not
+extended the table, because extending it to make a particular gold edge pass
+would be fitting the instrument to the data.
 
 **The reviewer evidence graphs are not adjudicated.** They are span-exact and
 machine-drafted, and every file records that status. The scoring pipeline

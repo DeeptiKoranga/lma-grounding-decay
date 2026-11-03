@@ -295,6 +295,17 @@ blocks anything today.
 | **Consequence** | Two claims the mid report can make, in opposite directions. **For the verifier:** 28 of 85 corruptions — a third, and the two families a careless graph is most likely to contain — cannot be caught by matching text, which is the project's clearest evidence that the semantic step earns its budget. **Against spending budget badly:** the other three families are caught deterministically, for free, with no model, so a verifier re-checking citations is spending calls where a regex already wins. The per-type denominators are uneven (D-21) so every rate is quoted with its own; a macro average over families would be meaningless. |
 | **Caveat** | Corruption detection is sound on un-adjudicated gold because each corruption is applied mechanically and known by construction. **The 0.000 false-alarm rate is not**: a control is clean only if its gold edge was right, so that figure inherits whatever adjudication changes. `gold_adjudicated: false` is recorded on every row. |
 
+### D-25 — Alias coverage caps reference-edge recall, and we are not widening the table to fit
+
+| | |
+|---|---|
+| **Status** | `open` — evidence gathered 3 Nov 2026; the fix is Track A's call (D-16) |
+| **Decision** | Do **not** extend `data/aliases.yaml` to make gold edges pass. Measure the coverage, report it as a bound on reference-edge recall, and put the evidence in an issue for the file's owner. |
+| **Why** | Rule 3 requires both variables named in the cited passage via the alias table, so a variable the corpus never names **cannot carry a source-asserted edge at all**. `scripts/audit_alias_coverage.py` over all 16,472 passages finds **3 of 46 variables never named** (`AIRLINE_SHARES`, `CORPORATE_BOND_SPREAD`, `CPI_FUEL_LIGHT`) and 5 more under ten passages. This was found while drafting the test gold graphs: candidate edges kept failing rule 3 on wording the sources plainly use — "an immediate rate hike" where the table lists "rate hike expectations", "fuel inflation" where it lists "fuel and light". |
+| **Consequence** | The proposal's own worked example — crude → ATF price → airline costs → airline shares — has two unevidenceable links at its deep end: `AIRLINE_COSTS` appears in 2 passages, `AIRLINE_SHARES` in none. **The chain used to motivate the study cannot be built from the corpus it froze**, and since it is the deep-hop chain this compounds the hop-2 ceiling rather than being separate from it. `test-cpi-why` targets `RATE_HIKE_EXPECTATIONS`, for which no India-scoped passage carries a recognised surface form, so that query's target may be unreachable as written. |
+| **Why not just widen it** | Two causes need opposite fixes. If the corpus does not discuss a quantity, queries touching it must be rescoped; if the sources use wording the table lacks, the table is incomplete and extending it is a correctness fix. Telling them apart means reading the corpus. Widening the table while holding a specific failing gold edge is fitting the instrument to the data, and it would silently change the verifier for every condition, the dev results and the challenge set alike. |
+| **Revisit if** | Track A reviews the absent and thin forms against the corpus and extends the table on that evidence, recorded as its own row. Re-run the audit afterwards; `reports/alias_coverage.md` is generated. |
+
 ---
 
 ## Deferred past 30 October — revised 29 Oct for a 15 November final
