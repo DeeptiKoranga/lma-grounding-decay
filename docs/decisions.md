@@ -319,6 +319,16 @@ blocks anything today.
 | **Receipt** | Both annotators signed `data/eval/gold/dev/review_receipt.json` the same day, which is a separate attestation from the labelling: it binds a SHA-256 of every reference file and of the corpus, so editing a gold graph afterwards invalidates the signature instead of passing under it. `make challenge` no longer passes `--allow-unreviewed`, so the manifest now records `gold_adjudicated: true` with the receipt hash and **the challenge set's false-alarm rate becomes quotable** — a clean control is only clean if its gold edge was right. The guard is still tested: `test_unsigned_gold_needs_the_flag` builds an unsigned set in a temp directory rather than relying on the repository being unsigned, so signing could not quietly delete the test. |
 | **Revisit if** | Someone argues the rule is too strict. It is the strictest defensible reading and it costs 4 of 20 edges; the looser reading would have to say where a direction may come from if not the span, and that answer is `model_inferred`, which a reference graph cannot hold. If re-drafting adds edges, prefer candidates whose spans state a sign, and note that the dev set's hop-2 slice is down to four edges. |
 
+### D-27 — "Annotate 10 of the 24 test queries" is unreachable; rescope B-2.6
+
+| | |
+|---|---|
+| **Status** | `resolved` · 8 Nov 2026 — rescoped to 4 queries; the drafting half is not started |
+| **Decision** | #38 asks for 10 annotated queries out of 24 on the test half. **There are four.** `data/eval/queries_test.jsonl` holds `test-cpi-why`, `test-cpi-effects`, `test-fpi-why`, `test-fpi-effects`, and no more are expressible. Annotate **all four**, and report the test figures as descriptive with no confidence intervals, exactly as D-19 already requires. |
+| **Why** | The same stale premise that D-21 found in B9. "10 of 24" was written against the original 30-query design; D-18 cut eight candidate anchors to four confirmed, and D-19 split those four by anchor into four dev and four test queries. Neither issue was re-costed afterwards, so two task specs still quote numbers from a design that no longer exists. Finding the second one is a reason to distrust any remaining headline count in `PLAN_MIDSUB.md` that predates 27 October. |
+| **Consequence** | No test gold graphs exist at all: `data/eval/gold/` holds `dev` only. Drafting them is the prerequisite for annotating them, and D-25 already found that half-finished attempt failing — `test-cpi-why` targets `RATE_HIKE_EXPECTATIONS`, for which no India-scoped passage carries a recognised surface form, so that query's target may be unreachable as written and its gold graph may not reach `MIN_EDGES` at all. Budget for the test half being thinner than the dev half, or for one of its four queries having no usable gold. |
+| **Revisit if** | Track A extends `data/aliases.yaml` on corpus evidence (D-25), which could make the CPI target reachable. Re-run `scripts/audit_alias_coverage.py` before drafting, not after. |
+
 ---
 
 ## Deferred past 30 October — revised 29 Oct for a 15 November final
