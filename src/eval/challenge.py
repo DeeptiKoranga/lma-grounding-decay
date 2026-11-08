@@ -176,14 +176,29 @@ def build(*, gold: Path, corpus: Path, output: Path, allow_unreviewed: bool = Fa
         "reference_review_receipt_sha256": receipt_hash,
         "corpus_sha256": digest(corpus),
         "status": (
-            "challenge candidates; independent review is required before accepting "
-            "corruption labels"
+            "built from adjudicated gold against a signed reference review receipt; "
+            "both rates are quotable with their denominators"
+            if adjudicated
+            else "challenge candidates; independent review is required before accepting "
+            "the false-alarm rate"
         ),
         "reading": (
-            "Corruption-detection rate is sound on un-adjudicated gold because the "
-            "corruption is applied mechanically. The false-alarm rate over controls is "
-            "only as good as the gold edges. Quote every rate with its denominator from "
-            "counts_by_kind; the per-type counts are uneven by construction (D-21)."
+            # The two rates do not rest on the same thing, so they do not become
+            # quotable at the same time. A corruption is ground truth whatever
+            # the gold set's status, because it was applied mechanically to a
+            # known edge. A control is only clean if its gold edge was right,
+            # so the false-alarm rate waits for the signed receipt.
+            "Corruption-detection rate is sound either way, because each corruption is "
+            "applied mechanically to a known edge. "
+            + (
+                "The false-alarm rate over controls now rests on adjudicated gold "
+                "(D-26) bound to reference_review_receipt_sha256, so it is quotable."
+                if adjudicated
+                else "The false-alarm rate over controls is only as good as the gold "
+                "edges, which nobody has signed for, so do not quote it."
+            )
+            + " Quote every rate with its denominator from counts_by_kind; the per-type "
+            "counts are uneven by construction (D-21)."
         ),
     }
     output.with_name(output.stem + "_manifest.json").write_text(

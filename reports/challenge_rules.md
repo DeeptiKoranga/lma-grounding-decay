@@ -4,7 +4,7 @@
 
 Run 2026-11-08. **No model involved.** This is what the B6 rule layer catches on its own, and therefore what the LLM verifier has to exist for.
 
-Gold adjudicated: **False**. Items: 89.
+Gold adjudicated: **True**. Items: 89.
 
 ## Detection by corruption family
 
@@ -30,9 +30,9 @@ It also bounds the claim in the other direction. The three families the rules do
 
 Per-type counts are **uneven by construction** (D-21): the gold set supplies 16 seeds but only 9 hedged links, so `inflated_strength` has a denominator of 9. Quote every rate with its denominator; a macro average over families is not meaningful here.
 
-Corruption detection is sound either way, because each corruption was applied mechanically and is known by construction. **The false-alarm rate is not**: a control is only clean if its gold edge was right, so that figure rests on the state of the gold set.
+The two rates do not rest on the same thing. **Corruption detection** is sound either way, because each corruption was applied mechanically to a known edge. **The false-alarm rate** is different: a control is only clean if its gold edge was right, so it rests on the state of the gold set.
 
-The gold graphs here are **adjudicated** (D-26: two annotators, independently, 8 Nov 2026), so the controls are as clean as that reconciliation left them. `gold_adjudicated` above reads the review receipt, which carries the reviewers' own signed attestation and is a separate step from the labelling; it stays False until they sign it.
+Here the gold set is **adjudicated and signed** - two annotators labelled every edge independently on 8 Nov 2026 (D-26), and `review_receipt.json` carries their attestation bound to these exact gold bytes. **So both rates above are quotable**, each with its denominator. The controls are as clean as that reconciliation left them, which is the strongest claim available: 16 edges is a small reference set and 4 of the 20 drafted edges did not survive it.
 
 ## Which rule fired
 

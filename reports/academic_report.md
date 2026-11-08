@@ -249,6 +249,12 @@ on the other's. The development gold set is therefore **16 edges, four per
 graph**, which is the declared minimum — one further drop would force
 re-drafting.
 
+Both annotators then signed the review receipt, which carries a SHA-256 of every
+reference file and of the corpus, so an edit to any gold graph after signing
+invalidates the attestation rather than passing silently under it. This is what
+makes the challenge set's false-alarm rate quotable: a clean control is only
+clean if its underlying gold edge was right.
+
 Two consequences are worth stating rather than absorbing. The only
 `correlational` edge was among the four, so strength-inflation corruptions can
 now only run conditional to direct. And dropping the crude-to-ATF link orphans
@@ -426,13 +432,13 @@ incomplete. Distinguishing them requires reading the corpus. We have not
 extended the table, because extending it to make a particular gold edge pass
 would be fitting the instrument to the data.
 
-**The reviewer evidence graphs are small, and their receipt is unsigned.** The
-16 edges are span-exact and now adjudicated by two independent annotators
-(Section 4.4), but the set sits exactly at the declared four-edge-per-graph
+**The reviewer evidence graphs are small.** The 16 edges are span-exact,
+adjudicated by two independent annotators and covered by a signed review receipt
+bound to their bytes (Section 4.4), so the reference set is no longer
+provisional. It is, however, exactly at the declared four-edge-per-graph
 minimum, so no further edge can be dropped without re-drafting, and 16 edges is
-a thin basis for any agreement coefficient. The signed review receipt, which is
-a separate attestation from the labelling, is not yet filed, and the scoring
-pipeline refuses the set until it is.
+a thin basis for any agreement coefficient — which is why Section 4.4 reports
+the raw agreement beside the kappa rather than the kappa alone.
 
 **Pilot scale.** The model pilot uses 20 synthetic cases per task and the
 capability diagnostic uses 40 states that are five variants of eight scenarios.

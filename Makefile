@@ -53,10 +53,12 @@ rq: ## Write the RQ1/RQ2 findings from a reviewed run (needs #41, #42, #37 first
 	PYTHONPATH=src $(PY) python scripts/report_rq.py --review-dir data/interim/support-review
 
 challenge: ## Build the challenge set and run the rules-only arm (no model needed)
+	# Needs a signed data/eval/gold/dev/review_receipt.json. Add --allow-unreviewed
+	# to build from unsigned gold; the manifest then records gold_adjudicated false
+	# and the false-alarm denominator is not quotable.
 	@rm -f data/eval/challenge.jsonl data/eval/challenge_manifest.json
 	PYTHONPATH=src $(PY) python -m eval.challenge --gold data/eval/gold/dev \
-		--corpus data/processed/articles.jsonl --output data/eval/challenge.jsonl \
-		--allow-unreviewed
+		--corpus data/processed/articles.jsonl --output data/eval/challenge.jsonl
 	PYTHONPATH=src $(PY) python scripts/run_challenge.py
 
 help: ## Show this help

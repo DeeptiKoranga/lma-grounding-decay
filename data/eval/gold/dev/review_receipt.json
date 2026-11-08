@@ -6,8 +6,8 @@
     "dev-rupee-effects.json": "7fa5dc4c83e560e748c8d8d8832422bef6c8d41015df8ca156a47c3dfb387256",
     "dev-rupee-why.json": "13a10537e9a2a387babf8dfc1a239591dd8a7a0cc291f13d41f36dc55ac14a81"
   },
-  "reviewer": "",
-  "reviewed_on": null,
-  "independent_review": false,
-  "all_relations_and_strengths_reviewed": false
+  "reviewer": "Deepti Koranga, Varun Patil",
+  "reviewed_on": "2026-11-08",
+  "independent_review": true,
+  "all_relations_and_strengths_reviewed": true
 }

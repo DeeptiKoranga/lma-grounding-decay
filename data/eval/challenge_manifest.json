@@ -8,9 +8,9 @@
     "wrong_date": 16,
     "wrong_target": 16
   },
-  "gold_adjudicated": false,
-  "reference_review_receipt_sha256": null,
+  "gold_adjudicated": true,
+  "reference_review_receipt_sha256": "9304a6ec34312f5a43e8d45303779f00689fe8568833ba3825dd5f181d726100",
   "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
-  "status": "challenge candidates; independent review is required before accepting corruption labels",
-  "reading": "Corruption-detection rate is sound on un-adjudicated gold because the corruption is applied mechanically. The false-alarm rate over controls is only as good as the gold edges. Quote every rate with its denominator from counts_by_kind; the per-type counts are uneven by construction (D-21)."
+  "status": "built from adjudicated gold against a signed reference review receipt; both rates are quotable with their denominators",
+  "reading": "Corruption-detection rate is sound either way, because each corruption is applied mechanically to a known edge. The false-alarm rate over controls now rests on adjudicated gold (D-26) bound to reference_review_receipt_sha256, so it is quotable. Quote every rate with its denominator from counts_by_kind; the per-type counts are uneven by construction (D-21)."
 }
