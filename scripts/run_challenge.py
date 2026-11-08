@@ -133,6 +133,12 @@ def main(argv: list[str] | None = None) -> int:
     visible = [k for k in RULE_VISIBLE if k in results]
     detected = sum(results[k]["flagged"] for k in visible)
     denominator = sum(results[k]["total"] for k in visible)
+    # Read off the built set rather than restated by hand: one control per gold
+    # edge, and inflated_strength can only seed from a hedged edge, so these two
+    # counts cannot drift from the set they describe.
+    seed_count = control["total"]
+    inflatable_count = results.get("inflated_strength", {}).get("total", 0)
+    gold_adjudicated = bool(manifest.get("gold_adjudicated", False))
 
     lines = [
         "# Challenge set, rules-only arm (B9, #40)",
@@ -183,15 +189,26 @@ def main(argv: list[str] | None = None) -> int:
         "",
         "## Reading the numbers",
         "",
-        "Per-type counts are **uneven by construction** (D-21): the gold set supplies 19 "
-        "seeds but only 9 hedged links, so `inflated_strength` has a denominator of 9. "
+        "Per-type counts are **uneven by construction** (D-21): the gold set supplies "
+        f"{seed_count} seeds but only {inflatable_count} hedged links, so "
+        f"`inflated_strength` has a denominator of {inflatable_count}. "
         "Quote every rate with its denominator; a macro average over families is not "
         "meaningful here.",
         "",
-        "Corruption detection is sound even though the gold graphs are not yet adjudicated, "
-        "because each corruption was applied mechanically and is known by construction. "
-        "**The false-alarm rate is not**: a control is only clean if its gold edge was "
-        "right, so that figure inherits whatever adjudication changes.",
+        "Corruption detection is sound either way, because each corruption was applied "
+        "mechanically and is known by construction. **The false-alarm rate is not**: a "
+        "control is only clean if its gold edge was right, so that figure rests on the "
+        "state of the gold set.",
+        "",
+        (
+            "The gold graphs here are **adjudicated** (D-26: two annotators, independently, "
+            "8 Nov 2026), so the controls are as clean as that reconciliation left them. "
+            "`gold_adjudicated` above reads the review receipt, which carries the "
+            "reviewers' own signed attestation and is a separate step from the labelling; "
+            "it stays False until they sign it."
+            if not gold_adjudicated
+            else "The gold graphs are adjudicated and the review receipt is signed."
+        ),
         "",
     ]
 

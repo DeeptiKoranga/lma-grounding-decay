@@ -1,12 +1,12 @@
 {
-  "items": 104,
+  "items": 89,
   "counts_by_kind": {
-    "control": 19,
-    "reversed_relation": 19,
+    "control": 16,
+    "reversed_relation": 16,
     "inflated_strength": 9,
-    "unsupported_intermediate": 19,
-    "wrong_date": 19,
-    "wrong_target": 19
+    "unsupported_intermediate": 16,
+    "wrong_date": 16,
+    "wrong_target": 16
   },
   "gold_adjudicated": false,
   "reference_review_receipt_sha256": null,

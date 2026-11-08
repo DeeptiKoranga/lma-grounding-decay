@@ -86,20 +86,6 @@
       "candidate_evidence": []
     },
     {
-      "edge_id": "ow4",
-      "src_var": "BRENT",
-      "dst_var": "INR_USD",
-      "direction": "up",
-      "provenance": "source_asserted",
-      "strength": "direct",
-      "hop": 1,
-      "evidence_span": "The rupee and Government Securities (G-Secs) markets on Monday felt the impact of rising crude oil prices",
-      "evidence_doc_id": "businessline-469aabd081e5b5594ab2",
-      "evidence_passage_id": "businessline-469aabd081e5b5594ab2#p0",
-      "evidence_published_at": "2026-03-09T20:55:04+05:30",
-      "candidate_evidence": []
-    },
-    {
       "edge_id": "ow5",
       "src_var": "BRENT",
       "dst_var": "TRADE_DEFICIT",
@@ -116,5 +102,5 @@
   ],
   "paths": [],
   "schema_version": "1.0.0",
-  "notes": "MACHINE-DRAFTED, NOT YET ADJUDICATED. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge passes the B6 rule layer. Edge selection, direction and strength have not been confirmed by a human reviewer, and issue #37's Cohen's kappa still requires two independent annotators. Treat every number measured against this as provisional until data/eval/gold/dev/ADJUDICATION.md records sign-off."
+  "notes": "ADJUDICATED 2026-11-08. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge passes the B6 rule layer. Two annotators then labelled every drafted edge independently, blind to the draft and to each other: raw agreement 0.800 on whether the span asserts the relation, Cohen's kappa 0.231 under a dominant label, with direction and strength agreeing on every edge both kept (reports/adjudication_kappa.md). Reconciliation dropped four drafted edges under one rule, D-26: a span that states a relation or a pricing mechanism without stating which way the destination moves cannot back a gold edge that carries a direction. The reviewers' own attestation lives in data/eval/gold/dev/review_receipt.json and is signed separately."
 }

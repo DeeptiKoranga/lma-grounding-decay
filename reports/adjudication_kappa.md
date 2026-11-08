@@ -30,14 +30,14 @@ Not agreement. This is how good the draft was.
 
 | annotator | edges kept | direction matches draft | strength matches draft | edges dropped |
 |---|---:|---:|---:|---:|
-| deepti | 16 | 1.000 | 1.000 | 0.200 |
-| varun | 18 | 1.000 | 0.944 | 0.100 |
+| deepti | 15 | 1.000 | 1.000 | 0.200 |
+| varun | 15 | 1.000 | 1.000 | 0.100 |
 
 A low strength-match figure is the expected outcome, not an error: the draft set strength from cue words and the annotator reads the sentence.
 
 ## Reading this
 
-The dev gold set is 20 edges, a small sample for a kappa. The widest 95% interval in this run spans **1.35** on a scale that only runs from -1 to 1, so quote the interval rather than the point estimate and do not set these figures beside published kappas from thousand-item corpora.
+The dev gold set is 16 edges, a small sample for a kappa. The widest 95% interval in this run spans **1.35** on a scale that only runs from -1 to 1, so quote the interval rather than the point estimate and do not set these figures beside published kappas from thousand-item corpora.
 
 The pre-declared threshold for usable labels is **kappa ≥ 0.6** on the `asserts` and `direction` dimensions. Below that the annotation guide needs work before the labels are used, and `strength` falls back to the declared direct-vs-hedged collapse (`eval.agreement.strength_agreement`).
 

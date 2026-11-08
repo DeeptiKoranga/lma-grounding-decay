@@ -132,9 +132,10 @@ contribute one.
 
 Eight anchored queries over four episodes, split four development and four test
 **by episode**, so the two halves share no event, no as-of date and no passages.
-Four reviewer evidence graphs hold 20 source-asserted edges with verbatim spans.
-A challenge set holds 104 items: 19 clean controls and 85 mechanically corrupted
-edges across five families. Synthetic diagnostics add 40 frozen agent states, 25
+Four reviewer evidence graphs hold 16 source-asserted edges with verbatim spans,
+adjudicated by two independent annotators (Section 4.4). A challenge set holds 89
+items: 16 clean controls and 73 mechanically corrupted edges across five
+families. Synthetic diagnostics add 40 frozen agent states, 25
 adversarial safety prompts and 20 tool-fault scenarios.
 
 Two public datasets are used as diagnostics and never for training: the
@@ -209,27 +210,77 @@ correlational precision 0.886 at recall 0.333, direct F1 0.222. It over-fires on
 hedging and under-detects plain causal language. For scale, Yu et al. report
 macro-F1 near 0.86 with a fine-tuned BERT on their own task.
 
-### 4.4 Challenge set
+### 4.4 Gold-set adjudication
 
-104 items run against the rule layer with no model involved.
+Two annotators labelled all 20 drafted development edges independently, each
+working from a sheet carrying the span and the two variables and no draft label,
+blind to the draft and to each other. Sheet order was shuffled per annotator.
+
+| Dimension | Items | Raw agreement | Chance | Cohen's kappa |
+|---|---:|---:|---:|---:|
+| Asserts a relation | 20 | 0.800 | 0.740 | 0.231 |
+| Direction | 15 | 1.000 | 1.000 | undefined |
+| Strength | 15 | 1.000 | 0.502 | 1.000 |
+
+**The kappa is the wrong summary here and we report it only with its raw
+agreement.** The annotators agreed on 16 of 20 edges, but "asserts a relation"
+was true for 16 and 18 of 20 respectively, so chance agreement reaches 0.740 and
+the coefficient collapses to 0.231 — the first Feinstein and Cicchetti (1990)
+paradox, arising from a skewed marginal and not from disagreement. The 95%
+interval on that figure spans 1.35 on a scale that runs from -1 to 1. Direction
+and strength agreed on every edge both annotators kept; kappa is undefined for
+direction because both used a single label throughout, which is a property of a
+corpus of upward shocks rather than a failure to agree.
+
+The informative result is **what the disagreements were about**. All four were
+the same case: a span that asserts a relation, or states a pricing mechanism,
+while leaving the sign to the reader — "rising import bill were fuelling worries
+about ... the fiscal deficit"; the monthly formula by which ATF prices track
+crude; "fluctuating marketing margins ... absorbing price shocks"; "the rupee
+and G-Secs markets ... felt the impact of rising crude oil prices". Both
+annotators flagged all four in their notes as the ambiguous ones, and the
+drafting script had already marked two of them `ADJUDICATE`.
+
+Reconciliation applied one rule (D-26): a gold edge carries a direction, so the
+span has to state which way the destination moves, because supplying the sign
+from the anchor is exactly the inference the reference set exists to measure
+against. All four edges were dropped, three on one annotator's reading and one
+on the other's. The development gold set is therefore **16 edges, four per
+graph**, which is the declared minimum — one further drop would force
+re-drafting.
+
+Two consequences are worth stating rather than absorbing. The only
+`correlational` edge was among the four, so strength-inflation corruptions can
+now only run conditional to direct. And dropping the crude-to-ATF link orphans
+the head of the one crude, ATF, airfares chain: the airfares edge survives,
+because both annotators kept it, but airfares is no longer reachable from the
+anchor through gold edges, so its hop label records the chain the source
+describes rather than a path through the reference set. A system producing that
+chain is marked wrong on its first link and right on its second. This is the
+second independent reason the chain fails — Section 5.3 reports the first, on
+alias coverage — and it is the chain the proposal used to motivate the study.
+
+### 4.5 Challenge set
+
+89 items run against the rule layer with no model involved.
 
 | Corruption family | Items | Flagged | Rate |
 |---|---:|---:|---:|
-| Unsupported intermediate hop | 19 | 19 | 1.000 |
-| Wrong date | 19 | 19 | 1.000 |
-| Wrong target | 19 | 19 | 1.000 |
-| Reversed relation | 19 | 0 | 0.000 |
+| Unsupported intermediate hop | 16 | 16 | 1.000 |
+| Wrong date | 16 | 16 | 1.000 |
+| Wrong target | 16 | 16 | 1.000 |
+| Reversed relation | 16 | 0 | 0.000 |
 | Inflated strength | 9 | 0 | 0.000 |
-| Clean controls | 19 | 0 | — |
+| Clean controls | 16 | 0 | — |
 
-Fifty-seven of 57 citation corruptions are caught with zero false alarms, and
-none of the 28 semantic corruptions. The two misses are structural: reversing an
+Forty-eight of 48 citation corruptions are caught with zero false alarms, and
+none of the 25 semantic corruptions. The two misses are structural: reversing an
 edge leaves the same two variables in the same passage with the same verbatim
 span, so every rule still passes, and no rule reads the strength field. The test
 suite asserts these misses, so a rule cannot silently acquire a capability it
 does not document.
 
-### 4.5 Capability, safety and tool calling
+### 4.6 Capability, safety and tool calling
 
 | Metric | Result |
 |---|---|
@@ -247,7 +298,7 @@ is not the accuracy of the agent as it runs. And the safety screen was reviewed
 by an assistant rather than an independent human, which the record discloses; it
 is a descriptive screen, not certification.
 
-### 4.6 Structural outcome by condition
+### 4.7 Structural outcome by condition
 
 From a complete 42-graph sweep, seven conditions over six development
 candidates, logged and audited with zero failures. These are structural counts,
@@ -264,7 +315,7 @@ revision rather than the current one.
 | A-NoLoop | 6 | 35 | 0 | 5 |
 | M | 6 | 35 | 8 | 18 |
 
-### 4.7 What has no value yet
+### 4.8 What has no value yet
 
 UER, strength inflation and reference-edge recall — the primary metric and both
 secondary metrics — have no values. They require blind human support judgements
@@ -338,8 +389,8 @@ finally to the hop coverage that RQ1 is defined over.
 **No primary result.** UER is unmeasured. Everything in Section 4 is
 infrastructure, diagnostics or structure.
 
-**The gold set reaches hop 2.** Fifteen of 20 gold edges are at hop 1 and five
-at hop 2, with none deeper. UER can still be reported at hop 3 or more because
+**The gold set reaches hop 2.** Twelve of 16 gold edges are at hop 1 and four at
+hop 2, with none deeper. UER can still be reported at hop 3 or more because
 it is measured over generated edges, but reference-edge recall — the H2d guard —
 has no denominator there, so the guard is unavailable in exactly the slice where
 H1 predicts grounding is worst.
@@ -375,9 +426,13 @@ incomplete. Distinguishing them requires reading the corpus. We have not
 extended the table, because extending it to make a particular gold edge pass
 would be fitting the instrument to the data.
 
-**The reviewer evidence graphs are not adjudicated.** They are span-exact and
-machine-drafted, and every file records that status. The scoring pipeline
-refuses them until a receipt names a reviewer.
+**The reviewer evidence graphs are small, and their receipt is unsigned.** The
+16 edges are span-exact and now adjudicated by two independent annotators
+(Section 4.4), but the set sits exactly at the declared four-edge-per-graph
+minimum, so no further edge can be dropped without re-drafting, and 16 edges is
+a thin basis for any agreement coefficient. The signed review receipt, which is
+a separate attestation from the labelling, is not yet filed, and the scoring
+pipeline refuses the set until it is.
 
 **Pilot scale.** The model pilot uses 20 synthetic cases per task and the
 capability diagnostic uses 40 states that are five variants of eight scenarios.
@@ -387,9 +442,10 @@ Both are development diagnostics, not benchmarks.
 with assistant review rather than independent human review, which the records
 disclose.
 
-**Schedule.** The blind double annotation planned for 30 October did not take
-place. It is the first step of the dependency chain in Section 7, and the
-remaining schedule assumes it happens immediately.
+**Schedule.** The blind double annotation planned for 30 October took place on 8
+November, nine days late. It was the first step of the dependency chain in
+Section 7 and the only one with no slack, so the sweep and every number measured
+against the gold set moved with it.
 
 ## 7. Remaining work
 
@@ -397,7 +453,7 @@ The final submission is 15 November, with work winding up on 12 November.
 
 | Dates | Work |
 |---|---|
-| Immediate | Blind double annotation of the 20 development gold edges; inter-annotator agreement |
+| 8 Nov · done | Blind double annotation of the 20 drafted development gold edges; inter-annotator agreement; four edges dropped in reconciliation (Section 4.4) |
 | 1–2 Nov | Extend the series store; re-confirm anchors; draft and adjudicate the test gold graphs |
 | 2–5 Nov | Development sweep on the current corpus; blind support judgements; first UER, strength inflation and reference-edge recall |
 | 6 Nov | Decision point: one round of verifier tuning on development data only, recorded |
@@ -440,6 +496,7 @@ Asai et al. (2024). Self-RAG. ICLR.
 Chen et al. (2024). BGE M3-Embedding. arXiv:2402.03216.
 Chi et al. (2026). WorldReasoner. arXiv:2606.11816.
 Cormack, Clarke and Büttcher (2009). Reciprocal rank fusion. SIGIR.
+Feinstein and Cicchetti (1990). High agreement but low kappa: I. The problems of two paradoxes. Journal of Clinical Epidemiology 43(6).
 Gendron et al. (2025). Causal Cartographer. arXiv:2505.14396.
 Mariko et al. (2020). FinCausal 2020. FNP.
 Prasad et al. (2023). ReCEval. EMNLP.

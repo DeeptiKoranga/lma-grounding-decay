@@ -207,12 +207,16 @@ def test_each_dev_gold_graph_passes_the_structural_checks(query_id):
 
 
 @pytest.mark.parametrize("query_id", DEV_QUERIES)
-def test_each_dev_gold_graph_declares_that_it_is_not_adjudicated(query_id):
-    """The provenance line is load-bearing: it is what stops a draft being cited
-    as a human-annotated gold standard. If adjudication happens, this test is
-    the thing to change, deliberately."""
+def test_each_dev_gold_graph_declares_how_it_was_adjudicated(query_id):
+    """The provenance line is load-bearing: it is what stops the set being cited
+    with more authority than it has. It used to say MACHINE-DRAFTED, NOT YET
+    ADJUDICATED; two annotators labelled every edge independently on 8 Nov 2026
+    (D-26), so it now records that, the agreement figures and the fact that the
+    reviewers' attestation is signed separately in review_receipt.json."""
     notes = load_gold_graph(query_id).notes or ""
-    assert "MACHINE-DRAFTED, NOT YET ADJUDICATED" in notes
+    assert "ADJUDICATED 2026-11-08" in notes
+    assert "MACHINE-DRAFTED" not in notes
+    assert "review_receipt.json" in notes
 
 
 def test_the_dev_set_reaches_past_hop_one():
