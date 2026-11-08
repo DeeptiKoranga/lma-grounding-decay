@@ -30,6 +30,7 @@ from reportlab.lib.units import mm
 from reportlab.platypus import (
     BaseDocTemplate,
     Frame,
+    Image,
     KeepTogether,
     PageTemplate,
     Paragraph,
@@ -132,6 +133,16 @@ def _styles():
         spaceAfter=3.5,
         alignment=0,
     )
+    s["caption"] = ParagraphStyle(
+        "caption",
+        parent=s["body"],
+        fontSize=9,
+        leading=11.5,
+        alignment=TA_CENTER,
+        spaceBefore=4,
+        spaceAfter=10,
+        textColor=colors.HexColor("#444444"),
+    )
     s["cellhead"] = ParagraphStyle("cellhead", parent=s["cell"], fontName="Times-Bold")
     s["cellnum"] = ParagraphStyle("cellnum", parent=s["cell"], alignment=2)
     return s
@@ -228,6 +239,24 @@ def _table(rows: list[list[str]], st, width: float) -> Table:
     return table
 
 
+def _figure(path: str, caption: str, st, width: float, source: Path):
+    """A `![caption](path)` line. The image is scaled to the frame width, never
+    up past its own size, and capped at half a page so a wide figure cannot
+    push its caption onto the next one. Image and caption travel together."""
+    target = (source.parent / path).resolve()
+    if not target.is_file():
+        raise FileNotFoundError(f"{source}: figure {path!r} does not exist at {target}")
+    image = Image(str(target))
+    scale = min(width / image.imageWidth, 1.0)
+    cap_height = (A4[1] - 38 * mm) * 0.5
+    if image.imageHeight * scale > cap_height:
+        scale = cap_height / image.imageHeight
+    image.drawWidth = image.imageWidth * scale
+    image.drawHeight = image.imageHeight * scale
+    image.hAlign = "CENTER"
+    return KeepTogether([image, Paragraph(inline(caption), st["caption"])])
+
+
 def build(source: Path, output: Path) -> int:
     st = _styles()
     margin = 20 * mm
@@ -319,6 +348,11 @@ def build(source: Path, output: Path) -> int:
             # unreadable.
             in_references = heading.strip().lower().endswith("references")
             story.append(Paragraph(inline(heading), st["h1"]))
+            continue
+        figure = re.fullmatch(r"!\[(?P<caption>.*)\]\((?P<path>[^)]+)\)", line.strip())
+        if figure:
+            flush_para()
+            story.append(_figure(figure["path"], figure["caption"], st, width, source))
             continue
         if line.startswith("- "):
             flush_para()

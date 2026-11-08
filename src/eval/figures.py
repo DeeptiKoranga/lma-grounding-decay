@@ -10,12 +10,33 @@ from pathlib import Path
 
 from schema import Graph
 
+#: What the figure is a picture of. A reference graph and a generated graph look
+#: identical on the page and mean opposite things - one is the standard, the
+#: other is the thing being measured against it - so the caption has to say
+#: which, and the caller has to choose rather than inherit a default.
+CAPTIONS = {
+    "reference": (
+        "Reference graph: human-adjudicated source citations (D-26)\n"
+        "Solid: source_asserted; dashed: model_inferred"
+    ),
+    "generated": (
+        "Generated graph: model labels; independent review pending\n"
+        "Solid: source_asserted; dashed: model_inferred"
+    ),
+}
 
-def graph_figure(graph: Graph, output: Path):
+
+def graph_figure(graph: Graph, output: Path, *, kind: str = "generated"):
+    if kind not in CAPTIONS:
+        raise ValueError(f"kind must be one of {sorted(CAPTIONS)}, not {kind!r}")
     lines = [
         "digraph explanation {",
         "rankdir=LR;",
-        'graph [bgcolor="white", pad="0.3"];',
+        # The label is provenance for the standalone .svg/.dot, not a title: in a
+        # report the caption below the figure carries the identification, and a
+        # wide graph scaled to the frame would otherwise blow this up to
+        # heading size. Keep it visibly smaller than the node labels.
+        'graph [bgcolor="white", pad="0.3", fontname="Helvetica", fontsize=10];',
         'node [shape=box, style="rounded,filled", fillcolor="#edf4ef", fontname="Helvetica"];',
         'edge [fontname="Helvetica", fontsize=10];',
     ]
@@ -28,16 +49,23 @@ def graph_figure(graph: Graph, output: Path):
         lines.append(
             f'{json.dumps(edge.src_var)} -> {json.dumps(edge.dst_var)} [label={json.dumps(label)}, style="{style}"];'
         )
-    caption = (
-        f"{graph.query_id} | cutoff {graph.as_of}\n"
-        "Development example: model labels; independent review pending\n"
-        "Solid: source_asserted; dashed: model_inferred"
-    )
+    caption = f"{graph.query_id} | cutoff {graph.as_of}\n{CAPTIONS[kind]}"
     lines.append(f"label={json.dumps(caption)}; labelloc=b; }}")
     output.parent.mkdir(parents=True, exist_ok=True)
     dot = output.with_suffix(".dot")
     dot.write_text("\n".join(lines) + "\n")
-    subprocess.run(["dot", "-Tsvg", str(dot), "-o", str(output)], check=True)
+    # The .dot is the portable artifact and is written whatever happens; the
+    # render needs Graphviz, which is a system package rather than a Python
+    # one, so say so plainly instead of surfacing a FileNotFoundError.
+    try:
+        subprocess.run(["dot", "-Tsvg", str(dot), "-o", str(output)], check=True)
+    except FileNotFoundError:
+        raise RuntimeError(
+            f"wrote {dot} but cannot render it: Graphviz is not installed, so `dot` is "
+            "not on PATH. Install it (macOS: brew install graphviz; Debian: apt install "
+            "graphviz) and re-run, or render the .dot elsewhere."
+        ) from None
+    return dot
 
 
 def uer_plot_data(reviewed: dict) -> dict:
@@ -64,7 +92,7 @@ def uer_plot_data(reviewed: dict) -> dict:
                     raise ValueError("missing UER cannot have nonzero denominator coverage")
             elif (
                 isinstance(value, bool)
-                or not isinstance(value, (int, float))
+                or not isinstance(value, int | float)
                 or not math.isfinite(value)
                 or not 0 <= value <= 1
                 or not count
@@ -161,14 +189,24 @@ def uer_figure(reviewed: dict, output: Path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--graph", type=Path)
+    parser.add_argument(
+        "--kind",
+        choices=sorted(CAPTIONS),
+        help="what --graph is: a human-adjudicated reference graph, or a model's output. "
+        "Required with --graph, because the two look alike and mean opposite things.",
+    )
     parser.add_argument("--reviewed-scores", type=Path)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     if bool(args.graph) == bool(args.reviewed_scores):
         parser.error("choose exactly one of --graph or --reviewed-scores")
     if args.graph:
+        if not args.kind:
+            parser.error("--kind is required with --graph")
         payload = json.loads(args.graph.read_text(encoding="utf-8"))
-        graph_figure(Graph.model_validate(payload.get("graph", payload)), args.output)
+        graph_figure(
+            Graph.model_validate(payload.get("graph", payload)), args.output, kind=args.kind
+        )
     else:
         uer_figure(json.loads(args.reviewed_scores.read_text(encoding="utf-8")), args.output)
 

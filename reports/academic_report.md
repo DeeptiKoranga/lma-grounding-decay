@@ -255,6 +255,8 @@ invalidates the attestation rather than passing silently under it. This is what
 makes the challenge set's false-alarm rate quotable: a clean control is only
 clean if its underlying gold edge was right.
 
+![**Figure 1.** The `dev-oil-effects` reference graph after adjudication. The ATF price to airfares link survives on its own evidence, but the crude to ATF link that would connect it to the anchor did not, so the edge sits at hop 2 with no hop-1 parent. The orphaned pair is the proposal's motivating chain.](figures/gold_dev_oil_effects.png)
+
 Two consequences are worth stating rather than absorbing. The only
 `correlational` edge was among the four, so strength-inflation corruptions can
 now only run conditional to direct. And dropping the crude-to-ATF link orphans

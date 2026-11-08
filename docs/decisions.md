@@ -30,7 +30,7 @@ private Kaggle execution. See `reports/phase1_track_c_closeout_20261030.md`.
 
 ## Decisions from the proposal
 
-### D-01 — Which model? `[needs pilot]`
+### D-01 — Which model?
 
 | | |
 |---|---|
@@ -41,9 +41,10 @@ private Kaggle execution. See `reports/phase1_track_c_closeout_20261030.md`.
 | **Owner / due** | C · by Sat 24 Oct |
 | **Evidence** | `reports/pilot_model_project_20261030.md`; `reports/project_model_pilot_20261030.json`; `configs/model_selection.json` |
 | **Blocks** | Everything downstream of `src/llm/`. One model is used for *all seven* conditions, so this cannot be split per condition. |
+| **Locked** | 8 Nov 2026 (#36). Frozen for all seven conditions. **The selection stands but its tie-break is challenged**: #57 and §5.2 of the report show the selected model fails on exactly the two fields the rule layer checks (17/20 wrong passage IDs, 10/20 nonverbatim quotes) where Qwen3.5-9B had none of either. Re-running the sweep on the other model is a change of instrument mid-experiment, so the lock holds and the weakness is reported as a limitation rather than quietly fixed. |
 | **Resolution** | `mlx-community/Qwen3-8B-4bit` at `545dc4251c05440727734bcd94334791f6ab0192`, MLX affine 4-bit. Both models completed the same 100 project-schema cases. Highest mean task accuracy; within 0.03, choose lower mean generation latency. Selected mean 61.0%. This is synthetic development selection; weak extraction/tool outputs remain limitations. All seven conditions must use the same pinned model within a sweep. Different backend weight formats are recorded separately. |
 
-### D-02 — Which first-stage retriever? `[needs pilot]`
+### D-02 — Which first-stage retriever?
 
 | | |
 |---|---|
@@ -57,7 +58,7 @@ private Kaggle execution. See `reports/phase1_track_c_closeout_20261030.md`.
 | **Development selection — 26 Oct** | BGE-M3: Recall@10 0.4259 versus 0.3518 plain BM25, 0.3551 alias BM25 and 0.4161 hybrid. Selected by the declared 0.03 rule on 20 queries/2,035 pooled judgments (195 relevant). Single Codex review with previous results exposure; no independent receipt. See `reports/track_a_retrieval_selection_20261026.json`. Archived v1 run settings stay unchanged. |
 | **Resolution** | BGE-M3 selected; the 27 October receipt-bound pilot reproduces Recall@10 0.4259. Track A review records pass on Varun's independent/blinded review attestations. Original label provenance and limits of self-reported procedure remain disclosed. See `reports/track_a_retrieval_selection_20261027.json`. Record validation does not accept experiment outcomes. |
 
-### D-03 — Does the cross-encoder reranker earn its place? `[needs pilot]`
+### D-03 — Does the cross-encoder reranker earn its place?
 
 | | |
 |---|---|
@@ -71,18 +72,18 @@ private Kaggle execution. See `reports/phase1_track_c_closeout_20261030.md`.
 | **Development selection — 26 Oct** | Retain the pinned top-50 cross-encoder for B1-R development: Recall@10 0.5296 versus dense 0.4259, a 0.1037 gain. Same complete development pool as D-02; no independent receipt or end-to-end benefit established. |
 | **Resolution** | Receipt-bound retrieval comparison reproduces Recall@10 0.5296, a 0.1037 gain; retain the reranker for B1-R. Review records pass on Varun's declared conditions. Full end-to-end comparison remains deferred as planned; no end-to-end benefit is claimed. |
 
-### D-04 — Are the eight anchor episodes real? `[needs pilot]`
+### D-04 — Are the eight anchor episodes real?
 
 | | |
 |---|---|
-| **Status** | `open` |
+| **Status** | `resolved` · answered by D-18 on 27 Oct 2026; closed 8 Nov 2026 (#36) |
 | **Question** | Do the eight episodes found in news reports (March oil shock, April ATF increase, May rupee low, June and August RBI meetings, September bond sell-off, …) show up in the official series? |
 | **Where** | Proposal §10, "Custom evaluation set" |
 | **How it gets decided** | B2, against the macro series from A10. An episode that the series does not confirm is dropped or re-dated. |
 | **Owner / due** | B · depends on A10 · by Sat 24 Oct |
 | **Evidence** | `data/eval/episodes.md` |
 | **Blocks** | All 30 anchored queries hang off these episodes. |
-| **Resolution** | *(unresolved)* |
+| **Resolution** | **Answered by D-18** · 27 Oct 2026, and closed here on 8 Nov (#36). The answer is no, not as declared: `scripts/confirm_episodes.py` confirms **3 of 8 as declared, and only 2 against official data**. The September bond sell-off is dropped, the March oil shock is redated to an as-of of 1 April or later, and the April ATF increase and both RBI meetings are retained as document-confirmed only. Four anchors survive, which is what D-19's eight-query set is built on. The question was not closed earlier because D-18 was written as its own row; it is the same question and this is its answer. |
 
 ### D-05 — May we use the Claude Haiku 4.5 API fallback? `[needs TA decision]`
 
