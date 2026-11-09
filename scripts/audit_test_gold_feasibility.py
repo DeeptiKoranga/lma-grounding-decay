@@ -1,0 +1,231 @@
+"""Can the test half carry gold graphs at all? (#38, D-27)
+
+The dev gold graphs were drafted by reading the corpus. Before anyone spends
+that effort on the test half, this answers the cheaper question first: for each
+test query, does the corpus even contain passages that *could* carry its edges
+under the rule layer?
+
+It does not draft anything and it does not judge whether a passage asserts a
+relation. It reports reachability, which is a necessary condition:
+
+- **Rule 3** (`both_variables_mentioned`) needs both variables named in the
+  cited passage or, under D-17, the paragraph before it. A pair of variables
+  that never co-occur in that window cannot carry a source-asserted edge,
+  whatever a reader thinks the sources imply.
+- **Rule 2** (`on_or_before_as_of`) discards anything published after the
+  query's as-of date, so the count is taken under as-of discipline.
+
+For a `why` query the report also checks the **target** specifically. Those
+questions are of the form "why was <anchor> ... <doing something to target>",
+so the graph has to reach `target_var`; if no passage pairs the anchor with it,
+the query cannot be answered from this corpus as written.
+
+Out-of-scope wording is flagged, not filtered. The corpus carries no India
+field, and several macro passages are US or global coverage that mention the
+same variables. The flag is a hint to whoever drafts; only a person can settle
+it.
+
+    PYTHONPATH=src .venv/bin/python scripts/audit_test_gold_feasibility.py
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+from collections import defaultdict
+from datetime import date
+from pathlib import Path
+
+from schema import Passage
+from verify import load_aliases, preceding_window
+
+REPO = Path(__file__).resolve().parent.parent
+CORPUS = REPO / "data/processed/articles.jsonl"
+QUERIES = REPO / "data/eval/queries_test.jsonl"
+OUTPUT = REPO / "reports/test_gold_feasibility.md"
+
+#: From eval.gold. A graph below this cannot be a reviewed gold graph.
+MIN_EDGES = 4
+
+#: Wording that usually means the passage is about the US or the euro area
+#: rather than India. A hint for the drafter, never a filter: "Fed" appears in
+#: India coverage too, and this list has no opinion about which wins.
+OUT_OF_SCOPE = re.compile(
+    r"\b(federal reserve|the fed|fed chair|fomc|u\.s\. central bank|"
+    r"european central bank|ecb|bank of england|gallon|cents? a gallon)\b",
+    re.IGNORECASE,
+)
+
+
+def _load_passages(corpus: Path) -> list[Passage]:
+    return [
+        Passage.model_validate_json(line)
+        for line in corpus.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+
+
+def _windows(passages: list[Passage]) -> dict[str, str]:
+    """passage_id -> the text rule 3 may search: the passage plus D-17's window."""
+    by_doc: dict[str, list[Passage]] = defaultdict(list)
+    for passage in passages:
+        by_doc[passage.doc_id].append(passage)
+    return {
+        p.passage_id: " ".join(w.text for w in preceding_window(p, by_doc[p.doc_id]))
+        for p in passages
+    }
+
+
+def _out_of_scope_docs(passages: list[Passage]) -> set[str]:
+    """Documents whose wording says they are US or euro-area coverage.
+
+    Judged per **document**, not per passage. A paragraph deep inside a Federal
+    Reserve story can name CPI and rate-hike expectations without repeating
+    "Fed", and reading that paragraph alone makes US coverage look like India
+    coverage. The article is the unit that has a subject.
+    """
+    text: dict[str, list[str]] = defaultdict(list)
+    for passage in passages:
+        text[passage.doc_id].append(passage.title or "")
+        text[passage.doc_id].append(passage.text)
+    return {doc for doc, parts in text.items() if OUT_OF_SCOPE.search(" ".join(parts))}
+
+
+def pairs_for(
+    passages: list[Passage],
+    windows: dict[str, str],
+    aliases,
+    *,
+    anchor: str,
+    as_of: date,
+    ontology: tuple[str, ...],
+) -> dict[str, list[Passage]]:
+    """Every variable the anchor co-occurs with, under as-of and the D-17 window."""
+    hits: dict[str, list[Passage]] = defaultdict(list)
+    eligible = [p for p in passages if p.published_at.date() <= as_of]
+    for passage in eligible:
+        text = windows[passage.passage_id]
+        if not aliases.mentions(anchor, text):
+            continue
+        for var in ontology:
+            if var != anchor and aliases.mentions(var, text):
+                hits[var].append(passage)
+    return hits
+
+
+def audit(corpus: Path = CORPUS, queries: Path = QUERIES) -> str:
+    aliases = load_aliases()
+    ontology = aliases.covered_variables()
+    passages = _load_passages(corpus)
+    windows = _windows(passages)
+    out_of_scope = _out_of_scope_docs(passages)
+
+    records = [
+        json.loads(line)
+        for line in queries.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+
+    lines = [
+        "# Can the test half carry gold graphs? (#38, D-27)",
+        "",
+        "<!-- Generated by scripts/audit_test_gold_feasibility.py. Do not edit by hand. -->",
+        "",
+        f"Run {date.today()} over {len(passages):,} passages and "
+        f"{len(ontology)} ontology variables.",
+        "",
+        "Reachability only. A pair counted here **could** carry an edge; whether any "
+        "passage actually asserts a relation, in which direction, and whether it is "
+        "about India, is a question for a reader. A pair *not* counted here cannot "
+        f"carry a source-asserted edge at all, because rule 3 would reject it. "
+        f"A gold graph needs **{MIN_EDGES} edges** minimum.",
+        "",
+    ]
+
+    for record in records:
+        anchor = record["anchor"]["var"]
+        as_of = date.fromisoformat(record["as_of"])
+        target = record.get("target_var")
+        hits = pairs_for(passages, windows, aliases, anchor=anchor, as_of=as_of, ontology=ontology)
+
+        lines += [
+            f"## `{record['query_id']}`",
+            "",
+            f"> {record['query']}",
+            "",
+            f"Anchor `{anchor}`, as-of {as_of}, "
+            + (f"target `{target}`." if target else "no target (effects question)."),
+            "",
+        ]
+
+        if target:
+            reaching = hits.get(target, [])
+            flagged = [p for p in reaching if p.doc_id in out_of_scope]
+            usable = len(reaching) - len(flagged)
+            verdict = (
+                f"**The target is unreachable.** No passage on or before {as_of} names "
+                f"`{anchor}` and `{target}` together, even with D-17's preceding "
+                "paragraph. This query cannot be answered from this corpus as written."
+                if not reaching
+                else (
+                    f"**The target is reachable only through out-of-scope coverage.** "
+                    f"All {len(reaching)} passage(s) pairing `{anchor}` with `{target}` "
+                    "carry US or euro-area wording. Read them before relying on this query."
+                    if usable == 0
+                    else f"The target is reachable: {len(reaching)} passage(s) pair "
+                    f"`{anchor}` with `{target}`"
+                    + (f", of which {len(flagged)} look out of scope." if flagged else ".")
+                )
+            )
+            lines += [verdict, ""]
+            for passage in sorted(reaching, key=lambda item: item.passage_id)[:5]:
+                mark = " *(out of scope?)*" if passage.doc_id in out_of_scope else ""
+                lines.append(
+                    f"- `{passage.passage_id}` {passage.published_at.date()}{mark}: "
+                    f"{passage.text.strip()[:180]}"
+                )
+            lines.append("")
+
+        ranked = sorted(hits.items(), key=lambda kv: (-len(kv[1]), kv[0]))
+        lines += [
+            f"{len(ranked)} variable(s) co-occur with the anchor.",
+            "",
+            "| partner variable | passages | out-of-scope wording |",
+            "|---|---:|---:|",
+        ]
+        for var, found in ranked[:12]:
+            flagged = sum(1 for p in found if p.doc_id in out_of_scope)
+            lines.append(f"| `{var}` | {len(found)} | {flagged} |")
+        lines += [
+            "",
+            (
+                f"Enough distinct partners to reach {MIN_EDGES} edges, if the passages assert "
+                "relations."
+                if len(ranked) >= MIN_EDGES
+                else f"**Fewer than {MIN_EDGES} partner variables, so this graph cannot reach "
+                "MIN_EDGES however generously the passages are read.**"
+            ),
+            "",
+        ]
+
+    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
+    text = "\n".join(lines)
+    OUTPUT.write_text(text, encoding="utf-8")
+    return text
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--corpus", type=Path, default=CORPUS)
+    parser.add_argument("--queries", type=Path, default=QUERIES)
+    args = parser.parse_args(argv)
+    if not args.corpus.is_file():
+        raise SystemExit(f"corpus not found at {args.corpus}; it is not in git")
+    audit(args.corpus, args.queries)
+    print(f"wrote {OUTPUT}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
