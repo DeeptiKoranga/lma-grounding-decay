@@ -1,0 +1,13 @@
+{
+  "decision": "D-28",
+  "resolved_on": "2026-11-09",
+  "selected": "qwen3.5-9b",
+  "model": "mlx-community/Qwen3.5-9B-4bit",
+  "revision": "8b2b98c00a6b4d291155e4890773ca8f769aee53",
+  "model_path": "data/raw/generator/qwen3.5-9b-4bit",
+  "backend": "mlx",
+  "quantization": "affine 4-bit",
+  "pilot_report": "reports/project_model_pilot_20261030.json",
+  "selection_rule": "NOT A SELECTION. This is the sensitivity arm declared in D-28 and docs/preregistration_model_sensitivity.md. D-01 stands and configs/model_selection.json remains the primary arm from which every headline number is taken. This config exists so the same sweep can be run a second time with only the generator weights changed, to test whether a UER rise with hop is an artefact of the primary model's citation failure (17/20 wrong passage IDs, 10/20 nonverbatim quotes in the C2 pilot). Reading the arms is governed by the table pre-registered before any run.",
+  "scope": "one pinned model for all conditions within a sweep; this arm is reported beside the primary arm and never in place of it"
+}

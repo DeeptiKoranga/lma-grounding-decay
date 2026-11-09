@@ -28,6 +28,44 @@ run-all-dev: DEV_OUTPUT = runs/local-v7-all-dev
 run-all-dev: ## Run all seven conditions with selected BGE-M3 and the cached cross-encoder
 	HF_HOME="$(CURDIR)/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src $(LMA_PYTHON) -m conditions --queries data/eval/development_candidates.jsonl $(MODEL_ARGS) --retriever $(RETRIEVER) --retrieval-python $(RETRIEVAL_PYTHON) --dense-index $(DENSE_INDEX) --reranker-python .venv/bin/python --output $(DEV_OUTPUT) --resume
 
+# ---------------------------------------------------------------------------
+# The gold-backed sweep, and its two arms (D-28).
+#
+# run-dev and run-all-dev above sweep development_candidates.jsonl, whose six
+# query_ids (dev-candidate-01..06) match NO gold graph. Scoring that output
+# with --references raises "reference graph query/cutoff/anchor mismatch", so
+# those targets cannot produce reference-edge recall and cannot answer H2d.
+# The targets below sweep data/eval/queries_dev.jsonl, the four queries the
+# adjudicated gold set is built for.
+# ---------------------------------------------------------------------------
+
+GOLD_QUERIES ?= data/eval/queries_dev.jsonl
+ARM_PRIMARY_OUTPUT  ?= runs/dev-gold-qwen3-8b
+ARM_SENSITIVITY_OUTPUT ?= runs/dev-gold-qwen35-9b
+ALT_MODEL_SELECTION ?= configs/model_selection_qwen35_9b.json
+
+.PHONY: sweep-dev-primary sweep-dev-sensitivity sweep-dev-both
+
+define sweep_all_conditions
+HF_HOME="$(CURDIR)/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src $(LMA_PYTHON) \
+	-m conditions --queries $(GOLD_QUERIES) --model-selection $(1) \
+	--retriever $(RETRIEVER) --retrieval-python $(RETRIEVAL_PYTHON) \
+	--dense-index $(DENSE_INDEX) --reranker-python .venv/bin/python \
+	--output $(2) --resume
+endef
+
+sweep-dev-primary: ## D-28 primary arm: all seven conditions on the gold-backed dev queries
+	$(call sweep_all_conditions,$(MODEL_SELECTION),$(ARM_PRIMARY_OUTPUT))
+
+sweep-dev-sensitivity: ## D-28 sensitivity arm: the same sweep, generator weights only changed
+	$(call sweep_all_conditions,$(ALT_MODEL_SELECTION),$(ARM_SENSITIVITY_OUTPUT))
+
+sweep-dev-both: ## Both D-28 arms, in order. Read neither until both finish.
+	@echo "Both arms are pre-registered in docs/preregistration_model_sensitivity.md."
+	@echo "The primary arm supplies every headline number whatever the numbers say."
+	$(MAKE) sweep-dev-primary
+	$(MAKE) sweep-dev-sensitivity
+
 review-dev: ## Prepare a fresh local blinded support-review packet
 	PYTHONPATH=src $(PY) python -m eval.review prepare --runs $(DEV_OUTPUT) --output data/interim/support-review
 

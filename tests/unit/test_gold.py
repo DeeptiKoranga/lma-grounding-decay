@@ -309,3 +309,43 @@ def test_the_gold_checker_accepts_a_relation_that_spans_a_paragraph_break():
     strict = check_against_corpus(_graph(edges), cited_only)
     assert not strict.ok
     assert all("BRENT" in issue.problem for issue in strict.issues)
+
+
+def test_the_gold_backed_sweep_targets_sweep_queries_that_have_gold():
+    """A sweep is only useful for H2d if every query it runs has a reference
+    graph. `run-dev` and `run-all-dev` sweep development_candidates.jsonl, whose
+    ids match no gold graph at all, so scoring that output with --references
+    raises "reference graph query/cutoff/anchor mismatch" after the whole sweep
+    has been paid for. D-28's targets exist to avoid that, and this asserts they
+    keep pointing somewhere the gold set actually covers.
+    """
+    import json
+    import re
+
+    repo = Path(__file__).parents[2]
+    makefile = (repo / "Makefile").read_text(encoding="utf-8")
+
+    match = re.search(r"^GOLD_QUERIES \?= (?P<path>\S+)$", makefile, re.MULTILINE)
+    assert match, "Makefile no longer defines GOLD_QUERIES"
+    queries = repo / match["path"]
+    assert queries.is_file(), f"GOLD_QUERIES points at {queries}, which does not exist"
+
+    swept = [
+        json.loads(line)["query_id"]
+        for line in queries.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    assert swept, f"{queries} is empty"
+
+    root = repo / "data/eval/gold/dev"
+    missing = missing_gold_graphs(swept, root=root)
+    assert missing == (), (
+        f"the gold-backed sweep would run {sorted(missing)}, which have no reference "
+        f"graph in {root}; scoring the run with --references would fail after the fact"
+    )
+
+    for target in ("sweep-dev-primary", "sweep-dev-sensitivity"):
+        assert f"\n{target}:" in makefile, f"{target} has gone from the Makefile"
+    assert (
+        "$(GOLD_QUERIES)" in makefile
+    ), "the sweep recipe no longer uses GOLD_QUERIES, so this check guards nothing"

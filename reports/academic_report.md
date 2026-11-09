@@ -457,27 +457,39 @@ against the gold set moved with it.
 
 ## 7. Remaining work
 
-The final submission is 15 November, with work winding up on 12 November.
+The final submission is 15 November, with work winding up on 12 November. This
+table is written on 9 November and separates what is done from what is not,
+because the earlier version of it listed as future several things that had
+already happened and one thing that had not.
 
-| Dates | Work |
+| Status | Work |
 |---|---|
-| 8 Nov · done | Blind double annotation of the 20 drafted development gold edges; inter-annotator agreement; four edges dropped in reconciliation (Section 4.4) |
-| 1–2 Nov | Extend the series store; re-confirm anchors; draft and adjudicate the test gold graphs |
-| 2–5 Nov | Development sweep on the current corpus; blind support judgements; first UER, strength inflation and reference-edge recall |
-| 6 Nov | Decision point: one round of verifier tuning on development data only, recorded |
-| 7–8 Nov | Challenge-set and strength model arms; stability check |
-| 9 Nov | Freeze settings; test sweep |
-| 10–12 Nov | Test judgements; final results with intervals; failure analysis; reproduction from a clean clone |
+| Done, 8 Nov | Blind double annotation of the 20 drafted development gold edges; agreement scored; four edges dropped in reconciliation, leaving 16 (Section 4.4, D-26) |
+| Done, 8 Nov | Reference review receipt signed and hash-bound, which makes the challenge set's false-alarm rate quotable (Section 4.5) |
+| Done, 8–9 Nov | Pilot decisions D-01 to D-04 locked; the two-model sensitivity check pre-registered (D-28) |
+| 9–10 Nov | Both arms of the development sweep, on the four gold-backed queries. Roughly 2.3× a single sweep |
+| 10 Nov | Blind support judgements on the generated edges of both arms |
+| 10–11 Nov | First UER, strength inflation and reference-edge recall; the pre-registered arm comparison; figures |
+| 11–12 Nov | Failure analysis; reproduction from a clean clone; final report |
+| At risk | The test half. No test gold graph exists yet, and D-27 rescoped its annotation from a number that was never reachable |
 
-Each step depends on the one before it. The annotation is the only step with no
-slack, because every downstream number is measured against the standard it
-produces.
+The critical path is the sweep, and it runs on one machine. Everything after it
+is measurement.
 
-Given Section 5.2, we add one item: re-examine the D-01 selection against
-extraction quality specifically, rather than against an unweighted mean of five
-tasks. If the development sweep on the current corpus reproduces a low
-establishment rate, the model choice is the first hypothesis to test, ahead of
-loosening the verifier.
+**The test half is the item most likely not to land.** `data/eval/gold/` holds
+`dev` only; the test graphs have to be drafted before they can be adjudicated,
+and D-25 found that one of the four test queries targets a variable with no
+recognised surface form in the corpus, so its gold graph may not reach the
+minimum edge count at all. If the test half does not land, the study reports
+development results only and says so, rather than presenting four queries of
+test numbers as a held-out result.
+
+Section 5.2's item is now settled rather than pending: the D-01 selection is
+re-examined not by argument but by running the sweep on both models under a
+comparison declared in advance (D-28,
+`docs/preregistration_model_sensitivity.md`). The selected model remains primary
+whatever the two arms show; the second arm exists to say whether any rise in UER
+with hop survives a generator that does not fail at citation mechanics.
 
 ## 8. Conclusion
 
