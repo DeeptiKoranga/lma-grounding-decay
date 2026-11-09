@@ -132,8 +132,10 @@ contribute one.
 
 Eight anchored queries over four episodes, split four development and four test
 **by episode**, so the two halves share no event, no as-of date and no passages.
-Four reviewer evidence graphs hold 16 source-asserted edges with verbatim spans,
-adjudicated by two independent annotators (Section 4.4). A challenge set holds 89
+Of the four test queries only three are answerable from the frozen corpus; the
+fourth names a target the corpus never connects to its anchor, which Section 7
+sets out. Four reviewer evidence graphs hold 16 source-asserted edges with
+verbatim spans, adjudicated by two independent annotators (Section 4.4). A challenge set holds 89
 items: 16 clean controls and 73 mechanically corrupted edges across five
 families. Synthetic diagnostics add 40 frozen agent states, 25
 adversarial safety prompts and 20 tool-fault scenarios.
@@ -471,18 +473,27 @@ already happened and one thing that had not.
 | 10 Nov | Blind support judgements on the generated edges of both arms |
 | 10–11 Nov | First UER, strength inflation and reference-edge recall; the pre-registered arm comparison; figures |
 | 11–12 Nov | Failure analysis; reproduction from a clean clone; final report |
-| At risk | The test half. No test gold graph exists yet, and D-27 rescoped its annotation from a number that was never reachable |
+| At risk | The test half. No test gold graph exists yet; D-27 rescoped its annotation from a number that was never reachable, and the feasibility audit cut it from four queries to three |
 
 The critical path is the sweep, and it runs on one machine. Everything after it
 is measurement.
 
-**The test half is the item most likely not to land.** `data/eval/gold/` holds
-`dev` only; the test graphs have to be drafted before they can be adjudicated,
-and D-25 found that one of the four test queries targets a variable with no
-recognised surface form in the corpus, so its gold graph may not reach the
-minimum edge count at all. If the test half does not land, the study reports
-development results only and says so, rather than presenting four queries of
-test numbers as a held-out result.
+**The test half is three queries, not four, and is the item most likely not to
+land.** `data/eval/gold/` holds `dev` only, so the test graphs have to be
+drafted before they can be adjudicated. A reachability audit run before that
+drafting (`reports/test_gold_feasibility.md`) finds three of the four queries
+feasible and one not: `test-cpi-why` asks why inflation was *raising
+expectations of RBI tightening*, so its graph must reach
+`RATE_HIKE_EXPECTATIONS`, and on or before its as-of date exactly one passage
+in the corpus pairs that variable with headline CPI. That passage belongs to a
+Federal Reserve article rather than Indian coverage, and it runs the wrong way
+— markets reducing rate-hike expectations after a *softer* CPI print, against
+an anchor of CPI rising. The query cannot be answered from this corpus as
+written, and widening the alias table would not change that, because the
+variable is named in 33 passages and simply never beside headline CPI in Indian
+coverage. If the remaining test half does not land in time, the study reports
+development results only and says so, rather than presenting a partial test set
+as a held-out result.
 
 Section 5.2's item is now settled rather than pending: the D-01 selection is
 re-examined not by argument but by running the sweep on both models under a
