@@ -9,6 +9,7 @@ PY := $(UV) run
 
 LMA_PYTHON ?= data/raw/llm_env/bin/python
 DEV_OUTPUT ?= runs/local-v7-dev
+REVIEW_OUTPUT ?= data/interim/support-review
 RETRIEVAL_PYTHON ?= .venv/bin/python
 RETRIEVER ?= bge_m3
 DENSE_INDEX ?= data/interim/corpus_v7_index_20261026/bge_m3_vectors.json
@@ -67,7 +68,7 @@ sweep-dev-both: ## Both D-28 arms, in order. Read neither until both finish.
 	$(MAKE) sweep-dev-sensitivity
 
 review-dev: ## Prepare a fresh local blinded support-review packet
-	PYTHONPATH=src $(PY) python -m eval.review prepare --runs $(DEV_OUTPUT) --output data/interim/support-review
+	PYTHONPATH=src $(PY) python -m eval.review prepare --runs $(DEV_OUTPUT) --output $(REVIEW_OUTPUT)
 
 audit-dev: ## Validate generated graphs, safety boundaries, logs and measured compute
 	PYTHONPATH=src $(PY) python -m eval.run_audit --runs $(DEV_OUTPUT) --output reports/integration_validation.json
