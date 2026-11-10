@@ -18,10 +18,17 @@ Worksheet SHA-256: `ef171beb73818bb4b1c19a92f7e5561c62d7156ac9510d4399c1d2765a0d
 
 ## By arm
 
-| arm | informative items | informative disagreements | informative raw agreement |
-|---|---:|---:|---:|
-| primary | 10 | 0 | 1.000 |
-| sensitivity | 17 | 6 | 0.647 |
+| arm | informative items | assistant yes / no | human yes / no | informative disagreements | informative raw agreement |
+|---|---:|---:|---:|---:|---:|
+| primary | 10 | 6 / 4 | 6 / 4 | 0 | 1.000 |
+| sensitivity | 17 | 11 / 6 | 7 / 10 | 6 | 0.647 |
+
+## All drawn rows, including rows without evidence
+
+| arm | assistant yes | assistant no |
+|---|---:|---:|
+| primary | 6 | 12 |
+| sensitivity | 11 | 11 |
 
 ## Where they disagreed
 

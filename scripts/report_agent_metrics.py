@@ -34,6 +34,7 @@ exactly this respect: A-NoLoop has no agent loop to measure.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -44,11 +45,24 @@ REPO = Path(__file__).resolve().parent.parent
 #: run already holds and `update_graph`/`stop`/`get_series` retrieve nothing, so
 #: none of them can be redundant in this sense.
 SEARCH_TOOLS = ("search_corpus", "counter_search")
+LOOP_CONDITIONS = {"M", "A-NoVerify"}
 
 
 def _lines(run_dir: Path) -> list[dict]:
+    from eval.run_audit import audit
+
+    checked = audit(runs=run_dir, corpus=REPO / "data/processed/articles.jsonl")
+    if not checked["complete"]:
+        raise ValueError(f"run audit failed: {checked['failures']}")
+    # Read only the artifact-bound successful logs; orphaned attempts must not
+    # silently add calls or stops to the completed sweep's denominators.
+    paths = set()
+    for artifact in sorted(run_dir.glob("*/*.json")):
+        payload = json.loads(artifact.read_text(encoding="utf-8"))
+        if "graph" in payload:
+            paths.add(artifact.parent / payload["log_file"])
     out: list[dict] = []
-    for path in sorted(run_dir.rglob("*.jsonl")):
+    for path in sorted(paths):
         for raw in path.read_text(encoding="utf-8").splitlines():
             if raw.strip():
                 out.append(json.loads(raw))
@@ -90,7 +104,7 @@ def summarise(lines: list[dict]) -> dict[str, dict]:
 
     report: dict[str, dict] = {}
     for condition in sorted(queries):
-        per_query = [n for (c, _), n in calls.items() if c == condition]
+        per_query = [calls[(condition, q)] for q in queries[condition]]
         ends = stops[condition]
         report[condition] = {
             "queries": len(queries[condition]),
@@ -103,7 +117,7 @@ def summarise(lines: list[dict]) -> dict[str, dict]:
             "redundant_searches": redundant[condition],
             "redundant_search_rate": (
                 round(redundant[condition] / searches[condition], 3)
-                if searches[condition]
+                if searches[condition] and condition in LOOP_CONDITIONS
                 else None
             ),
             "stops": len(ends),
@@ -132,6 +146,13 @@ def render(report: dict[str, dict], runs: Path) -> str:
         "Redundant rate | Stops with open edges |",
         "|---|---:|---|---:|---:|---:|---|",
     ]
+    if (runs / "inputs.json").is_file():
+        lines[6:6] = [
+            "Only completed, checksum-bound logs are included; the full run audit passed.",
+            f"Inputs SHA-256: `{hashlib.sha256((runs / 'inputs.json').read_bytes()).hexdigest()}`.",
+            f"Artifact receipt SHA-256: `{hashlib.sha256((runs / 'artifacts.json').read_bytes()).hexdigest()}`.",
+            "",
+        ]
     for condition, row in report.items():
         mean, top = row["tool_calls_per_query_mean"], row["tool_calls_per_query_max"]
         calls = "n/a" if mean is None else f"{mean} / {top}"
@@ -156,14 +177,17 @@ def render(report: dict[str, dict], runs: Path) -> str:
         "mechanism working. The rate says how much of a bounded budget went on "
         "ground already covered.",
         "",
-        "Open edges at stop are only a finding when read beside the stop reason. "
-        "Stopping on `important_edges_resolved` with edges still open means the "
-        "controller judged them unimportant; stopping on `budget_exhausted` with "
-        "edges open means it ran out. Those are different behaviours and the "
-        "counts above do not distinguish them on their own.",
+        "Open edges are unchecked inferred edges (no verifier verdict), not every "
+        "unsupported edge. The controller orders all open edges shallow-first; it "
+        "has no separate binary high-priority threshold, so these counts cover the "
+        "entire priority queue. Checked rejections are resolved for this controller. "
+        "Read the count beside the stop reason: `budget_exhausted` with open edges "
+        "means the budget prevented completion. Fixed prose/prompted baselines do "
+        "not run this controller; their stop labels do not indicate that it judged "
+        "remaining edges unimportant.",
         "",
-        "Conditions without an agent loop (A-NoLoop, and the prose baselines) "
-        "retrieve once, so their redundant-search rate is undefined rather than "
+        "Conditions without an agent loop (A-NoLoop and the fixed baselines) "
+        "retrieve at most once per query, so their redundant-search rate is undefined rather than "
         "zero.",
         "",
     ]

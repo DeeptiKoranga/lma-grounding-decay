@@ -144,7 +144,7 @@ def test_conditions_are_kept_apart():
     ]
     report = module.summarise(lines)
     assert report["M"]["redundant_search_rate"] == 1.0
-    assert report["B1"]["redundant_search_rate"] == 0.0
+    assert report["B1"]["redundant_search_rate"] is None
 
 
 def test_a_condition_that_never_searches_has_an_undefined_rate_not_zero():
@@ -154,10 +154,50 @@ def test_a_condition_that_never_searches_has_an_undefined_rate_not_zero():
     assert report["A-NoLoop"]["redundant_search_rate"] is None
 
 
+@pytest.mark.parametrize("condition", ["A-NoLoop", "B0", "B1", "B1-R", "B2"])
+def test_initial_retrieval_does_not_create_a_loop_redundancy_rate(condition):
+    report = module.summarise(
+        [
+            _call(0, "search_corpus", condition=condition),
+            _result(0, 3, condition=condition),
+        ]
+    )
+    assert report[condition]["searches"] == 1
+    assert report[condition]["redundant_search_rate"] is None
+
+
+def test_zero_call_queries_are_included_in_call_mean():
+    report = module.summarise(
+        [
+            _call(0, "search_corpus", query_id="q1"),
+            {
+                "event": "stop",
+                "condition": "M",
+                "query_id": "q2",
+                "reason": "important_edges_resolved",
+                "open_edges_remaining": 0,
+            },
+        ]
+    )
+    assert report["M"]["tool_calls_per_query_mean"] == 0.5
+
+
 def test_the_renderer_states_the_undefined_rate_rather_than_printing_none():
     text = module.render(module.summarise([_call(0, "update_graph")]), Path("runs/x"))
     assert "n/a" in text
     assert "None" not in text
+
+
+def test_loader_ignores_orphan_logs(tmp_path, monkeypatch):
+    from eval import run_audit
+
+    monkeypatch.setattr(run_audit, "audit", lambda **_: {"complete": True})
+    condition = tmp_path / "M"
+    condition.mkdir()
+    (condition / "q.json").write_text('{"graph": {}, "log_file": "bound.jsonl"}')
+    (condition / "bound.jsonl").write_text('{"event": "bound"}\n')
+    (condition / "orphan.jsonl").write_text('{"event": "orphan"}\n')
+    assert module._lines(tmp_path) == [{"event": "bound"}]
 
 
 @pytest.mark.parametrize("tool", list(module.SEARCH_TOOLS))

@@ -322,13 +322,32 @@ certify identifier correctness or executability. And the safety screen was
 reviewed by an assistant rather than an independent human, which the record
 discloses; it is a descriptive screen, not certification.
 
-**Three agentic metrics are properties of runs, not of scripted states.**
-Redundant-search rate, tool calls per query, and unresolved open edges at stop
-are computed from the run logs by `scripts/report_agent_metrics.py` into
-`reports/agent_metrics.md`. They are reported there rather than here because
-they describe controller behaviour under a real budget; the frozen states
-cannot produce them, since a scripted state has no history of what the run had
-already retrieved.
+**Controller behaviour on the four development queries.** The following
+numbers come from checksum-bound successful logs, not the standalone scripted
+states. Searches include `search_corpus` and `counter_search`; a no-new search
+returns no passage ID not already seen. Open edges are unchecked inferred edges
+with no verifier verdict. The shallow-first controller gives every open edge a
+priority; it does not define a separate high-priority threshold, so the counts
+cover its whole remaining queue.
+
+| Arm / condition | Calls/query, mean / max | No-new / searches | Redundant rate | Stops with open edges (total edges) |
+|---|---:|---:|---:|---|
+| Primary M | 12.00 / 12 | 0/13 | 0.000 | 4/4 (13) |
+| Primary A-NoLoop | 12.00 / 12 | 0/4 | n/a | 4/4 (4) |
+| Primary A-NoVerify | 6.00 / 10 | 4/13 | 0.308 | 2/4 (7) |
+| Sensitivity M | 12.00 / 12 | 0/12 | 0.000 | 4/4 (12) |
+| Sensitivity A-NoLoop | 11.25 / 12 | 0/4 | n/a | 1/4 (6) |
+| Sensitivity A-NoVerify | 3.50 / 4 | 0/6 | 0.000 | 0/4 (0) |
+
+M exhausted its 12-call budget on every query in both arms and left unchecked
+edges each time. Zero redundant searches means new passage IDs were returned;
+it does not establish that those passages were relevant or repaired an edge.
+Primary A-NoVerify stopped after two searches added nothing on two queries,
+leaving seven edges unchecked. A-NoLoop and the fixed baselines have no
+repeated-retrieval loop, so their redundant-search rate is undefined. Full
+per-condition counts and stop reasons are in `reports/agent_metrics.md` and
+`reports/agent_metrics_sensitivity.md`. These are development measurements;
+the proposal's test-run metrics remain pending test execution.
 
 **Path-label accuracy is not an empirical number in this design.** Table 4 asks
 for it on fixed labelled paths. A path's label is its weakest hop under
@@ -405,11 +424,21 @@ human and the assistant agreed on all 10 informative rows; on the sensitivity
 arm they agreed on 11 of 17 (0.647). Because D-28 makes the primary arm the
 source of every headline number, the figures in the table below rest on the
 better-agreeing half of the sample. That is the favourable reading and it is
-reported with its limit: ten rows cannot establish reliability, the per-arm
-label balance is not in the generated report, and this project's own annotation
-guide holds that a near-constant-label comparison must not be presented as
-perfect reliability. The honest claim is that the sample surfaced no primary-arm
-disagreement, not that the primary-arm labels are correct.
+reported with its limit: ten rows cannot establish reliability. The key's label
+balance is now available: the primary informative sample contained six supported
+and four unsupported labels, and the human agreed on all ten. It is therefore
+not a constant-label comparison. That distinction is quantitative rather than
+rhetorical: a 6/4 split on both sides puts chance agreement at 0.52, so the
+primary arm's kappa is **1.000 against a real denominator**, where a dominant
+label would have driven chance agreement toward 1 and left the coefficient
+undefined — the failure mode the dev adjudication actually hit (Section 4.4).
+It remains a small stratified sample rather than proof that the primary labels
+are correct.
+
+| Arm | All drawn assistant yes / no | Informative assistant yes / no | Informative human yes / no |
+|---|---:|---:|---:|
+| Primary | 6 / 12 | 6 / 4 | 6 / 4 |
+| Sensitivity | 11 / 11 | 11 / 6 | 7 / 10 |
 
 **The disagreements have a direction, and it matters for UER.** Five of the six
 are the assistant crediting support that the human rejected; one is the
