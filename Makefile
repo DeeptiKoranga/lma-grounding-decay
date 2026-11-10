@@ -16,7 +16,7 @@ DENSE_INDEX ?= data/interim/corpus_v7_index_20261026/bge_m3_vectors.json
 MODEL_SELECTION ?= configs/model_selection.json
 MODEL_ARGS ?= --model-selection $(MODEL_SELECTION)
 
-.PHONY: run-dev run-all-dev review-dev audit-dev synthetic-faults agent-metrics
+.PHONY: run-dev run-all-dev review-dev audit-dev synthetic-faults agent-metrics reasoning-diagnostics
 
 .PHONY: validate-track-c
 validate-track-c: ## Verify every Phase 1 Track C deliverable against saved execution evidence
@@ -69,6 +69,9 @@ sweep-dev-both: ## Both D-28 arms, in order. Read neither until both finish.
 
 review-dev: ## Prepare a fresh local blinded support-review packet
 	PYTHONPATH=src $(PY) python -m eval.review prepare --runs $(DEV_OUTPUT) --output $(REVIEW_OUTPUT)
+
+reasoning-diagnostics: ## Direction accuracy and strength macro-F1 vs the adjudicated references
+	PYTHONPATH=src $(PY) python scripts/report_reasoning_diagnostics.py --runs $(ARM_PRIMARY_OUTPUT)
 
 agent-metrics: ## Agentic capability metrics (Table 4) from a sweep's run logs
 	PYTHONPATH=src $(PY) python scripts/report_agent_metrics.py --runs $(ARM_PRIMARY_OUTPUT)

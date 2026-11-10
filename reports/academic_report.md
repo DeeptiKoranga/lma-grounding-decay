@@ -299,6 +299,16 @@ span, so every rule still passes, and no rule reads the strength field. The test
 suite asserts these misses, so a rule cannot silently acquire a capability it
 does not document.
 
+**The 25 semantic corruptions are precisely what the LLM verifier exists for,
+and that arm has not been run.** The rules-only result above is therefore a
+floor on what the system catches, not a measurement of it: the proposal's
+isolating comparison for the Reasoning capability is M against A-NoVerify, and
+on the challenge set that comparison is still open. What the development sweep
+says is narrower but points the same way — provenance accuracy is 0.750 for M
+against 0.396 for A-NoVerify on the primary arm (Section 4.9), so the verifier
+is doing work the rules cannot. Whether it catches a reversed relation
+specifically is unmeasured.
+
 ### 4.6 Capability, safety and tool calling
 
 | Metric | Result |
@@ -348,6 +358,18 @@ repeated-retrieval loop, so their redundant-search rate is undefined. Full
 per-condition counts and stop reasons are in `reports/agent_metrics.md` and
 `reports/agent_metrics_sensitivity.md`. These are development measurements;
 the proposal's test-run metrics remain pending test execution.
+
+**Two reasoning diagnostics are measured against our own adjudicated edges**
+rather than a public set: direction accuracy, and strength macro-F1 over the
+generated edges that match a reference edge on source and destination.
+`scripts/report_reasoning_diagnostics.py` computes both into
+`reports/reasoning_diagnostics.md`. They are kept apart from the metrics they
+resemble on purpose. Direction accuracy is not reference-edge recall, which
+requires direction to match before it counts an edge at all and so cannot say
+how often the sign was right on the pairs the model did find. Strength macro-F1
+is not strength inflation, which counts only over-statement; macro-F1 is
+symmetric and includes under-statement, and macro-averaging stops a rare label
+such as `correlational` being drowned by `direct`.
 
 **Path-label accuracy is not an empirical number in this design.** Table 4 asks
 for it on fixed labelled paths. A path's label is its weakest hop under
