@@ -216,3 +216,56 @@ def test_a_third_of_the_corruptions_need_a_model(items, passages):
     blind = sum(results[k]["total"] for k in CORRUPTIONS if k not in RULE_VISIBLE and k in results)
     total = sum(results[k]["total"] for k in CORRUPTIONS if k in results)
     assert 0.2 < blind / total < 0.5
+
+
+def test_several_gold_directories_still_bind_to_one_receipt_hash():
+    """The manifest's receipt field is what makes the false-alarm rate quotable,
+    and several callers read it as a single hash. Building from both halves must
+    not empty it; it becomes a digest over the receipts, which still changes if
+    any one of them does."""
+    import hashlib
+    import json
+    from pathlib import Path
+
+    repo = Path(__file__).resolve().parents[2]
+    manifest = json.loads((repo / "data/eval/challenge_manifest.json").read_text(encoding="utf-8"))
+    receipts = manifest["reference_review_receipts"]
+    assert len(receipts) > 1, "this set is built from both halves"
+    joined = "\n".join(f"{name}:{value}" for name, value in sorted(receipts.items()))
+    assert (
+        manifest["reference_review_receipt_sha256"]
+        == hashlib.sha256(joined.encode("utf-8")).hexdigest()
+    )
+
+
+def test_the_set_reaches_the_size_the_proposal_specifies():
+    """89 items from the dev half alone fell short of the proposal's 125. Both
+    halves clear it. A drop below 125 means a gold directory stopped being
+    included, which would be silent otherwise."""
+    import json
+    from pathlib import Path
+
+    repo = Path(__file__).resolve().parents[2]
+    manifest = json.loads((repo / "data/eval/challenge_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["items"] >= 125
+    assert len(manifest["gold_directories"]) == 2
+
+
+def test_a_query_id_in_two_gold_directories_is_refused():
+    """Silently overwriting one half's graph with another's would change the
+    seed set without changing the item count."""
+    from pathlib import Path
+    from unittest.mock import patch
+
+    from eval import challenge
+
+    clash = ({"q1": object()}, "aa" * 32)
+    with (
+        patch.object(challenge, "validate", return_value=clash),
+        pytest.raises(ValueError, match="more than one gold directory"),
+    ):
+        challenge.build(
+            gold=[Path("a"), Path("b")],
+            corpus=Path("data/processed/articles.jsonl"),
+            output=Path("/tmp/unused-challenge.jsonl"),
+        )

@@ -281,19 +281,28 @@ alias coverage — and it is the chain the proposal used to motivate the study.
 
 ### 4.5 Challenge set
 
-89 items run against the rule layer with no model involved.
+**130 items**, run against the rule layer with no model involved. The set is
+built from both adjudicated halves — 16 dev edges and 7 eligible test edges,
+each directory validated against its own signed receipt — because one half
+alone reaches only 89 items against the proposal's specified 125. Using test
+gold here leaks nothing into a test score: this is a diagnostic of the rule
+layer, and there is no test score. The split is 107 corrupted and 23 clean
+against the proposal's 100 and 25, because a control is one per eligible seed
+edge and 23 is what the two halves supply.
 
 | Corruption family | Items | Flagged | Rate |
 |---|---:|---:|---:|
-| Unsupported intermediate hop | 16 | 16 | 1.000 |
-| Wrong date | 16 | 16 | 1.000 |
-| Wrong target | 16 | 16 | 1.000 |
-| Reversed relation | 16 | 0 | 0.000 |
-| Inflated strength | 9 | 0 | 0.000 |
-| Clean controls | 16 | 0 | — |
+| Unsupported intermediate hop | 23 | 23 | 1.000 |
+| Wrong date | 23 | 23 | 1.000 |
+| Wrong target | 23 | 23 | 1.000 |
+| Reversed relation | 23 | 0 | 0.000 |
+| Inflated strength | 15 | 0 | 0.000 |
+| Clean controls | 23 | 0 | — |
 
-Forty-eight of 48 citation corruptions are caught with zero false alarms, and
-none of the 25 semantic corruptions. The two misses are structural: reversing an
+Sixty-nine of 69 citation corruptions are caught with zero false alarms, and
+none of the 38 semantic corruptions. Enlarging the set did not move either
+rate, which is what a deterministic layer should do: the result was never
+sample-limited, it is structural. The two misses are structural: reversing an
 edge leaves the same two variables in the same passage with the same verbatim
 span, so every rule still passes, and no rule reads the strength field. The test
 suite asserts these misses, so a rule cannot silently acquire a capability it
@@ -303,8 +312,9 @@ does not document.
 and that arm has not been run.** The rules-only result above is therefore a
 floor on what the system catches, not a measurement of it: the proposal's
 isolating comparison for the Reasoning capability is M against A-NoVerify, and
-on the challenge set that comparison is still open. What the development sweep
-says is narrower but points the same way — provenance accuracy is 0.750 for M
+on the challenge set that comparison is still open — now over 38 semantic
+corruptions rather than 25. What the development sweep says is narrower but
+points the same way — provenance accuracy is 0.750 for M
 against 0.396 for A-NoVerify on the primary arm (Section 4.9), so the verifier
 is doing work the rules cannot. Whether it catches a reversed relation
 specifically is unmeasured.

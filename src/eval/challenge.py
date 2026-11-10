@@ -28,7 +28,9 @@ not noise.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+from collections.abc import Sequence
 from pathlib import Path
 
 from schema import Passage
@@ -101,7 +103,25 @@ def _corrupt(kind, graph, edge, passage):
     return data, as_of
 
 
-def build(*, gold: Path, corpus: Path, output: Path, allow_unreviewed: bool = False):
+def build(
+    *,
+    gold: Path | Sequence[Path],
+    corpus: Path,
+    output: Path,
+    allow_unreviewed: bool = False,
+):
+    """Build the challenge set from one or more adjudicated gold directories.
+
+    `gold` accepts several directories because the proposal specifies a 125-item
+    set and one half does not reach it: 16 dev edges yield 89 items. Both halves
+    together clear it. Each directory is validated against its **own** receipt,
+    and every receipt hash is recorded, so adding the test half cannot smuggle
+    in unreviewed edges.
+
+    This is a diagnostic of the rule layer, not a held-out evaluation, so using
+    test gold here leaks nothing into a test score. It does mean the set is no
+    longer purely dev-derived, which the manifest records.
+    """
     passages = {
         p.passage_id: p
         for line in corpus.read_text(encoding="utf-8").splitlines()
@@ -109,17 +129,43 @@ def build(*, gold: Path, corpus: Path, output: Path, allow_unreviewed: bool = Fa
         if (p := Passage.model_validate_json(line))
     }
 
-    if allow_unreviewed:
-        # The gold graphs exist but nobody has signed for them. The set is still
-        # worth building - the corruptions are ground truth either way - but
-        # every row says so, and the false-alarm denominator is not trustworthy.
-        graphs, _ = inspect(gold, corpus)
-        receipt_hash, adjudicated = None, False
+    directories = [gold] if isinstance(gold, Path) else list(gold)
+    if not directories:
+        raise ValueError("at least one gold directory is required")
+
+    graphs: dict = {}
+    receipts: dict[str, str] = {}
+    for directory in directories:
+        if allow_unreviewed:
+            # The gold graphs exist but nobody has signed for them. The set is
+            # still worth building - the corruptions are ground truth either
+            # way - but every row says so, and the false-alarm denominator is
+            # not trustworthy.
+            found, _ = inspect(directory, corpus)
+        else:
+            found, receipt = validate(
+                references=directory, corpus=corpus, expected_corpus_sha256=digest(corpus)
+            )
+            receipts[directory.name] = receipt
+        overlap = set(found) & set(graphs)
+        if overlap:
+            raise ValueError(f"query ids appear in more than one gold directory: {sorted(overlap)}")
+        graphs.update(found)
+
+    adjudicated = not allow_unreviewed
+    # `reference_review_receipt_sha256` stays a single 64-hex value whatever the
+    # number of directories, because it is what binds a quotable false-alarm
+    # rate to reviewed gold and several callers check it as one hash. With one
+    # directory it is that receipt. With several it is a digest **over** them,
+    # so it still changes if any receipt does, and the per-directory mapping is
+    # recorded beside it rather than replaced by it.
+    if not receipts:
+        receipt_hash = None
+    elif len(receipts) == 1:
+        receipt_hash = next(iter(receipts.values()))
     else:
-        graphs, receipt_hash = validate(
-            references=gold, corpus=corpus, expected_corpus_sha256=digest(corpus)
-        )
-        adjudicated = True
+        joined = "\n".join(f"{name}:{value}" for name, value in sorted(receipts.items()))
+        receipt_hash = hashlib.sha256(joined.encode("utf-8")).hexdigest()
 
     seeds = _seeds(graphs, passages)
     if len(seeds) < MIN_SEEDS:
@@ -174,6 +220,8 @@ def build(*, gold: Path, corpus: Path, output: Path, allow_unreviewed: bool = Fa
         "counts_by_kind": counts,
         "gold_adjudicated": adjudicated,
         "reference_review_receipt_sha256": receipt_hash,
+        "gold_directories": [str(d) for d in directories],
+        "reference_review_receipts": receipts or None,
         "corpus_sha256": digest(corpus),
         "status": (
             "built from adjudicated gold against a signed reference review receipt; "
@@ -209,7 +257,13 @@ def build(*, gold: Path, corpus: Path, output: Path, allow_unreviewed: bool = Fa
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--gold", type=Path, required=True)
+    parser.add_argument(
+        "--gold",
+        type=Path,
+        required=True,
+        nargs="+",
+        help="one or more gold directories; each is validated against its own receipt",
+    )
     parser.add_argument("--corpus", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
