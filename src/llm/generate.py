@@ -73,17 +73,26 @@ class MLXGenerator:
         model_id: str,
         revision: str,
         max_input_tokens: int = 12000,
+        sampling_temperature: float = 0.0,
+        sampling_seed: int | None = None,
     ):
         path = Path(path)
         if not path.is_dir() or not revision.strip():
             raise ValueError("MLX requires an existing local model and a recorded revision")
         if max_input_tokens < 1:
             raise ValueError("max_input_tokens must be positive")
+        if sampling_temperature < 0 or sampling_temperature > 2:
+            raise ValueError("sampling temperature must be between 0 and 2")
         from mlx_lm import load
 
         self.model, self.tokenizer = load(str(path))
         self.model_id, self.revision = model_id, revision
         self.max_input_tokens = max_input_tokens
+        self.sampling_temperature = sampling_temperature
+        if sampling_seed is not None:
+            import mlx.core as mx
+
+            mx.random.seed(sampling_seed)
 
     def generate(self, prompt: str, *, max_tokens: int = 1500) -> Completion:
         _validate_request(prompt, max_tokens)
@@ -104,7 +113,7 @@ class MLXGenerator:
             self.tokenizer,
             prompt=rendered,
             max_tokens=max_tokens,
-            sampler=make_sampler(temp=0),
+            sampler=make_sampler(temp=self.sampling_temperature),
         ):
             pieces.append(response.text)
             final = response

@@ -325,7 +325,7 @@ revision rather than the current one.
 | A-NoLoop | 6 | 35 | 0 | 5 |
 | M | 6 | 35 | 8 | 18 |
 
-### 4.8 Reviewed development scores (10 November update)
+### 4.8 Assistant-labelled development scores (10–11 November update)
 
 Both current-v7, gold-backed development arms completed 28 graphs each and
 passed structural audit. The 24 prose corrections and 247 edge-support
@@ -346,10 +346,12 @@ labels and changing the attestation does not make them human judgements, so this
 report does not describe them as blind human review. The scores are arithmetically
 reproducible from the committed packets and were recomputed independently for
 this report; what is unestablished is not the arithmetic but the judgement
-underneath it. A stratified blind human sample
-(`scripts/sample_validate_support.py`) is the declared route to saying how far
-these labels can be trusted, and until it is scored every number in this section
-is an assistant-labelled development diagnostic rather than a reviewed result.
+underneath it. A stratified blind human sample of 40 items has now been scored
+(`reports/support_sample_validation.md`). Thirteen had no attached evidence;
+on the 27 informative rows, the reviewer agreed with the existing labels on
+21 (77.8%). All six disagreements were in the sensitivity arm. This measures
+sample agreement; it does not turn the remaining labels into human judgements.
+Every number in this section remains an assistant-labelled development diagnostic.
 
 | Arm | B1 overall UER | M overall UER | M−B1 paired UER | M−B1 reference recall | H2d |
 |---|---:|---:|---:|---:|---|
@@ -364,7 +366,17 @@ queries; reference-edge recall remains near zero. Missing denominators are
 reported as N/A rather than as zero error. Full per-hop strength inflation,
 recall, query counts and guard interpretation are in the RQ reports.
 
-![Figure 2. Reviewed primary-arm UER by hop for B1 and M; labels show queries with denominators out of four.](figures/uer_by_hop.png)
+A predeclared one-query repeated-sampling check ran M on `dev-oil-effects`
+three times under the pinned primary model and retriever, changing only the
+sampling seed across repeats. The proposed link sets varied, but all three
+established the same two links with byte-identical evidence, matching the
+greedy run. Reusing the greedy run's assistant-produced support labels for
+those exact links gives UER 0.500 in each repeat. This supports stability of
+the established set for **one query at three seeds**, not stability of the
+M-minus-B1 comparison across queries. Full counts and measured time are in
+`reports/stability_check_20261110.md`.
+
+![Figure 2. Assistant-labelled primary-arm UER by hop for B1 and M; labels show queries with denominators out of four.](figures/uer_by_hop.png)
 
 ### 4.9 The ablations, H2c, and the two secondary metrics nobody had printed
 

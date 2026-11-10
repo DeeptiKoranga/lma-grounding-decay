@@ -9,7 +9,7 @@ Varun Patil (2025204013) · Harshal Bhansali (2026909007) · Deepti Koranga (202
 Repository: `https://github.com/DeeptiKoranga/lma-grounding-decay` (branch `main`)
 
 > **Dated snapshot and update.** The original mid-submission text records the
-> 30 October state. Section 5.6 adds the reviewed development results from
+> 30 October state. Section 5.6 adds the assistant-labelled development results from
 > 10 November and supersedes earlier statements that support review and UER
 > were pending. Those results cover four development queries in each arm;
 > no held-out test result or inferential hypothesis claim is reported.
@@ -200,7 +200,7 @@ posts an excellent UER while answering the question badly.
 **What this did not tell us on 30 October.** Whether M's 8 established edges
 were the *right* 8 required support review. The ablation showed that the
 mechanism was live, but could not then show whether verification helped or
-merely deleted. Section 5.6 reports the later reviewed development contrast.
+merely deleted. Section 5.6 reports the later development contrast.
 
 ---
 
@@ -313,24 +313,28 @@ All local, on an Apple M5 via MLX, pinned Qwen3-8B at 4-bit, revision
 `545dc425`. **No paid API request was made. No Kaggle GPU hours were used or are
 claimed.** Times are measured model-call wall times, not GPU-active hours.
 
-### 5.6 Reviewed development metrics — 10 November update
+### 5.6 Assistant-labelled development metrics — 11 November update
 
 Both current-v7 arms completed 28 gold-backed graphs and passed structural
-audit. Varun's 24 corrected prose baselines and 247 condition-blinded support
-judgements passed the ordinary review scorer. The primary arm's B1 UER is
+audit. The 24 prose corrections and 247 support judgements were assistant-produced;
+the later attestation did not change those labels. A blind human sample agreed
+on 21 of 27 informative rows (77.8%; 13 of 40 had no attached evidence).
+The primary arm's B1 UER is
 1.000 over three queries with denominators; M is 0.750 over four. M minus B1
 is −0.167 over **three usable UER pairs**. Reference-edge recall changes
 +0.062 over all four query pairs, within the H2d floor. The sensitivity arm's
 paired UER difference is −0.100 over two usable pairs and recall changes
 −0.062 over four pairs. Full denominators and strength-inflation values are in
 `reports/rq1_hop_decay.md`, `reports/rq2_verification.md` and their sensitivity
-companions; the reviewed primary chart is `reports/figures/uer_by_hop.svg`.
+companions; the assistant-labelled primary chart is `reports/figures/uer_by_hop.svg`.
 
 The predeclared thresholds remain unchanged (D-22): a hop bucket needs 10
 established edges to carry a claim, a trend needs all three buckets, and an
 inferential claim needs 10 queries. Neither arm has three usable B1 hop buckets,
 so the development run does not test H1's monotone-trend claim. With four dev
 queries, all comparisons are descriptive only. Test-set scores are still absent.
+The three-seed, one-query M stability check found identical established edges
+and variable proposed edges; see `reports/stability_check_20261110.md`.
 
 ---
 
