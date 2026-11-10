@@ -30,12 +30,6 @@
       "series_id": "fpi_flows_usd_mn"
     },
     {
-      "var": "GSEC_10Y",
-      "direction": "up",
-      "is_anchor": false,
-      "confirmed_by_series": false
-    },
-    {
       "var": "IMPORT_BILL",
       "direction": "up",
       "is_anchor": false,
@@ -63,21 +57,6 @@
       "evidence_published_at": "2026-03-09T20:55:04+05:30",
       "candidate_evidence": [],
       "note": "Three causes are listed together and FPI selling is one of them. A reviewer must decide whether 'on account of' attributes the pressure to FPI selling directly or only lists it alongside two others."
-    },
-    {
-      "edge_id": "tw2",
-      "src_var": "FPI_FLOWS",
-      "dst_var": "GSEC_10Y",
-      "direction": "up",
-      "provenance": "source_asserted",
-      "strength": "correlational",
-      "hop": 1,
-      "evidence_span": "In March alone, FPIs sold ₹17,686 crore worth of debt-the largest monthly outflow of the year-amid deteriorating sentiment as the rupee weakened to record lows against the backdrop of the West Asia conflict. The rupee has declined over 11% in this fiscal year, while bond yields have risen 55 basis points",
-      "evidence_doc_id": "economic_times-4c6452cd1b5bf09a76c7",
-      "evidence_passage_id": "economic_times-4c6452cd1b5bf09a76c7#p4",
-      "evidence_published_at": "2026-04-01T06:01:00+05:30",
-      "candidate_evidence": [],
-      "note": "The passage reports debt outflows and a yield rise in the same window without asserting that one drove the other. Drafted correlational; a reviewer may hold that it supports no edge at all."
     },
     {
       "edge_id": "tw3",
@@ -127,5 +106,5 @@
   ],
   "paths": [],
   "schema_version": "1.0.0",
-  "notes": "DRAFT, NOT ADJUDICATED. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_test_gold_graphs.py and each edge passes the B6 rule layer: the span is verbatim in the cited passage, the passage is in the frozen corpus, it was published on or before the query cutoff, and both variables are named in it or in D-17's preceding window. None of that establishes support. No annotator has read these spans, there is no review receipt, and nothing here may be scored as a reference graph until two annotators have labelled every edge independently and blind under D-26 and signed a receipt. Two of the four test queries carry no graph at all: test-cpi-why by D-27, and test-cpi-effects because the corpus runs the wrong way through it."
+  "notes": "ADJUDICATED 2026-11-11. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_test_gold_graphs.py and each edge passes the B6 rule layer. Two annotators then labelled every drafted edge independently, blind to the draft and to each other: raw agreement 1.000 on whether the span asserts the relation (Cohen's kappa 1.000) and 1.000 on direction, with kappa undefined there because one label was used throughout. Strength agreed on 1 of 8 (raw 0.125, kappa 0.000), and the pre-declared direct-versus-hedged collapse did not rescue it because that is the axis of the split (reports/adjudication_kappa_test.md). Reconciliation applied one rule, D-30: strength is read off the modality of the clause carrying the causal claim, not off the manner in which the mechanism is described, so a claim under 'would' is conditional however firmly the mechanism inside it is worded. Both annotators independently rejected the same two FPI_FLOWS -> GSEC_10Y edges, which are dropped, leaving four edges per graph at exactly MIN_EDGES. The reviewers' attestation lives in data/eval/gold/test/review_receipt.json and is signed separately. Two of the four test queries carry no graph at all: test-cpi-why by D-27, and test-cpi-effects by D-27a."
 }

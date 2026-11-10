@@ -61,14 +61,19 @@ def test_the_two_undraftable_queries_have_no_graph(query_id):
 
 
 @pytest.mark.parametrize("query_id", DRAFTED)
-def test_each_drafted_test_graph_is_marked_unadjudicated(query_id):
-    """The dev set says ADJUDICATED and names its receipt. The test set must say
-    the opposite, because nothing stops a reader citing a gold-shaped file as a
-    reviewed reference set except the sentence inside it."""
+def test_each_test_graph_declares_how_it_was_adjudicated(query_id):
+    """The provenance line is load-bearing: it is what stops the set being cited
+    with more authority than it has. These said DRAFT, NOT ADJUDICATED until two
+    annotators labelled every edge independently on 11 Nov 2026 and reconciled
+    under D-30, so they now record that, the agreement figures, and the fact
+    that the attestation is signed separately."""
     notes = load_gold_graph(query_id, TEST_GOLD_DIR).notes or ""
-    assert "DRAFT, NOT ADJUDICATED" in notes
-    assert "ADJUDICATED 2026-11-08" not in notes
-    assert "review_receipt" not in notes
+    assert "ADJUDICATED 2026-11-11" in notes
+    assert "DRAFT, NOT ADJUDICATED" not in notes
+    assert "D-30" in notes
+    assert "review_receipt.json" in notes
+    # The dev set's own date must not leak in through a copied provenance line.
+    assert "2026-11-08" not in notes
 
 
 @pytest.mark.parametrize("query_id", DRAFTED)
@@ -77,10 +82,40 @@ def test_each_drafted_test_graph_clears_min_edges(query_id):
     assert len(edges) >= MIN_EDGES
 
 
-def test_the_test_half_has_no_signed_receipt():
-    """Scoring with --references must stay refused until two annotators have
-    read every span. The receipt's absence is what enforces that."""
-    assert not (TEST_GOLD_DIR / "review_receipt.json").is_file()
+def test_the_test_receipt_is_signed_and_binds_these_graphs():
+    """A receipt that names no reviewer, or that was prepared against different
+    bytes, is what `eval.references.validate` refuses. Both halves of that are
+    checked here so a silently regenerated graph cannot slip past."""
+    from eval.references import ReferenceReview, digest
+
+    receipt = TEST_GOLD_DIR / "review_receipt.json"
+    review = ReferenceReview.model_validate_json(receipt.read_text(encoding="utf-8"))
+    assert review.reviewer.strip()
+    assert review.reviewed_on is not None
+    assert review.independent_review
+    assert review.all_relations_and_strengths_reviewed
+    on_disk = {
+        gold_path(q, TEST_GOLD_DIR).name: digest(gold_path(q, TEST_GOLD_DIR)) for q in DRAFTED
+    }
+    assert review.reference_sha256 == on_disk, "gold changed after the receipt was signed"
+
+
+def test_a_signed_test_receipt_stops_matching_once_gold_changes(tmp_path):
+    """The binding has to be to bytes, not to filenames. If editing a graph left
+    the receipt valid, the attestation would cover whatever the file says now."""
+    import json
+
+    from eval.references import ReferenceReview, digest
+
+    review = ReferenceReview.model_validate_json(
+        (TEST_GOLD_DIR / "review_receipt.json").read_text(encoding="utf-8")
+    )
+    name = gold_path(DRAFTED[0], TEST_GOLD_DIR).name
+    edited = tmp_path / name
+    payload = json.loads(gold_path(DRAFTED[0], TEST_GOLD_DIR).read_text(encoding="utf-8"))
+    payload["notes"] = (payload.get("notes") or "") + " (edited)"
+    edited.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    assert digest(edited) != review.reference_sha256[name]
 
 
 def test_the_drafted_test_set_reaches_past_hop_one():

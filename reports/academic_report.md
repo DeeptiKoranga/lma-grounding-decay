@@ -664,9 +664,9 @@ already happened and one thing that had not.
 | Done, 10 Nov | Development UER, strength inflation, reference recall, sensitivity comparison and UER figure, with denominator gates |
 | Done, 10 Nov | Five-case primary-arm failure analysis; earlier clean-clone reproduction remains documented |
 | Done, 11 Nov | Repeated-sampling stability check: three seeds on `dev-oil-effects` under M; the established set and its UER of 0.500 identical across repeats, the proposal stage visibly stochastic (`reports/stability_check_20261110.md`) |
-| Done, 11 Nov | Test gold **drafted** for two queries, rule-checked and marked unadjudicated; reading cut the half from three queries to two (D-27a) |
+| Done, 11 Nov | Test gold drafted for two queries, then **adjudicated**: both annotators agreed on every surviving edge and every direction, split on seven of eight strengths, reconciled under D-30; receipt signed (D-27a, D-30) |
 | 11–12 Nov | Final report integration and remaining reproduction checks |
-| At risk | Adjudicating that test half, and any test score at all. Two blind annotators and a signed receipt are the precondition, and two queries sit far below the inference gate in any case |
+| At risk | Any test *score*. The reference set now exists and is receipt-bound, but no sweep has been run against it, and two queries sit five times below the inference gate in any case |
 
 Both development sweeps are run and scored, and the judgement they rest on has
 now been sampled: the 247 support labels remain assistant-produced, but a blind
@@ -706,11 +706,27 @@ the order matters: the audit is cheap and settled one query before anyone read
 a passage, while the other needed reading. Reporting both is what makes the
 test half's size a measurement rather than a shortfall.
 
-**What the study therefore reports.** Development results only, and it says so
-rather than presenting an unadjudicated two-query set as a held-out result. The
-drafted graphs are committed so that the adjudication step is cheap for whoever
-picks it up, and `--references` against `data/eval/gold/test` stays refused
-until a receipt exists.
+**The test half is adjudicated, and it agreed where it counts.** Both
+annotators labelled all ten drafted edges independently and blind. They agreed
+on `asserts` at raw 1.000 (kappa 1.000) and on direction at raw 1.000 — kappa
+undefined there, because one label was used throughout, which is a property of
+the sample rather than a failure to agree. They split on **seven of eight
+strengths** (raw 0.125, kappa 0.000), and the pre-declared direct-versus-hedged
+collapse did not rescue it, because that is precisely the axis of the split
+(`reports/adjudication_kappa_test.md`). Reconciliation applied one rule, D-30:
+strength is read off the modality of the clause carrying the causal claim, not
+off the manner in which the mechanism is described, so a claim under "would" is
+`conditional` however firmly the mechanism inside it is worded. Both annotators
+had independently rejected the same two `FPI_FLOWS -> GSEC_10Y` edges, which
+are dropped, leaving **four edges per graph at exactly `MIN_EDGES`**. The
+receipt is signed and hash-bound to those bytes.
+
+**What the study therefore reports.** Development results only. The test
+reference set now exists and would be scorable, but no sweep has been run
+against it, and two queries sit five times below `MIN_QUERIES_FOR_INFERENCE`,
+so a test table here would be a thin descriptive result rather than a held-out
+one. Reporting the development half and saying why the test half stopped where
+it did is the more honest position, and it is the one taken.
 
 Section 5.2's item is now settled rather than pending: the D-01 selection is
 re-examined not by argument but by running the sweep on both models under a

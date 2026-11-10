@@ -335,7 +335,7 @@ blocks anything today.
 
 | | |
 |---|---|
-| **Status** | `resolved` · 11 Nov 2026 — drafted; **not adjudicated** |
+| **Status** | `resolved` · 11 Nov 2026 — drafted, then adjudicated the same day under D-30 |
 | **Decision** | Draft gold graphs for **`test-fpi-why` and `test-fpi-effects` only**. `test-cpi-effects` joins `test-cpi-why` as undraftable. Both drafted graphs carry five edges across hops 1 and 2, pass the B6 rule layer, and are written by `scripts/draft_test_gold_graphs.py` into `data/eval/gold/test`. |
 | **Why** | The feasibility audit (D-27) reported 28 variables co-occurring with `CPI_HEADLINE` and concluded there were "enough distinct partners to reach 4 edges, **if the passages assert relations**". That audit counts co-occurrence and says so. Reading the passages shows the condition fails, and fails structurally rather than marginally: in this corpus Indian headline CPI is almost always the **destination** of the oil shock, not its source. `BRENT`, `FUEL_PRICES`, `CPI_FOOD`, `CPI_CORE` and `WPI` all run *into* CPI, and an effects graph rooted at CPI cannot use an inbound edge. What survives pointing outward is CPI → `REPO_RATE` up, stated conditionally in `mint-74467ebbc52e72308935#p5` and `businessline-eb43f44f9ee97cd0dd7b#p1`, plus a possible hop-2 `REPO_RATE` → `GDP_GROWTH` whose destination the alias table does not match on the bare word "growth". One or two edges against `MIN_EDGES` of 4. |
 | **Consequence** | The test half is **two** queries, both anchored on `FPI_FLOWS`. That is below `MIN_QUERIES_FOR_INFERENCE` (10) by a factor of five, so the test half was never going to produce an inferential result and nothing is lost by its size — but it is now small enough that a test table would also be a thin *descriptive* result, and the two graphs overlap heavily because they share an anchor and cutoff. Four of five edges in each cite the same two passages. |
@@ -369,11 +369,11 @@ blocks anything today.
 
 ---
 
-### D-30 — Modality sets strength; a manner adverb inside a hedge does not lift it `[PROPOSED — both annotators must agree]`
+### D-30 — Modality sets strength; a manner adverb inside a hedge does not lift it
 
 | | |
 |---|---|
-| **Status** | `proposed` · 11 Nov 2026 — **not yet agreed**. Drafted for Deepti and Harshal to accept or replace. Nothing is rebuilt and no receipt is signed until they do. |
+| **Status** | `resolved` · 11 Nov 2026 — agreed and applied. Gold rebuilt at four edges per graph; `data/eval/gold/test/review_receipt.json` signed. |
 | **The problem** | Test adjudication (#38) agreed perfectly on which edges survive (`asserts` kappa 1.000) and on every direction, and split on **seven of eight strengths** (`strength` raw 0.125, kappa 0.000). The pre-declared direct-versus-hedged collapse does not rescue it, because that is exactly the axis of the split (`reports/adjudication_kappa_test.md`). |
 | **Proposed rule** | **Strength is read off the modality of the clause that carries the causal claim, not off the manner in which the mechanism is described.** A claim stated under a hypothetical, forecast, contingent or risk frame — "would", "could", "may", "if", "risk of" — is `conditional`, however firmly the mechanism inside that frame is worded. An adverb such as "directly", "sharply" or "substantially" describes *how* a cause is said to operate; it does not assert *that* the effect occurred. Where the source states only co-occurrence or sequence — "amid", "alongside", "after" — the label is `correlational`, as the guide's own table already says. |
 | **Why this rule and not the other reading** | The alternative is that "directly inflate the import bill" is a direct causal assertion with "would" as scene-setting. That reading makes the strength label depend on an adverb a sub-editor could delete without changing the claim, and it would collapse `conditional` into `direct` for most forecast language in this corpus — which is most of the corpus, since RBI and brokerage commentary is deliberately conditional. The guide anticipates this: *"Attribution to an economist does not remove their hedge."* |
