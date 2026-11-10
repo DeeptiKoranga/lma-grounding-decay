@@ -248,3 +248,27 @@ def test_agreement_with_the_draft_is_reported_separately_from_agreement(items, g
     assert stats["items"] == len(items)
     # Every label above says 'direct'; the draft is a mix, so this cannot be 1.0.
     assert stats["strength_match"] < 1.0
+
+
+def test_the_two_halves_do_not_share_a_report_path_or_a_gold_directory():
+    """Regression: `--sheets data/eval/gold/test/adjudication` once scored test
+    worksheets against **dev** gold and overwrote the dev report with a file
+    still titled "the dev gold graphs". Everything that differs between the
+    halves now hangs off one flag, so it cannot drift again."""
+    import importlib.util
+    from pathlib import Path
+
+    repo = Path(__file__).resolve().parents[2]
+    spec = importlib.util.spec_from_file_location(
+        "score_adjudication", repo / "scripts/score_adjudication.py"
+    )
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    sets = module.SETS
+    assert set(sets) == {"dev", "test"}
+    for key in ("queries", "gold", "sheets", "report", "title"):
+        values = [sets[half][key] for half in sets]
+        assert len(set(map(str, values))) == len(values), f"{key} is shared between halves"
+    assert "dev" in sets["dev"]["title"]
+    assert "test" in sets["test"]["title"]

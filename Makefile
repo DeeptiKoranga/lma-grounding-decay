@@ -109,7 +109,7 @@ adjudicate-test: ## Write the two blind test worksheets (keeps started ones)
 	PYTHONPATH=src $(PY) python scripts/prepare_adjudication.py --set test --annotators Deepti Harshal
 
 kappa-test: ## Score two completed test worksheets
-	PYTHONPATH=src $(PY) python scripts/score_adjudication.py --sheets data/eval/gold/test/adjudication
+	PYTHONPATH=src $(PY) python scripts/score_adjudication.py --set test
 
 rq: ## Write the RQ1/RQ2 findings from a reviewed run (needs #41, #42, #37 first)
 	PYTHONPATH=src $(PY) python scripts/report_rq.py --review-dir data/interim/support-review
