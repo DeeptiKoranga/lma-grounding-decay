@@ -328,10 +328,28 @@ revision rather than the current one.
 ### 4.8 Reviewed development scores (10 November update)
 
 Both current-v7, gold-backed development arms completed 28 graphs each and
-passed structural audit. Varun's 24 corrected prose baselines and 247 blinded
-edge judgments passed the ordinary review scorer against the signed dev gold
-set. These four-query values are **descriptive only**; the test half has not
-been scored. The primary Qwen3-8B arm remains primary under D-28.
+passed structural audit. The 24 prose corrections and 247 edge-support
+judgements behind the scores below were **produced by an AI assistant, not by
+an independent human reviewer**, and are reported as such; the provenance is
+set out below and in `reports/assistant_dev_support_review_20261110.md`. These
+four-query values are **descriptive only**; the test half has not been scored.
+The primary Qwen3-8B arm remains primary under D-28.
+
+**Provenance of the support labels, stated plainly.** The project's own
+contemporaneous record says the preparation and scoring scripts recorded all 24
+correction graphs and all 247 support labels as assistant-produced drafts, that
+no blinding or independence was claimed when they were made, and that the
+official scorer twice refused them with *"complete independent blinded review
+attestation is required"*. The labels were subsequently rebound to fresh packets
+under a human attestation, with every label preserved unchanged. Preserving the
+labels and changing the attestation does not make them human judgements, so this
+report does not describe them as blind human review. The scores are arithmetically
+reproducible from the committed packets and were recomputed independently for
+this report; what is unestablished is not the arithmetic but the judgement
+underneath it. A stratified blind human sample
+(`scripts/sample_validate_support.py`) is the declared route to saying how far
+these labels can be trusted, and until it is scored every number in this section
+is an assistant-labelled development diagnostic rather than a reviewed result.
 
 | Arm | B1 overall UER | M overall UER | M−B1 paired UER | M−B1 reference recall | H2d |
 |---|---:|---:|---:|---:|---|
@@ -465,8 +483,9 @@ Both are development diagnostics, not benchmarks.
 
 **Other review limits.** The earlier relevance-judgement comparison and safety
 screen have their own provenance and limits (Sections 4.2 and 4.6). The
-10 November prose and edge-support review is recorded separately with Varun's
-authorship and review attestations (Section 4.8).
+10 November prose and edge-support labelling was assistant-produced; its
+provenance, and the competing attestations around it, are set out in Section 4.8
+and `reports/assistant_dev_support_review_20261110.md`.
 
 **Schedule.** The blind double annotation planned for 30 October took place on 8
 November, nine days late. It was the first step of the dependency chain in
@@ -486,7 +505,8 @@ already happened and one thing that had not.
 | Done, 8 Nov | Reference review receipt signed and hash-bound, which makes the challenge set's false-alarm rate quotable (Section 4.5) |
 | Done, 8–9 Nov | Pilot decisions D-01 to D-04 locked; the two-model sensitivity check pre-registered (D-28) |
 | Done, 10 Nov | Both gold-backed development arms: 56 graphs, two complete audits |
-| Done, 10 Nov | Varun's 247 support judgements and 24 prose corrections, formally scored |
+| Done, 10 Nov | Both sweep arms run and scored; 247 assistant-produced support labels and 24 prose corrections, reported as such (Section 4.8) |
+| 11 Nov | Stratified blind human sample over those labels, to say how far they can be trusted |
 | Done, 10 Nov | Development UER, strength inflation, reference recall, sensitivity comparison and UER figure, with denominator gates |
 | Done, 10 Nov | Five-case primary-arm failure analysis; earlier clean-clone reproduction remains documented |
 | 11–12 Nov | Final report integration and remaining reproduction checks |
