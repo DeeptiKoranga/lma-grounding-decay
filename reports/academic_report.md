@@ -184,13 +184,22 @@ Twenty query–evidence pairs across four configurations, 2,035 pooled relevance
 judgements. The decision rule — take the simplest configuration within 0.03
 Recall@10 of the best — was fixed before the comparison.
 
-| Configuration | Recall@10 |
-|---|---:|
-| BM25 | 0.3518 |
-| BM25 with alias expansion | 0.3551 |
-| Hybrid (reciprocal rank fusion) | 0.4161 |
-| BGE-M3 (selected) | 0.4259 |
-| BGE-M3 with top-50 cross-encoder | 0.5296 |
+| Configuration | Recall@5 | Recall@10 | MRR@50 |
+|---|---:|---:|---:|
+| BM25 | 0.2405 | 0.3518 | 0.4555 |
+| BM25 with alias expansion | 0.2211 | 0.3551 | 0.5787 |
+| Hybrid (reciprocal rank fusion) | 0.2958 | 0.4161 | 0.6663 |
+| BGE-M3 (selected) | 0.3327 | 0.4259 | 0.6981 |
+| BGE-M3 with top-50 cross-encoder | 0.4072 | 0.5296 | 0.7101 |
+
+All three are the capability metrics the proposal asks for on the RAG row, and
+the decision rule used only Recall@10. The other two columns do not disturb the
+selection: BGE-M3 leads on Recall@5 among the unreranked configurations and on
+MRR@50, so the simplest-within-0.03 rule and the richer view agree. Alias
+expansion is the one configuration that moves in opposite directions — it buys
+MRR@50 over plain BM25 while *losing* Recall@5 — which is consistent with
+aliases pulling a few more relevant passages into the top 50 while pushing
+others out of the top 5.
 
 The 2,035 relevance judgements are single automated judgements made with prior
 exposure to results, not independent human scores. This is adequate for a
@@ -294,19 +303,43 @@ does not document.
 
 | Metric | Result |
 |---|---|
-| Tool-selection accuracy, standalone model choice, 40 states | 0.125 |
+| Next-action / tool-selection accuracy, standalone model choice, 40 states | 0.125 |
 | Argument validity (schema and unchanged cutoff) | 0.850 |
+| Unsafe-call rate (schema violation or widened cutoff), 40 states | 0.150 |
 | Investment-advice leakage, 25 adversarial prompts | 0 |
 | Own-forecast leakage, 25 prompts | 0 |
 | Post-as-of evidence use, 25 prompts | 0 |
 | Asserted labels without a verbatim span, 25 prompts | 0 |
 | Synthetic tool-fault recovery | 20 / 20 |
 
-Two qualifications. The 0.125 measures the model's standalone next-action choice
-on scripted states; the executed controller uses deterministic priority, so this
-is not the accuracy of the agent as it runs. And the safety screen was reviewed
-by an assistant rather than an independent human, which the record discloses; it
-is a descriptive screen, not certification.
+Three qualifications. The 0.125 measures the model's standalone next-action
+choice on scripted states; the executed controller uses deterministic priority,
+so this is not the accuracy of the agent as it runs. The unsafe-call rate is the
+complement of argument validity over the same 40 states and inherits its
+definition — a call is unsafe here if it breaks the tool schema or widens the
+as-of cutoff, which is the boundary the safety design rests on; it does not
+certify identifier correctness or executability. And the safety screen was
+reviewed by an assistant rather than an independent human, which the record
+discloses; it is a descriptive screen, not certification.
+
+**Three agentic metrics are properties of runs, not of scripted states.**
+Redundant-search rate, tool calls per query, and unresolved open edges at stop
+are computed from the run logs by `scripts/report_agent_metrics.py` into
+`reports/agent_metrics.md`. They are reported there rather than here because
+they describe controller behaviour under a real budget; the frozen states
+cannot produce them, since a scripted state has no history of what the run had
+already retrieved.
+
+**Path-label accuracy is not an empirical number in this design.** Table 4 asks
+for it on fixed labelled paths. A path's label is its weakest hop under
+ReCEval-style minimum aggregation, and in this system that aggregation is
+deterministic code (`schema.enums.weakest`, applied in `verify/paths.py`), not
+a model judgement: given the edge strengths, the path label follows with no
+freedom. Scoring it would measure the function, and the function is covered by
+unit tests instead. What *is* uncertain is whether the edge strengths feeding
+it are right, and that is already measured — by strength inflation in Section
+4.8 and by strict path validity in Section 4.9, which is the stricter
+end-to-end version of the same question.
 
 ### 4.7 Structural outcome by condition
 
