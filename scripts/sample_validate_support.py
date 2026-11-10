@@ -51,7 +51,10 @@ STRENGTHS = ("direct", "conditional", "correlational")
 def _load_packet(folder: Path) -> tuple[dict, dict]:
     """A prepared packet and its filled judgements."""
     packet = json.loads((folder / "packet.json").read_text(encoding="utf-8"))
-    judgments = json.loads((folder / "judgments.json").read_text(encoding="utf-8"))
+    raw = json.loads((folder / "judgments.json").read_text(encoding="utf-8"))
+    judgments = raw.get("judgments", raw)
+    if isinstance(judgments, list):
+        judgments = {row["item_id"]: row for row in judgments}
     return packet, judgments
 
 
@@ -126,6 +129,7 @@ def draw(packets: dict[str, Path], size: int, out: Path, seed: int) -> dict:
         row_id = f"v{position:03d}"
         packet, judgments = _load_packet(packets[arm])
         judgment = judgments[item_id]
+        passage = item.get("passage") or {}
         key_rows[row_id] = {
             "arm": arm,
             "item_id": item_id,
@@ -135,14 +139,20 @@ def draw(packets: dict[str, Path], size: int, out: Path, seed: int) -> dict:
         sheet_rows.append(
             {
                 "row_id": row_id,
-                "claim": item.get("claim") or item.get("relation") or "",
+                "claim": item.get("claim")
+                or item.get("relation")
+                or (
+                    f"{item.get('src_var', '')} -> {item.get('dst_var', '')} "
+                    f"({item.get('direction', '')})"
+                ),
                 "src_var": item.get("src_var", ""),
                 "dst_var": item.get("dst_var", ""),
                 "direction": item.get("direction", ""),
                 "as_of": item.get("as_of", ""),
-                "published": item.get("published", ""),
-                "passage_id": item.get("passage_id", ""),
+                "published": item.get("published") or passage.get("published_at", ""),
+                "passage_id": item.get("passage_id") or passage.get("passage_id", ""),
                 "evidence_span": item.get("evidence_span") or item.get("span") or "",
+                "passage_text": passage.get("text", ""),
                 **dict.fromkeys(BLANK_COLUMNS, ""),
             }
         )
