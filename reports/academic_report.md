@@ -408,9 +408,12 @@ three times under the pinned primary model and retriever, changing only the
 sampling seed across repeats. The proposed link sets varied, but all three
 established the same two links with byte-identical evidence, matching the
 greedy run. Reusing the greedy run's assistant-produced support labels for
-those exact links gives UER 0.500 in each repeat. This supports stability of
-the established set for **one query at three seeds**, not stability of the
-M-minus-B1 comparison across queries. Full counts and measured time are in
+those exact links gives UER 0.500 in each repeat. That reuse is an identity
+match on existing labels, not a fresh support review, so the figure inherits
+the provenance above — though these are primary-arm labels, the half of the
+sample on which the blind human check found no disagreement. This supports
+stability of the established set for **one query at three seeds**, not
+stability of the M-minus-B1 comparison across queries. Full counts and measured time are in
 `reports/stability_check_20261110.md`.
 
 ![Figure 2. Assistant-labelled primary-arm UER by hop for B1 and M; labels show queries with denominators out of four.](figures/uer_by_hop.png)
