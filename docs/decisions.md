@@ -369,6 +369,23 @@ blocks anything today.
 
 ---
 
+### D-30 — Modality sets strength; a manner adverb inside a hedge does not lift it `[PROPOSED — both annotators must agree]`
+
+| | |
+|---|---|
+| **Status** | `proposed` · 11 Nov 2026 — **not yet agreed**. Drafted for Deepti and Harshal to accept or replace. Nothing is rebuilt and no receipt is signed until they do. |
+| **The problem** | Test adjudication (#38) agreed perfectly on which edges survive (`asserts` kappa 1.000) and on every direction, and split on **seven of eight strengths** (`strength` raw 0.125, kappa 0.000). The pre-declared direct-versus-hedged collapse does not rescue it, because that is exactly the axis of the split (`reports/adjudication_kappa_test.md`). |
+| **Proposed rule** | **Strength is read off the modality of the clause that carries the causal claim, not off the manner in which the mechanism is described.** A claim stated under a hypothetical, forecast, contingent or risk frame — "would", "could", "may", "if", "risk of" — is `conditional`, however firmly the mechanism inside that frame is worded. An adverb such as "directly", "sharply" or "substantially" describes *how* a cause is said to operate; it does not assert *that* the effect occurred. Where the source states only co-occurrence or sequence — "amid", "alongside", "after" — the label is `correlational`, as the guide's own table already says. |
+| **Why this rule and not the other reading** | The alternative is that "directly inflate the import bill" is a direct causal assertion with "would" as scene-setting. That reading makes the strength label depend on an adverb a sub-editor could delete without changing the claim, and it would collapse `conditional` into `direct` for most forecast language in this corpus — which is most of the corpus, since RBI and brokerage commentary is deliberately conditional. The guide anticipates this: *"Attribution to an economist does not remove their hedge."* |
+| **Provenance of the rule** | `docs/annotation_guide.md` is dated **23 October 2026**, before any gold drafting. Its strength table already lists "could, may, if" under conditional and "amid, alongside, after" under correlational. This rule is an application of that table to a case it did not spell out, not a new standard invented after seeing the disagreement. |
+| **What it decides** | All eight kept edges take the hedged reading on seven of them. `a75831a92a` (`FPI_FLOWS -> INR_USD`, *"the rupee is under pressure **as** ... dollar outflows **on account of** FPI selling ... continuing"*) stays `direct`: the pressure is asserted as occurring, not forecast. `7870e25658` (*"**amid** ... FPI-related outflows"*) is `correlational`. The six edges off *"A sustained depreciation in the rupee **would** directly inflate the import bill, widen both the current account deficit and fiscal deficit"* are `conditional`. |
+| **Consequence** | Two edges drop — both `FPI_FLOWS -> GSEC_10Y`, which both annotators rejected independently. Each graph falls from five edges to **four**, which is exactly `MIN_EDGES`; both survive with nothing to spare. |
+| **An honest caution** | Under this rule the adjudicated strengths come out **identical to the machine draft's**. That is not evidence the rule is right, and it would be a bad reason to adopt it. The rule's justification is the guide's table and its date; the agreement with the draft is a coincidence worth stating rather than a result worth citing. It does mean the draft's strength cues happened to track modality on these eight spans, which the dev set's experience suggests will not generalise. |
+| **If the annotators disagree with it** | Replace it. The requirement is one written rule applied to all seven, recorded here, not this particular rule. What cannot happen is settling the seven edge by edge, which is how a reconciliation becomes unauditable. |
+| **Revisit if** | The same split appears on a later set. A second occurrence would mean the guide's strength table needs the rule written into it directly rather than derived each time. |
+
+---
+
 ## Deferred past 30 October — revised 29 Oct for a 15 November final
 
 The original list was written against a four-week run-out. The final submission
