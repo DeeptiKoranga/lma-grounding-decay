@@ -331,8 +331,9 @@ Both current-v7, gold-backed development arms completed 28 graphs each and
 passed structural audit. The 24 prose corrections and 247 edge-support
 judgements behind the scores below were **produced by an AI assistant, not by
 an independent human reviewer**, and are reported as such; the provenance is
-set out below and in `reports/assistant_dev_support_review_20261110.md`. These
-four-query values are **descriptive only**; the test half has not been scored.
+set out below and in `reports/assistant_dev_support_review_20261110.md`, and a
+blind human sample over them is scored further down. These four-query values
+are **descriptive only**; the test half has not been scored.
 The primary Qwen3-8B arm remains primary under D-28.
 
 **Provenance of the support labels, stated plainly.** The project's own
@@ -346,12 +347,48 @@ labels and changing the attestation does not make them human judgements, so this
 report does not describe them as blind human review. The scores are arithmetically
 reproducible from the committed packets and were recomputed independently for
 this report; what is unestablished is not the arithmetic but the judgement
-underneath it. A stratified blind human sample of 40 items has now been scored
-(`reports/support_sample_validation.md`). Thirteen had no attached evidence;
-on the 27 informative rows, the reviewer agreed with the existing labels on
-21 (77.8%). All six disagreements were in the sensitivity arm. This measures
-sample agreement; it does not turn the remaining labels into human judgements.
-Every number in this section remains an assistant-labelled development diagnostic.
+underneath it.
+
+**How far the labels survive a human sample.** A stratified blind sample of 40
+of the 247 labels was drawn across arm and the assistant's own label, annotated
+by one author who did not hold the key and did not produce the labels, and
+scored with `scripts/sample_validate_support.py`
+(`reports/support_sample_validation.md`). Thirteen of the 40 rows carried no
+evidence span, so the only verdict available on the sheet was *unsupported* and
+agreement on them is agreement by construction; they are excluded from the
+figures below and reported separately.
+
+| measure, informative rows only | value |
+|---|---:|
+| informative rows | 27 of 40 |
+| claims the human rejected | 14 of 27 |
+| raw agreement | 0.778 |
+| chance agreement | 0.495 |
+| Cohen's kappa | 0.560 (95% CI 0.249 to 0.870) |
+| disagreements | 6 of 27 |
+
+**Every disagreement falls in the sensitivity arm.** On the primary arm the
+human and the assistant agreed on all 10 informative rows; on the sensitivity
+arm they agreed on 11 of 17 (0.647). Because D-28 makes the primary arm the
+source of every headline number, the figures in the table below rest on the
+better-agreeing half of the sample. That is the favourable reading and it is
+reported with its limit: ten rows cannot establish reliability, the per-arm
+label balance is not in the generated report, and this project's own annotation
+guide holds that a near-constant-label comparison must not be presented as
+perfect reliability. The honest claim is that the sample surfaced no primary-arm
+disagreement, not that the primary-arm labels are correct.
+
+**The disagreements have a direction, and it matters for UER.** Five of the six
+are the assistant crediting support that the human rejected; one is the
+reverse. An over-credited edge is counted as supported and so leaves the UER
+numerator, which means a label set biased this way *understates* UER. The
+sensitivity arm's UER could be understated if that pattern extends beyond the
+sample. This sample cannot establish a numerical correction or bound for
+either arm.
+
+This sample measures one human against the assistant on 27 judgements. It does
+not convert the other labels into human ones, and every number in this
+section remains an assistant-labelled development diagnostic.
 
 | Arm | B1 overall UER | M overall UER | M−B1 paired UER | M−B1 reference recall | H2d |
 |---|---:|---:|---:|---:|---|
@@ -571,16 +608,18 @@ already happened and one thing that had not.
 | Done, 8–9 Nov | Pilot decisions D-01 to D-04 locked; the two-model sensitivity check pre-registered (D-28) |
 | Done, 10 Nov | Both gold-backed development arms: 56 graphs, two complete audits |
 | Done, 10 Nov | Both sweep arms run and scored; 247 assistant-produced support labels and 24 prose corrections, reported as such (Section 4.8) |
-| 11 Nov | Stratified blind human sample over those labels, to say how far they can be trusted |
+| Done, 10 Nov | Stratified blind human sample over those labels: 27 informative rows, raw agreement 0.778, kappa 0.560, every disagreement in the sensitivity arm (Section 4.8) |
 | Done, 10 Nov | Development UER, strength inflation, reference recall, sensitivity comparison and UER figure, with denominator gates |
 | Done, 10 Nov | Five-case primary-arm failure analysis; earlier clean-clone reproduction remains documented |
 | 11–12 Nov | Final report integration and remaining reproduction checks |
 | At risk | The test half. No test gold graph exists yet; D-27 rescoped its annotation from a number that was never reachable, and the feasibility audit cut it from four queries to three |
 
-Both development sweeps are run and scored. What is not complete is the
-judgement they rest on: the 247 support labels are assistant-produced, and a
-stratified blind human sample over them is outstanding (Section 4.8). The
-test-set annotation and frozen test run remain separate work.
+Both development sweeps are run and scored, and the judgement they rest on has
+now been sampled: the 247 support labels remain assistant-produced, but a blind
+human sample of 40 of them has been annotated and scored, and it surfaced no
+disagreement on the primary arm that supplies the headline numbers (Section
+4.8). What the sample cannot do is convert the remaining 220 labels into human
+ones. The test-set annotation and frozen test run remain separate work.
 
 **The test half is three queries, not four, and is the item most likely not to
 land.** `data/eval/gold/` holds `dev` only, so the test graphs have to be
@@ -612,8 +651,12 @@ We have built and tested the apparatus for measuring how evidential support and
 causal strength change hop by hop in LLM explanations of real financial news.
 Both development arms have scored support labels, though those labels are
 assistant-produced rather than independently human-reviewed, and are reported as
-such. On them, the primary arm's M-minus-B1 UER difference is −0.167 over three
-usable query pairs and the sensitivity arm's is −0.100 over two. Neither arm meets the predeclared hop-bucket gate
+such. A blind human sample of 40 of them agrees with the assistant on 0.778 of
+the 27 informative rows (kappa 0.560), with every disagreement falling in the
+sensitivity arm and five of six in the direction that flatters the labels — so
+the sensitivity arm's error rates read as a floor. On them, the primary arm's
+M-minus-B1 UER difference is −0.167 over three usable query pairs and the
+sensitivity arm's is −0.100 over two. Neither arm meets the predeclared hop-bucket gate
 for an H1 trend claim, and four development queries cannot support inference.
 The held-out test measurement remains outstanding.
 
