@@ -1,0 +1,131 @@
+{
+  "query_id": "test-fpi-effects",
+  "anchor": {
+    "var": "FPI_FLOWS",
+    "direction": "down",
+    "event": "Net FPI flows of -13,600 USD million for March",
+    "event_date": "2026-03-31",
+    "confirmed_by_series": true,
+    "series_id": "fpi_flows_usd_mn"
+  },
+  "as_of": "2026-04-20",
+  "nodes": [
+    {
+      "var": "CURRENT_ACCOUNT_DEFICIT",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "FISCAL_DEFICIT",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "FPI_FLOWS",
+      "direction": "down",
+      "is_anchor": true,
+      "confirmed_by_series": true,
+      "series_id": "fpi_flows_usd_mn"
+    },
+    {
+      "var": "GSEC_10Y",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "IMPORT_BILL",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "INR_USD",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "te1",
+      "src_var": "FPI_FLOWS",
+      "dst_var": "INR_USD",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "correlational",
+      "hop": 1,
+      "evidence_span": "The rupee closed at a new low of 94.8125 per US Dollar, down about 84 paise against the previous close of 93.9775, amid rising global energy prices, FPI-related outflows from domestic equity markets and a strengthening Dollar",
+      "evidence_doc_id": "businessline-6a0ed15b9a4761115dc7",
+      "evidence_passage_id": "businessline-6a0ed15b9a4761115dc7#p1",
+      "evidence_published_at": "2026-03-27T20:35:36+05:30",
+      "candidate_evidence": [],
+      "note": "'amid' lists three conditions and asserts no mechanism. Drafted correlational on the annotation guide's own reading of 'amid'."
+    },
+    {
+      "edge_id": "te2",
+      "src_var": "FPI_FLOWS",
+      "dst_var": "GSEC_10Y",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "correlational",
+      "hop": 1,
+      "evidence_span": "In March alone, FPIs sold ₹17,686 crore worth of debt-the largest monthly outflow of the year-amid deteriorating sentiment as the rupee weakened to record lows against the backdrop of the West Asia conflict. The rupee has declined over 11% in this fiscal year, while bond yields have risen 55 basis points",
+      "evidence_doc_id": "economic_times-4c6452cd1b5bf09a76c7",
+      "evidence_passage_id": "economic_times-4c6452cd1b5bf09a76c7#p4",
+      "evidence_published_at": "2026-04-01T06:01:00+05:30",
+      "candidate_evidence": [],
+      "note": "Same span as tw2 in a different query graph, which D-26 settled is legitimate. Judge it independently."
+    },
+    {
+      "edge_id": "te3",
+      "src_var": "INR_USD",
+      "dst_var": "IMPORT_BILL",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "conditional",
+      "hop": 2,
+      "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill",
+      "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6",
+      "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5",
+      "evidence_published_at": "2026-03-05T09:53:00+05:30",
+      "candidate_evidence": [],
+      "note": "Hypothetical ('would'), so drafted conditional."
+    },
+    {
+      "edge_id": "te4",
+      "src_var": "INR_USD",
+      "dst_var": "CURRENT_ACCOUNT_DEFICIT",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "conditional",
+      "hop": 2,
+      "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill, widen both the current account deficit",
+      "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6",
+      "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5",
+      "evidence_published_at": "2026-03-05T09:53:00+05:30",
+      "candidate_evidence": [],
+      "note": "Hypothetical ('would'), so drafted conditional."
+    },
+    {
+      "edge_id": "te5",
+      "src_var": "INR_USD",
+      "dst_var": "FISCAL_DEFICIT",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "conditional",
+      "hop": 2,
+      "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill, widen both the current account deficit and fiscal deficit",
+      "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6",
+      "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5",
+      "evidence_published_at": "2026-03-05T09:53:00+05:30",
+      "candidate_evidence": [],
+      "note": "Shared verb across two deficits; see tw5."
+    }
+  ],
+  "paths": [],
+  "schema_version": "1.0.0",
+  "notes": "DRAFT, NOT ADJUDICATED. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_test_gold_graphs.py and each edge passes the B6 rule layer: the span is verbatim in the cited passage, the passage is in the frozen corpus, it was published on or before the query cutoff, and both variables are named in it or in D-17's preceding window. None of that establishes support. No annotator has read these spans, there is no review receipt, and nothing here may be scored as a reference graph until two annotators have labelled every edge independently and blind under D-26 and signed a receipt. Two of the four test queries carry no graph at all: test-cpi-why by D-27, and test-cpi-effects because the corpus runs the wrong way through it."
+}

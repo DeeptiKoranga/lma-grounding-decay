@@ -88,6 +88,26 @@ adjudicate: ## Write the two blind adjudication worksheets (keeps started ones)
 kappa: ## Score two completed worksheets -> reports/adjudication_kappa.md
 	PYTHONPATH=src $(PY) python scripts/score_adjudication.py
 
+# The test half (#38). Two of its four queries carry no graph: test-cpi-why by
+# D-27, and test-cpi-effects because this corpus treats Indian headline CPI as
+# the destination of the oil shock rather than its source. The drafts are NOT
+# adjudicated and must not be scored with --references until two annotators
+# have read every span and signed a receipt.
+.PHONY: test-gold test-gold-feasibility adjudicate-test kappa-test
+
+test-gold-feasibility: ## Which test queries could carry gold at all, before anyone drafts
+	PYTHONPATH=src $(PY) python scripts/audit_test_gold_feasibility.py
+
+test-gold: ## Draft the test gold graphs and check every span against the corpus
+	PYTHONPATH=src $(PY) python scripts/draft_test_gold_graphs.py
+	PYTHONPATH=src $(PY) python scripts/draft_test_gold_graphs.py --check
+
+adjudicate-test: ## Write the two blind test worksheets (keeps started ones)
+	PYTHONPATH=src $(PY) python scripts/prepare_adjudication.py --set test --annotators Deepti Harshal
+
+kappa-test: ## Score two completed test worksheets
+	PYTHONPATH=src $(PY) python scripts/score_adjudication.py --sheets data/eval/gold/test/adjudication
+
 rq: ## Write the RQ1/RQ2 findings from a reviewed run (needs #41, #42, #37 first)
 	PYTHONPATH=src $(PY) python scripts/report_rq.py --review-dir data/interim/support-review
 

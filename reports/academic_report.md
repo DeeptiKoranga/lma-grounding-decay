@@ -618,7 +618,8 @@ already happened and one thing that had not.
 | Done, 10 Nov | Development UER, strength inflation, reference recall, sensitivity comparison and UER figure, with denominator gates |
 | Done, 10 Nov | Five-case primary-arm failure analysis; earlier clean-clone reproduction remains documented |
 | 11–12 Nov | Final report integration and remaining reproduction checks |
-| At risk | The test half. No test gold graph exists yet; D-27 rescoped its annotation from a number that was never reachable, and the feasibility audit cut it from four queries to three |
+| Done, 10 Nov | Test gold **drafted** for two queries, rule-checked and marked unadjudicated; reading cut the half from three queries to two (D-27a) |
+| At risk | Adjudicating that test half, and any test score at all. Two blind annotators and a signed receipt are the precondition, and two queries sit far below the inference gate in any case |
 
 Both development sweeps are run and scored, and the judgement they rest on has
 now been sampled: the 247 support labels remain assistant-produced, but a blind
@@ -627,22 +628,42 @@ disagreement on the primary arm that supplies the headline numbers (Section
 4.8). What the sample cannot do is convert the remaining 220 labels into human
 ones. The test-set annotation and frozen test run remain separate work.
 
-**The test half is three queries, not four, and is the item most likely not to
-land.** `data/eval/gold/` holds `dev` only, so the test graphs have to be
-drafted before they can be adjudicated. A reachability audit run before that
-drafting (`reports/test_gold_feasibility.md`) finds three of the four queries
-feasible and one not: `test-cpi-why` asks why inflation was *raising
+**The test half is two queries, not four.** Gold graphs are now drafted for
+`test-fpi-why` and `test-fpi-effects` — five edges each across hops 1 and 2,
+every span sliced verbatim from the corpus and passed through the rule layer,
+and both files marked `DRAFT, NOT ADJUDICATED` because no annotator has read
+them. The third query the feasibility audit called feasible did not survive
+reading. The audit counted variables co-occurring with `CPI_HEADLINE` and said
+plainly that it was counting co-occurrence; the passages show the condition
+failing structurally, because in this corpus Indian headline CPI is the
+*destination* of the oil shock rather than its source. `BRENT`,
+`FUEL_PRICES`, `CPI_FOOD`, `CPI_CORE` and `WPI` all run into CPI, and an
+effects graph rooted at CPI cannot use an inbound edge; what points outward is
+CPI to the repo rate, conditionally, and little else (D-27a). Two queries sit
+five times below `MIN_QUERIES_FOR_INFERENCE`, so no test figure here could ever
+have been inferential, and scoring against these drafts stays refused until two
+annotators have labelled every edge blind and signed a receipt.
+
+**The query the audit also ruled out.** A reachability audit run before any
+drafting (`reports/test_gold_feasibility.md`) had already excluded
+`test-cpi-why` on cheaper evidence. That query asks why inflation was *raising
 expectations of RBI tightening*, so its graph must reach
 `RATE_HIKE_EXPECTATIONS`, and on or before its as-of date exactly one passage
 in the corpus pairs that variable with headline CPI. That passage belongs to a
 Federal Reserve article rather than Indian coverage, and it runs the wrong way
 — markets reducing rate-hike expectations after a *softer* CPI print, against
-an anchor of CPI rising. The query cannot be answered from this corpus as
-written, and widening the alias table would not change that, because the
-variable is named in 33 passages and simply never beside headline CPI in Indian
-coverage. If the remaining test half does not land in time, the study reports
-development results only and says so, rather than presenting a partial test set
-as a held-out result.
+an anchor of CPI rising. Widening the alias table would not change that,
+because the variable is named in 33 passages and simply never beside headline
+CPI in Indian coverage. The two exclusions were found by different means, and
+the order matters: the audit is cheap and settled one query before anyone read
+a passage, while the other needed reading. Reporting both is what makes the
+test half's size a measurement rather than a shortfall.
+
+**What the study therefore reports.** Development results only, and it says so
+rather than presenting an unadjudicated two-query set as a held-out result. The
+drafted graphs are committed so that the adjudication step is cheap for whoever
+picks it up, and `--references` against `data/eval/gold/test` stays refused
+until a receipt exists.
 
 Section 5.2's item is now settled rather than pending: the D-01 selection is
 re-examined not by argument but by running the sweep on both models under a
