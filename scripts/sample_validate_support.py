@@ -298,14 +298,28 @@ def score(folder: Path, report: Path | None) -> str:
     lines += [
         "## By arm",
         "",
-        "| arm | informative items | informative disagreements | informative raw agreement |",
-        "|---|---:|---:|---:|",
+        "| arm | informative items | assistant yes / no | human yes / no | informative disagreements | informative raw agreement |",
+        "|---|---:|---:|---:|---:|---:|",
     ]
     for arm in sorted(by_arm):
         ids = [r for r in by_arm[arm] if r in informative_ids]
         bad = [r for r in ids if human_labels[r] != assistant_labels[r]]
         rate = f"{1 - len(bad) / len(ids):.3f}" if ids else "n/a"
-        lines.append(f"| {arm} | {len(ids)} | {len(bad)} | {rate} |")
+        ay = sum(assistant_labels[r] == "yes" for r in ids)
+        hy = sum(human_labels[r] == "yes" for r in ids)
+        lines.append(
+            f"| {arm} | {len(ids)} | {ay} / {len(ids) - ay} | {hy} / {len(ids) - hy} | {len(bad)} | {rate} |"
+        )
+    lines.append("")
+    lines += [
+        "## All drawn rows, including rows without evidence",
+        "",
+        "| arm | assistant yes | assistant no |",
+        "|---|---:|---:|",
+    ]
+    for arm, ids in sorted(by_arm.items()):
+        yes = sum(assistant_labels[r] == "yes" for r in ids)
+        lines.append(f"| {arm} | {yes} | {len(ids) - yes} |")
     lines.append("")
 
     if disagreements:

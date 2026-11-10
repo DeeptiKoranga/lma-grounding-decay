@@ -103,4 +103,5 @@ def test_score_leads_with_informative_denominator(tmp_path):
     assert "| informative raw agreement | 0.500 |" in report
     assert "| all-row raw agreement (includes 1 no-evidence rows) | 0.667 |" in report
     assert "Worksheet SHA-256:" in report
+    assert "| primary | 1 | 1 / 0 | 0 / 1 | 1 | 0.000 |" in report
     assert "EVIDENCE_SECRET" not in report
