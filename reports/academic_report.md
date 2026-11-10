@@ -325,7 +325,7 @@ revision rather than the current one.
 | A-NoLoop | 6 | 35 | 0 | 5 |
 | M | 6 | 35 | 8 | 18 |
 
-### 4.8 Reviewed development scores (10 November update)
+### 4.8 Assistant-labelled development scores (10–11 November update)
 
 Both current-v7, gold-backed development arms completed 28 graphs each and
 passed structural audit. The 24 prose corrections and 247 edge-support
@@ -382,12 +382,12 @@ disagreement, not that the primary-arm labels are correct.
 are the assistant crediting support that the human rejected; one is the
 reverse. An over-credited edge is counted as supported and so leaves the UER
 numerator, which means a label set biased this way *understates* UER. The
-sensitivity arm's UER figures below should therefore be read as a floor rather
-than an estimate. The primary arm, with no sampled disagreement, carries no
-such correction.
+sensitivity arm's UER could be understated if that pattern extends beyond the
+sample. This sample cannot establish a numerical correction or bound for
+either arm.
 
 This sample measures one human against the assistant on 27 judgements. It does
-not convert the remaining 220 labels into human ones, and every number in this
+not convert the other labels into human ones, and every number in this
 section remains an assistant-labelled development diagnostic.
 
 | Arm | B1 overall UER | M overall UER | M−B1 paired UER | M−B1 reference recall | H2d |
@@ -403,7 +403,17 @@ queries; reference-edge recall remains near zero. Missing denominators are
 reported as N/A rather than as zero error. Full per-hop strength inflation,
 recall, query counts and guard interpretation are in the RQ reports.
 
-![Figure 2. Reviewed primary-arm UER by hop for B1 and M; labels show queries with denominators out of four.](figures/uer_by_hop.png)
+A predeclared one-query repeated-sampling check ran M on `dev-oil-effects`
+three times under the pinned primary model and retriever, changing only the
+sampling seed across repeats. The proposed link sets varied, but all three
+established the same two links with byte-identical evidence, matching the
+greedy run. Reusing the greedy run's assistant-produced support labels for
+those exact links gives UER 0.500 in each repeat. This supports stability of
+the established set for **one query at three seeds**, not stability of the
+M-minus-B1 comparison across queries. Full counts and measured time are in
+`reports/stability_check_20261110.md`.
+
+![Figure 2. Assistant-labelled primary-arm UER by hop for B1 and M; labels show queries with denominators out of four.](figures/uer_by_hop.png)
 
 ### 4.9 The ablations, H2c, and the two secondary metrics nobody had printed
 
@@ -617,8 +627,9 @@ already happened and one thing that had not.
 | Done, 10 Nov | Stratified blind human sample over those labels: 27 informative rows, raw agreement 0.778, kappa 0.560, every disagreement in the sensitivity arm (Section 4.8) |
 | Done, 10 Nov | Development UER, strength inflation, reference recall, sensitivity comparison and UER figure, with denominator gates |
 | Done, 10 Nov | Five-case primary-arm failure analysis; earlier clean-clone reproduction remains documented |
+| Done, 11 Nov | Repeated-sampling stability check: three seeds on `dev-oil-effects` under M; the established set and its UER of 0.500 identical across repeats, the proposal stage visibly stochastic (`reports/stability_check_20261110.md`) |
+| Done, 11 Nov | Test gold **drafted** for two queries, rule-checked and marked unadjudicated; reading cut the half from three queries to two (D-27a) |
 | 11–12 Nov | Final report integration and remaining reproduction checks |
-| Done, 10 Nov | Test gold **drafted** for two queries, rule-checked and marked unadjudicated; reading cut the half from three queries to two (D-27a) |
 | At risk | Adjudicating that test half, and any test score at all. Two blind annotators and a signed receipt are the precondition, and two queries sit far below the inference gate in any case |
 
 Both development sweeps are run and scored, and the judgement they rest on has

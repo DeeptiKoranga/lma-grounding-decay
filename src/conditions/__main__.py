@@ -79,6 +79,8 @@ def main():
     )
     parser.add_argument("--model")
     parser.add_argument("--revision")
+    parser.add_argument("--sampling-temperature", type=float, default=0.0)
+    parser.add_argument("--sampling-seed", type=int)
     parser.add_argument("--base-url")
     parser.add_argument("--allow-remote", action="store_true")
     parser.add_argument(
@@ -125,6 +127,10 @@ def main():
     args.model_path = args.model_path or Path("data/raw/generator/qwen3-8b-4bit")
     if args.chat_template_kwargs is not None and not isinstance(args.chat_template_kwargs, dict):
         parser.error("--chat-template-kwargs must be a JSON object")
+    if not 0 <= args.sampling_temperature <= 2:
+        parser.error("--sampling-temperature must be between 0 and 2")
+    if args.backend != "mlx" and (args.sampling_temperature or args.sampling_seed is not None):
+        parser.error("sampling options currently require the MLX backend")
     chat_settings = args.chat_template_kwargs
     if chat_settings is None and args.backend == "vllm":
         chat_settings = {"enable_thinking": False}
@@ -175,6 +181,8 @@ def main():
         "aliases_sha256": digest(args.aliases),
         "model": args.model,
         "revision": args.revision,
+        "sampling_temperature": args.sampling_temperature,
+        "sampling_seed": args.sampling_seed,
         "backend": args.backend,
         "local_model_files": model_identity(args.model_path) if args.backend == "mlx" else None,
         "base_url": args.base_url,
@@ -237,7 +245,17 @@ def main():
     if not pending:
         return
     if args.backend == "mlx":
-        generator = MLXGenerator(args.model_path, model_id=args.model, revision=args.revision)
+        sampling_options = (
+            {"sampling_temperature": args.sampling_temperature, "sampling_seed": args.sampling_seed}
+            if args.sampling_temperature or args.sampling_seed is not None
+            else {}
+        )
+        generator = MLXGenerator(
+            args.model_path,
+            model_id=args.model,
+            revision=args.revision,
+            **sampling_options,
+        )
     elif args.backend == "claude":
         generator = AnthropicGenerator(model=args.model, revision=args.revision)
     else:

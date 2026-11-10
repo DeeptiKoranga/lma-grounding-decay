@@ -81,7 +81,13 @@ class Pipeline:
         if retriever is None:
             raise ValueError("B1-R requires the same first stage plus a configured reranker")
         started = time.monotonic()
-        logger = RunLogger(log_path, run_id=run_id, query_id=query.query_id, condition=condition)
+        logger = RunLogger(
+            log_path,
+            run_id=run_id,
+            query_id=query.query_id,
+            condition=condition,
+            temperature=getattr(self.generator, "sampling_temperature", 0.0),
+        )
         graph = rebuild(
             query_id=query.query_id,
             anchor=query.anchor,

@@ -352,3 +352,13 @@ This completes local software reproduction, not independent edge support,
 reviewed UER/recall, model selection or an all-machine check. Detailed source,
 stage, input, graph and log hashes:
 `reports/fresh_checkout_reproduction_20261028.json`.
+
+## 10 November repeated-sampling stability check (#61)
+
+Three additional M runs on `dev-oil-effects` used the pinned primary model and
+selected v7 retriever, with temperature 0.7 and separate seeds 1101–1103.
+They produced three complete graphs with 12 model calls, 19,809 prompt tokens,
+2,982 completion tokens, 36 tool calls and **287.46 measured model-call wall
+seconds** (97.72, 89.94 and 99.80 seconds by seed). These times exclude model
+loading, retrieval and idle time. See `reports/stability_check_20261110.md` for
+the edge-set comparison and artifact hashes.

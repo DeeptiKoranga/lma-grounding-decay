@@ -163,7 +163,7 @@ def uer_figure(reviewed: dict, output: Path):
             xticklabels=["Hop 1", "Hop 2", "Hop 3+"],
             ylabel="Unsupported established-edge rate",
             ylim=(0, 1.12),
-            title="Reviewed development results — directional only",
+            title="Development results — directional only",
         )
         ax.set_yticks([i / 5 for i in range(6)])
         ax.yaxis.set_major_formatter(PercentFormatter(1))

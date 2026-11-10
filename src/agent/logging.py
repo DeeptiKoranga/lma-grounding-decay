@@ -10,10 +10,13 @@ from schema import parse_run_log_line
 
 
 class RunLogger:
-    def __init__(self, path: Path, *, run_id: str, query_id: str, condition: str):
+    def __init__(
+        self, path: Path, *, run_id: str, query_id: str, condition: str, temperature: float = 0.0
+    ):
         path.parent.mkdir(parents=True, exist_ok=True)
         self.stream = path.open("x", encoding="utf-8")
         self.context = {"run_id": run_id, "query_id": query_id, "condition": condition}
+        self.temperature = temperature
         self.step = 0
 
     def write(self, event: str, **fields):
@@ -29,7 +32,7 @@ class RunLogger:
             purpose=purpose,
             model=completion.model,
             backend=completion.backend,
-            temperature=0,
+            temperature=self.temperature,
             prompt=prompt,
             prompt_sha256=hashlib.sha256(prompt.encode()).hexdigest(),
             completion=completion.text,
