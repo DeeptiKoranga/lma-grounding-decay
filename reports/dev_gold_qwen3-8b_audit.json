@@ -1,0 +1,641 @@
+{
+  "status": "development integration audit; no human support scores",
+  "passed": true,
+  "complete": true,
+  "allow_partial": false,
+  "expected_graphs": 28,
+  "completed_graphs": 28,
+  "conditions": {
+    "A-NoLoop": 4,
+    "A-NoVerify": 4,
+    "B0": 4,
+    "B1": 4,
+    "B1-R": 4,
+    "B2": 4,
+    "M": 4
+  },
+  "failures": [],
+  "graphs": [
+    {
+      "query_id": "dev-oil-effects",
+      "condition": "A-NoLoop",
+      "edges": 6,
+      "established_edges": 0,
+      "paths": 3,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 1,
+      "verifier_verdicts": {
+        "unsupported": 5
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "0924b7b1b88d8378cf36f47a69926417d96b01d978eda6936e09a2ad4e0febff"
+    },
+    {
+      "query_id": "dev-oil-why",
+      "condition": "A-NoLoop",
+      "edges": 6,
+      "established_edges": 1,
+      "paths": 4,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 1,
+      "verifier_verdicts": {
+        "unsupported": 4,
+        "supported": 1
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "c8ea30c46fa2c544ca1e18e79085b5dbf35be0e236ffe30fa946ea564903b1b6"
+    },
+    {
+      "query_id": "dev-rupee-effects",
+      "condition": "A-NoLoop",
+      "edges": 6,
+      "established_edges": 0,
+      "paths": 6,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 1,
+      "verifier_verdicts": {
+        "unsupported": 5
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "c719035a68efee4a7d0bba365cc90310b5b848157be4ea5a3cf308f62d9edb59"
+    },
+    {
+      "query_id": "dev-rupee-why",
+      "condition": "A-NoLoop",
+      "edges": 6,
+      "established_edges": 0,
+      "paths": 2,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 1,
+      "verifier_verdicts": {
+        "unsupported": 5
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "04be9155155febc845cfab2caaaabbbe682268a9ca2d6739da040d446aa39380"
+    },
+    {
+      "query_id": "dev-oil-effects",
+      "condition": "A-NoVerify",
+      "edges": 4,
+      "established_edges": 4,
+      "paths": 1,
+      "tool_calls": 7,
+      "stop_reason": "two_searches_added_nothing",
+      "unchecked_inferred_edges": 3,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "f15410992c8cfae7621bfad6d5874063baa42bb0273987af510d11197df92243"
+    },
+    {
+      "query_id": "dev-oil-why",
+      "condition": "A-NoVerify",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 4,
+      "tool_calls": 10,
+      "stop_reason": "two_searches_added_nothing",
+      "unchecked_inferred_edges": 4,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "33ae441e3c1795da47b105d8cffeaec8531e93a990e85f8bb102e29dcd83f31b"
+    },
+    {
+      "query_id": "dev-rupee-effects",
+      "condition": "A-NoVerify",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 6,
+      "tool_calls": 3,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "ead62c5baeed8c723e71918e7571964181d08648ace86ed4bc461962b2600e70"
+    },
+    {
+      "query_id": "dev-rupee-why",
+      "condition": "A-NoVerify",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 2,
+      "tool_calls": 4,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [
+          {
+            "edge_id": "edge-2",
+            "kind": "nonverbatim_span"
+          }
+        ],
+        "passed": false,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "d93afaf911b9afd271868c0c5180cc670f6529c93624f88753130b85d11be1be"
+    },
+    {
+      "query_id": "dev-oil-effects",
+      "condition": "B0",
+      "edges": 5,
+      "established_edges": 3,
+      "paths": 2,
+      "tool_calls": 1,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 5,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "a1ec8d7a8b7f2a195d0b054e387f757103384f91afe828f651e96f123d94f7d3"
+    },
+    {
+      "query_id": "dev-oil-why",
+      "condition": "B0",
+      "edges": 6,
+      "established_edges": 4,
+      "paths": 3,
+      "tool_calls": 1,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 6,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "f0f8a63b2aca8a0ab3981dae2e35fa69c0ec502e8fed7f6ab234353cfd2f0f25"
+    },
+    {
+      "query_id": "dev-rupee-effects",
+      "condition": "B0",
+      "edges": 6,
+      "established_edges": 0,
+      "paths": 6,
+      "tool_calls": 1,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 6,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "a283f37e85ccc6b5866b0e8fb3b37865efa5c4b279d0f186565ff6cb99015f05"
+    },
+    {
+      "query_id": "dev-rupee-why",
+      "condition": "B0",
+      "edges": 6,
+      "established_edges": 0,
+      "paths": 5,
+      "tool_calls": 1,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 6,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "2a8c661bdf98841c526908d662b61de95e63dcb73bd49698867ba038aa887531"
+    },
+    {
+      "query_id": "dev-oil-effects",
+      "condition": "B1",
+      "edges": 12,
+      "established_edges": 12,
+      "paths": 12,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 12,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "6babe2d1e6137c118288b608b7e1c4ab6c552afe7cca3d284930d70fa19f19e4"
+    },
+    {
+      "query_id": "dev-oil-why",
+      "condition": "B1",
+      "edges": 5,
+      "established_edges": 5,
+      "paths": 3,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 5,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "e1ff5905d73937e005b5995c33b2d1b843edf1c87e686a12741f0d5b9970742f"
+    },
+    {
+      "query_id": "dev-rupee-effects",
+      "condition": "B1",
+      "edges": 11,
+      "established_edges": 11,
+      "paths": 11,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [
+          {
+            "edge_id": "edge-1",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-2",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-3",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-4",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-5",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-6",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-7",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-8",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-9",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-10",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-11",
+            "kind": "nonverbatim_span"
+          }
+        ],
+        "passed": false,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "5e3f8914fc405107826a2402da50cb0e4ecd8deb5a1f2bcb75e857199cd3a607"
+    },
+    {
+      "query_id": "dev-rupee-why",
+      "condition": "B1",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 4,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "d41d7e89820f72306f9f31baccdcc6977ce5f13fea77f2a828f51533b5f9eed2"
+    },
+    {
+      "query_id": "dev-oil-effects",
+      "condition": "B1-R",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 6,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "4d827412dfe5f26111a62bb2f98c8d2552c89bf6fd4a30e7f24b6bd561628403"
+    },
+    {
+      "query_id": "dev-oil-why",
+      "condition": "B1-R",
+      "edges": 3,
+      "established_edges": 3,
+      "paths": 3,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [
+          {
+            "edge_id": "edge-2",
+            "kind": "nonverbatim_span"
+          },
+          {
+            "edge_id": "edge-4",
+            "kind": "nonverbatim_span"
+          }
+        ],
+        "passed": false,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "0694071ac9ea25d9d8675b5743ae922ec67d1cd44df8c22946473f59b76819ae"
+    },
+    {
+      "query_id": "dev-rupee-effects",
+      "condition": "B1-R",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 6,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "ea3df64feb0c742a91e43adc85a5a7710428f557407fe1d2360c21e88c00f78e"
+    },
+    {
+      "query_id": "dev-rupee-why",
+      "condition": "B1-R",
+      "edges": 2,
+      "established_edges": 2,
+      "paths": 2,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 2,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "ad386ae19481c4d29b23fe98909a1e1d890ee811749e111a8473883d115d7716"
+    },
+    {
+      "query_id": "dev-oil-effects",
+      "condition": "B2",
+      "edges": 4,
+      "established_edges": 4,
+      "paths": 1,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 4,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "7ae2d2ceeaae7c63f772eff847789548d15dcc4dc4fb5ac50973423fb19fa3ac"
+    },
+    {
+      "query_id": "dev-oil-why",
+      "condition": "B2",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 4,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 6,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "c4099868374df114681a11f4d501422a1db1fd5a16510e52a097c97a3b3abd18"
+    },
+    {
+      "query_id": "dev-rupee-effects",
+      "condition": "B2",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 6,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "e2c20cae1d9fc1741b76f40488d2c4f40b4e168dba161c53b06d5afe7ab04bb7"
+    },
+    {
+      "query_id": "dev-rupee-why",
+      "condition": "B2",
+      "edges": 6,
+      "established_edges": 6,
+      "paths": 2,
+      "tool_calls": 2,
+      "stop_reason": "important_edges_resolved",
+      "unchecked_inferred_edges": 0,
+      "verifier_verdicts": {},
+      "safety": {
+        "failures": [
+          {
+            "edge_id": "edge-2",
+            "kind": "nonverbatim_span"
+          }
+        ],
+        "passed": false,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "0d196d929c74454f94d7a30c12e7d21af33b1c0be21384abe9fe50afebc6eca4"
+    },
+    {
+      "query_id": "dev-oil-effects",
+      "condition": "M",
+      "edges": 6,
+      "established_edges": 2,
+      "paths": 3,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 3,
+      "verifier_verdicts": {
+        "supported": 2,
+        "unsupported": 1
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "917f93e712361dda2e581e699ad7514af64108048dc8b39d9a0c18b1c644b117"
+    },
+    {
+      "query_id": "dev-oil-why",
+      "condition": "M",
+      "edges": 6,
+      "established_edges": 2,
+      "paths": 4,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 3,
+      "verifier_verdicts": {
+        "supported": 2,
+        "unsupported": 1
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "ca7261ff2a1445a47403f20adcd709e83150c272599953fd6d41b3c77acc1a4a"
+    },
+    {
+      "query_id": "dev-rupee-effects",
+      "condition": "M",
+      "edges": 6,
+      "established_edges": 2,
+      "paths": 6,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 3,
+      "verifier_verdicts": {
+        "supported": 2,
+        "unsupported": 1
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "8fb21ff81c8ce6aa62d51bffbaf51374ce43ac482aafb5855c76e417ebcf56c5"
+    },
+    {
+      "query_id": "dev-rupee-why",
+      "condition": "M",
+      "edges": 6,
+      "established_edges": 2,
+      "paths": 2,
+      "tool_calls": 12,
+      "stop_reason": "budget_exhausted",
+      "unchecked_inferred_edges": 4,
+      "verifier_verdicts": {
+        "supported": 2
+      },
+      "safety": {
+        "failures": [],
+        "passed": true,
+        "scope": "structural source/date/span checks; semantic support requires independent judgment"
+      },
+      "artifact_sha256": "159c81d390ac6a06718c71e5d986c5e2837e7de764866717c66a6cc0478311e8"
+    }
+  ],
+  "compute": {
+    "A-NoLoop": {
+      "model_calls": 6,
+      "prompt_tokens": 20521,
+      "completion_tokens": 3108,
+      "model_call_wall_s": 444.40683975000866,
+      "tool_calls": 48,
+      "invalid_json_calls": 0
+    },
+    "A-NoVerify": {
+      "model_calls": 7,
+      "prompt_tokens": 29872,
+      "completion_tokens": 5725,
+      "model_call_wall_s": 853.8426893339492,
+      "tool_calls": 24,
+      "invalid_json_calls": 0
+    },
+    "B0": {
+      "model_calls": 8,
+      "prompt_tokens": 11220,
+      "completion_tokens": 1994,
+      "model_call_wall_s": 176.4431652056519,
+      "tool_calls": 4,
+      "invalid_json_calls": 0
+    },
+    "B1": {
+      "model_calls": 8,
+      "prompt_tokens": 30920,
+      "completion_tokens": 4793,
+      "model_call_wall_s": 653.0166369189974,
+      "tool_calls": 8,
+      "invalid_json_calls": 0
+    },
+    "B1-R": {
+      "model_calls": 8,
+      "prompt_tokens": 30795,
+      "completion_tokens": 3751,
+      "model_call_wall_s": 708.2430907499511,
+      "tool_calls": 8,
+      "invalid_json_calls": 0
+    },
+    "B2": {
+      "model_calls": 4,
+      "prompt_tokens": 19550,
+      "completion_tokens": 3454,
+      "model_call_wall_s": 585.5557287498377,
+      "tool_calls": 8,
+      "invalid_json_calls": 0
+    },
+    "M": {
+      "model_calls": 13,
+      "prompt_tokens": 24619,
+      "completion_tokens": 3803,
+      "model_call_wall_s": 495.14024395821616,
+      "tool_calls": 48,
+      "invalid_json_calls": 0
+    }
+  },
+  "unbound_logs": [],
+  "compute_note": "completed artifacts' bound logs only for v2; legacy logs are unbound. Measured model-call wall times and actual token counts, excluding failed/orphan attempts; not GPU-active time or full phase time",
+  "research_acceptance": "separate from structural completion; model selection, human correction/support review, independent gold and episode acceptance required"
+}
