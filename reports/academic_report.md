@@ -557,9 +557,25 @@ separate from it.
 Two causes are possible and they need opposite fixes: either the corpus does not
 discuss these quantities, in which case queries touching them must be rescoped,
 or the sources use wording the alias table lacks, in which case the table is
-incomplete. Distinguishing them requires reading the corpus. We have not
-extended the table, because extending it to make a particular gold edge pass
-would be fitting the instrument to the data.
+incomplete. Distinguishing them requires reading the corpus, and that reading
+has now been done (`reports/alias_review_20261110.md`). It separates cleanly.
+**Two** forms are genuine wording gaps: "IndiGo and SpiceJet shares" names
+`AIRLINE_SHARES` and "fuel component of CPI" names `CPI_FUEL_LIGHT`, both in
+Indian coverage the table fails to match. The remaining candidates are corpus
+gaps or traps — "fuel inflation" and "airline stocks" also occur in generic and
+European coverage where a substring alias would overmatch, "InterGlobe Aviation"
+can name a company or a financing rather than a share, and every
+corporate-bond-spread candidate turned out to be a sovereign or repo spread.
+
+We have still not extended the table, and the reason is no longer uncertainty
+(D-29). The table is an input to rule 3, so changing it changes the verifier for
+every condition at once; the 56 development graphs, their 247 support
+judgements, the challenge set and every score in Section 4 were produced under
+the pinned table. Applying two forms now would require a fresh versioned sweep
+and a fresh review of every edge whose eligibility moved, and would leave these
+numbers describing a configuration that no longer exists. So the ceiling is
+reported as what it now is: a **located** bound with two named repairs
+outstanding, rather than an unexplained floor.
 
 **The reviewer evidence graphs are small.** The 16 edges are span-exact,
 adjudicated by two independent annotators and covered by a signed review receipt
