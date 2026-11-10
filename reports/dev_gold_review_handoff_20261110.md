@@ -3,7 +3,17 @@
 Both 28-graph sweeps passed structural audit; see
 `reports/dev_gold_sweeps_20261110.md`. Their outputs remain in local ignored
 `runs/` folders. This page describes the remaining review sequence. It does
-not claim that any prose correction or edge support judgment has happened.
+not claim that independent human prose correction or support review has happened.
+
+A task-local draft covers all 24 prose extractions and 247 derived edge items
+across both arms. Varun states that he created this work and that the earlier
+assistant attribution was mistaken. The preserved preparation scripts describe
+assistant-produced drafts, so the attribution conflict is recorded, not erased. See
+[`assistant_dev_support_review_20261110.md`](assistant_dev_support_review_20261110.md)
+for the audit trail, provisional scores and Varun's correction. Varun approved
+the 24 prefilled prose corrections; both correction exports passed validation.
+Fresh blank edge packets are at `data/interim/varun_support_review_packet_01`
+and `_02`. Independent edge judgments and official scoring remain pending.
 
 ## 1. Correct the 24 prose baseline extractions
 
