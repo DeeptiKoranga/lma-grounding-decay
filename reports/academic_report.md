@@ -512,8 +512,10 @@ already happened and one thing that had not.
 | 11–12 Nov | Final report integration and remaining reproduction checks |
 | At risk | The test half. No test gold graph exists yet; D-27 rescoped its annotation from a number that was never reachable, and the feasibility audit cut it from four queries to three |
 
-The development critical path is complete on Varun's model-holding machine.
-The test-set annotation and frozen test run remain separate work.
+Both development sweeps are run and scored. What is not complete is the
+judgement they rest on: the 247 support labels are assistant-produced, and a
+stratified blind human sample over them is outstanding (Section 4.8). The
+test-set annotation and frozen test run remain separate work.
 
 **The test half is three queries, not four, and is the item most likely not to
 land.** `data/eval/gold/` holds `dev` only, so the test graphs have to be
@@ -543,9 +545,10 @@ with hop survives a generator that does not fail at citation mechanics.
 
 We have built and tested the apparatus for measuring how evidential support and
 causal strength change hop by hop in LLM explanations of real financial news.
-Both development arms have reviewed support scores. The primary arm's M-minus-B1
-UER difference is −0.167 over three usable query pairs; the sensitivity arm's
-difference is −0.100 over two. Neither arm meets the predeclared hop-bucket gate
+Both development arms have scored support labels, though those labels are
+assistant-produced rather than independently human-reviewed, and are reported as
+such. On them, the primary arm's M-minus-B1 UER difference is −0.167 over three
+usable query pairs and the sensitivity arm's is −0.100 over two. Neither arm meets the predeclared hop-bucket gate
 for an H1 trend claim, and four development queries cannot support inference.
 The held-out test measurement remains outstanding.
 
