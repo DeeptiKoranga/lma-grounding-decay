@@ -26,3 +26,29 @@ M reduces UER against B1 by 0.100 over 2 paired queries. H2d holds: reference-ed
 A verifier can lower UER by deleting every edge it cannot confirm. That produces a better headline number and a worse answer. H2d is the check: reference-edge recall under M must stay within 10 points of B1, or the UER improvement is not a repair. Guard status: complete paired reference recall; assess alongside UER and strength.
 
 Scope: development guard only; not a confirmatory hypothesis result.
+
+## Secondary metrics
+
+| condition | provenance accuracy | strict path validity |
+|---|---:|---:|
+| A-NoLoop | 1.000 | 0.000 |
+| A-NoVerify | 0.104 | 0.000 |
+| B0 | 1.000 | 0.000 |
+| B1 | 0.471 | 0.333 |
+| B1-R | 0.562 | 0.500 |
+| B2 | 0.104 | 0.000 |
+| M | 0.917 | 0.000 |
+
+Higher is better for both. `n/a` is a missing denominator, not a zero: a condition that produced no path cannot have an invalid one.
+
+## Exploratory: M against the prompting control and the ablations
+
+**Not pre-declared.** The proposal declares two tests - B1 deep-minus-shallow for RQ1 and M-minus-B1 for RQ2. Everything in this section is exploratory by its own statistics section and must not be promoted to a result.
+
+| contrast | tests | UER | 95% interval | pairs | strength inflation |
+|---|---|---:|---|---:|---:|
+| `M_minus_B2` | H2c: beats prompted self-labelling | -0.625 | -1.000 to -0.250 | 2 | 0.000 |
+| `M_minus_A-NoVerify` | does verification help? | -0.625 | -1.000 to -0.250 | 2 | 0.000 |
+| `M_minus_A-NoLoop` | does targeted retrieval help? | n/a | n/a | 0 | n/a |
+
+Negative UER favours M. **Read the pair count before the estimate**: a contrast resting on one query is the same number repeated, and its interval is zero-width for that reason rather than from precision.

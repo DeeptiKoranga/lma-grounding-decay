@@ -31,6 +31,7 @@ from eval.rq import (
     rq1_finding,
     rq2_finding,
 )
+from eval.stats import exploratory_contrasts
 
 REPO = Path(__file__).resolve().parent.parent
 RQ1 = REPO / "reports/rq1_hop_decay.md"
@@ -79,9 +80,105 @@ def _rq1_section(finding: Rq1Finding) -> list[str]:
     return lines
 
 
+def _secondary_section(result: dict) -> list[str]:
+    """Provenance accuracy and strict path validity (#60).
+
+    Both are proposal secondary metrics that `eval.metrics` has always computed
+    and nothing ever printed. Provenance accuracy is the one that checks the
+    verifier's own labelling, which is the mechanism the study rests on, so a
+    UER table without it leaves the instrument unmeasured.
+    """
+    aggregate = result.get("aggregate") or {}
+    if not aggregate:
+        return []
+    lines = [
+        "## Secondary metrics",
+        "",
+        "| condition | provenance accuracy | strict path validity |",
+        "|---|---:|---:|",
+    ]
+    for condition in sorted(aggregate):
+        overall = (aggregate[condition] or {}).get("overall") or {}
+        lines.append(
+            f"| {condition} | {_fmt_mean(overall.get('provenance_accuracy'))} | "
+            f"{_fmt_mean(overall.get('strict_path_validity'))} |"
+        )
+    lines += [
+        "",
+        "Higher is better for both. `n/a` is a missing denominator, not a zero: a "
+        "condition that produced no path cannot have an invalid one.",
+        "",
+    ]
+    return lines
+
+
+def _fmt_mean(value) -> str:
+    if isinstance(value, dict):
+        value = value.get("mean")
+    return "n/a" if value is None else f"{value:.3f}"
+
+
+def _exploratory_section(result: dict) -> list[str]:
+    """M against B2 and the two ablations (#59, H2c).
+
+    Reported under its own heading and labelled exploratory, because the
+    proposal declares exactly two tests and these are not among them.
+    """
+    scores = result.get("per_query") or {}
+    if "M" not in scores:
+        return []
+    lines = [
+        "## Exploratory: M against the prompting control and the ablations",
+        "",
+        "**Not pre-declared.** The proposal declares two tests - B1 deep-minus-shallow "
+        "for RQ1 and M-minus-B1 for RQ2. Everything in this section is exploratory by "
+        "its own statistics section and must not be promoted to a result.",
+        "",
+        "| contrast | tests | UER | 95% interval | pairs | strength inflation |",
+        "|---|---|---:|---|---:|---:|",
+    ]
+    purpose = {
+        "M_minus_B2_overall": "H2c: beats prompted self-labelling",
+        "M_minus_A-NoVerify_overall": "does verification help?",
+        "M_minus_A-NoLoop_overall": "does targeted retrieval help?",
+    }
+    uer = exploratory_contrasts(scores, metric="uer")
+    inflation = exploratory_contrasts(scores, metric="strength_inflation")
+    for key, why in purpose.items():
+        row = uer.get(key)
+        if not row:
+            continue
+        interval = row.get("ci95")
+        lines.append(
+            f"| `{key.replace('_overall', '')}` | {why} | {_fmt(row.get('estimate'))} | "
+            f"{(f'{interval[0]:+.3f} to {interval[1]:+.3f}' if interval else 'n/a')} | "
+            f"{row.get('paired_queries', 0)} | "
+            f"{_fmt((inflation.get(key) or {}).get('estimate'))} |"
+        )
+    lines += [
+        "",
+        "Negative UER favours M. **Read the pair count before the estimate**: a contrast "
+        "resting on one query is the same number repeated, and its interval is zero-width "
+        "for that reason rather than from precision.",
+        "",
+    ]
+    return lines
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--review-dir", type=Path, required=True)
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--review-dir", type=Path)
+    source.add_argument(
+        "--scores",
+        type=Path,
+        help=(
+            "a scored result JSON written earlier by eval.review, instead of "
+            "re-evaluating. The review packets carry corpus text and are gitignored, so "
+            "only the machine that ran the sweep can use --review-dir; the scored JSON "
+            "is committed, which lets anyone regenerate these reports from it."
+        ),
+    )
     parser.add_argument("--references", type=Path, default=REPO / "data/eval/gold/dev")
     parser.add_argument(
         "--no-references",
@@ -98,11 +195,14 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     try:
-        result = evaluate(
-            review_dir=args.review_dir,
-            reference_dir=None if args.no_references else args.references,
-            corpus=args.corpus,
-        )
+        if args.scores:
+            result = json.loads(args.scores.read_text(encoding="utf-8"))
+        else:
+            result = evaluate(
+                review_dir=args.review_dir,
+                reference_dir=None if args.no_references else args.references,
+                corpus=args.corpus,
+            )
     except FileNotFoundError as exc:
         print(f"missing input: {exc}", file=sys.stderr)
         print(
@@ -182,6 +282,8 @@ def main(argv: list[str] | None = None) -> int:
         "",
         f"Scope: {guard.get('scope', 'development guard only')}.",
         "",
+        *_secondary_section(result),
+        *_exploratory_section(result),
         *(
             [
                 "**This run was scored with `--no-references`**, so reference-edge recall "

@@ -366,6 +366,59 @@ recall, query counts and guard interpretation are in the RQ reports.
 
 ![Figure 2. Reviewed primary-arm UER by hop for B1 and M; labels show queries with denominators out of four.](figures/uer_by_hop.png)
 
+### 4.9 The ablations, H2c, and the two secondary metrics nobody had printed
+
+The proposal's RQ2 analysis asks for four comparisons; until now only M against
+B1 had been computed. The other three are **exploratory** — the pre-declared
+tests are B1 deep-minus-shallow and M-minus-B1, and nothing here is promoted
+past that — but they are the comparisons that isolate each capability.
+
+| Contrast | Tests | Primary arm | Sensitivity arm |
+|---|---|---:|---:|
+| M − B2 | **H2c**: beats prompted self-labelling | −0.250 (4 pairs) | −0.625 (2 pairs) |
+| M − A-NoVerify | does verification help? | −0.208 (4 pairs) | −0.625 (2 pairs) |
+| M − A-NoLoop | does targeted retrieval help? | +0.500 (1 pair) | n/a (0 pairs) |
+
+**H2c holds descriptively in both arms**: the full system's UER is lower than
+that of RAG prompted to label its own links, by 25 points in the primary arm and
+62 in the sensitivity arm. The A-NoVerify contrast points the same way, which is
+the ablation that matters most for the central claim — removing the verifier
+makes the system worse by the measure the study is built on.
+
+**The A-NoLoop figure should not be read.** It rests on a single query, because
+A-NoLoop established exactly one edge across the whole primary arm and none in
+the sensitivity arm. Its zero-width interval is one number resampled, not
+precision. Whether targeted retrieval helps is untested here.
+
+Two secondary metrics the proposal asks for had been computed by `eval.metrics`
+since Phase 2 and printed nowhere.
+
+| Condition | Provenance accuracy | Strict path validity |
+|---|---:|---:|
+| M | 0.750 | 0.083 |
+| A-NoVerify | 0.396 | 0.000 |
+| B1 | 0.750 | 0.000 |
+| B2 | 0.500 | 0.000 |
+| B1-R | 0.750 | 0.125 |
+
+**Provenance accuracy is the metric that audits the instrument**, since the
+provenance label is the mechanism the whole study measures with. M reaches 0.750
+against A-NoVerify's 0.396 in the primary arm, and 0.917 against 0.104 in the
+sensitivity arm: the verifier roughly doubles the rate at which an edge's
+source-asserted or model-inferred label is right, which is a more direct defence
+of it than the UER difference.
+
+**Strict path validity is near zero almost everywhere** — 0.083 for M, 0.000 for
+most conditions, never above 0.125 in the primary arm. A path counts only if
+every hop is established, supported and no stronger than its source, so a chain
+is as weak as its weakest link by construction. Almost no multi-hop explanation
+in this corpus survives that test end to end. That is a finding about the
+difficulty of the task rather than a defect in any one condition, and it is the
+hop-by-hop claim of the study restated at the level of whole paths.
+
+All of these inherit the label provenance set out in Section 4.8 and are
+development figures on four queries.
+
 ## 5. Discussion
 
 ### 5.1 Where deterministic checking ends and judgement begins
