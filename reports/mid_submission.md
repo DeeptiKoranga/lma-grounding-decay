@@ -8,12 +8,11 @@ Varun Patil (2025204013) · Harshal Bhansali (2026909007) · Deepti Koranga (202
 
 Repository: `https://github.com/DeeptiKoranga/lma-grounding-decay` (branch `main`)
 
-> **What this document claims and does not.** Everything below is implemented,
-> runnable and reproducible from the repository. The **primary metric (UER) has
-> no value yet**: it requires blind human support judgements that are scheduled,
-> not done. Where a number exists we give it; where it does not we say so and
-> give the date. No result in this document has been estimated, extrapolated or
-> filled in to complete a table.
+> **Dated snapshot and update.** The original mid-submission text records the
+> 30 October state. Section 5.6 adds the reviewed development results from
+> 10 November and supersedes earlier statements that support review and UER
+> were pending. Those results cover four development queries in each arm;
+> no held-out test result or inferential hypothesis claim is reported.
 
 ---
 
@@ -198,11 +197,10 @@ This is exactly the failure mode the proposal's own risk table anticipated —
 H2d, the recall guard, exists to catch. A system that establishes few edges
 posts an excellent UER while answering the question badly.
 
-**What this does not yet tell us.** Whether M's 8 established edges are the
-*right* 8 is a support judgement, and no human has made it. The ablation
-therefore shows the mechanism is live and consequential; it does not yet show
-whether verification helps or merely deletes. That is precisely the RQ2 contrast,
-and the harness that decides it is built (Section 5.6).
+**What this did not tell us on 30 October.** Whether M's 8 established edges
+were the *right* 8 required support review. The ablation showed that the
+mechanism was live, but could not then show whether verification helped or
+merely deleted. Section 5.6 reports the later reviewed development contrast.
 
 ---
 
@@ -315,21 +313,24 @@ All local, on an Apple M5 via MLX, pinned Qwen3-8B at 4-bit, revision
 `545dc425`. **No paid API request was made. No Kaggle GPU hours were used or are
 claimed.** Times are measured model-call wall times, not GPU-active hours.
 
-### 5.6 What has no number yet
+### 5.6 Reviewed development metrics — 10 November update
 
-**UER, strength inflation and reference-edge recall — the primary metric and
-both secondary metrics — have no values.** They require blind human support
-judgements on the generated edges, which are scheduled for **4 November** on
-the dev set and 10 November on the test set (Section 8).
+Both current-v7 arms completed 28 gold-backed graphs and passed structural
+audit. Varun's 24 corrected prose baselines and 247 condition-blinded support
+judgements passed the ordinary review scorer. The primary arm's B1 UER is
+1.000 over three queries with denominators; M is 0.750 over four. M minus B1
+is −0.167 over **three usable UER pairs**. Reference-edge recall changes
++0.062 over all four query pairs, within the H2d floor. The sensitivity arm's
+paired UER difference is −0.100 over two usable pairs and recall changes
+−0.062 over four pairs. Full denominators and strength-inflation values are in
+`reports/rq1_hop_decay.md`, `reports/rq2_verification.md` and their sensitivity
+companions; the reviewed primary chart is `reports/figures/uer_by_hop.svg`.
 
-The scoring is built and runs today. `scripts/report_rq.py` currently writes
-nothing and names the three preconditions in dependency order, which is
-deliberate: a missing result stays visible rather than becoming an empty section.
-Its thresholds were fixed **before any result existed** (D-22, commit `5663458`):
-a hop bucket needs 10 established edges to carry a claim, a trend needs all three
-buckets, and an inferential claim needs 10 queries — which on a four-query dev
-set fires by construction, so no dev figure will be presented as inferential
-whatever it turns out to be.
+The predeclared thresholds remain unchanged (D-22): a hop bucket needs 10
+established edges to carry a claim, a trend needs all three buckets, and an
+inferential claim needs 10 queries. Neither arm has three usable B1 hop buckets,
+so the development run does not test H1's monotone-trend claim. With four dev
+queries, all comparisons are descriptive only. Test-set scores are still absent.
 
 ---
 
@@ -406,10 +407,11 @@ branches that could not see each other.
 
 ### 6.8 Tooling and machine asymmetry
 
-The pinned model weights, the dense index and the run outputs live on one
-machine only. Track B development therefore proceeds without the ability to run
-any condition end to end, which is why Section 5.6's results are blocked on a
-machine rather than on code.
+The pinned model weights, dense index and run outputs live on Varun's machine.
+That machine completed both gold-backed development arms on 10 November;
+their inputs and audit hashes are recorded in
+`reports/dev_gold_sweeps_20261110.md`. Reproduction elsewhere still needs
+the local model and index caches.
 
 ---
 

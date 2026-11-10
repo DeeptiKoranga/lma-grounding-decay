@@ -245,24 +245,27 @@ def rq2_finding(result: dict) -> Rq2Finding:
     contrasts = result.get("contrasts") or {}
     uer = (contrasts.get("uer") or {}).get("M_minus_B1_overall") or {}
     inflation = (contrasts.get("strength_inflation") or {}).get("M_minus_B1_overall") or {}
+    uer_pairs = uer.get("paired_queries", len(paired))
+    if not isinstance(uer_pairs, int) or not 0 <= uer_pairs <= len(paired):
+        raise ValueError("UER paired-query count must fit the shared query set")
 
     passes = guard.get("passes_descriptively")
     verdict: GuardVerdict = "undetermined" if passes is None else ("passes" if passes else "fails")
     # A bootstrap over one query resamples the same value every time and
     # returns a zero-width interval, which reads as precision rather than as
     # the absence of it. Withhold it rather than print it.
-    ci = uer.get("ci95") if len(paired) >= 2 else None
-    inferential = len(paired) >= MIN_QUERIES_FOR_INFERENCE
+    ci = uer.get("ci95") if uer_pairs >= 2 else None
+    inferential = uer_pairs >= MIN_QUERIES_FOR_INFERENCE
 
     return Rq2Finding(
-        queries=len(paired),
+        queries=uer_pairs,
         uer_delta=uer.get("estimate"),
         uer_ci95=(tuple(ci) if ci else None),
         strength_inflation_delta=inflation.get("estimate"),
         recall_delta=guard.get("M_minus_B1"),
         recall_guard=verdict,
         inferential=inferential,
-        statement=_rq2_statement(uer.get("estimate"), verdict, guard, len(paired), inferential),
+        statement=_rq2_statement(uer.get("estimate"), verdict, guard, uer_pairs, inferential),
     )
 
 

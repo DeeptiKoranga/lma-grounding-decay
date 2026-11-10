@@ -119,7 +119,7 @@ def uer_figure(reviewed: dict, output: Path):
     from matplotlib.ticker import PercentFormatter
 
     with plt.rc_context({"svg.fonttype": "none", "font.size": 10}):
-        fig, ax = plt.subplots(figsize=(8, 4.8))
+        fig, ax = plt.subplots(figsize=(9.5, 4.8))
         legend_handles = []
         for offset, rows in enumerate(data.values()):
             color = ("#4267a9", "#168277")[offset]
@@ -169,7 +169,12 @@ def uer_figure(reviewed: dict, output: Path):
         ax.yaxis.set_major_formatter(PercentFormatter(1))
         ax.grid(axis="y", color="#e5e7eb", zorder=0)
         ax.spines[["top", "right"]].set_visible(False)
-        ax.legend(handles=legend_handles, frameon=False, loc="upper right")
+        ax.legend(
+            handles=legend_handles,
+            frameon=False,
+            loc="upper left",
+            bbox_to_anchor=(1.02, 1.0),
+        )
         fig.text(
             0.12,
             0.035,

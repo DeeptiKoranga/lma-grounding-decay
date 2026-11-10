@@ -325,13 +325,28 @@ revision rather than the current one.
 | A-NoLoop | 6 | 35 | 0 | 5 |
 | M | 6 | 35 | 8 | 18 |
 
-### 4.8 What has no value yet
+### 4.8 Reviewed development scores (10 November update)
 
-UER, strength inflation and reference-edge recall — the primary metric and both
-secondary metrics — have no values. They require blind human support judgements
-on generated edges. The scoring code is written and runs today; given no
-reviewed input it writes nothing and names its missing preconditions, so the gap
-stays visible rather than becoming an empty section in a report.
+Both current-v7, gold-backed development arms completed 28 graphs each and
+passed structural audit. Varun's 24 corrected prose baselines and 247 blinded
+edge judgments passed the ordinary review scorer against the signed dev gold
+set. These four-query values are **descriptive only**; the test half has not
+been scored. The primary Qwen3-8B arm remains primary under D-28.
+
+| Arm | B1 overall UER | M overall UER | M−B1 paired UER | M−B1 reference recall | H2d |
+|---|---:|---:|---:|---:|---|
+| Primary Qwen3-8B | 1.000 (3/4 queries) | 0.750 (4/4) | −0.167 (3 usable pairs) | +0.062 (4 pairs) | holds descriptively |
+| Sensitivity Qwen3.5-9B | 0.529 (4/4) | 0.250 (2/4) | −0.100 (2 usable pairs) | −0.062 (4 pairs) | holds descriptively |
+
+The primary B1 hop buckets have only 5, 2 and 1 established edges at hops 1,
+2 and 3-or-deeper; the sensitivity B1 buckets have 13, 1 and 0. Neither arm
+clears the pre-declared three-bucket gate, so H1 is not testable on this dev
+set. M's lower UER does not establish an inferential H2 result with four
+queries; reference-edge recall remains near zero. Missing denominators are
+reported as N/A rather than as zero error. Full per-hop strength inflation,
+recall, query counts and guard interpretation are in the RQ reports.
+
+![Figure 2. Reviewed primary-arm UER by hop for B1 and M; labels show queries with denominators out of four.](figures/uer_by_hop.png)
 
 ## 5. Discussion
 
@@ -448,9 +463,10 @@ the raw agreement beside the kappa rather than the kappa alone.
 capability diagnostic uses 40 states that are five variants of eight scenarios.
 Both are development diagnostics, not benchmarks.
 
-**Self-review.** The relevance judgements and the safety screen were produced
-with assistant review rather than independent human review, which the records
-disclose.
+**Other review limits.** The earlier relevance-judgement comparison and safety
+screen have their own provenance and limits (Sections 4.2 and 4.6). The
+10 November prose and edge-support review is recorded separately with Varun's
+authorship and review attestations (Section 4.8).
 
 **Schedule.** The blind double annotation planned for 30 October took place on 8
 November, nine days late. It was the first step of the dependency chain in
@@ -460,7 +476,7 @@ against the gold set moved with it.
 ## 7. Remaining work
 
 The final submission is 15 November, with work winding up on 12 November. This
-table is written on 9 November and separates what is done from what is not,
+table is updated on 10 November and separates what is done from what is not,
 because the earlier version of it listed as future several things that had
 already happened and one thing that had not.
 
@@ -469,14 +485,15 @@ already happened and one thing that had not.
 | Done, 8 Nov | Blind double annotation of the 20 drafted development gold edges; agreement scored; four edges dropped in reconciliation, leaving 16 (Section 4.4, D-26) |
 | Done, 8 Nov | Reference review receipt signed and hash-bound, which makes the challenge set's false-alarm rate quotable (Section 4.5) |
 | Done, 8–9 Nov | Pilot decisions D-01 to D-04 locked; the two-model sensitivity check pre-registered (D-28) |
-| 9–10 Nov | Both arms of the development sweep, on the four gold-backed queries. Roughly 2.3× a single sweep |
-| 10 Nov | Blind support judgements on the generated edges of both arms |
-| 10–11 Nov | First UER, strength inflation and reference-edge recall; the pre-registered arm comparison; figures |
-| 11–12 Nov | Failure analysis; reproduction from a clean clone; final report |
+| Done, 10 Nov | Both gold-backed development arms: 56 graphs, two complete audits |
+| Done, 10 Nov | Varun's 247 support judgements and 24 prose corrections, formally scored |
+| Done, 10 Nov | Development UER, strength inflation, reference recall, sensitivity comparison and UER figure, with denominator gates |
+| Done, 10 Nov | Five-case primary-arm failure analysis; earlier clean-clone reproduction remains documented |
+| 11–12 Nov | Final report integration and remaining reproduction checks |
 | At risk | The test half. No test gold graph exists yet; D-27 rescoped its annotation from a number that was never reachable, and the feasibility audit cut it from four queries to three |
 
-The critical path is the sweep, and it runs on one machine. Everything after it
-is measurement.
+The development critical path is complete on Varun's model-holding machine.
+The test-set annotation and frozen test run remain separate work.
 
 **The test half is three queries, not four, and is the item most likely not to
 land.** `data/eval/gold/` holds `dev` only, so the test graphs have to be
@@ -504,14 +521,13 @@ with hop survives a generator that does not fail at citation mechanics.
 
 ## 8. Conclusion
 
-We have built and tested the apparatus for a measurement that, to our knowledge,
-has not been made: how evidential support and causal strength change hop by hop
-in LLM explanations of real financial news. The pipeline is complete and
-reproducible, and five independent results characterise its parts.
-
-The primary measurement has not been made. We report that rather than estimating
-it, and the tooling enforces the same discipline by refusing to emit a number it
-cannot justify.
+We have built and tested the apparatus for measuring how evidential support and
+causal strength change hop by hop in LLM explanations of real financial news.
+Both development arms have reviewed support scores. The primary arm's M-minus-B1
+UER difference is −0.167 over three usable query pairs; the sensitivity arm's
+difference is −0.100 over two. Neither arm meets the predeclared hop-bucket gate
+for an H1 trend claim, and four development queries cannot support inference.
+The held-out test measurement remains outstanding.
 
 What the work already shows is that the verification question is sharper than we
 posed it. Deterministic rules and semantic judgement divide cleanly and

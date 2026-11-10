@@ -32,6 +32,7 @@ matching the signed dev reference receipt. The dense index SHA-256 is
 The local files `data/interim/prose_correction_qwen3-8b_20261110.json` and
 `data/interim/prose_correction_qwen35-9b_20261110.json` contain 12 baseline
 answers each for faithful prose-to-graph correction. They are unfilled review
-packets. The support packets, UER/RQ reports, UER chart and five-case failure
-analysis require completed correction and blinded support judgments; no metric
-has been inferred from the unreviewed graph labels.
+packets preserved from before review. Varun's completed correction and support
+review, official scores, RQ reports, UER chart and five-case failure analysis
+are recorded in `dev_gold_varun_review_20261110.md`. No metric was inferred
+from the original unreviewed graph labels.
