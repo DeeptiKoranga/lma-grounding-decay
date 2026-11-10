@@ -82,7 +82,7 @@ audit-dev: ## Validate generated graphs, safety boundaries, logs and measured co
 synthetic-faults: ## Exercise the frozen synthetic tool-fault diagnostic
 	PYTHONPATH=src $(PY) python -m eval.faults --output reports/tool_faults_recheck.json
 
-.PHONY: gold adjudicate kappa rq challenge
+.PHONY: gold adjudicate kappa rq challenge explorer
 
 gold: ## Re-draft the dev gold graphs and check every span against the corpus
 	PYTHONPATH=src $(PY) python scripts/draft_gold_graphs.py
@@ -116,6 +116,9 @@ kappa-test: ## Score two completed test worksheets
 
 rq: ## Write the RQ1/RQ2 findings from a reviewed run (needs #41, #42, #37 first)
 	PYTHONPATH=src $(PY) python scripts/report_rq.py --review-dir data/interim/support-review
+
+explorer: ## Build the interactive event-impact graph (open it from disk, do not serve it)
+	PYTHONPATH=src $(PY) python scripts/build_graph_explorer.py
 
 challenge: ## Build the challenge set and run the rules-only arm (no model needed)
 	# Needs a signed data/eval/gold/dev/review_receipt.json. Add --allow-unreviewed

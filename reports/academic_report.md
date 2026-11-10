@@ -782,6 +782,18 @@ had independently rejected the same two `FPI_FLOWS -> GSEC_10Y` edges, which
 are dropped, leaving **four edges per graph at exactly `MIN_EDGES`**. The
 receipt is signed and hash-bound to those bytes.
 
+**The prototype's interactive output exists.** The proposal's Section 8 ends by
+asking for "an interactive event-impact graph as its final output", and it was
+dropped on 29 October as unreachable alongside the experiments. The experiments
+finished, so it was built: `reports/graph_explorer.html`, one self-contained
+file with no network dependency, where every edge opens to the span it rests on
+with its passage id, publication date and the cutoff it had to clear — or, for
+a `model_inferred` edge, to the statement that no verified source was found.
+It is opened from disk rather than served, because the spans are corpus
+excerpts under a research-use licence. It changes no measurement; it is the one
+artifact that lets a reader do what Section 3 describes a reader wanting to do,
+which is follow a chain and see where it stops being grounded.
+
 **What the study therefore reports.** Development results only. The test
 reference set now exists and would be scorable, but no sweep has been run
 against it, and two queries sit five times below `MIN_QUERIES_FOR_INFERENCE`,

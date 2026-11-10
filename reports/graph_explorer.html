@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event-impact graph explorer</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fbfbf9; --panel: #ffffff; --ink: #16181d; --muted: #5b6270;
+  --line: #d9dce3; --asserted: #176b5d; --inferred: #9a6b16;
+  --anchor: #1f3d7a; --chip: #eef1f6; --shadow: 0 1px 2px rgba(16,18,24,.07);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14161a; --panel: #1c1f25; --ink: #e9ecf1; --muted: #9aa3b2;
+    --line: #333842; --asserted: #4fbfa8; --inferred: #d9a441;
+    --anchor: #7da2e8; --chip: #262b33; --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14161a; --panel: #1c1f25; --ink: #e9ecf1; --muted: #9aa3b2;
+  --line: #333842; --asserted: #4fbfa8; --inferred: #d9a441;
+  --anchor: #7da2e8; --chip: #262b33; --shadow: none;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.55 ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+header { padding: 20px 16px 0; max-width: 1180px; margin: 0 auto; }
+h1 { font-size: 1.3rem; margin: 0 0 4px; letter-spacing: -.01em; }
+.sub { color: var(--muted); font-size: .88rem; margin: 0 0 14px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px 48px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+select, button {
+  font: inherit; color: var(--ink); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 7px; padding: 6px 10px; cursor: pointer;
+}
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .82rem; color: var(--muted);
+  margin: 0 0 14px; align-items: center; }
+.key { display: inline-flex; align-items: center; gap: 6px; }
+.key i { width: 26px; height: 0; border-top-width: 2px; display: inline-block; }
+.solid { border-top-style: solid; border-color: var(--asserted); }
+.dash { border-top-style: dashed; border-color: var(--inferred); }
+.board { background: var(--panel); border: 1px solid var(--line); border-radius: 11px;
+  box-shadow: var(--shadow); padding: 8px; overflow-x: auto; }
+svg { display: block; min-width: 620px; }
+.node rect { fill: var(--chip); stroke: var(--line); }
+.node.anchor rect { stroke: var(--anchor); stroke-width: 2; }
+.node text { fill: var(--ink); font-size: 12px; }
+.node .dir { fill: var(--muted); font-size: 11px; }
+.edge { cursor: pointer; }
+.edge path { fill: none; stroke-width: 1.8; }
+.edge.asserted path { stroke: var(--asserted); }
+.edge.inferred path { stroke: var(--inferred); stroke-dasharray: 6 4; }
+.edge.on path { stroke-width: 3.4; }
+.edge text { font-size: 10.5px; fill: var(--muted); }
+.detail { margin-top: 14px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 11px; padding: 16px; box-shadow: var(--shadow); }
+.detail h2 { font-size: .98rem; margin: 0 0 10px; }
+blockquote { margin: 0 0 12px; padding: 10px 14px; border-left: 3px solid var(--asserted);
+  background: var(--chip); border-radius: 0 7px 7px 0; font-size: .93rem; }
+blockquote.none { border-left-color: var(--inferred); color: var(--muted); font-style: italic; }
+dl { display: grid; grid-template-columns: auto 1fr; gap: 5px 14px; margin: 0; font-size: .86rem; }
+dt { color: var(--muted); }
+dd { margin: 0; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85em; }
+.hint { color: var(--muted); font-size: .86rem; }
+.note { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: .84rem; }
+footer { max-width: 1180px; margin: 0 auto; padding: 0 16px 40px; color: var(--muted);
+  font-size: .8rem; line-height: 1.6; }
+@media (max-width: 640px) { .wrap, header, footer { padding-left: 12px; padding-right: 12px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Event-impact graph explorer</h1>
+  <p class="sub">Every link is labelled by where it came from. Click one to read the
+  evidence it rests on &mdash; or to see that it has none.</p>
+</header>
+<div class="wrap">
+  <div class="controls">
+    <select id="pick"></select>
+    <button id="theme" type="button">Toggle theme</button>
+  </div>
+  <div class="legend">
+    <span class="key"><i class="solid"></i> source-asserted &mdash; a passage states it</span>
+    <span class="key"><i class="dash"></i> model-inferred &mdash; no verified source found</span>
+    <span class="key">columns are hop distance from the anchor</span>
+  </div>
+  <div class="board"><svg id="svg" role="img" aria-label="Event-impact graph"></svg></div>
+  <div class="detail" id="detail"><p class="hint">Select a link in the graph above.</p></div>
+</div>
+<footer id="foot"></footer>
+<script>
+const GRAPHS = [{"query_id": "dev-oil-effects", "anchor": {"var": "BRENT", "direction": "up", "event": "Brent crude at or above $100 a barrel", "event_date": "2026-04-01", "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, "as_of": "2026-04-08", "nodes": [{"var": "AIRFARES", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "ATF_PRICE", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "BRENT", "direction": "up", "is_anchor": true, "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, {"var": "CPI_HEADLINE", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "FISCAL_DEFICIT", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "FUEL_PRICES", "direction": "up", "is_anchor": false, "confirmed_by_series": false}], "edges": [{"edge_id": "oe1", "src_var": "BRENT", "dst_var": "FUEL_PRICES", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 1, "evidence_span": "If crude sustains above $80 per barrel, retail price hikes and/or a reduction in fuel excise duties may follow.", "evidence_doc_id": "economic_times-24ec1e6a8dff7543b074", "evidence_passage_id": "economic_times-24ec1e6a8dff7543b074#p6", "evidence_published_at": "2026-03-02T12:33:00+05:30", "candidate_evidence": []}, {"edge_id": "oe2", "src_var": "BRENT", "dst_var": "CPI_HEADLINE", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 1, "evidence_span": "A $10 per barrel increase could have a 20 to 25 basis point impact on CPI inflation if passed on to consumers", "evidence_doc_id": "economic_times-24ec1e6a8dff7543b074", "evidence_passage_id": "economic_times-24ec1e6a8dff7543b074#p6", "evidence_published_at": "2026-03-02T12:33:00+05:30", "candidate_evidence": []}, {"edge_id": "oe4", "src_var": "BRENT", "dst_var": "FISCAL_DEFICIT", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 1, "evidence_span": "A $10 per barrel increase could have a 20 to 25 basis point impact on CPI inflation if passed on to consumers, or on the fiscal deficit if the government opts to cut taxes.", "evidence_doc_id": "economic_times-24ec1e6a8dff7543b074", "evidence_passage_id": "economic_times-24ec1e6a8dff7543b074#p6", "evidence_published_at": "2026-03-02T12:33:00+05:30", "candidate_evidence": [], "note": "Span contains oe2's. One sentence offers CPI or the fiscal deficit as alternatives; both are asserted, conditionally."}, {"edge_id": "oe10", "src_var": "ATF_PRICE", "dst_var": "AIRFARES", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "Airfares are expected to rise with the steep increase in jet fuel prices amid the ongoing West Asia conflict.", "evidence_doc_id": "economic_times-4a678f4564789fcceb8e", "evidence_passage_id": "economic_times-4a678f4564789fcceb8e#p0", "evidence_published_at": "2026-04-01T09:03:00+05:30", "candidate_evidence": [], "note": "Kept at hop 2 although adjudication dropped its first link (oe5, BRENT->ATF_PRICE): no passage in the corpus asserts a direction for crude -> ATF, only the monthly pricing formula. So AIRFARES is no longer reachable from the anchor inside this graph and the hop number records the chain the source describes, not a path through gold edges. A model producing crude -> ATF -> airfares is marked wrong on the first link and right on the second; say so when reporting hop-2 figures."}], "paths": [], "schema_version": "1.0.0", "notes": "ADJUDICATED 2026-11-08. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge passes the B6 rule layer. Two annotators then labelled every drafted edge independently, blind to the draft and to each other: raw agreement 0.800 on whether the span asserts the relation, Cohen's kappa 0.231 under a dominant label, with direction and strength agreeing on every edge both kept (reports/adjudication_kappa.md). Reconciliation dropped four drafted edges under one rule, D-26: a span that states a relation or a pricing mechanism without stating which way the destination moves cannot back a gold edge that carries a direction. The reviewers' own attestation lives in data/eval/gold/dev/review_receipt.json and is signed separately.", "_set": "dev", "_depth": {"BRENT": 0, "FUEL_PRICES": 1, "CPI_HEADLINE": 1, "FISCAL_DEFICIT": 1, "AIRFARES": 2, "ATF_PRICE": 3}}, {"query_id": "dev-oil-why", "anchor": {"var": "BRENT", "direction": "up", "event": "Brent crude at or above $100 a barrel", "event_date": "2026-04-01", "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, "as_of": "2026-04-08", "nodes": [{"var": "BRENT", "direction": "up", "is_anchor": true, "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, {"var": "CURRENT_ACCOUNT_DEFICIT", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "IMPORT_BILL", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "INR_USD", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "TRADE_DEFICIT", "direction": "up", "is_anchor": false, "confirmed_by_series": false}], "edges": [{"edge_id": "ow1", "src_var": "BRENT", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "Higher crude prices pose a significant challenge for India, a major oil importer, as they raise the country’s import costs", "evidence_doc_id": "businessline-17ada433751a4c30c372", "evidence_passage_id": "businessline-17ada433751a4c30c372#p5", "evidence_published_at": "2026-03-09T09:08:02+05:30", "candidate_evidence": []}, {"edge_id": "ow2", "src_var": "BRENT", "dst_var": "CURRENT_ACCOUNT_DEFICIT", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 1, "evidence_span": "For an oil-importing country like India, sustained high crude prices can widen the current account deficit", "evidence_doc_id": "businessline-33adbc66dad6bae05630", "evidence_passage_id": "businessline-33adbc66dad6bae05630#p2", "evidence_published_at": "2026-04-07T17:38:44+05:30", "candidate_evidence": []}, {"edge_id": "ow3", "src_var": "IMPORT_BILL", "dst_var": "INR_USD", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "If the war lingers, oil prices could go up further, leading to India’s import bill going up, leading to weakening of the currency.", "evidence_doc_id": "businessline-8d4a51b1a94c055d07e3", "evidence_passage_id": "businessline-8d4a51b1a94c055d07e3#p2", "evidence_published_at": "2026-03-05T21:13:34+05:30", "candidate_evidence": []}, {"edge_id": "ow5", "src_var": "BRENT", "dst_var": "TRADE_DEFICIT", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 1, "evidence_span": "Higher oil prices linked to the conflict are adding to India’s import bill and could widen the trade deficit if the trend persists.", "evidence_doc_id": "economic_times-4fa40d8770c821dd5406", "evidence_passage_id": "economic_times-4fa40d8770c821dd5406#p9", "evidence_published_at": "2026-03-16T13:35:00+05:30", "candidate_evidence": []}], "paths": [], "schema_version": "1.0.0", "notes": "ADJUDICATED 2026-11-08. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge passes the B6 rule layer. Two annotators then labelled every drafted edge independently, blind to the draft and to each other: raw agreement 0.800 on whether the span asserts the relation, Cohen's kappa 0.231 under a dominant label, with direction and strength agreeing on every edge both kept (reports/adjudication_kappa.md). Reconciliation dropped four drafted edges under one rule, D-26: a span that states a relation or a pricing mechanism without stating which way the destination moves cannot back a gold edge that carries a direction. The reviewers' own attestation lives in data/eval/gold/dev/review_receipt.json and is signed separately.", "_set": "dev", "_depth": {"BRENT": 0, "IMPORT_BILL": 1, "CURRENT_ACCOUNT_DEFICIT": 1, "TRADE_DEFICIT": 1, "INR_USD": 2}}, {"query_id": "dev-rupee-effects", "anchor": {"var": "INR_USD", "direction": "up", "event": "USD/INR at 96.84, the weakest level of the window", "event_date": "2026-05-20", "confirmed_by_series": true, "series_id": "inr_usd"}, "as_of": "2026-05-25", "nodes": [{"var": "FUEL_PRICES", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "IMPORTED_INFLATION", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "IMPORT_BILL", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "INR_USD", "direction": "up", "is_anchor": true, "confirmed_by_series": true, "series_id": "inr_usd"}, {"var": "RBI_FX_INTERVENTION", "direction": "up", "is_anchor": false, "confirmed_by_series": false}], "edges": [{"edge_id": "re1", "src_var": "INR_USD", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "The urgency has grown after the rupee slumped to a record low of nearly 97 per dollar this week, driving up import costs and further eroding investors", "evidence_doc_id": "economic_times-95de6ff7f5c97ba82245", "evidence_passage_id": "economic_times-95de6ff7f5c97ba82245#p2", "evidence_published_at": "2026-05-22T11:46:00+05:30", "candidate_evidence": []}, {"edge_id": "re2", "src_var": "INR_USD", "dst_var": "RBI_FX_INTERVENTION", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "as the rupee came under pressure and the Reserve Bank of India (RBI) had to intervene in the forex market through dollar sales.", "evidence_doc_id": "economic_times-76f04bc5898c1c59b89a", "evidence_passage_id": "economic_times-76f04bc5898c1c59b89a#p2", "evidence_published_at": "2026-05-15T17:39:00+05:30", "candidate_evidence": []}, {"edge_id": "re3", "src_var": "INR_USD", "dst_var": "IMPORTED_INFLATION", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "The weakening rupee is amplifying imported inflation.", "evidence_doc_id": "economic_times-1b2732b34ee05b32bf50", "evidence_passage_id": "economic_times-1b2732b34ee05b32bf50#p1", "evidence_published_at": "2026-04-30T14:13:00+05:30", "candidate_evidence": [], "note": "Same edge and span as rw1 in dev-rupee-why. The two questions share one mechanism over one episode; that overlap is expected, not a duplicate."}, {"edge_id": "re11", "src_var": "INR_USD", "dst_var": "FUEL_PRICES", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 1, "evidence_span": "Thus, the rupee has already approached a critical depreciation threshold, beyond which further currency weakness could substantially erode the intended benefits of domestic fuel price revisions.", "evidence_doc_id": "economic_times-6339c59bc47085648592", "evidence_passage_id": "economic_times-6339c59bc47085648592#p12", "evidence_published_at": "2026-05-16T09:43:00+05:30", "candidate_evidence": []}], "paths": [], "schema_version": "1.0.0", "notes": "ADJUDICATED 2026-11-08. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge passes the B6 rule layer. Two annotators then labelled every drafted edge independently, blind to the draft and to each other: raw agreement 0.800 on whether the span asserts the relation, Cohen's kappa 0.231 under a dominant label, with direction and strength agreeing on every edge both kept (reports/adjudication_kappa.md). Reconciliation dropped four drafted edges under one rule, D-26: a span that states a relation or a pricing mechanism without stating which way the destination moves cannot back a gold edge that carries a direction. The reviewers' own attestation lives in data/eval/gold/dev/review_receipt.json and is signed separately.", "_set": "dev", "_depth": {"INR_USD": 0, "IMPORT_BILL": 1, "RBI_FX_INTERVENTION": 1, "IMPORTED_INFLATION": 1, "FUEL_PRICES": 1}}, {"query_id": "dev-rupee-why", "anchor": {"var": "INR_USD", "direction": "up", "event": "USD/INR at 96.84, the weakest level of the window", "event_date": "2026-05-20", "confirmed_by_series": true, "series_id": "inr_usd"}, "as_of": "2026-05-25", "nodes": [{"var": "FUEL_PRICES", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "IMPORTED_INFLATION", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "IMPORT_BILL", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "INR_USD", "direction": "up", "is_anchor": true, "confirmed_by_series": true, "series_id": "inr_usd"}], "edges": [{"edge_id": "rw1", "src_var": "INR_USD", "dst_var": "IMPORTED_INFLATION", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "The weakening rupee is amplifying imported inflation.", "evidence_doc_id": "economic_times-1b2732b34ee05b32bf50", "evidence_passage_id": "economic_times-1b2732b34ee05b32bf50#p1", "evidence_published_at": "2026-04-30T14:13:00+05:30", "candidate_evidence": []}, {"edge_id": "rw2", "src_var": "INR_USD", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "A depreciating rupee increases the domestic cost of imports, especially crude oil", "evidence_doc_id": "economic_times-1b2732b34ee05b32bf50", "evidence_passage_id": "economic_times-1b2732b34ee05b32bf50#p11", "evidence_published_at": "2026-04-30T14:13:00+05:30", "candidate_evidence": []}, {"edge_id": "rw3", "src_var": "IMPORT_BILL", "dst_var": "IMPORTED_INFLATION", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 2, "evidence_span": "increases the domestic cost of imports, especially crude oil, thereby reinforcing inflationary pressures.", "evidence_doc_id": "economic_times-1b2732b34ee05b32bf50", "evidence_passage_id": "economic_times-1b2732b34ee05b32bf50#p11", "evidence_published_at": "2026-04-30T14:13:00+05:30", "candidate_evidence": [], "note": "Same sentence as rw2. It states rupee -> import cost -> inflationary pressures, so the middle link is asserted, not inferred."}, {"edge_id": "rw9", "src_var": "IMPORT_BILL", "dst_var": "FUEL_PRICES", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "pushing the landed import cost that fully offsets the gains from the current fuel price hike", "evidence_doc_id": "economic_times-6339c59bc47085648592", "evidence_passage_id": "economic_times-6339c59bc47085648592#p12", "evidence_published_at": "2026-05-16T09:43:00+05:30", "candidate_evidence": []}], "paths": [], "schema_version": "1.0.0", "notes": "ADJUDICATED 2026-11-08. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge passes the B6 rule layer. Two annotators then labelled every drafted edge independently, blind to the draft and to each other: raw agreement 0.800 on whether the span asserts the relation, Cohen's kappa 0.231 under a dominant label, with direction and strength agreeing on every edge both kept (reports/adjudication_kappa.md). Reconciliation dropped four drafted edges under one rule, D-26: a span that states a relation or a pricing mechanism without stating which way the destination moves cannot back a gold edge that carries a direction. The reviewers' own attestation lives in data/eval/gold/dev/review_receipt.json and is signed separately.", "_set": "dev", "_depth": {"INR_USD": 0, "IMPORTED_INFLATION": 1, "IMPORT_BILL": 1, "FUEL_PRICES": 2}}, {"query_id": "test-fpi-effects", "anchor": {"var": "FPI_FLOWS", "direction": "down", "event": "Net FPI flows of -13,600 USD million for March", "event_date": "2026-03-31", "confirmed_by_series": true, "series_id": "fpi_flows_usd_mn"}, "as_of": "2026-04-20", "nodes": [{"var": "CURRENT_ACCOUNT_DEFICIT", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "FISCAL_DEFICIT", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "FPI_FLOWS", "direction": "down", "is_anchor": true, "confirmed_by_series": true, "series_id": "fpi_flows_usd_mn"}, {"var": "IMPORT_BILL", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "INR_USD", "direction": "up", "is_anchor": false, "confirmed_by_series": false}], "edges": [{"edge_id": "te1", "src_var": "FPI_FLOWS", "dst_var": "INR_USD", "direction": "up", "provenance": "source_asserted", "strength": "correlational", "hop": 1, "evidence_span": "The rupee closed at a new low of 94.8125 per US Dollar, down about 84 paise against the previous close of 93.9775, amid rising global energy prices, FPI-related outflows from domestic equity markets and a strengthening Dollar", "evidence_doc_id": "businessline-6a0ed15b9a4761115dc7", "evidence_passage_id": "businessline-6a0ed15b9a4761115dc7#p1", "evidence_published_at": "2026-03-27T20:35:36+05:30", "candidate_evidence": [], "note": "'amid' lists three conditions and asserts no mechanism. Drafted correlational on the annotation guide's own reading of 'amid'."}, {"edge_id": "te3", "src_var": "INR_USD", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill", "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6", "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5", "evidence_published_at": "2026-03-05T09:53:00+05:30", "candidate_evidence": [], "note": "Hypothetical ('would'), so drafted conditional."}, {"edge_id": "te4", "src_var": "INR_USD", "dst_var": "CURRENT_ACCOUNT_DEFICIT", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill, widen both the current account deficit", "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6", "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5", "evidence_published_at": "2026-03-05T09:53:00+05:30", "candidate_evidence": [], "note": "Hypothetical ('would'), so drafted conditional."}, {"edge_id": "te5", "src_var": "INR_USD", "dst_var": "FISCAL_DEFICIT", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill, widen both the current account deficit and fiscal deficit", "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6", "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5", "evidence_published_at": "2026-03-05T09:53:00+05:30", "candidate_evidence": [], "note": "Shared verb across two deficits; see tw5."}], "paths": [], "schema_version": "1.0.0", "notes": "ADJUDICATED 2026-11-11. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_test_gold_graphs.py and each edge passes the B6 rule layer. Two annotators then labelled every drafted edge independently, blind to the draft and to each other: raw agreement 1.000 on whether the span asserts the relation (Cohen's kappa 1.000) and 1.000 on direction, with kappa undefined there because one label was used throughout. Strength agreed on 1 of 8 (raw 0.125, kappa 0.000), and the pre-declared direct-versus-hedged collapse did not rescue it because that is the axis of the split (reports/adjudication_kappa_test.md). Reconciliation applied one rule, D-30: strength is read off the modality of the clause carrying the causal claim, not off the manner in which the mechanism is described, so a claim under 'would' is conditional however firmly the mechanism inside it is worded. Both annotators independently rejected the same two FPI_FLOWS -> GSEC_10Y edges, which are dropped, leaving four edges per graph at exactly MIN_EDGES. The reviewers' attestation lives in data/eval/gold/test/review_receipt.json and is signed separately. Two of the four test queries carry no graph at all: test-cpi-why by D-27, and test-cpi-effects by D-27a.", "_set": "test", "_depth": {"FPI_FLOWS": 0, "INR_USD": 1, "IMPORT_BILL": 2, "CURRENT_ACCOUNT_DEFICIT": 2, "FISCAL_DEFICIT": 2}}, {"query_id": "test-fpi-why", "anchor": {"var": "FPI_FLOWS", "direction": "down", "event": "Net FPI flows of -13,600 USD million for March", "event_date": "2026-03-31", "confirmed_by_series": true, "series_id": "fpi_flows_usd_mn"}, "as_of": "2026-04-20", "nodes": [{"var": "CURRENT_ACCOUNT_DEFICIT", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "FISCAL_DEFICIT", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "FPI_FLOWS", "direction": "down", "is_anchor": true, "confirmed_by_series": true, "series_id": "fpi_flows_usd_mn"}, {"var": "IMPORT_BILL", "direction": "up", "is_anchor": false, "confirmed_by_series": false}, {"var": "INR_USD", "direction": "up", "is_anchor": false, "confirmed_by_series": false}], "edges": [{"edge_id": "tw1", "src_var": "FPI_FLOWS", "dst_var": "INR_USD", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "the rupee is under pressure as exporter payments are not materialising, dollar outflows on account of FPI selling in domestic equity markets continuing", "evidence_doc_id": "businessline-469aabd081e5b5594ab2", "evidence_passage_id": "businessline-469aabd081e5b5594ab2#p4", "evidence_published_at": "2026-03-09T20:55:04+05:30", "candidate_evidence": [], "note": "Three causes are listed together and FPI selling is one of them. A reviewer must decide whether 'on account of' attributes the pressure to FPI selling directly or only lists it alongside two others."}, {"edge_id": "tw3", "src_var": "INR_USD", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill", "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6", "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5", "evidence_published_at": "2026-03-05T09:53:00+05:30", "candidate_evidence": [], "note": "Hypothetical ('would'), so drafted conditional. Do not upgrade it."}, {"edge_id": "tw4", "src_var": "INR_USD", "dst_var": "CURRENT_ACCOUNT_DEFICIT", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill, widen both the current account deficit", "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6", "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5", "evidence_published_at": "2026-03-05T09:53:00+05:30", "candidate_evidence": [], "note": "Same sentence as tw3 and tw5. One span, three destinations: check that each destination's move is stated, not just listed."}, {"edge_id": "tw5", "src_var": "INR_USD", "dst_var": "FISCAL_DEFICIT", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill, widen both the current account deficit and fiscal deficit", "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6", "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5", "evidence_published_at": "2026-03-05T09:53:00+05:30", "candidate_evidence": [], "note": "'widen both the current account deficit and fiscal deficit' - the verb is shared. A reviewer may read the fiscal leg as weaker than the current-account leg."}], "paths": [], "schema_version": "1.0.0", "notes": "ADJUDICATED 2026-11-11. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_test_gold_graphs.py and each edge passes the B6 rule layer. Two annotators then labelled every drafted edge independently, blind to the draft and to each other: raw agreement 1.000 on whether the span asserts the relation (Cohen's kappa 1.000) and 1.000 on direction, with kappa undefined there because one label was used throughout. Strength agreed on 1 of 8 (raw 0.125, kappa 0.000), and the pre-declared direct-versus-hedged collapse did not rescue it because that is the axis of the split (reports/adjudication_kappa_test.md). Reconciliation applied one rule, D-30: strength is read off the modality of the clause carrying the causal claim, not off the manner in which the mechanism is described, so a claim under 'would' is conditional however firmly the mechanism inside it is worded. Both annotators independently rejected the same two FPI_FLOWS -> GSEC_10Y edges, which are dropped, leaving four edges per graph at exactly MIN_EDGES. The reviewers' attestation lives in data/eval/gold/test/review_receipt.json and is signed separately. Two of the four test queries carry no graph at all: test-cpi-why by D-27, and test-cpi-effects by D-27a.", "_set": "test", "_depth": {"FPI_FLOWS": 0, "INR_USD": 1, "IMPORT_BILL": 2, "CURRENT_ACCOUNT_DEFICIT": 2, "FISCAL_DEFICIT": 2}}];
+const svg = document.getElementById('svg');
+const detail = document.getElementById('detail');
+const pick = document.getElementById('pick');
+const NS = 'http://www.w3.org/2000/svg';
+
+GRAPHS.forEach((g, i) => {
+  const o = document.createElement('option');
+  o.value = i;
+  o.textContent = g.query_id + '  \u00b7  ' + g._set + '  \u00b7  cutoff ' + g.as_of;
+  pick.appendChild(o);
+});
+
+const el = (name, attrs, text) => {
+  const n = document.createElementNS(NS, name);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (text !== undefined) n.textContent = text;
+  return n;
+};
+const esc = (s) => String(s === null || s === undefined ? '' : s);
+
+function layout(g) {
+  const COL = 210, ROWH = 62, BOXW = 164, BOXH = 40, PADX = 20, PADY = 26;
+  const byDepth = {};
+  for (const v in g._depth) (byDepth[g._depth[v]] ||= []).push(v);
+  const pos = {};
+  let rows = 0;
+  Object.keys(byDepth).map(Number).sort((a, b) => a - b).forEach((d) => {
+    byDepth[d].sort();
+    rows = Math.max(rows, byDepth[d].length);
+    byDepth[d].forEach((v, i) => {
+      pos[v] = { x: PADX + d * COL, y: PADY + i * ROWH, w: BOXW, h: BOXH };
+    });
+  });
+  const depths = Object.keys(byDepth).length;
+  return { pos, width: PADX * 2 + (depths - 1) * COL + BOXW, height: PADY * 2 + rows * ROWH };
+}
+
+function draw(g) {
+  svg.textContent = '';
+  const { pos, width, height } = layout(g);
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  svg.setAttribute('width', width);
+  svg.setAttribute('height', height);
+
+  g.edges.forEach((e) => {
+    const a = pos[e.src_var], b = pos[e.dst_var];
+    if (!a || !b) return;
+    const asserted = e.provenance === 'source_asserted';
+    const grp = el('g', {
+      class: 'edge ' + (asserted ? 'asserted' : 'inferred'),
+      tabindex: '0', role: 'button',
+      'aria-label': e.src_var + ' to ' + e.dst_var + ', ' + e.provenance
+    });
+    const x1 = a.x + a.w, y1 = a.y + a.h / 2, x2 = b.x, y2 = b.y + b.h / 2;
+    const mid = (x1 + x2) / 2;
+    grp.appendChild(el('path', { d: `M${x1},${y1} C${mid},${y1} ${mid},${y2} ${x2},${y2}` }));
+    grp.appendChild(el('text', {
+      x: (x1 + x2) / 2, y: (y1 + y2) / 2 - 6, 'text-anchor': 'middle'
+    }, e.strength + ' \u00b7 hop ' + e.hop));
+    const show = () => {
+      svg.querySelectorAll('.edge.on').forEach((n) => n.classList.remove('on'));
+      grp.classList.add('on');
+      describe(g, e);
+    };
+    grp.addEventListener('click', show);
+    grp.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); show(); }
+    });
+    svg.appendChild(grp);
+  });
+
+  (g.nodes || []).forEach((n) => {
+    const p = pos[n.var];
+    if (!p) return;
+    const grp = el('g', { class: 'node' + (n.is_anchor ? ' anchor' : '') });
+    grp.appendChild(el('rect', { x: p.x, y: p.y, width: p.w, height: p.h, rx: 7 }));
+    grp.appendChild(el('text', { x: p.x + 10, y: p.y + 17 }, n.var.replace(/_/g, ' ')));
+    const arrow = n.direction === 'up' ? '\u2191' : n.direction === 'down' ? '\u2193' : '\u2192';
+    grp.appendChild(el('text', { x: p.x + 10, y: p.y + 31, class: 'dir' },
+      arrow + ' ' + n.direction + (n.confirmed_by_series ? ' \u00b7 series-confirmed' : '')));
+    svg.appendChild(grp);
+  });
+}
+
+function describe(g, e) {
+  const asserted = e.provenance === 'source_asserted';
+  const quote = asserted
+    ? '<blockquote>' + esc(e.evidence_span) + '</blockquote>'
+    : '<blockquote class="none">No supporting passage was found and verified under the '
+      + 'permitted search. The link is the model\u2019s reasoning, which is unsourced &mdash; '
+      + 'not necessarily wrong.</blockquote>';
+  const rows = [
+    ['Claim', esc(e.src_var) + ' \u2192 ' + esc(e.dst_var) + ' (' + esc(e.direction) + ')'],
+    ['Provenance', esc(e.provenance)],
+    ['Strength', esc(e.strength)],
+    ['Hop', esc(e.hop)]
+  ];
+  if (asserted) {
+    rows.push(['Passage', '<code>' + esc(e.evidence_passage_id) + '</code>']);
+    rows.push(['Published', esc((e.evidence_published_at || '').slice(0, 10))]);
+  }
+  rows.push(['Query cutoff', esc(g.as_of)]);
+  detail.innerHTML = '<h2>' + esc(e.edge_id) + '</h2>' + quote
+    + '<dl>' + rows.map(([k, v]) => '<dt>' + k + '</dt><dd>' + v + '</dd>').join('') + '</dl>'
+    + (e.note ? '<p class="note">Annotator note: ' + esc(e.note) + '</p>' : '');
+}
+
+function select(i) {
+  const g = GRAPHS[i];
+  draw(g);
+  detail.innerHTML = '<p class="hint">Select a link in the graph above.</p>';
+  document.getElementById('foot').textContent = g.notes || '';
+}
+pick.addEventListener('change', () => select(+pick.value));
+
+document.getElementById('theme').addEventListener('click', () => {
+  const now = document.documentElement.getAttribute('data-theme');
+  const next = now === 'dark' ? 'light' : now === 'light' ? 'dark'
+    : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch (_) {}
+});
+try {
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+} catch (_) {}
+
+select(0);
+</script>
+</body>
+</html>

@@ -404,9 +404,18 @@ is **15 November** with work winding up **12 November**, so it splits in two.
 **Dropped for the 15 November date**, and reported as limitations rather than
 left to look like oversights:
 
-- **The interactive event-impact graph.** Static SVG/PNG rendering exists
-  (`src/eval/figures.py`, `reports/figures/`) and is what ships. Interactivity is not reachable in
-  12 days alongside the experiments, and neither research question needs it.
+- ~~**The interactive event-impact graph.**~~ **Built on 11 November** and no
+  longer dropped. The judgement on 29 October was that interactivity was not
+  reachable "alongside the experiments"; the experiments finished, and the
+  graphs were already structured data, so `scripts/build_graph_explorer.py`
+  emits `reports/graph_explorer.html` — one self-contained file, no network,
+  every edge clickable through to its span, passage id, publication date and
+  cutoff. Static SVG/PNG still ships in the report (`src/eval/figures.py`).
+  It is **opened from disk and never served**: the spans are corpus excerpts
+  under a research-use, no-redistribution licence, which is why
+  `data/processed/articles.jsonl` is gitignored in the first place. Neither
+  research question needs it; the proposal's section 8 asks for it as the
+  prototype's final output.
 - **Blind scoring at scale** beyond the 4 dev and 4 test queries.
 - **B1-R end-to-end benefit**, deferred since D-03. The retrieval-side
   comparison stands (Recall@10 0.5296 against 0.4259); the end-to-end claim is
