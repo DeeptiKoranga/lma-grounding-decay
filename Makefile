@@ -15,6 +15,7 @@ RETRIEVER ?= bge_m3
 DENSE_INDEX ?= data/interim/corpus_v7_index_20261026/bge_m3_vectors.json
 MODEL_SELECTION ?= configs/model_selection.json
 MODEL_ARGS ?= --model-selection $(MODEL_SELECTION)
+GENERATOR_REVISION ?= 545dc4251c05440727734bcd94334791f6ab0192
 
 .PHONY: run-dev run-all-dev review-dev audit-dev synthetic-faults agent-metrics reasoning-diagnostics
 
@@ -82,7 +83,7 @@ audit-dev: ## Validate generated graphs, safety boundaries, logs and measured co
 synthetic-faults: ## Exercise the frozen synthetic tool-fault diagnostic
 	PYTHONPATH=src $(PY) python -m eval.faults --output reports/tool_faults_recheck.json
 
-.PHONY: gold adjudicate kappa rq rq-from-packets challenge explorer
+.PHONY: gold adjudicate kappa rq rq-from-packets challenge challenge-model-arm explorer
 
 gold: ## Re-draft the dev gold graphs and check every span against the corpus
 	PYTHONPATH=src $(PY) python scripts/draft_gold_graphs.py
@@ -126,6 +127,11 @@ rq-from-packets: ## Re-evaluate from local review packets instead (needs the swe
 
 explorer: ## Build the interactive event-impact graph (open it from disk, do not serve it)
 	PYTHONPATH=src $(PY) python scripts/build_graph_explorer.py
+
+challenge-model-arm: ## The verifier arm: what it catches that the rules cannot (local model required)
+	HF_HOME="$(CURDIR)/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src $(LMA_PYTHON) \
+		scripts/run_challenge_model_arm.py --revision $(GENERATOR_REVISION) \
+		--output runs/challenge-model-arm --resume
 
 challenge: ## Build the challenge set and run the rules-only arm (no model needed)
 	# Needs a signed data/eval/gold/dev/review_receipt.json. Add --allow-unreviewed
