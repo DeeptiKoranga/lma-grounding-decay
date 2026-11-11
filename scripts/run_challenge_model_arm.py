@@ -49,6 +49,7 @@ import hashlib
 import json
 import uuid
 from collections import defaultdict
+from datetime import date
 from pathlib import Path
 
 from agent.logging import RunLogger
@@ -79,7 +80,7 @@ def flagged(kind: str, claimed: Edge, result) -> tuple[bool, str]:
         # so a correct verifier returns source-asserted and disagrees on
         # strength. Reading provenance would score that as a miss.
         if result.strength is None:
-            return (not sourced, "no strength returned; rejected before judging")
+            return (False, "no weaker strength returned")
         weaker = strength_rank(Strength(result.strength)) > strength_rank(claimed.strength)
         return (weaker, f"returned {result.strength} against claimed {claimed.strength}")
     if kind == "control":
@@ -125,6 +126,7 @@ def render(summary: dict, rules_report: Path | None = None) -> str:
     semantic = [k for k in SEMANTIC if k in summary]
     caught = sum(summary[k]["flagged"] for k in semantic)
     total = sum(summary[k]["scored"] for k in semantic)
+    semantic_total = sum(summary[k]["total"] for k in semantic)
     control = summary.get("control", {})
     lines = [
         "# Challenge set, model arm: what the verifier catches that rules cannot",
@@ -137,20 +139,23 @@ def render(summary: dict, rules_report: Path | None = None) -> str:
         "span, so no deterministic rule can see it. This arm measures the verifier on "
         "exactly those items.",
         "",
-        "| Corruption family | Scored | Flagged | Rate | Rules could see it? |",
-        "|---|---:|---:|---:|---|",
+        "| Corruption family | Items | Scored | Flagged | Rate | Rules could see it? |",
+        "|---|---:|---:|---:|---:|---|",
     ]
     for kind, row in summary.items():
         if kind == "control":
             continue
         rate = "n/a" if row["rate"] is None else f"{row['rate']:.3f}"
         visible = "no, by construction" if kind in SEMANTIC else "yes, rejected before the model"
-        lines.append(f"| {kind} | {row['scored']} | {row['flagged']} | {rate} | {visible} |")
+        lines.append(
+            f"| {kind} | {row['total']} | {row['scored']} | {row['flagged']} | {rate} | {visible} |"
+        )
     if control:
         rate = "n/a" if control["rate"] is None else f"{control['rate']:.3f}"
         lines += [
             "",
             f"**False-alarm rate on the {control['scored']} clean controls: {rate}.** "
+            f"Unscored controls: {control['errors']}. "
             f"Strength disagreements on controls, reported separately and not counted as "
             f"false alarms: {control['strength_disagreements']}.",
         ]
@@ -160,8 +165,8 @@ def render(summary: dict, rules_report: Path | None = None) -> str:
         "",
         f"**{caught} of {total} semantic corruptions caught** "
         f"({'n/a' if not total else round(caught / total, 3)}), against **0 of {total}** "
-        "for the rule layer. The gap is the verifier's contribution to the Reasoning "
-        "capability, measured rather than argued.",
+        "for the rule layer on the same scored subset. "
+        f"{semantic_total - total} of {semantic_total} semantic items were unscored.",
         "",
         "## How detection is defined, and why it differs by family",
         "",
@@ -277,23 +282,30 @@ def main(argv: list[str] | None = None) -> int:
                 sink.write(json.dumps(row) + "\n")
                 sink.flush()
                 continue
+            run_id = uuid.uuid4().hex
+            log_path = args.output / f"{item_id}.jsonl"
+            if log_path.exists():
+                log_path = args.output / f"{item_id}-{run_id}.jsonl"
             logger = RunLogger(
-                args.output / f"{item_id}.jsonl",
-                run_id=uuid.uuid4().hex,
+                log_path,
+                run_id=run_id,
                 query_id=item_id,
                 condition="M",
             )
+            verifier.log_model = logger.model
             try:
                 result = verifier.verify(
                     edge,
                     passage=passage,
                     span=edge.evidence_span or "",
-                    as_of=item["as_of"],
+                    as_of=date.fromisoformat(item["as_of"]),
                     call_id=item_id,
                 )
                 hit, why = flagged(kind, edge, result)
                 row |= {
                     "flagged": hit,
+                    "rule_failures": result.rule_failures,
+                    "log_file": log_path.name,
                     "why": why,
                     "verdict": str(result.verdict),
                     "provenance": str(result.provenance),
@@ -304,7 +316,7 @@ def main(argv: list[str] | None = None) -> int:
                     ),
                 }
             except ValueError as exc:
-                row |= {"error": f"unparseable judgment: {exc}"}
+                row |= {"error": f"unparseable judgment: {exc}", "log_file": log_path.name}
             finally:
                 logger.close()
             sink.write(json.dumps(row) + "\n")
@@ -319,7 +331,7 @@ def main(argv: list[str] | None = None) -> int:
     summary = summarise(rows)
     write_json(args.output / "summary.json", summary)
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(render(summary, REPO / "reports/challenge_rules.md"), encoding="utf-8")
+    args.report.write_text(render(summary, Path("reports/challenge_rules.md")), encoding="utf-8")
     print(f"\nwrote {args.report}")
     print(json.dumps({k: {"scored": v["scored"], "rate": v["rate"]} for k, v in summary.items()}))
     return 0

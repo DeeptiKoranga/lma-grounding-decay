@@ -10,13 +10,15 @@ record zero detections for a verifier doing exactly the right thing.
 from __future__ import annotations
 
 import importlib.util
+import json
 from datetime import date
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
-from schema import Edge, Provenance, Strength, VerifyVerdict
+from llm.generate import Completion
+from schema import Edge, Provenance, Strength, VerifyVerdict, iter_run_log
 
 REPO = Path(__file__).resolve().parents[2]
 _spec = importlib.util.spec_from_file_location(
@@ -108,13 +110,13 @@ def test_a_stronger_label_than_claimed_is_not_a_detection():
     assert not hit
 
 
-def test_an_inflated_item_rejected_before_judging_counts_on_provenance():
+def test_an_inflated_item_without_a_strength_is_not_a_detection():
     hit, why = module.flagged(
         "inflated_strength",
         _edge(strength=Strength.DIRECT),
         _result(VerifyVerdict.UNSUPPORTED, Provenance.MODEL_INFERRED, None),
     )
-    assert hit and "rejected before judging" in why
+    assert not hit and "no weaker strength" in why
 
 
 def test_a_clean_control_the_verifier_sources_is_not_a_false_alarm():
@@ -201,3 +203,70 @@ def test_the_semantic_families_are_the_ones_the_rules_cannot_see(kind):
     from eval.challenge import CORRUPTIONS
 
     assert kind in CORRUPTIONS
+
+
+def test_runner_uses_date_cutoff_and_records_model_calls(tmp_path, monkeypatch, graph, passages):
+    edge = graph.edges[0]
+    passage = next(p for p in passages if p.passage_id == edge.evidence_passage_id)
+    corpus = tmp_path / "corpus.jsonl"
+    corpus.write_text(passage.model_dump_json() + "\n", encoding="utf-8")
+    items = tmp_path / "items.jsonl"
+    items.write_text(
+        json.dumps(
+            {
+                "item_id": "control",
+                "query_id": graph.query_id,
+                "passage_id": passage.passage_id,
+                "edge": edge.model_dump(mode="json"),
+                "as_of": str(graph.as_of),
+                "proposed_corruption": None,
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    reply = Completion(
+        json.dumps(
+            {
+                "verdict": "supported",
+                "direction": edge.direction,
+                "strength": edge.strength,
+                "reason": "test fixture",
+            }
+        ),
+        "mock",
+        "mlx",
+        20,
+        10,
+        1.0,
+    )
+    monkeypatch.setattr(
+        module,
+        "MLXGenerator",
+        lambda *args, **kwargs: SimpleNamespace(generate=lambda *a, **kw: reply),
+    )
+    monkeypatch.setattr(module, "model_identity", lambda _: {})
+    monkeypatch.setattr(module, "runtime_identity", dict)
+    output = tmp_path / "run"
+    output.mkdir()
+    (output / "control.jsonl").touch()
+    args = [
+        "--corpus",
+        str(corpus),
+        "--items",
+        str(items),
+        "--revision",
+        "test",
+        "--output",
+        str(output),
+        "--report",
+        str(tmp_path / "report.md"),
+        "--resume",
+    ]
+    assert module.main(args) == 0
+    row = json.loads((output / "results.jsonl").read_text(encoding="utf-8"))
+    assert row["flagged"] is False
+    log = iter_run_log(output / row["log_file"])
+    assert len(log) == 1 and log[0].query_id == "control" and log[0].json_valid
+    assert module.main(args) == 0
+    assert len((output / "results.jsonl").read_text(encoding="utf-8").splitlines()) == 1
