@@ -5,7 +5,7 @@ UV ?= $(shell command -v uv 2>/dev/null || echo $(HOME)/Library/Python/3.9/bin/u
 PY := $(UV) run
 
 .DEFAULT_GOAL := help
-.PHONY: help setup test lint fmt schemas fixtures hooks clean
+.PHONY: help setup test lint fmt schemas fixtures hooks clean demo
 
 LMA_PYTHON ?= data/raw/llm_env/bin/python
 DEV_OUTPUT ?= runs/local-v7-dev
@@ -164,6 +164,10 @@ setup: ## Create .venv (Python 3.12) and install the project + dev tools
 	$(UV) python install 3.12
 	$(UV) sync --python 3.12 --extra dev
 	@echo "env ready -> .venv (python 3.12). Run 'make hooks' once to enable pre-commit."
+
+DEMO_OUTPUT ?= runs/demo
+demo: ## Run all seven conditions on synthetic fixtures and build a browser demo
+	PYTHONPATH=src $(PY) python -m scripts.run_demo --output "$(DEMO_OUTPUT)"
 
 test: ## Run the test suite
 	$(PY) pytest

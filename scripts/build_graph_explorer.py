@@ -55,8 +55,6 @@ def _load(directories) -> list[dict]:
             payload = json.loads(path.read_text(encoding="utf-8"))
             payload["_set"] = directory.name
             graphs.append(payload)
-    if not graphs:
-        raise SystemExit(f"no graphs found under {', '.join(str(d) for d in directories)}")
     return graphs
 
 
@@ -134,6 +132,8 @@ svg { display: block; min-width: 620px; }
 .edge.asserted path { stroke: var(--asserted); }
 .edge.inferred path { stroke: var(--inferred); stroke-dasharray: 6 4; }
 .edge.on path { stroke-width: 3.4; }
+.arrow-asserted { fill: var(--asserted); }
+.arrow-inferred { fill: var(--inferred); }
 .edge text { font-size: 10.5px; fill: var(--muted); }
 .detail { margin-top: 14px; background: var(--panel); border: 1px solid var(--line);
   border-radius: 11px; padding: 16px; box-shadow: var(--shadow); }
@@ -161,11 +161,11 @@ footer { max-width: 1180px; margin: 0 auto; padding: 0 16px 40px; color: var(--m
 </header>
 <div class="wrap">
   <div class="controls">
-    <select id="pick"></select>
+    <select id="pick" aria-label="Select graph and condition"></select>
     <button id="theme" type="button">Toggle theme</button>
   </div>
   <div class="legend">
-    <span class="key"><i class="solid"></i> source-asserted &mdash; a passage states it</span>
+    <span class="key"><i class="solid"></i> source-asserted &mdash; presented as sourced</span>
     <span class="key"><i class="dash"></i> model-inferred &mdash; no verified source found</span>
     <span class="key">columns are hop distance from the anchor</span>
   </div>
@@ -193,10 +193,9 @@ const el = (name, attrs, text) => {
   if (text !== undefined) n.textContent = text;
   return n;
 };
-const esc = (s) => String(s === null || s === undefined ? '' : s);
 
 function layout(g) {
-  const COL = 210, ROWH = 62, BOXW = 164, BOXH = 40, PADX = 20, PADY = 26;
+  const COL = 280, ROWH = 62, BOXW = 164, BOXH = 40, PADX = 20, PADY = 26;
   const byDepth = {};
   for (const v in g._depth) (byDepth[g._depth[v]] ||= []).push(v);
   const pos = {};
@@ -218,6 +217,16 @@ function draw(g) {
   svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
   svg.setAttribute('width', width);
   svg.setAttribute('height', height);
+  const defs = el('defs', {});
+  for (const kind of ['asserted', 'inferred']) {
+    const marker = el('marker', {
+      id: 'arrow-' + kind, viewBox: '0 0 8 8', markerWidth: 5, markerHeight: 5,
+      refX: 8, refY: 4, orient: 'auto'
+    });
+    marker.appendChild(el('polygon', { points: '0,0 8,4 0,8', class: 'arrow-' + kind }));
+    defs.appendChild(marker);
+  }
+  svg.appendChild(defs);
 
   g.edges.forEach((e) => {
     const a = pos[e.src_var], b = pos[e.dst_var];
@@ -230,7 +239,10 @@ function draw(g) {
     });
     const x1 = a.x + a.w, y1 = a.y + a.h / 2, x2 = b.x, y2 = b.y + b.h / 2;
     const mid = (x1 + x2) / 2;
-    grp.appendChild(el('path', { d: `M${x1},${y1} C${mid},${y1} ${mid},${y2} ${x2},${y2}` }));
+    grp.appendChild(el('path', {
+      d: `M${x1},${y1} C${mid},${y1} ${mid},${y2} ${x2},${y2}`,
+      'marker-end': asserted ? 'url(#arrow-asserted)' : 'url(#arrow-inferred)'
+    }));
     grp.appendChild(el('text', {
       x: (x1 + x2) / 2, y: (y1 + y2) / 2 - 6, 'text-anchor': 'middle'
     }, e.strength + ' \\u00b7 hop ' + e.hop));
@@ -261,31 +273,47 @@ function draw(g) {
 
 function describe(g, e) {
   const asserted = e.provenance === 'source_asserted';
-  const quote = asserted
-    ? '<blockquote>' + esc(e.evidence_span) + '</blockquote>'
-    : '<blockquote class="none">No supporting passage was found and verified under the '
-      + 'permitted search. The link is the model\\u2019s reasoning, which is unsourced &mdash; '
-      + 'not necessarily wrong.</blockquote>';
+  const heading = document.createElement('h2');
+  heading.textContent = e.edge_id;
+  const quote = document.createElement('blockquote');
+  quote.textContent = asserted ? e.evidence_span : 'No verified source is attached to this link.';
+  if (!asserted) quote.className = 'none';
   const rows = [
-    ['Claim', esc(e.src_var) + ' \\u2192 ' + esc(e.dst_var) + ' (' + esc(e.direction) + ')'],
-    ['Provenance', esc(e.provenance)],
-    ['Strength', esc(e.strength)],
-    ['Hop', esc(e.hop)]
+    ['Claim', e.src_var + ' → ' + e.dst_var + ' (' + e.direction + ')'],
+    ['Provenance', e.provenance],
+    ['Strength', e.strength],
+    ['Hop', e.hop]
   ];
   if (asserted) {
-    rows.push(['Passage', '<code>' + esc(e.evidence_passage_id) + '</code>']);
-    rows.push(['Published', esc((e.evidence_published_at || '').slice(0, 10))]);
+    rows.push(['Verification', e.verified_by || 'Unrecorded']);
+    rows.push(['Passage', e.evidence_passage_id]);
+    rows.push(['Published', (e.evidence_published_at || '').slice(0, 10)]);
   }
-  rows.push(['Query cutoff', esc(g.as_of)]);
-  detail.innerHTML = '<h2>' + esc(e.edge_id) + '</h2>' + quote
-    + '<dl>' + rows.map(([k, v]) => '<dt>' + k + '</dt><dd>' + v + '</dd>').join('') + '</dl>'
-    + (e.note ? '<p class="note">Annotator note: ' + esc(e.note) + '</p>' : '');
+  rows.push(['Query cutoff', g.as_of]);
+  const definitionList = document.createElement('dl');
+  for (const [name, value] of rows) {
+    const label = document.createElement('dt');
+    const definition = document.createElement('dd');
+    label.textContent = name;
+    definition.textContent = value;
+    definitionList.append(label, definition);
+  }
+  detail.replaceChildren(heading, quote, definitionList);
+  if (e.note) {
+    const note = document.createElement('p');
+    note.className = 'note';
+    note.textContent = 'Annotator note: ' + e.note;
+    detail.append(note);
+  }
 }
 
 function select(i) {
   const g = GRAPHS[i];
   draw(g);
-  detail.innerHTML = '<p class="hint">Select a link in the graph above.</p>';
+  const hint = document.createElement('p');
+  hint.className = 'hint';
+  hint.textContent = 'Select a link in the graph above.';
+  detail.replaceChildren(hint);
   const paths = (g.paths || []).map((path) =>
     path.edge_ids.join(' → ') + ' · ' + path.weakest_strength +
     ' · ' + (path.fully_sourced ? 'fully sourced' : 'partly inferred')
@@ -328,6 +356,8 @@ def build(directories=GOLD_DIRS, output: Path = OUTPUT, *, demo=False, run_artif
         payload = json.loads(artifact.read_text(encoding="utf-8"))
         graph = Graph.model_validate(payload["graph"])
         graphs.append({**graph.model_dump(mode="json"), "_set": graph.condition or "generated"})
+    if not graphs:
+        raise SystemExit("no reference or run graphs found")
     for graph in graphs:
         graph["_depth"] = _depths(graph)
     payload = json.dumps(graphs, ensure_ascii=False)

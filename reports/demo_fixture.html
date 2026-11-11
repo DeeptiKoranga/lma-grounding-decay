@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event-impact graph explorer</title>
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: #fbfbf9; --panel: #ffffff; --ink: #16181d; --muted: #5b6270;
+  --line: #d9dce3; --asserted: #176b5d; --inferred: #9a6b16;
+  --anchor: #1f3d7a; --chip: #eef1f6; --shadow: 0 1px 2px rgba(16,18,24,.07);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14161a; --panel: #1c1f25; --ink: #e9ecf1; --muted: #9aa3b2;
+    --line: #333842; --asserted: #4fbfa8; --inferred: #d9a441;
+    --anchor: #7da2e8; --chip: #262b33; --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14161a; --panel: #1c1f25; --ink: #e9ecf1; --muted: #9aa3b2;
+  --line: #333842; --asserted: #4fbfa8; --inferred: #d9a441;
+  --anchor: #7da2e8; --chip: #262b33; --shadow: none;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.55 ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+header { padding: 20px 16px 0; max-width: 1180px; margin: 0 auto; }
+h1 { font-size: 1.3rem; margin: 0 0 4px; letter-spacing: -.01em; }
+.sub { color: var(--muted); font-size: .88rem; margin: 0 0 14px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 16px 48px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+select, button {
+  font: inherit; color: var(--ink); background: var(--panel);
+  border: 1px solid var(--line); border-radius: 7px; padding: 6px 10px; cursor: pointer;
+}
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .82rem; color: var(--muted);
+  margin: 0 0 14px; align-items: center; }
+.key { display: inline-flex; align-items: center; gap: 6px; }
+.key i { width: 26px; height: 0; border-top-width: 2px; display: inline-block; }
+.solid { border-top-style: solid; border-color: var(--asserted); }
+.dash { border-top-style: dashed; border-color: var(--inferred); }
+.board { background: var(--panel); border: 1px solid var(--line); border-radius: 11px;
+  box-shadow: var(--shadow); padding: 8px; overflow-x: auto; }
+svg { display: block; min-width: 620px; }
+.node rect { fill: var(--chip); stroke: var(--line); }
+.node.anchor rect { stroke: var(--anchor); stroke-width: 2; }
+.node text { fill: var(--ink); font-size: 12px; }
+.node .dir { fill: var(--muted); font-size: 11px; }
+.edge { cursor: pointer; }
+.edge path { fill: none; stroke-width: 1.8; }
+.edge.asserted path { stroke: var(--asserted); }
+.edge.inferred path { stroke: var(--inferred); stroke-dasharray: 6 4; }
+.edge.on path { stroke-width: 3.4; }
+.arrow-asserted { fill: var(--asserted); }
+.arrow-inferred { fill: var(--inferred); }
+.edge text { font-size: 10.5px; fill: var(--muted); }
+.detail { margin-top: 14px; background: var(--panel); border: 1px solid var(--line);
+  border-radius: 11px; padding: 16px; box-shadow: var(--shadow); }
+.detail h2 { font-size: .98rem; margin: 0 0 10px; }
+blockquote { margin: 0 0 12px; padding: 10px 14px; border-left: 3px solid var(--asserted);
+  background: var(--chip); border-radius: 0 7px 7px 0; font-size: .93rem; }
+blockquote.none { border-left-color: var(--inferred); color: var(--muted); font-style: italic; }
+dl { display: grid; grid-template-columns: auto 1fr; gap: 5px 14px; margin: 0; font-size: .86rem; }
+dt { color: var(--muted); }
+dd { margin: 0; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .85em; }
+.hint { color: var(--muted); font-size: .86rem; }
+.note { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: .84rem; }
+footer { max-width: 1180px; margin: 0 auto; padding: 0 16px 40px; color: var(--muted);
+  font-size: .8rem; line-height: 1.6; }
+@media (max-width: 640px) { .wrap, header, footer { padding-left: 12px; padding-right: 12px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Event-impact graph explorer</h1>
+  <p class="sub">Every link is labelled by where it came from. Click one to read the
+  evidence it rests on &mdash; or to see that it has none.</p>
+</header>
+<div class="wrap">
+  <div class="controls">
+    <select id="pick" aria-label="Select graph and condition"></select>
+    <button id="theme" type="button">Toggle theme</button>
+  </div>
+  <div class="legend">
+    <span class="key"><i class="solid"></i> source-asserted &mdash; presented as sourced</span>
+    <span class="key"><i class="dash"></i> model-inferred &mdash; no verified source found</span>
+    <span class="key">columns are hop distance from the anchor</span>
+  </div>
+  <div class="board"><svg id="svg" role="img" aria-label="Event-impact graph"></svg></div>
+  <div class="detail" id="detail"><p class="hint">Select a link in the graph above.</p></div>
+</div>
+<footer id="foot"></footer>
+<script>
+const GRAPHS = [{"query_id": "synthetic-oil-effects", "anchor": {"var": "BRENT", "direction": "up", "event": "Brent crossed $100 a barrel on 12 March 2026", "event_date": "2026-03-12", "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, "as_of": "2026-03-20", "nodes": [{"var": "BRENT", "direction": "up", "label": null, "is_anchor": true, "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, {"var": "INDIAN_BASKET", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "IMPORT_BILL", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "INR_USD", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}], "edges": [{"edge_id": "edge-1", "src_var": "BRENT", "dst_var": "INDIAN_BASKET", "direction": "up", "provenance": "model_inferred", "strength": "direct", "hop": 1, "evidence_span": null, "evidence_doc_id": null, "evidence_passage_id": null, "evidence_published_at": null, "candidate_evidence": [], "verified_by": null, "verdict": null, "note": null}, {"edge_id": "edge-2", "src_var": "INDIAN_BASKET", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "model_inferred", "strength": "direct", "hop": 2, "evidence_span": null, "evidence_doc_id": null, "evidence_passage_id": null, "evidence_published_at": null, "candidate_evidence": [], "verified_by": null, "verdict": null, "note": null}, {"edge_id": "edge-3", "src_var": "IMPORT_BILL", "dst_var": "INR_USD", "direction": "up", "provenance": "model_inferred", "strength": "conditional", "hop": 3, "evidence_span": null, "evidence_doc_id": null, "evidence_passage_id": null, "evidence_published_at": null, "candidate_evidence": [], "verified_by": null, "verdict": null, "note": null}], "paths": [{"path_id": "path-1", "edge_ids": ["edge-1", "edge-2", "edge-3"], "weakest_strength": "conditional", "fully_sourced": false, "depth": 3}], "condition": "B0", "run_id": "demo-B0", "model": null, "created_at": null, "schema_version": "1.0.0", "notes": "Synthetic demonstration using scripted model and reranker responses.", "_set": "B0", "_depth": {"BRENT": 0, "INDIAN_BASKET": 1, "IMPORT_BILL": 2, "INR_USD": 3}}, {"query_id": "synthetic-oil-effects", "anchor": {"var": "BRENT", "direction": "up", "event": "Brent crossed $100 a barrel on 12 March 2026", "event_date": "2026-03-12", "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, "as_of": "2026-03-20", "nodes": [{"var": "BRENT", "direction": "up", "label": null, "is_anchor": true, "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, {"var": "INDIAN_BASKET", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "IMPORT_BILL", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "INR_USD", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}], "edges": [{"edge_id": "edge-1", "src_var": "BRENT", "dst_var": "INDIAN_BASKET", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "The Indian basket of crude rose to $98.4 a barrel due to the surge in Brent", "evidence_doc_id": "bl-2026-03-12-brent100", "evidence_passage_id": "bl-2026-03-12-brent100#p1", "evidence_published_at": "2026-03-12T18:40:00+05:30", "candidate_evidence": [], "verified_by": "self-label", "verdict": null, "note": null}, {"edge_id": "edge-2", "src_var": "INDIAN_BASKET", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 2, "evidence_span": "India's monthly import bill is expected to widen by about $2.5 billion because of the higher Indian basket price", "evidence_doc_id": "bs-2026-03-13-importbill", "evidence_passage_id": "bs-2026-03-13-importbill#p0", "evidence_published_at": "2026-03-13T09:05:00+05:30", "candidate_evidence": [], "verified_by": "self-label", "verdict": null, "note": null}, {"edge_id": "edge-3", "src_var": "IMPORT_BILL", "dst_var": "INR_USD", "direction": "up", "provenance": "model_inferred", "strength": "conditional", "hop": 3, "evidence_span": null, "evidence_doc_id": null, "evidence_passage_id": null, "evidence_published_at": null, "candidate_evidence": [], "verified_by": null, "verdict": null, "note": null}], "paths": [{"path_id": "path-1", "edge_ids": ["edge-1", "edge-2", "edge-3"], "weakest_strength": "conditional", "fully_sourced": false, "depth": 3}], "condition": "B1", "run_id": "demo-B1", "model": null, "created_at": null, "schema_version": "1.0.0", "notes": "Synthetic demonstration using scripted model and reranker responses.", "_set": "B1", "_depth": {"BRENT": 0, "INDIAN_BASKET": 1, "IMPORT_BILL": 2, "INR_USD": 3}}, {"query_id": "synthetic-oil-effects", "anchor": {"var": "BRENT", "direction": "up", "event": "Brent crossed $100 a barrel on 12 March 2026", "event_date": "2026-03-12", "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, "as_of": "2026-03-20", "nodes": [{"var": "BRENT", "direction": "up", "label": null, "is_anchor": true, "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, {"var": "INDIAN_BASKET", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "IMPORT_BILL", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "INR_USD", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}], "edges": [{"edge_id": "edge-1", "src_var": "BRENT", "dst_var": "INDIAN_BASKET", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "The Indian basket of crude rose to $98.4 a barrel due to the surge in Brent", "evidence_doc_id": "bl-2026-03-12-brent100", "evidence_passage_id": "bl-2026-03-12-brent100#p1", "evidence_published_at": "2026-03-12T18:40:00+05:30", "candidate_evidence": [], "verified_by": "self-label", "verdict": null, "note": null}, {"edge_id": "edge-2", "src_var": "INDIAN_BASKET", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 2, "evidence_span": "India's monthly import bill is expected to widen by about $2.5 billion because of the higher Indian basket price", "evidence_doc_id": "bs-2026-03-13-importbill", "evidence_passage_id": "bs-2026-03-13-importbill#p0", "evidence_published_at": "2026-03-13T09:05:00+05:30", "candidate_evidence": [], "verified_by": "self-label", "verdict": null, "note": null}, {"edge_id": "edge-3", "src_var": "IMPORT_BILL", "dst_var": "INR_USD", "direction": "up", "provenance": "model_inferred", "strength": "conditional", "hop": 3, "evidence_span": null, "evidence_doc_id": null, "evidence_passage_id": null, "evidence_published_at": null, "candidate_evidence": [], "verified_by": null, "verdict": null, "note": null}], "paths": [{"path_id": "path-1", "edge_ids": ["edge-1", "edge-2", "edge-3"], "weakest_strength": "conditional", "fully_sourced": false, "depth": 3}], "condition": "B1-R", "run_id": "demo-B1-R", "model": null, "created_at": null, "schema_version": "1.0.0", "notes": "Synthetic demonstration using scripted model and reranker responses.", "_set": "B1-R", "_depth": {"BRENT": 0, "INDIAN_BASKET": 1, "IMPORT_BILL": 2, "INR_USD": 3}}, {"query_id": "synthetic-oil-effects", "anchor": {"var": "BRENT", "direction": "up", "event": "Brent crossed $100 a barrel on 12 March 2026", "event_date": "2026-03-12", "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, "as_of": "2026-03-20", "nodes": [{"var": "BRENT", "direction": "up", "label": null, "is_anchor": true, "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, {"var": "INDIAN_BASKET", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "IMPORT_BILL", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "INR_USD", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}], "edges": [{"edge_id": "edge-1", "src_var": "BRENT", "dst_var": "INDIAN_BASKET", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "The Indian basket of crude rose to $98.4 a barrel due to the surge in Brent", "evidence_doc_id": "bl-2026-03-12-brent100", "evidence_passage_id": "bl-2026-03-12-brent100#p1", "evidence_published_at": "2026-03-12T18:40:00+05:30", "candidate_evidence": [], "verified_by": "self-label", "verdict": null, "note": null}, {"edge_id": "edge-2", "src_var": "INDIAN_BASKET", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 2, "evidence_span": "India's monthly import bill is expected to widen by about $2.5 billion because of the higher Indian basket price", "evidence_doc_id": "bs-2026-03-13-importbill", "evidence_passage_id": "bs-2026-03-13-importbill#p0", "evidence_published_at": "2026-03-13T09:05:00+05:30", "candidate_evidence": [], "verified_by": "self-label", "verdict": null, "note": null}, {"edge_id": "edge-3", "src_var": "IMPORT_BILL", "dst_var": "INR_USD", "direction": "up", "provenance": "model_inferred", "strength": "conditional", "hop": 3, "evidence_span": null, "evidence_doc_id": null, "evidence_passage_id": null, "evidence_published_at": null, "candidate_evidence": [], "verified_by": null, "verdict": null, "note": null}], "paths": [{"path_id": "path-1", "edge_ids": ["edge-1", "edge-2", "edge-3"], "weakest_strength": "conditional", "fully_sourced": false, "depth": 3}], "condition": "B2", "run_id": "demo-B2", "model": null, "created_at": null, "schema_version": "1.0.0", "notes": "Synthetic demonstration using scripted model and reranker responses.", "_set": "B2", "_depth": {"BRENT": 0, "INDIAN_BASKET": 1, "IMPORT_BILL": 2, "INR_USD": 3}}, {"query_id": "synthetic-oil-effects", "anchor": {"var": "BRENT", "direction": "up", "event": "Brent crossed $100 a barrel on 12 March 2026", "event_date": "2026-03-12", "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, "as_of": "2026-03-20", "nodes": [{"var": "BRENT", "direction": "up", "label": null, "is_anchor": true, "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, {"var": "INDIAN_BASKET", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "IMPORT_BILL", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "INR_USD", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}], "edges": [{"edge_id": "edge-1", "src_var": "BRENT", "dst_var": "INDIAN_BASKET", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "The Indian basket of crude rose to $98.4 a barrel due to the surge in Brent", "evidence_doc_id": "bl-2026-03-12-brent100", "evidence_passage_id": "bl-2026-03-12-brent100#p1", "evidence_published_at": "2026-03-12T18:40:00+05:30", "candidate_evidence": [], "verified_by": "self-label", "verdict": null, "note": null}, {"edge_id": "edge-2", "src_var": "INDIAN_BASKET", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 2, "evidence_span": "India's monthly import bill is expected to widen by about $2.5 billion because of the higher Indian basket price", "evidence_doc_id": "bs-2026-03-13-importbill", "evidence_passage_id": "bs-2026-03-13-importbill#p0", "evidence_published_at": "2026-03-13T09:05:00+05:30", "candidate_evidence": [], "verified_by": "self-label", "verdict": null, "note": null}, {"edge_id": "edge-3", "src_var": "IMPORT_BILL", "dst_var": "INR_USD", "direction": "up", "provenance": "model_inferred", "strength": "conditional", "hop": 3, "evidence_span": null, "evidence_doc_id": null, "evidence_passage_id": null, "evidence_published_at": null, "candidate_evidence": [], "verified_by": null, "verdict": null, "note": null}], "paths": [{"path_id": "path-1", "edge_ids": ["edge-1", "edge-2", "edge-3"], "weakest_strength": "conditional", "fully_sourced": false, "depth": 3}], "condition": "A-NoVerify", "run_id": "demo-A-NoVerify", "model": null, "created_at": null, "schema_version": "1.0.0", "notes": "Synthetic demonstration using scripted model and reranker responses.", "_set": "A-NoVerify", "_depth": {"BRENT": 0, "INDIAN_BASKET": 1, "IMPORT_BILL": 2, "INR_USD": 3}}, {"query_id": "synthetic-oil-effects", "anchor": {"var": "BRENT", "direction": "up", "event": "Brent crossed $100 a barrel on 12 March 2026", "event_date": "2026-03-12", "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, "as_of": "2026-03-20", "nodes": [{"var": "BRENT", "direction": "up", "label": null, "is_anchor": true, "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, {"var": "INDIAN_BASKET", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "IMPORT_BILL", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "INR_USD", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}], "edges": [{"edge_id": "edge-1", "src_var": "BRENT", "dst_var": "INDIAN_BASKET", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "The Indian basket of crude rose to $98.4 a barrel due to the surge in Brent", "evidence_doc_id": "bl-2026-03-12-brent100", "evidence_passage_id": "bl-2026-03-12-brent100#p1", "evidence_published_at": "2026-03-12T18:40:00+05:30", "candidate_evidence": [], "verified_by": "rules+llm", "verdict": "supported", "note": null}, {"edge_id": "edge-2", "src_var": "INDIAN_BASKET", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "India's monthly import bill is expected to widen by about $2.5 billion because of the higher Indian basket price", "evidence_doc_id": "bs-2026-03-13-importbill", "evidence_passage_id": "bs-2026-03-13-importbill#p0", "evidence_published_at": "2026-03-13T09:05:00+05:30", "candidate_evidence": [], "verified_by": "rules+llm", "verdict": "supported", "note": null}, {"edge_id": "edge-3", "src_var": "IMPORT_BILL", "dst_var": "INR_USD", "direction": "up", "provenance": "model_inferred", "strength": "conditional", "hop": 3, "evidence_span": null, "evidence_doc_id": null, "evidence_passage_id": null, "evidence_published_at": null, "candidate_evidence": [], "verified_by": null, "verdict": "unsupported", "note": null}], "paths": [{"path_id": "path-1", "edge_ids": ["edge-1", "edge-2", "edge-3"], "weakest_strength": "conditional", "fully_sourced": false, "depth": 3}], "condition": "A-NoLoop", "run_id": "demo-A-NoLoop", "model": null, "created_at": null, "schema_version": "1.0.0", "notes": "Synthetic demonstration using scripted model and reranker responses.", "_set": "A-NoLoop", "_depth": {"BRENT": 0, "INDIAN_BASKET": 1, "IMPORT_BILL": 2, "INR_USD": 3}}, {"query_id": "synthetic-oil-effects", "anchor": {"var": "BRENT", "direction": "up", "event": "Brent crossed $100 a barrel on 12 March 2026", "event_date": "2026-03-12", "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, "as_of": "2026-03-20", "nodes": [{"var": "BRENT", "direction": "up", "label": null, "is_anchor": true, "confirmed_by_series": true, "series_id": "brent_usd_bbl"}, {"var": "INDIAN_BASKET", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "IMPORT_BILL", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}, {"var": "INR_USD", "direction": "up", "label": null, "is_anchor": false, "confirmed_by_series": false, "series_id": null}], "edges": [{"edge_id": "edge-1", "src_var": "BRENT", "dst_var": "INDIAN_BASKET", "direction": "up", "provenance": "source_asserted", "strength": "direct", "hop": 1, "evidence_span": "The Indian basket of crude rose to $98.4 a barrel due to the surge in Brent", "evidence_doc_id": "bl-2026-03-12-brent100", "evidence_passage_id": "bl-2026-03-12-brent100#p1", "evidence_published_at": "2026-03-12T18:40:00+05:30", "candidate_evidence": [], "verified_by": "rules+llm", "verdict": "supported", "note": null}, {"edge_id": "edge-2", "src_var": "INDIAN_BASKET", "dst_var": "IMPORT_BILL", "direction": "up", "provenance": "source_asserted", "strength": "conditional", "hop": 2, "evidence_span": "India's monthly import bill is expected to widen by about $2.5 billion because of the higher Indian basket price", "evidence_doc_id": "bs-2026-03-13-importbill", "evidence_passage_id": "bs-2026-03-13-importbill#p0", "evidence_published_at": "2026-03-13T09:05:00+05:30", "candidate_evidence": [], "verified_by": "rules+llm", "verdict": "supported", "note": null}, {"edge_id": "edge-3", "src_var": "IMPORT_BILL", "dst_var": "INR_USD", "direction": "up", "provenance": "model_inferred", "strength": "conditional", "hop": 3, "evidence_span": null, "evidence_doc_id": null, "evidence_passage_id": null, "evidence_published_at": null, "candidate_evidence": [], "verified_by": null, "verdict": "unsupported", "note": null}], "paths": [{"path_id": "path-1", "edge_ids": ["edge-1", "edge-2", "edge-3"], "weakest_strength": "conditional", "fully_sourced": false, "depth": 3}], "condition": "M", "run_id": "demo-M", "model": null, "created_at": null, "schema_version": "1.0.0", "notes": "Synthetic demonstration using scripted model and reranker responses.", "_set": "M", "_depth": {"BRENT": 0, "INDIAN_BASKET": 1, "IMPORT_BILL": 2, "INR_USD": 3}}];
+const svg = document.getElementById('svg');
+const detail = document.getElementById('detail');
+const pick = document.getElementById('pick');
+const NS = 'http://www.w3.org/2000/svg';
+
+GRAPHS.forEach((g, i) => {
+  const o = document.createElement('option');
+  o.value = i;
+  o.textContent = g.query_id + '  \u00b7  ' + g._set + '  \u00b7  cutoff ' + g.as_of;
+  pick.appendChild(o);
+});
+
+const el = (name, attrs, text) => {
+  const n = document.createElementNS(NS, name);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (text !== undefined) n.textContent = text;
+  return n;
+};
+
+function layout(g) {
+  const COL = 280, ROWH = 62, BOXW = 164, BOXH = 40, PADX = 20, PADY = 26;
+  const byDepth = {};
+  for (const v in g._depth) (byDepth[g._depth[v]] ||= []).push(v);
+  const pos = {};
+  let rows = 0;
+  Object.keys(byDepth).map(Number).sort((a, b) => a - b).forEach((d) => {
+    byDepth[d].sort();
+    rows = Math.max(rows, byDepth[d].length);
+    byDepth[d].forEach((v, i) => {
+      pos[v] = { x: PADX + d * COL, y: PADY + i * ROWH, w: BOXW, h: BOXH };
+    });
+  });
+  const depths = Math.max(...Object.keys(byDepth).map(Number)) + 1;
+  return { pos, width: PADX * 2 + (depths - 1) * COL + BOXW, height: PADY * 2 + rows * ROWH };
+}
+
+function draw(g) {
+  svg.textContent = '';
+  const { pos, width, height } = layout(g);
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  svg.setAttribute('width', width);
+  svg.setAttribute('height', height);
+  const defs = el('defs', {});
+  for (const kind of ['asserted', 'inferred']) {
+    const marker = el('marker', {
+      id: 'arrow-' + kind, viewBox: '0 0 8 8', markerWidth: 5, markerHeight: 5,
+      refX: 8, refY: 4, orient: 'auto'
+    });
+    marker.appendChild(el('polygon', { points: '0,0 8,4 0,8', class: 'arrow-' + kind }));
+    defs.appendChild(marker);
+  }
+  svg.appendChild(defs);
+
+  g.edges.forEach((e) => {
+    const a = pos[e.src_var], b = pos[e.dst_var];
+    if (!a || !b) return;
+    const asserted = e.provenance === 'source_asserted';
+    const grp = el('g', {
+      class: 'edge ' + (asserted ? 'asserted' : 'inferred'),
+      tabindex: '0', role: 'button',
+      'aria-label': e.src_var + ' to ' + e.dst_var + ', ' + e.provenance
+    });
+    const x1 = a.x + a.w, y1 = a.y + a.h / 2, x2 = b.x, y2 = b.y + b.h / 2;
+    const mid = (x1 + x2) / 2;
+    grp.appendChild(el('path', {
+      d: `M${x1},${y1} C${mid},${y1} ${mid},${y2} ${x2},${y2}`,
+      'marker-end': asserted ? 'url(#arrow-asserted)' : 'url(#arrow-inferred)'
+    }));
+    grp.appendChild(el('text', {
+      x: (x1 + x2) / 2, y: (y1 + y2) / 2 - 6, 'text-anchor': 'middle'
+    }, e.strength + ' \u00b7 hop ' + e.hop));
+    const show = () => {
+      svg.querySelectorAll('.edge.on').forEach((n) => n.classList.remove('on'));
+      grp.classList.add('on');
+      describe(g, e);
+    };
+    grp.addEventListener('click', show);
+    grp.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); show(); }
+    });
+    svg.appendChild(grp);
+  });
+
+  (g.nodes || []).forEach((n) => {
+    const p = pos[n.var];
+    if (!p) return;
+    const grp = el('g', { class: 'node' + (n.is_anchor ? ' anchor' : '') });
+    grp.appendChild(el('rect', { x: p.x, y: p.y, width: p.w, height: p.h, rx: 7 }));
+    grp.appendChild(el('text', { x: p.x + 10, y: p.y + 17 }, n.var.replace(/_/g, ' ')));
+    const arrow = n.direction === 'up' ? '\u2191' : n.direction === 'down' ? '\u2193' : '\u2192';
+    grp.appendChild(el('text', { x: p.x + 10, y: p.y + 31, class: 'dir' },
+      arrow + ' ' + n.direction + (n.confirmed_by_series ? ' \u00b7 series-confirmed' : '')));
+    svg.appendChild(grp);
+  });
+}
+
+function describe(g, e) {
+  const asserted = e.provenance === 'source_asserted';
+  const heading = document.createElement('h2');
+  heading.textContent = e.edge_id;
+  const quote = document.createElement('blockquote');
+  quote.textContent = asserted ? e.evidence_span : 'No verified source is attached to this link.';
+  if (!asserted) quote.className = 'none';
+  const rows = [
+    ['Claim', e.src_var + ' → ' + e.dst_var + ' (' + e.direction + ')'],
+    ['Provenance', e.provenance],
+    ['Strength', e.strength],
+    ['Hop', e.hop]
+  ];
+  if (asserted) {
+    rows.push(['Verification', e.verified_by || 'Unrecorded']);
+    rows.push(['Passage', e.evidence_passage_id]);
+    rows.push(['Published', (e.evidence_published_at || '').slice(0, 10)]);
+  }
+  rows.push(['Query cutoff', g.as_of]);
+  const definitionList = document.createElement('dl');
+  for (const [name, value] of rows) {
+    const label = document.createElement('dt');
+    const definition = document.createElement('dd');
+    label.textContent = name;
+    definition.textContent = value;
+    definitionList.append(label, definition);
+  }
+  detail.replaceChildren(heading, quote, definitionList);
+  if (e.note) {
+    const note = document.createElement('p');
+    note.className = 'note';
+    note.textContent = 'Annotator note: ' + e.note;
+    detail.append(note);
+  }
+}
+
+function select(i) {
+  const g = GRAPHS[i];
+  draw(g);
+  const hint = document.createElement('p');
+  hint.className = 'hint';
+  hint.textContent = 'Select a link in the graph above.';
+  detail.replaceChildren(hint);
+  const paths = (g.paths || []).map((path) =>
+    path.edge_ids.join(' → ') + ' · ' + path.weakest_strength +
+    ' · ' + (path.fully_sourced ? 'fully sourced' : 'partly inferred')
+  );
+  document.getElementById('foot').textContent = [g.notes, ...paths].filter(Boolean).join(' | ');
+}
+pick.addEventListener('change', () => select(+pick.value));
+
+document.getElementById('theme').addEventListener('click', () => {
+  const now = document.documentElement.getAttribute('data-theme');
+  const next = now === 'dark' ? 'light' : now === 'light' ? 'dark'
+    : (matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch (_) {}
+});
+try {
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+} catch (_) {}
+
+select(0);
+</script>
+</body>
+</html>

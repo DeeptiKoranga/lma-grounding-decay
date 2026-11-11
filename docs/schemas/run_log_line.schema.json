@@ -675,7 +675,8 @@
             "llama.cpp",
             "vllm",
             "api",
-            "claude"
+            "claude",
+            "fixture"
           ],
           "title": "Backend",
           "type": "string"
