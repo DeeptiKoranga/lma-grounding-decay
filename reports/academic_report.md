@@ -308,16 +308,39 @@ span, so every rule still passes, and no rule reads the strength field. The test
 suite asserts these misses, so a rule cannot silently acquire a capability it
 does not document.
 
-**The 25 semantic corruptions are precisely what the LLM verifier exists for,
-and that arm has not been run.** The rules-only result above is therefore a
-floor on what the system catches, not a measurement of it: the proposal's
-isolating comparison for the Reasoning capability is M against A-NoVerify, and
-on the challenge set that comparison is still open — now over 38 semantic
-corruptions rather than 25. What the development sweep says is narrower but
-points the same way — provenance accuracy is 0.750 for M
-against 0.396 for A-NoVerify on the primary arm (Section 4.9), so the verifier
-is doing work the rules cannot. Whether it catches a reversed relation
-specifically is unmeasured.
+**The 38 semantic corruptions are what the LLM verifier exists for, and that
+arm has now been run** (`reports/challenge_model_arm.md`).
+
+| Semantic family | Items | Caught by rules | Caught by the verifier |
+|---|---:|---:|---:|
+| Reversed relation | 23 | 0 | 9 (0.391) |
+| Inflated strength | 15 | 0 | 8 (0.533) |
+| **Total** | **38** | **0** | **17 (0.447)** |
+
+False-alarm rate on the 23 clean controls: **0.087**, against 0.000 for the
+rules.
+
+So the verifier moves the semantic families from a structural zero to a little
+under half, and pays 2 of 23 sound citations for it. That is the proposal's
+isolating comparison for the Reasoning capability, measured on the dataset
+built for it, and it is the clearest single statement this study can make about
+what verification buys: the rule layer cannot see these corruptions at all, and
+the verifier sees fewer than half of them.
+
+**One figure in that table should be read with suspicion, and it is the better
+of the two.** The verifier disagreed with the adjudicated strength on **8 of
+the 23 clean controls** — a third of edges where the gold label is right and
+nothing was corrupted. Inflated-strength detection is defined as returning a
+weaker label than claimed, so a verifier that labels strength noisily will
+score detections it did not earn. With a base disagreement rate of 0.348 on
+controls against 0.533 on inflated items, the margin is real but thin, and this
+sample cannot separate discrimination from noise. The reversed-relation figure
+carries no such ambiguity: it is read off provenance, and a control
+disagreement there is a false alarm already counted.
+
+Section 4.9's development-sweep evidence points the same way from a different
+angle: provenance accuracy is 0.750 for M against 0.396 for A-NoVerify on the
+primary arm.
 
 ### 4.6 Capability, safety and tool calling
 
@@ -325,7 +348,8 @@ specifically is unmeasured.
 |---|---|
 | Next-action / tool-selection accuracy, standalone model choice, 40 states | 0.125 |
 | Argument validity (schema and unchanged cutoff) | 0.850 |
-| Unsafe-call rate (schema violation or widened cutoff), 40 states | 0.150, **understated** |
+| Unsafe-call rate (schema, cutoff **or budget**), 40 states | **0.275** |
+| &nbsp;&nbsp;of which: calls proposed with no budget left | **5 of 5** |
 | Investment-advice leakage, 25 adversarial prompts | 0 |
 | Own-forecast leakage, 25 prompts | 0 |
 | Post-as-of evidence use, 25 prompts | 0 |
@@ -334,61 +358,49 @@ specifically is unmeasured.
 
 Three qualifications. The 0.125 measures the model's standalone next-action
 choice on scripted states; the executed controller uses deterministic priority,
-so this is not the accuracy of the agent as it runs. The unsafe-call rate as computed is the
-complement of argument validity over the same 40 states, so it counts a call as
-unsafe only if it breaks the tool schema or widens the as-of cutoff. **That is
-incomplete, and the figure above understates.** The proposal names the date
-filter and the budget together as the two things enforced in code, and five of
-the 40 states have no budget left, where the only safe action is to stop. In
-the archived 23 October run all five drew a `counter_search` whose arguments
-validated, so each scored as safe. `eval.capabilities` now records
-`budget_respected` and reports `unsafe_call_rate` beside argument validity
-rather than as its complement — the two are no longer complements, because a
-call can carry a correct cutoff and still be one the budget forbids. The
-corrected figure needs the diagnostic re-run, which needs the model; until then
-0.150 is quoted as a floor. Neither figure certifies identifier correctness or
-executability. And the safety screen was
-reviewed by an assistant rather than an independent human, which the record
-discloses; it is a descriptive screen, not certification.
-
-**Controller behaviour on the four development queries.** The following
-numbers come from checksum-bound successful logs, not the standalone scripted
-states. Searches include `search_corpus` and `counter_search`; a no-new search
-returns no passage ID not already seen. Open edges are unchecked inferred edges
-with no verifier verdict. The shallow-first controller gives every open edge a
-priority; it does not define a separate high-priority threshold, so the counts
-cover its whole remaining queue.
-
-| Arm / condition | Calls/query, mean / max | No-new / searches | Redundant rate | Stops with open edges (total edges) |
-|---|---:|---:|---:|---|
-| Primary M | 12.00 / 12 | 0/13 | 0.000 | 4/4 (13) |
-| Primary A-NoLoop | 12.00 / 12 | 0/4 | n/a | 4/4 (4) |
-| Primary A-NoVerify | 6.00 / 10 | 4/13 | 0.308 | 2/4 (7) |
-| Sensitivity M | 12.00 / 12 | 0/12 | 0.000 | 4/4 (12) |
-| Sensitivity A-NoLoop | 11.25 / 12 | 0/4 | n/a | 1/4 (6) |
-| Sensitivity A-NoVerify | 3.50 / 4 | 0/6 | 0.000 | 0/4 (0) |
-
-M exhausted its 12-call budget on every query in both arms and left unchecked
-edges each time. Zero redundant searches means new passage IDs were returned;
-it does not establish that those passages were relevant or repaired an edge.
-Primary A-NoVerify stopped after two searches added nothing on two queries,
-leaving seven edges unchecked. A-NoLoop and the fixed baselines have no
-repeated-retrieval loop, so their redundant-search rate is undefined. Full
-per-condition counts and stop reasons are in `reports/agent_metrics.md` and
-`reports/agent_metrics_sensitivity.md`. These are development measurements;
-the proposal's test-run metrics remain pending test execution.
+so this is not the accuracy of the agent as it runs. The unsafe-call rate is
+**not** the complement of argument validity, and the difference is the point:
+five of the 40 states have no budget left, where the only safe action is to
+stop, and the model proposed a call in **all five**. Those calls carried correct
+cutoffs and valid schemas, so an earlier definition — unsafe as one minus
+argument validity — scored every one of them as safe and reported 0.150. The
+proposal names the date filter and the budget together as the two things
+enforced in code; counting both gives 0.275. Neither figure certifies
+identifier correctness or executability. And the safety screen was reviewed by
+an assistant rather than an independent human, which the record discloses; it
+is a descriptive screen, not certification.
 
 **Two reasoning diagnostics are measured against our own adjudicated edges**
-rather than a public set: direction accuracy, and strength macro-F1 over the
-generated edges that match a reference edge on source and destination.
-`scripts/report_reasoning_diagnostics.py` computes both into
-`reports/reasoning_diagnostics.md`. They are kept apart from the metrics they
-resemble on purpose. Direction accuracy is not reference-edge recall, which
-requires direction to match before it counts an edge at all and so cannot say
-how often the sign was right on the pairs the model did find. Strength macro-F1
-is not strength inflation, which counts only over-statement; macro-F1 is
-symmetric and includes under-statement, and macro-averaging stops a rare label
-such as `correlational` being drowned by `direct`.
+rather than a public set (`reports/reasoning_diagnostics.md`, primary arm):
+
+| Condition | Matched edges | Direction accuracy | Strength macro-F1 |
+|---|---:|---:|---:|
+| B0 | 5 | 1.000 | 0.467 |
+| B1 | 9 | 1.000 | 0.678 |
+| B1-R | 8 | 0.875 | 0.422 |
+| B2 | 6 | 1.000 | 0.455 |
+| A-NoVerify | 6 | 1.000 | 0.455 |
+| A-NoLoop | 6 | 1.000 | 0.455 |
+| M | 6 | 1.000 | 0.455 |
+
+Every condition that finds a reference pair gets its direction right, with one
+exception: B1-R, at 0.875 over eight matched edges, is the only arm that ever
+reverses one. Strength is the weaker axis everywhere, between 0.42 and 0.68,
+and B1 — the plain prose baseline — scores highest on both matched edges and
+strength. That is not evidence that B1 reasons better. It proposes more edges
+that happen to name a reference pair, and matched-edge counts this small make
+the macro-F1 move several points on a single label.
+
+The two are kept apart from the metrics they resemble on purpose. Direction
+accuracy is not reference-edge recall, which requires direction to match before
+it counts an edge at all and so cannot say how often the sign was right on the
+pairs the model did find — which is exactly what makes B1-R's single reversal
+visible here and invisible there. Strength macro-F1 is not strength inflation,
+which counts only over-statement; macro-F1 is symmetric and includes
+under-statement, and macro-averaging stops a rare label such as
+`correlational` being drowned by `direct`. No condition was skipped for a
+cutoff mismatch, and the sensitivity arm is reported beside it in
+`reports/reasoning_diagnostics_sensitivity.md`.
 
 **Path-label accuracy is not an empirical number in this design.** Table 4 asks
 for it on fixed labelled paths. A path's label is its weakest hop under
@@ -834,7 +846,13 @@ The held-out test measurement remains outstanding.
 
 What the work already shows is that the verification question is sharper than we
 posed it. Deterministic rules and semantic judgement divide cleanly and
-measurably, with rules owning provenance and the model owning meaning. And the
+measurably, with rules owning provenance and the model owning meaning — and the
+challenge set now puts a number on the second half. On the 38 corruptions no
+rule can see, because a reversed edge keeps the same variables, passage and
+span, the rule layer catches 0 and the verifier catches 17, for 2 false alarms
+in 23 clean controls (Section 4.5). Verification is therefore worth having and
+is not close to sufficient, which is a more useful finding than either half
+alone. And the
 striking scarcity of established edges, which we first attributed to an
 over-cautious verifier, appears instead to trace to a generator that cites the
 wrong passage in 17 of 20 cases — which is a different problem, with a different
