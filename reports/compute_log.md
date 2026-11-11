@@ -378,3 +378,7 @@ The capability rerun completed 65 calls, with 160,470 prompt tokens,
 4,234 completion tokens, and 1,873.46 summed model-call seconds. See
 `reports/capability_diagnostics.json` for result hashes. These are local model
 wall times. GPU-active hours were not measured.
+
+The public-data strength and detection benchmark evaluated 400 frozen items
+with the pinned local 4-bit model. It retains item-level labels and aggregate
+scores. Per-call timings and tokens were not recorded for this benchmark.

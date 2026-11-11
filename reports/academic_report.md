@@ -222,19 +222,25 @@ effect. The query-level figures and hashes are in
 
 ### 4.3 Causal strength and detection on public data
 
-A deterministic cue classifier built from the project's own cue lists, scored on
-data nobody on the project wrote. It exists to give the model arm a floor to
-clear.
+The cue list and the pinned Qwen3-8B 4-bit model classified the same frozen
+200 items per benchmark. Both source file hashes and all sampled IDs matched
+the benchmark manifest.
 
-| Check | Result |
-|---|---|
-| Strength, 3-class (Yu et al.) | macro-F1 0.414, accuracy 0.350, 81/200 abstentions |
-| Detection, binary (FinCausal) | F1 0.497, accuracy 0.525 |
+| Check | Cue baseline | Qwen3-8B |
+|---|---:|---:|
+| Strength macro-F1 (Yu et al.) | 0.414 | 0.478 |
+| Strength accuracy (Yu et al.) | 0.350 | 0.530 |
+| Detection F1 (FinCausal) | 0.497 | 0.549 |
+| Detection accuracy (FinCausal) | 0.525 | 0.590 |
 
-Per class the baseline is lopsided: conditional recall 0.920 at precision 0.377,
-correlational precision 0.886 at recall 0.333, direct F1 0.222. It over-fires on
-hedging and under-detects plain causal language. For scale, Yu et al. report
-macro-F1 near 0.86 with a fine-tuned BERT on their own task.
+The model improved both diagnostics on these samples. This is standalone
+classification on public text. The Indian-news verifier's citation and date
+rules are outside the benchmark, and neither dataset labels edge direction.
+For FinCausal, a returned strength class counts as a positive prediction,
+while an abstention or unparseable response counts as no returned label.
+The class tables and item-level predictions are in
+`reports/pilot_strength_model.md` and
+`reports/pilot_strength_model_predictions.json`.
 
 ### 4.4 Gold-set adjudication
 
@@ -813,6 +819,7 @@ already happened and one thing that had not.
 | Done, 11 Nov | Test gold drafted for two queries, then **adjudicated**: both annotators agreed on every surviving edge and every direction, split on seven of eight strengths, reconciled under D-30; receipt signed (D-27a, D-30) |
 | Done, 12 Nov | Signed-reference retrieval diagnostic on the two FPI queries, with and without the reranker |
 | Done, 12 Nov | Controller metrics restored, fixed-path check added, and reproduction checks rerun |
+| Done, 12 Nov | Public-data model benchmark completed on 400 frozen items |
 | At risk | Any test *score*. The reference set now exists and is receipt-bound, but no sweep has been run against it, and two queries sit five times below the inference gate in any case |
 
 Both development sweeps are run and scored, and the judgement they rest on has
