@@ -53,9 +53,10 @@ results use the pinned model and frozen corpus.
   primary RQ reports from the committed development scores.
 - [Implementation and evidence map](docs/submission_verification.md) links
   the original proposal to code, tests, actual runs and remaining research
-  gaps. The two signed FPI queries were used for a descriptive retrieval
-  comparison. Held-out generation and independent output scoring are
-  outstanding.
+  gaps. The two signed FPI queries were used for the descriptive retrieval
+  comparison and [seven-condition held-out generation](reports/heldout_generation_20261112.md).
+  The [independent review handoff](docs/independent_review.md) covers the
+  remaining human prose correction, blind output scoring and test expansion.
 
 ## Phase 1 Track A and C review — 30 October 2026
 

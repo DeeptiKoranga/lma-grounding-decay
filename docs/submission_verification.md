@@ -42,13 +42,18 @@ to an offline synthetic demo and a model-backed reproduction command.
 - The two saved 28-graph sweeps, both reasoning summaries, challenge counts, the
   primary RQ tables and the blind sample scores were rechecked against their
   saved evidence. These rechecks retain the original scoring and sample limits.
+- The two signed FPI queries completed [all 14 held-out runs](../reports/heldout_generation_20261112.md).
+  The audit checks bound logs, completed artifacts, anchors and cutoffs.
 
 ## Remaining original-proposal scope
 
 The four signed development queries and two signed test queries fall below the
-proposal's original 6/24 design and its 4/16 fallback. Neither test query has
-held-out generation and independent output scoring. The planned full human
-correction of prose outputs and independently blind support labels are
-outstanding. The TA decision on using a calibrated LLM judge remains open. The novelty case is stated in the report. No TA sign-off on novelty was found in the project records.
+proposal's original 6/24 design and its 4/16 fallback. Both test queries have
+generated outputs and await independent support scoring. The
+[review handoff](independent_review.md) covers the outstanding full human
+correction of prose outputs, condition-blind support scoring and additional
+reference review. The TA decision on using a calibrated LLM judge remains open.
+The novelty case is stated in the report. No TA sign-off on novelty was found
+in the project records.
 The final report makes no claim that the project met those parts of the
 original study or that every model output is correct.

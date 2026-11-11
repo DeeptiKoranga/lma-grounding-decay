@@ -20,4 +20,4 @@ Dense index `5345b8a3384f759f73a7fee6c58ef544a4ad6ad47f04262fc81efafb5e038d2c`.
 Aliases `826f0e59c3ad98b2ca3d6ff08027ead08c917fed36d9d0a711cf802a1eebe843`.
 BGE-M3 revision `5617a9f61b028005a4858fdac845db406aefb181`. Reranker revision `953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e`.
 
-This measures retrieval only. The held-out generation sweep and support scoring remain outstanding.
+This report measures passage ranking for the signed FPI queries.
