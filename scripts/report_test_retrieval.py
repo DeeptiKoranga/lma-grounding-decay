@@ -91,7 +91,7 @@ def main():
         f"Aliases `{digest(aliases_path)}`.",
         f"BGE-M3 revision `{EMBEDDING_REVISION}`. Reranker revision `{RERANKER_REVISION}`.",
         "",
-        "This measures retrieval only. The held-out generation sweep and support scoring remain outstanding.",
+        "This report measures passage ranking for the signed FPI queries.",
     ]
     args.report.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"wrote {args.report}")

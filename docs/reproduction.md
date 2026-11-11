@@ -678,10 +678,11 @@ anchor date and be published by the query cutoff. The test manifest covers the
 two signed FPI references. The four-candidate test file retains the excluded
 CPI queries for the study record.
 
-With the matching frozen corpus, run `make preflight-test`. The optional
+With the matching frozen corpus, run `make preflight-test`.
 `make sweep-test-descriptive` preflights the references and requires confirmed
-anchors. It writes a new run directory. Two queries cannot clear the inference
-gate and any support-scored report still requires independent judgments.
+anchors. Use `TEST_OUTPUT` to choose a new run directory. See the
+[independent review handoff](independent_review.md) for human prose correction
+and blind support scoring. Two queries fall below the ten-query inference gate.
 
 The reasoning diagnostic CLI requires a complete checksum-bound sweep and a
 signed reference receipt. Pass `--corpus` to select the matching corpus outside

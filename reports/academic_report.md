@@ -18,9 +18,10 @@ lower than standard RAG over three usable queries, with a 0.062 increase in
 reference-edge recall over four. It tied reranked RAG on UER. The verifier
 flagged 17 of 38 semantic challenge corruptions with 2 false alarms in 23
 controls. A blind human sample agreed with the assistant-produced development
-labels on 21 of 27 informative rows. Deep-hop coverage was insufficient and
-no held-out generation sweep was scored, so the evidence supports a
-development diagnosis rather than a population-level grounding-decay claim.
+labels on 21 of 27 informative rows. The primary model also completed seven
+conditions on each of two held-out queries. Those outputs await independent
+support scoring. The limited query count and deep-hop coverage restrict the
+claims to the observed development sample.
 
 ## 1. Introduction
 
@@ -787,9 +788,12 @@ and artifact checksums are in `reports/development_failure_analysis_v7.md`.
 
 ## 6. Limitations
 
-**No held-out primary result.** Section 4 reports descriptive development UER
-and associated diagnostics. No held-out sweep or independent scoring of its
-outputs was performed.
+**Held-out support scores pending.** The primary model completed all 14
+held-out runs across seven conditions and two queries about one FPI episode.
+Section 4 reports descriptive development UER and associated diagnostics.
+The held-out sample falls below the ten-query inference gate. Its references
+also seed some items in the separate verifier challenge diagnostic. A-NoVerify
+and B2 each produced one nonverbatim span in the held-out sweep.
 
 **The gold set reaches hop 2.** Twelve of 16 gold edges are at hop 1 and four at
 hop 2, with none deeper. UER can still be reported at hop 3 or more because
@@ -802,8 +806,8 @@ episodes as declared, including two against official data. The scored query
 inputs did not declare runtime observation windows. All 56 saved development
 runs therefore recorded an unconfirmed anchor. Their as-of evidence filters
 still ran. These are development analyses of declared events. The separate
-versioned query manifests define explicit thresholds for future runs. No result
-in this report was regenerated under those criteria.
+versioned query manifests define explicit thresholds. The held-out sweep used
+those thresholds and confirmed both test anchors in every condition.
 
 **Source concentration.** 870 of 1,095 news documents, 79%, come from one
 publisher. Business Standard and the RBI refuse `robots.txt` to our client while
@@ -877,10 +881,8 @@ against the gold set moved with it.
 
 ## 7. Remaining work
 
-The final submission is 15 November, with work winding up on 12 November. This
-table is updated on 10 November and separates what is done from what is not,
-because the earlier version of it listed as future several things that had
-already happened and one thing that had not.
+The final submission is 15 November. The milestones below are current as of
+12 November.
 
 | Status | Work |
 |---|---|
@@ -897,16 +899,11 @@ already happened and one thing that had not.
 | Done, 12 Nov | Signed-reference retrieval diagnostic on the two FPI queries, with and without the reranker |
 | Done, 12 Nov | Controller metrics restored, fixed-path check added, and reproduction checks rerun |
 | Done, 12 Nov | Public-data model benchmark completed on 400 frozen items |
-| At risk | Any test *score*. The reference set now exists and is receipt-bound, but no sweep has been run against it, and two queries sit five times below the inference gate in any case |
+| Done, 12 Nov | Primary held-out generation on both signed FPI queries in all seven conditions. The audit verified 14 complete, checksum-bound artifacts |
+| Pending | Full human prose correction and independent blind support judgments for the development and held-out outputs |
+| Pending | Expansion to the original signed test coverage. Fourteen candidate questions were screened, with one unsigned reference draft prepared for independent review |
 
-Both development sweeps are run and scored, and the judgement they rest on has
-now been sampled: the 247 support labels remain assistant-produced, but a blind
-human sample of 40 of them has been annotated and scored, and it surfaced no
-disagreement on the primary arm that supplies the headline numbers (Section
-4.8). What the sample cannot do is convert the remaining 220 labels into human
-ones. The two surviving test references are adjudicated. Their frozen test run remains outstanding.
-
-**The test half is two queries, not four.** Gold graphs exist for
+**The signed test set has two queries.** Reference graphs exist for
 `test-fpi-why` and `test-fpi-effects`, drafted from the corpus with every span
 sliced verbatim and passed through the rule layer, then adjudicated — four
 edges each after reconciliation, across hops 1 and 2. The adjudication itself
@@ -918,9 +915,9 @@ failing structurally, because in this corpus Indian headline CPI is the
 `FUEL_PRICES`, `CPI_FOOD`, `CPI_CORE` and `WPI` all run into CPI, and an
 effects graph rooted at CPI cannot use an inbound edge; what points outward is
 CPI to the repo rate, conditionally, and little else (D-27a). Two queries sit
-five times below `MIN_QUERIES_FOR_INFERENCE`, so no test figure here could ever
-have been inferential. The two signed graphs are eligible references. No
-held-out outputs or independent support judgments exist to score against them.
+five times below `MIN_QUERIES_FOR_INFERENCE`. The signed graphs are eligible
+references for a descriptive held-out comparison once the output review is
+complete.
 
 **The query the audit also ruled out.** A reachability audit run before any
 drafting (`reports/test_gold_feasibility.md`) had already excluded
@@ -974,11 +971,11 @@ B1-R produced two nonverbatim spans on this query. Those baseline failures
 remain visible and this demo adds no human-scored result.
 [Demo and reproduction instructions](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md)
 
-**What the study therefore reports.** Development results only. The test
-reference set now exists and would be scorable, but no sweep has been run
-against it, and two queries sit five times below `MIN_QUERIES_FOR_INFERENCE`,
-so a test table here would be a descriptive held-out result with two queries and no inferential claim. Reporting the development half and saying why the test half stopped where
-it did is the more honest position, and it is the one taken.
+The generation audit records completion, confirmed anchors and structural
+checks. Human review starts with six held-out and 24 development prose outputs.
+Corrected graphs then go into condition-blind support packets. Fourteen
+expansion candidates across seven episodes await independent reference review.
+[Held-out generation audit](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/heldout_generation_20261112.md)
 
 The model-selection sensitivity check addresses the concern raised in Section 5.2: the D-01 selection is
 re-examined not by argument but by running the sweep on both models under a
@@ -1000,7 +997,8 @@ the sensitivity arm's error rates read as a floor. On them, the primary arm's
 M-minus-B1 UER difference is −0.167 over three usable query pairs and the
 sensitivity arm's is −0.100 over two. Neither arm meets the predeclared hop-bucket gate
 for an H1 trend claim, and four development queries cannot support inference.
-The held-out test measurement remains outstanding.
+The two-query held-out sweep generated all 14 outputs and awaits independent
+support scoring.
 
 What the work already shows is that the verification question is sharper than we
 posed it. Deterministic rules and semantic judgement divide cleanly and

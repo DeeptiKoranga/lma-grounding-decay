@@ -99,7 +99,7 @@ kappa: ## Score two completed worksheets -> reports/adjudication_kappa.md
 # The test half (#38). Two of its four queries carry no graph: test-cpi-why by
 # D-27, and test-cpi-effects because this corpus treats Indian headline CPI as
 # the destination of the oil shock rather than its source. The two FPI graphs are
-# adjudicated and receipt-bound (D-30). No held-out sweep has been run.
+# adjudicated and receipt-bound (D-30). Generation and human scoring are separate.
 .PHONY: test-gold test-gold-feasibility adjudicate-test kappa-test
 
 TEST_QUERIES ?= data/eval/queries_test_anchored_v2.jsonl
