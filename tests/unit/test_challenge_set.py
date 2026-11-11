@@ -251,7 +251,7 @@ def test_the_set_reaches_the_size_the_proposal_specifies():
     assert len(manifest["gold_directories"]) == 2
 
 
-def test_a_query_id_in_two_gold_directories_is_refused():
+def test_a_query_id_in_two_gold_directories_is_refused(fixture_dir, tmp_path):
     """Silently overwriting one half's graph with another's would change the
     seed set without changing the item count."""
     from pathlib import Path
@@ -266,6 +266,6 @@ def test_a_query_id_in_two_gold_directories_is_refused():
     ):
         challenge.build(
             gold=[Path("a"), Path("b")],
-            corpus=Path("data/processed/articles.jsonl"),
-            output=Path("/tmp/unused-challenge.jsonl"),
+            corpus=fixture_dir / "passages.jsonl",
+            output=tmp_path / "challenge.jsonl",
         )
