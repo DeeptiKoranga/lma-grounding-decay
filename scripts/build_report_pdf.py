@@ -151,6 +151,11 @@ def _styles():
 def inline(text: str) -> str:
     """Markdown emphasis to reportlab markup, escaping XML first."""
     out = escape(text)
+    out = re.sub(
+        r'\[([^\]\n]+)\]\((https://[^\s"<>\)]+)\)',
+        r'<link href="\2" color="#174378">\1</link>',
+        out,
+    )
     out = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", out)
     out = re.sub(r"(?<!\*)\*([^*]+?)\*(?!\*)", r"<i>\1</i>", out)
     out = re.sub(r"`(.+?)`", r'<font face="Courier" size="8.8">\1</font>', out)

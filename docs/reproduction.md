@@ -702,3 +702,39 @@ For the separate signed test-reference retrieval diagnostic, run
 `scripts/report_test_retrieval.py --corpus PATH --index PATH` with
 `PYTHONPATH=src`, the local retrieval environment, and the pinned model cache.
 This evaluates ranking on the two FPI queries without running generation.
+
+## Run the model-backed demo
+
+On a Mac with the frozen corpus, selected dense index, BGE model cache,
+pinned Qwen weights and both local environments installed as documented
+above, run from the repository root:
+
+```sh
+demo_run=$(mktemp -d)
+python3 - "$demo_run" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+queries = Path("data/eval/queries_dev_anchored_v2.jsonl").read_text().splitlines()
+query = next(line for line in queries if json.loads(line)["query_id"] == "dev-oil-why")
+(Path(sys.argv[1]) / "query.jsonl").write_text(query + "\n")
+PY
+HF_HOME="$PWD/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src \
+  data/raw/llm_env/bin/python -m conditions \
+  --queries "$demo_run/query.jsonl" --require-confirmed-anchors \
+  --retrieval-python .venv/bin/python --reranker-python .venv/bin/python \
+  --output "$demo_run/runs"
+PYTHONPATH=src .venv/bin/python -m eval.run_audit \
+  --runs "$demo_run/runs" --output "$demo_run/audit.json"
+PYTHONPATH=src .venv/bin/python scripts/build_graph_explorer.py \
+  --run-artifact "$demo_run/runs/M/dev-oil-why.json" \
+  --output "$demo_run/graph.html"
+printf 'Open locally: %s\n' "$demo_run/graph.html"
+```
+
+The unchanged default condition list runs all seven, including B1-R. The
+audit checks the bound input, graph and log artifacts. Open the generated HTML
+locally because it can contain corpus excerpts. This is a single-query
+engineering run under the new anchor criteria. It does not replace the two
+frozen research sweeps or add an independently scored result.

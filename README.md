@@ -7,6 +7,56 @@ Deepti Koranga (2025204033).
 
 ---
 
+## Final submission and working demos
+
+Use the [episode-confirmation submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation).
+The [final report](reports/academic_report.pdf) presents two development arms
+and the separate capability diagnostics. The dated sections below preserve
+earlier milestone records.
+
+### Open the demo
+
+Download [the synthetic graph demo](reports/demo_fixture.html) and open it
+locally in a browser. Select **M** and click a solid edge to see its evidence,
+verification method, publication date and cutoff. Click a dashed edge to see
+the inferred claim. The footer shows the path's weakest link. The page is
+self-contained and uses synthetic passages.
+
+### Reproduce the demo from a fresh clone
+
+```sh
+git clone --branch b/episode-confirmation https://github.com/DeeptiKoranga/lma-grounding-decay.git
+cd lma-grounding-decay
+uv sync --frozen --extra dev
+uv run --no-sync python -m scripts.run_demo --output runs/demo
+uv run --no-sync pytest
+```
+
+The same command is available as `make demo` on systems with Make. It runs
+all seven conditions through the shared pipeline using fixture passages,
+a scripted model and a deterministic fixture reranker. It checks the cutoff,
+anchor confirmation, structural evidence and verifier path, then writes the
+browser page, graphs and tool logs under `runs/demo`. Choose a fresh output
+directory on repeat runs. Demo outputs are engineering checks; research
+results use the pinned model and frozen corpus.
+
+### Reproduce the experiments
+
+- [Model-backed demo](docs/reproduction.md#run-the-model-backed-demo) runs one
+  signed dev query through all seven conditions with the real model, BGE-M3
+  and cross-encoder. It needs the separately provisioned model cache, corpus
+  and index. See the [7/7 live run audit](reports/submission_live_demo.md).
+  The raw traces and corpus text stay local.
+- [Full reproduction](docs/reproduction.md) documents the exact model
+  revisions, corpus and index hashes, dev sweeps, independent scoring
+  requirements, and platform-specific backends. `make rq` regenerates the
+  primary RQ reports from the committed development scores.
+- [Implementation and evidence map](docs/submission_verification.md) links
+  the original proposal to code, tests, actual runs and remaining research
+  gaps. The two signed FPI queries were used for a descriptive retrieval
+  comparison. Held-out generation and independent output scoring are
+  outstanding.
+
 ## Phase 1 Track A and C review — 30 October 2026
 
 All 22 A1–A11/C1–C11 implementation deliverables and their artifacts are present.

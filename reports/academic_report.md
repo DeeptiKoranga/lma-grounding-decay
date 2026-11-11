@@ -1,7 +1,26 @@
 % Does Grounding Decay with Distance? Measuring and Repairing Weak Links in LLM Causal Explanations of Indian Macroeconomic News
 % Varun Patil (2025204013) · Harshal Bhansali (2026909007) · Deepti Koranga (2025204033)
-% Language Models & Agents (LMA) Group Project 2026 — Mid Submission Report
-% GitHub: https://github.com/DeeptiKoranga/lma-grounding-decay
+% Language Models & Agents (LMA) Group Project 2026 — Final Report
+% [GitHub submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation) · [Reproduction and demos](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md)
+
+## Abstract
+
+We study whether evidence support decays with causal distance in explanations
+of Indian macro-financial news and whether edge verification and targeted
+retrieval repair weak links. The prototype turns a dated query into a graph
+whose edges expose evidence, direction and causal strength. Its controller
+separates passage eligibility from semantic judgment and searches for
+additional evidence within a 12-call budget. Two model arms each ran seven
+conditions on four adjudicated development queries, including standard RAG,
+RAG with a cross-encoder reranker and two mechanism ablations. On the primary
+arm, the full system's paired unsupported established-edge rate was 0.167
+lower than standard RAG over three usable queries, with a 0.062 increase in
+reference-edge recall over four. It tied reranked RAG on UER. The verifier
+flagged 17 of 38 semantic challenge corruptions with 2 false alarms in 23
+controls. A blind human sample agreed with the assistant-produced development
+labels on 21 of 27 informative rows. Deep-hop coverage was insufficient and
+no held-out generation sweep was scored, so the evidence supports a
+development diagnosis rather than a population-level grounding-decay claim.
 
 ## 1. Introduction
 
@@ -15,6 +34,9 @@ explanation stops being grounded.
 
 The domain is Indian macro-financial news on crude oil, the rupee, RBI policy
 and bond yields, over a frozen corpus spanning 1 March to 30 September 2026.
+The intended reader is a student or non-specialist who wants to inspect a
+dated explanation. Support means that a passage states the directed relation.
+The study does not establish the underlying economic causal effect.
 
 **RQ1 (phenomenon).** In LLM-generated explanations of Indian macro-financial
 events, do unsupported causal links and strength inflation increase with hop
@@ -33,10 +55,29 @@ recall is no more than 10 points below standard RAG's.
 
 H2d is not decoration. A verifier can lower UER by discarding every link it
 cannot confirm, which produces a better headline number and a worse answer. The
-guard is what separates repair from deletion, and Section 6 shows why that
+guard is what separates repair from deletion, and Section 5.2 explains why that
 distinction has already become the central question of the project.
 
-## 2. Method
+## Literature Review
+
+Self-RAG learns when to retrieve and uses reflection tokens to critique a
+generation. FIRE interleaves retrieval and verification for individual
+fact-checking claims. CausalRAG uses causal relations to structure retrieval
+and preserve context. These methods motivate selective retrieval and
+verification, and they evaluate different units from a directed, dated edge
+in a generated economic explanation. [Self-RAG](https://arxiv.org/abs/2310.11511) ·
+[FIRE](https://aclanthology.org/2025.findings-naacl.158/) ·
+[CausalRAG](https://aclanthology.org/2025.findings-acl.1165/)
+
+ReCEval evaluates individual reasoning steps for correctness and
+informativeness. We use a weakest-link rule for graph paths and adapt causal
+language labels from Yu, Li and Wang. The research contribution is to
+measure provenance and strength by hop under a fixed publication cutoff,
+then compare a bounded edge-repair loop against both standard and reranked
+RAG. The guard on signed-reference recall measures how much useful evidence
+survives verification. [ReCEval](https://aclanthology.org/2023.emnlp-main.622/)
+
+## 2. Methodology
 
 ### 2.1 Representing an explanation as an inspectable graph
 
@@ -48,7 +89,7 @@ complete.
 
 | Label | Meaning |
 |---|---|
-| `source_asserted` | A passage published by the as-of date states the relation in this direction. Set only by the verifier. |
+| `source_asserted` | A passage published by the as-of date states the relation in this direction. In M and A-NoLoop, set only by the verifier. Self-label conditions can propose it without independent verification. |
 | `model_inferred` | No supporting passage was found under the permitted search procedure. |
 | `direct` | Unhedged causal language: caused, due to, driven by. |
 | `conditional` | Hedged or conditional: could, may, if, upside risk. |
@@ -62,14 +103,14 @@ hop-sliced metric.
 
 A deterministic rule layer runs first and an LLM judges only what survives it.
 The four rules are: the cited passage must be in the corpus; it must be
-published on or before the as-of date; it must mention both variables (searching
-the cited paragraph and the one before it, so that anaphora across a paragraph
-break is not mistaken for a missing mention); and it must contain the quoted
-span word for word.
+published on or before the as-of date; the cited passage must mention both
+variables; and it must contain the quoted span word for word. The separate
+reference-audit rule can also inspect the preceding paragraph for mentions.
+The live semantic verifier screens the cited passage itself.
 
-Passing the rule layer means **eligible**, never **supported**. Only the LLM
-verifier, in a fresh context and without the generator's reasoning, may mark an
-edge `source_asserted`.
+Passing the rule layer establishes eligibility. In M and A-NoLoop, the LLM
+verifier judges support in a fresh context and without the generator's
+reasoning before the graph may mark an edge `source_asserted`.
 
 ### 2.3 Agent loop and tools
 
@@ -78,14 +119,19 @@ verifies unverified edges first, then searches specifically for evidence on the
 most important `model_inferred` edge. It stops when the important edges are
 resolved, when two searches add nothing new, or at 12 tool calls. Six tools —
 `search_corpus`, `get_series`, `verify_edge`, `counter_search`, `update_graph`,
-`stop` — are read-only and schema-validated, with the date filter and budget
-enforced in code rather than in the prompt.
+`stop` — are schema-validated. The date filter and budget are enforced in code.
+Graph updates are confined to run state. The tools do not mutate the
+corpus or series. The prompts prohibit investment advice and the system’s
+own forecasts. Section 4.6 reports the observed safety checks.
 
 ### 2.4 Conditions
 
-Seven conditions share one model, corpus, date filter, retriever, query set and
-prompt budget, and run through a single code path, so they differ by
-configuration rather than by implementation.
+The seven conditions share the pinned model within each arm, corpus, cutoff
+and queries. Conditions that retrieve share the first-stage retriever. B1-R
+rescoring changes the order of the top 50 candidates before retaining the
+same final top eight. All seven run through the same pipeline. Prompts and
+call budgets reflect each condition's task. B0 uses no text retrieval and
+still receives the common series preflight.
 
 | Condition | Description | Role |
 |---|---|---|
@@ -97,7 +143,7 @@ configuration rather than by implementation.
 | A-NoLoop | Full system, retrieving once, no agent loop | agentic ablation |
 | M | Graph, labels, verifier, agent loop, weakest-link paths | proposed method |
 
-## 3. Experimental setup
+## 3. Dataset and Experiment Runs
 
 ### 3.1 Corpus
 
@@ -146,11 +192,29 @@ items each.
 ### 3.4 Model and compute
 
 `mlx-community/Qwen3-8B-4bit`, revision `545dc425`, selected by the pilot in
-Section 4.1. All development ran locally on an Apple M5 via MLX. A private
+Section 4.1. The two scored development sweeps ran locally via MLX. A private
 two-T4 Kaggle execution consumed **1.211 visible allocated GPU-hours**. **No
 paid API request was made.**
 
-## 4. Results
+### 3.5 Experiment runs and capability measurements
+
+| Run | Scale | Evidence |
+|---|---:|---|
+| Primary and sensitivity development sweeps | 28 graphs each | Seven conditions on four signed dev queries in each arm |
+| Corruption challenge | 130 items | Deterministic eligibility checks and semantic verifier |
+| Retrieval | 20 pilot and 2 signed FPI queries | Recall@5, Recall@10 and MRR@50 with reranker comparison |
+| Public strength and detection | 400 frozen examples | Cue and pinned-model classifications |
+| Tool, action and safety diagnostics | 40 states, 20 faults, 25 prompts | Next-action, argument validity, unsafe proposals, recovery and leakage checks |
+| Repeated-sampling stability | 3 runs for one query | Same established edges under three seeds |
+| Submission engineering demo | 7 live graphs on one dev query | Bound run audit and confirmed anchors under the new manifest |
+
+RAG supplies dated passages. Reasoning extracts and verifies directed links and
+aggregates path strength. Agentic control prioritizes unresolved edges and
+decides when to stop. Tool calling validates arguments and limits execution.
+Fine-tuning is outside the study design. The capability measurements are
+reported separately from the end-to-end UER, inflation and recall comparisons.
+
+## 4. Evaluations and Results
 
 ### 4.1 Model selection
 
@@ -581,7 +645,7 @@ stability of the M-minus-B1 comparison across queries. Full counts and measured 
 
 ![Figure 2. Assistant-labelled primary-arm UER by hop for B1 and M; labels show queries with denominators out of four.](figures/uer_by_hop.png)
 
-### 4.9 The ablations, H2c, and the two secondary metrics nobody had printed
+### 4.9 Ablations, reranker baseline, and secondary metrics
 
 The proposal's RQ2 analysis asks for four comparisons; until now only M against
 B1 had been computed. The other three are **exploratory** — the pre-declared
@@ -647,7 +711,7 @@ hop-by-hop claim of the study restated at the level of whole paths.
 All of these inherit the label provenance set out in Section 4.8 and are
 development figures on four queries.
 
-## 5. Discussion
+## 5. Discussion, Failure Analysis and Mitigation
 
 ### 5.1 Where deterministic checking ends and judgement begins
 
@@ -707,6 +771,19 @@ The compounding is worth stating plainly, because it is the kind that is easy to
 hide: a sparse series store did not merely weaken one measurement, it propagated
 through anchors to queries to the gold standard to the challenge set, and
 finally to the hop coverage that RQ1 is defined over.
+
+### 5.4 Qualitative failures and mitigation
+
+| Observed development case | Failure | Mitigation tested or planned |
+|---|---|---|
+| A-NoVerify, rupee effects | One paragraph was reused for six established claims it did not state | Semantic verification tests the relation after source eligibility |
+| A-NoVerify, rupee why | A cited oil-to-rupee relation was reversed, and one quote was nonverbatim | Verbatim checking filters the quote. Direction verification is measured on the challenge set |
+| B2, oil why | Six established claims had no attached evidence | M requires verified support to mark a link sourced. The recall guard records how much is lost |
+| M, both arms | Four of four queries exhausted the 12-call budget with open edges | Report remaining edges and defer testing a revised repair policy to a new run |
+
+These examples come from the saved development artifacts. The first three use
+the same assistant-labelled judgments as Section 4.8. The five-case ranking
+and artifact checksums are in `reports/development_failure_analysis_v7.md`.
 
 ## 6. Limitations
 
@@ -884,9 +961,18 @@ with its passage id, publication date and the cutoff it had to clear — or, for
 a `model_inferred` edge, to the statement that no verified source was found.
 It is opened from disk rather than served, because the spans are corpus
 excerpts under a research-use licence. The viewer also includes a synthetic graph with inferred edges and path labels.
-A local export can display a generated run artifact. It is the
-artifact that lets a reader do what Section 3 describes a reader wanting to do,
+A local export displays the full-system graph from the one-query smoke run.
+The viewer lets a reader do what Section 3 describes a reader wanting to do,
 which is follow a chain and see where it stops being grounded.
+
+**Working demos.** The repository README links to a downloadable synthetic
+browser demo and its runnable seven-condition pipeline. It also provides a
+local-model command using the frozen assets and a dated dev query. The
+12 November live execution completed all seven conditions with bound
+logs and confirmed anchors. No retrieved passage exceeded its cutoff.
+B1-R produced two nonverbatim spans on this query. Those baseline failures
+remain visible and this demo adds no human-scored result.
+[Demo and reproduction instructions](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md)
 
 **What the study therefore reports.** Development results only. The test
 reference set now exists and would be scorable, but no sweep has been run
@@ -894,14 +980,14 @@ against it, and two queries sit five times below `MIN_QUERIES_FOR_INFERENCE`,
 so a test table here would be a descriptive held-out result with two queries and no inferential claim. Reporting the development half and saying why the test half stopped where
 it did is the more honest position, and it is the one taken.
 
-Section 5.2's item is now settled rather than pending: the D-01 selection is
+The model-selection sensitivity check addresses the concern raised in Section 5.2: the D-01 selection is
 re-examined not by argument but by running the sweep on both models under a
 comparison declared in advance (D-28,
 `docs/preregistration_model_sensitivity.md`). The selected model remains primary
 whatever the two arms show; the second arm exists to say whether any rise in UER
 with hop survives a generator that does not fail at citation mechanics.
 
-## 8. Conclusion
+## 8. Conclusions
 
 We have built and tested the apparatus for measuring how evidential support and
 causal strength change hop by hop in LLM explanations of real financial news.

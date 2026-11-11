@@ -35,7 +35,7 @@ class ModelCallLine(_LineBase):
     event: Literal["model_call"] = "model_call"
     purpose: Literal["parse_query", "extract", "bridge", "verify", "answer", "control"]
     model: str = Field(min_length=1)
-    backend: Literal["mlx", "llama.cpp", "vllm", "api", "claude"]
+    backend: Literal["mlx", "llama.cpp", "vllm", "api", "claude", "fixture"]
     temperature: float = Field(ge=0.0, le=2.0)
     prompt: str | None = Field(default=None, description="Full prompt text when kept inline.")
     prompt_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
