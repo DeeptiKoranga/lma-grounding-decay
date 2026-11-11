@@ -179,7 +179,7 @@ class ToolRuntime:
         if call.tool == ToolName.COUNTER_SEARCH:
             from schema.tools import SearchCorpusArgs
 
-            query = f"{args.dst_var.replace('_', ' ')} causes reasons drivers"
+            query = f"{args.dst_var.replace('_', ' ')} {args.direction} causes reasons drivers"
             search_args = SearchCorpusArgs(
                 query=query, as_of=args.as_of, k=args.k, must_mention=[args.dst_var]
             )

@@ -420,3 +420,19 @@ left to look like oversights:
 - **B1-R end-to-end benefit**, deferred since D-03. The retrieval-side
   comparison stands (Recall@10 0.5296 against 0.4259); the end-to-end claim is
   not made.
+
+## 12 November audit follow-up
+
+- The four-query development runs retain their original inputs and measured
+  anchor status. Versioned dev and two-query test manifests provide explicit
+  episode thresholds for new runs. The original held-out study remains below
+  its planned sample and has no independently scored outputs.
+- D-03's larger test comparison remains deferred. The final report now
+  includes exploratory paired B1-R versus B1 and M versus B1-R UER on the
+  existing assistant-labelled development scores.
+- D-21 records the earlier 89-item set. Both signed gold splits now seed the
+  130-item challenge, with 107 corruptions and 23 controls. Both rule and
+  semantic arms ran. The fixed-path check uses three synthetic fixture paths.
+- D-05 and D-06 were unused under the local-model decision. D-07 still
+  requires a TA decision and judge calibration. Neither the development
+  sample nor a closed issue supplies that approval.

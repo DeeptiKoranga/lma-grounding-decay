@@ -36,9 +36,12 @@ import argparse
 import json
 from pathlib import Path
 
+from schema import Graph
+
 REPO = Path(__file__).resolve().parent.parent
 GOLD_DIRS = (REPO / "data/eval/gold/dev", REPO / "data/eval/gold/test")
 OUTPUT = REPO / "reports/graph_explorer.html"
+DEMO = REPO / "tests/fixtures/graph_brent_hormuz.json"
 
 
 def _load(directories) -> list[dict]:
@@ -205,7 +208,7 @@ function layout(g) {
       pos[v] = { x: PADX + d * COL, y: PADY + i * ROWH, w: BOXW, h: BOXH };
     });
   });
-  const depths = Object.keys(byDepth).length;
+  const depths = Math.max(...Object.keys(byDepth).map(Number)) + 1;
   return { pos, width: PADX * 2 + (depths - 1) * COL + BOXW, height: PADY * 2 + rows * ROWH };
 }
 
@@ -283,7 +286,11 @@ function select(i) {
   const g = GRAPHS[i];
   draw(g);
   detail.innerHTML = '<p class="hint">Select a link in the graph above.</p>';
-  document.getElementById('foot').textContent = g.notes || '';
+  const paths = (g.paths || []).map((path) =>
+    path.edge_ids.join(' → ') + ' · ' + path.weakest_strength +
+    ' · ' + (path.fully_sourced ? 'fully sourced' : 'partly inferred')
+  );
+  document.getElementById('foot').textContent = [g.notes, ...paths].filter(Boolean).join(' | ');
 }
 pick.addEventListener('change', () => select(+pick.value));
 
@@ -306,8 +313,21 @@ select(0);
 """
 
 
-def build(directories=GOLD_DIRS, output: Path = OUTPUT) -> Path:
+def build(directories=GOLD_DIRS, output: Path = OUTPUT, *, demo=False, run_artifacts=()) -> Path:
     graphs = _load(directories)
+    if demo:
+        fixture = Graph.model_validate_json(DEMO.read_text(encoding="utf-8"))
+        graphs.append(
+            {
+                **fixture.model_dump(mode="json"),
+                "_set": "synthetic example",
+                "notes": "Illustrative fixture with synthetic citations and inferred edges.",
+            }
+        )
+    for artifact in run_artifacts:
+        payload = json.loads(artifact.read_text(encoding="utf-8"))
+        graph = Graph.model_validate(payload["graph"])
+        graphs.append({**graph.model_dump(mode="json"), "_set": graph.condition or "generated"})
     for graph in graphs:
         graph["_depth"] = _depths(graph)
     payload = json.dumps(graphs, ensure_ascii=False)
@@ -327,11 +347,12 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--gold", type=Path, nargs="+", default=list(GOLD_DIRS))
     parser.add_argument("--output", type=Path, default=OUTPUT)
+    parser.add_argument("--run-artifact", type=Path, action="append", default=[])
     args = parser.parse_args(argv)
-    path = build(args.gold, args.output)
-    graphs = _load(args.gold)
-    edges = sum(len(g["edges"]) for g in graphs)
-    print(f"wrote {path} ({len(graphs)} graphs, {edges} edges, {path.stat().st_size // 1024} KB)")
+    if args.run_artifact and args.output.resolve() == OUTPUT.resolve():
+        parser.error("write generated run excerpts to a separate local --output")
+    path = build(args.gold, args.output, demo=True, run_artifacts=args.run_artifact)
+    print(f"wrote {path} ({path.stat().st_size // 1024} KB)")
     print("Open it from disk. It loads nothing and must not be served: the spans are")
     print("corpus excerpts, and the corpus is research-use, no redistribution.")
     return 0

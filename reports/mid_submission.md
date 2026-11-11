@@ -6,7 +6,7 @@ Mid-submission: **30 October 2026**. Final submission: **15 November 2026**.
 
 Varun Patil (2025204013) · Harshal Bhansali (2026909007) · Deepti Koranga (2025204033)
 
-Repository: `https://github.com/DeeptiKoranga/lma-grounding-decay` (branch `main`)
+Repository: `https://github.com/DeeptiKoranga/lma-grounding-decay` (historical mid-submission snapshot). Current final-submission work is on `b/episode-confirmation`.
 
 > **Dated snapshot and update.** The original mid-submission text records the
 > 30 October state. Section 5.6 adds the assistant-labelled development results from

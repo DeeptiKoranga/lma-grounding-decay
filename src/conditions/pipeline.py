@@ -19,7 +19,7 @@ from verify.aliases import AliasTable
 from verify.llm_verifier import Verifier
 from verify.paths import rebuild
 
-from .anchors import AnchorWindow, confirm_anchor
+from .anchors import AnchorThreshold, AnchorWindow, confirm_anchor
 from .config import SETTINGS
 
 
@@ -30,6 +30,7 @@ class Query(BaseModel):
     as_of: date
     anchor: Anchor
     anchor_window: AnchorWindow | None = None
+    anchor_threshold: AnchorThreshold | None = None
     question_type: str = "effects"
     target_var: str | None = None
     status: str = "development; pending independent review"
@@ -40,6 +41,10 @@ class Query(BaseModel):
             raise ValueError("anchor event cannot postdate the query cutoff")
         if self.anchor_window and self.anchor_window.end != self.anchor.event_date:
             raise ValueError("anchor window must end on the declared event date")
+        if self.anchor_threshold and self.anchor_window:
+            raise ValueError("declare one anchor confirmation criterion")
+        if self.anchor_threshold and not load_ontology()[self.anchor.var].series_id:
+            raise ValueError("anchor threshold requires a mapped series")
         if self.question_type not in {"why", "effects"}:
             raise ValueError("question_type must be why or effects")
         if self.target_var is not None and self.target_var not in load_ontology():
@@ -110,9 +115,9 @@ class Pipeline:
 
         prose_answer = None
 
-        def generate(passages, answer=None):
+        def generate(passages, answer=None, *, question=None):
             prompt = extraction_prompt(
-                query.query,
+                question or query.query,
                 runtime.graph.anchor,
                 pack_passages(passages),
                 self_labels=flags.self_labels,
@@ -164,58 +169,95 @@ class Pipeline:
                 prose_answer = completion.text
                 logger.model("answer", prompt, completion, None)
             extracted = generate(passages, answer=prose_answer)
-            by_id = {p.passage_id: p for p in pack_passages(passages)}
             edges, relations = [], set()
-            for index, candidate in enumerate(extracted.edges):
-                eid = f"edge-{index+1}"
-                raw_candidates.append({"edge_id": eid, **candidate.model_dump(mode="json")})
-                try:
-                    edge = candidate_edge(
-                        candidate,
-                        edge_id=eid,
-                        passages=by_id,
-                        as_of=query.as_of,
-                        verified=flags.verify,
-                    )
-                    key = (edge.src_var, edge.dst_var, edge.direction)
-                    if key in relations:
-                        raise ValueError("duplicate candidate relation")
-                    relations.add(key)
-                    edges.append(edge)
-                    baseline_established = candidate.strength == Strength.DIRECT or bool(
-                        candidate.evidence_passage_id and candidate.evidence_span
-                    )
-                    if not flags.verify and (
-                        (not flags.self_labels and baseline_established)
-                        or (
-                            flags.self_labels and candidate.provenance == Provenance.SOURCE_ASSERTED
+
+            def add_candidates(candidates, passages):
+                by_id = {p.passage_id: p for p in pack_passages(passages)}
+                for candidate in candidates:
+                    eid = f"edge-{len(raw_candidates) + 1}"
+                    raw_candidates.append({"edge_id": eid, **candidate.model_dump(mode="json")})
+                    try:
+                        edge = candidate_edge(
+                            candidate,
+                            edge_id=eid,
+                            passages=by_id,
+                            as_of=query.as_of,
+                            verified=flags.verify,
                         )
-                    ):
-                        established.add(eid)
-                    if candidate.evidence_passage_id in by_id and candidate.evidence_span:
-                        runtime.spans[(eid, candidate.evidence_passage_id)] = (
-                            candidate.evidence_span
+                        key = (edge.src_var, edge.dst_var, edge.direction)
+                        if key in relations:
+                            raise ValueError("duplicate candidate relation")
+                        relations.add(key)
+                        edges.append(edge)
+                        baseline_established = candidate.strength == Strength.DIRECT or bool(
+                            candidate.evidence_passage_id and candidate.evidence_span
                         )
-                except ValueError as exc:
-                    rejected.append({"edge_id": eid, "reason": str(exc)})
-                    logger.write(
-                        "error", where="candidate_validation", message=str(exc), recoverable=True
-                    )
-            runtime.set_edges(edges)
+                        if not flags.verify and (
+                            (not flags.self_labels and baseline_established)
+                            or (
+                                flags.self_labels
+                                and candidate.provenance == Provenance.SOURCE_ASSERTED
+                            )
+                        ):
+                            established.add(eid)
+                        if candidate.evidence_passage_id in by_id and candidate.evidence_span:
+                            runtime.spans[(eid, candidate.evidence_passage_id)] = (
+                                candidate.evidence_span
+                            )
+                    except ValueError as exc:
+                        rejected.append({"edge_id": eid, "reason": str(exc)})
+                        logger.write(
+                            "error",
+                            where="candidate_validation",
+                            message=str(exc),
+                            recoverable=True,
+                        )
+
+            add_candidates(extracted.edges, passages)
+            target_edges = [edge for edge in edges if edge.dst_var == query.target_var]
             if (
                 flags.loop
                 and query.question_type == "why"
-                and runtime.graph.edges
+                and target_edges
                 and runtime.remaining >= 4
             ):
-                runtime.call(
+                direction = target_edges[0].direction
+                excluded = {edge.src_var for edge in target_edges}
+                counter = runtime.call(
                     "counter_search",
-                    dst_var=query.target_var or query.anchor.var,
-                    direction=query.anchor.direction,
-                    exclude_src_vars=[],
+                    dst_var=query.target_var,
+                    direction=direction,
+                    exclude_src_vars=sorted(excluded)[:10],
                     k=3,
                     as_of=query.as_of,
                 )
+                if counter.ok and counter.competing_src_vars:
+                    try:
+                        alternate = generate(
+                            counter.passages,
+                            question=(
+                                f"{query.query} Find a distinct competing cause for "
+                                f"{query.target_var} moving {direction}. "
+                                f"Candidate causes: {', '.join(counter.competing_src_vars)}."
+                            ),
+                        )
+                        # Only append competing claims. rebuild keeps the anchor-connected subset.
+                        add_candidates(
+                            [
+                                candidate
+                                for candidate in alternate.edges
+                                if candidate.dst_var == query.target_var
+                                and candidate.direction == direction
+                                and candidate.src_var in counter.competing_src_vars
+                                and candidate.src_var not in excluded
+                            ],
+                            counter.passages,
+                        )
+                    except ValueError as exc:
+                        logger.write(
+                            "error", where="counter_extraction", message=str(exc), recoverable=True
+                        )
+            runtime.set_edges(edges)
 
             def generate_repair(edge, found):
                 proposals = generate(found)

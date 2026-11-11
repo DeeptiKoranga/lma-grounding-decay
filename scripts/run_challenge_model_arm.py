@@ -45,7 +45,6 @@ single sitting on a laptop.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import uuid
 from collections import defaultdict
@@ -53,7 +52,13 @@ from datetime import date
 from pathlib import Path
 
 from agent.logging import RunLogger
-from conditions.provenance import model_identity, runtime_identity, write_json
+from conditions.provenance import (
+    digest,
+    model_identity,
+    runtime_identity,
+    source_identity,
+    write_json,
+)
 from llm.generate import MLXGenerator
 from schema import Edge, Passage, Provenance, Strength
 from schema.enums import strength_rank
@@ -226,34 +231,46 @@ def main(argv: list[str] | None = None) -> int:
     ]
     by_id = {p.passage_id: p for p in passages}
 
+    item_ids = {item["item_id"] for item in items}
+    if not item_ids or len(item_ids) != len(items):
+        parser.error("challenge item IDs must be unique and nonempty")
     args.output.mkdir(parents=True, exist_ok=True)
     results_path = args.output / "results.jsonl"
-    done: set[str] = set()
-    if args.resume and results_path.is_file():
-        done = {
-            json.loads(line)["item_id"]
-            for line in results_path.read_text(encoding="utf-8").splitlines()
-            if line.strip()
-        }
-        print(f"resuming: {len(done)} of {len(items)} already judged")
-
-    write_json(
-        args.output / "inputs.json",
-        {
-            "model": args.model,
-            "revision": args.revision,
-            "backend": "mlx",
-            "model_files": model_identity(args.model_path),
-            "runtime": runtime_identity(),
-            "items": len(items),
-            "status": "challenge-set model arm; detections are ground truth, "
-            "the false-alarm rate rests on the adjudicated gold",
-            "input_sha256": {
-                str(path): hashlib.sha256(path.read_bytes()).hexdigest()
-                for path in (Path(__file__), args.items, REPO / "src/verify/llm_verifier.py")
-            },
+    receipt = args.output / "inputs.json"
+    inputs = {
+        "model": args.model,
+        "revision": args.revision,
+        "backend": "mlx",
+        "model_files": model_identity(args.model_path),
+        "runtime": runtime_identity(),
+        "source_sha256": source_identity()["sha256"],
+        "input_sha256": {
+            "runner": digest(Path(__file__)),
+            "items": digest(args.items),
+            "corpus": digest(args.corpus),
+            "aliases": digest(REPO / "data/aliases.yaml"),
         },
-    )
+    }
+    done: set[str] = set()
+    if any(args.output.iterdir()):
+        if not args.resume or not receipt.is_file():
+            parser.error("output directory already contains a run; use a new directory")
+        if json.loads(receipt.read_text(encoding="utf-8")) != json.loads(json.dumps(inputs)):
+            parser.error("challenge run inputs changed; use a new output directory")
+        if results_path.is_file():
+            existing = [
+                json.loads(line)["item_id"]
+                for line in results_path.read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            ]
+            done = set(existing)
+            if not done <= item_ids or len(done) != len(existing):
+                parser.error("cached challenge rows contain unknown or duplicate item IDs")
+        print(f"resuming: {len(done)} of {len(items)} already judged")
+    else:
+        with receipt.open("x", encoding="utf-8") as stream:
+            json.dump(inputs, stream, indent=2)
+            stream.write("\n")
 
     generator = MLXGenerator(args.model_path, model_id=args.model, revision=args.revision)
     aliases = load_aliases()
@@ -328,6 +345,8 @@ def main(argv: list[str] | None = None) -> int:
         for line in results_path.read_text(encoding="utf-8").splitlines()
         if line.strip()
     ]
+    if len(rows) != len(item_ids) or {row["item_id"] for row in rows} != item_ids:
+        parser.error("challenge output does not cover each item exactly once")
     summary = summarise(rows)
     write_json(args.output / "summary.json", summary)
     args.report.parent.mkdir(parents=True, exist_ok=True)

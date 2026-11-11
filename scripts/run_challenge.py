@@ -229,7 +229,7 @@ def main(argv: list[str] | None = None) -> int:
     args.report.write_text(
         "\n".join(line.rstrip() for line in lines).rstrip() + "\n", encoding="utf-8"
     )
-    print(f"wrote {args.report.relative_to(REPO)}")
+    print(f"wrote {args.report}")
     print(
         json.dumps(
             {

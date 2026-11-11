@@ -109,6 +109,30 @@ def _secondary_section(result: dict) -> list[str]:
         "condition that produced no path cannot have an invalid one.",
         "",
     ]
+    lines += [
+        "### Secondary metrics by hop",
+        "",
+        "Cells show the query-macro mean and number of queries with a denominator.",
+        "",
+        "| Condition | Hop | Strength inflation | Reference recall | Provenance accuracy | Strict path validity |",
+        "|---|---|---:|---:|---:|---:|",
+    ]
+    for condition, buckets in sorted(aggregate.items()):
+        for hop in BUCKETS:
+            if hop not in buckets:
+                continue
+            row = buckets[hop]
+            cells = []
+            for metric in (
+                "strength_inflation",
+                "reference_edge_recall",
+                "provenance_accuracy",
+                "strict_path_validity",
+            ):
+                measure = row[metric]
+                cells.append(f"{_fmt_mean(measure)} ({measure['queries_with_denominator']})")
+            lines.append(f"| {condition} | {hop} | " + " | ".join(cells) + " |")
+    lines.append("")
     return lines
 
 
@@ -227,6 +251,20 @@ def main(argv: list[str] | None = None) -> int:
         f"`{(result['reference_review_receipt_sha256'] or 'none')[:12]}`.",
         "",
         f"Status: {result['status']}.",
+        *(
+            [
+                "The November gold development exports use assistant-produced support "
+                "labels and prose corrections. The recorded reviewer field is packet metadata. "
+                "Independent human validation covered a stratified sample, as documented in "
+                "`reports/support_sample_validation.md`."
+            ]
+            if result["judgments_sha256"]
+            in {
+                "3fb920c1a42a8cc2630ac89dd9e98265b056dcf4cc3492aadbe6031fd0cbd1f9",
+                "5fbc7b2ebf6a8943b2fbb5cd8687eecad50c53f86fd8c6fc196bac40751cc2db",
+            }
+            else []
+        ),
         "",
     ]
 

@@ -38,7 +38,10 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
+from corpus.bindings import recorded_corpus_sha256
 from eval.gold import load_gold_graph
+from eval.references import validate
+from eval.run_audit import audit
 from schema import Graph
 
 REPO = Path(__file__).resolve().parent.parent
@@ -54,6 +57,7 @@ def _reference_edges(references: Path) -> dict[str, dict]:
         graph = load_gold_graph(path.stem, references)
         out[graph.query_id] = {
             "as_of": graph.as_of,
+            "anchor": (graph.anchor.var, graph.anchor.direction, graph.anchor.event_date),
             "edges": {
                 (e.src_var, e.dst_var): {
                     "direction": e.direction.value,
@@ -117,6 +121,7 @@ def summarise(run_dir: Path, references: Path) -> dict:
             "strength_pairs": [],
             "no_reference": 0,
             "cutoff_mismatch": 0,
+            "anchor_mismatch": 0,
             "graphs": 0,
         }
 
@@ -139,6 +144,9 @@ def summarise(run_dir: Path, references: Path) -> dict:
             # was not yet visible, or withhold evidence that was. eval.references
             # refuses this elsewhere; so does this.
             row["cutoff_mismatch"] += 1
+            continue
+        if (graph.anchor.var, graph.anchor.direction, graph.anchor.event_date) != gold["anchor"]:
+            row["anchor_mismatch"] += 1
             continue
         for edge in graph.edges:
             match = gold["edges"].get((edge.src_var, edge.dst_var))
@@ -163,6 +171,7 @@ def summarise(run_dir: Path, references: Path) -> dict:
             "graphs": row["graphs"],
             "graphs_without_a_reference": row["no_reference"],
             "graphs_at_a_different_cutoff": row["cutoff_mismatch"],
+            "graphs_at_a_different_anchor": row["anchor_mismatch"],
         }
     return report
 
@@ -193,6 +202,8 @@ def render(report: dict, runs: Path, references: Path) -> str:
             skipped.append(f"{row['graphs_without_a_reference']} no reference")
         if row["graphs_at_a_different_cutoff"]:
             skipped.append(f"{row['graphs_at_a_different_cutoff']} cutoff mismatch")
+        if row.get("graphs_at_a_different_anchor"):
+            skipped.append(f"{row['graphs_at_a_different_anchor']} anchor mismatch")
         lines.append(
             f"| {condition} | {row['graphs']} | {row['matched_edges']} | {acc} | {f1} | "
             f"{', '.join(skipped) or '--'} |"
@@ -246,13 +257,25 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--runs", type=Path, required=True)
     parser.add_argument("--references", type=Path, default=REPO / "data/eval/gold/dev")
+    parser.add_argument("--corpus", type=Path, default=REPO / "data/processed/articles.jsonl")
     parser.add_argument("--report", type=Path, default=REPO / "reports/reasoning_diagnostics.md")
     parser.add_argument("--json", type=Path)
     args = parser.parse_args(argv)
 
     if not args.runs.is_dir():
         raise SystemExit(f"{args.runs} is not a directory; runs/** is gitignored")
-    report = summarise(args.runs, args.references)
+    try:
+        corpus_sha = recorded_corpus_sha256(args.runs)
+        inputs = json.loads((args.runs / "inputs.json").read_text(encoding="utf-8"))
+        if not corpus_sha or inputs.get("format_version") != 2:
+            raise ValueError("reasoning diagnostics require a bound v2 sweep")
+        validation = audit(runs=args.runs, corpus=args.corpus)
+        if not validation["complete"] or validation["failures"]:
+            raise ValueError("sweep artifact or log audit failed")
+        validate(references=args.references, corpus=args.corpus, expected_corpus_sha256=corpus_sha)
+        report = summarise(args.runs, args.references)
+    except (OSError, ValueError, KeyError) as exc:
+        parser.exit(2, f"reasoning diagnostics: {exc}\n")
     if not report:
         raise SystemExit(f"no generated graphs under {args.runs}")
 
