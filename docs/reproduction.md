@@ -667,3 +667,38 @@ uses the provenance, completeness and anchor checks documented above.
 See `reports/integration_fixes_20261027.md` and its JSON evidence. The original
 641-test audit and earlier reproduction reports retain their historical scope;
 they are not current implementation instructions or reviewed research results.
+
+## Final development evidence and descriptive test preflight
+
+The November sweeps and their scores are pinned to the original query manifests.
+The files `data/eval/queries_dev_anchored_v2.jsonl` and
+`data/eval/queries_test_anchored_v2.jsonl` are for new runs. Their thresholds
+come from the declared episode checks. The series observation must match the
+anchor date and be published by the query cutoff. The test manifest covers the
+two signed FPI references. The four-candidate test file retains the excluded
+CPI queries for the study record.
+
+With the matching frozen corpus, run `make preflight-test`. The optional
+`make sweep-test-descriptive` preflights the references and requires confirmed
+anchors. It writes a new run directory. Two queries cannot clear the inference
+gate and any support-scored report still requires independent judgments.
+
+The reasoning diagnostic CLI requires a complete checksum-bound sweep and a
+signed reference receipt. Pass `--corpus` to select the matching corpus outside
+the checkout. For the model challenge use a fresh `CHALLENGE_MODEL_OUTPUT`.
+The stricter resume format rejects old run directories and changed inputs.
+Historical results remain available in the published reports and local logs.
+
+`make validate-track-c` checks the historical Phase 1 evidence, including the
+CI receipt for the revision it tested. Use current CI and local tests to
+validate later code. The validator prints by default and writes an additional
+JSON file only with an explicit `--output`.
+
+Use `make explorer` for the offline reference and synthetic graph viewer.
+For a generated graph, pass `--run-artifact` and a separate local `--output`
+to `scripts/build_graph_explorer.py`. Generated evidence excerpts remain local.
+
+For the separate signed test-reference retrieval diagnostic, run
+`scripts/report_test_retrieval.py --corpus PATH --index PATH` with
+`PYTHONPATH=src`, the local retrieval environment, and the pinned model cache.
+This evaluates ranking on the two FPI queries without running generation.

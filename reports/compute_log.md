@@ -362,3 +362,19 @@ They produced three complete graphs with 12 model calls, 19,809 prompt tokens,
 seconds** (97.72, 89.94 and 99.80 seconds by seed). These times exclude model
 loading, retrieval and idle time. See `reports/stability_check_20261110.md` for
 the edge-set comparison and artifact hashes.
+
+## November scored development and final diagnostics
+
+The two 28-graph development sweeps used 185 completed model calls, with
+333,141 prompt tokens, 49,849 completion tokens, and 6,964.4 summed model-call
+seconds. See `reports/dev_gold_sweeps_20261110.md` for the per-arm accounting.
+
+The 130-item challenge evaluated 69 items through deterministic rules and
+made 61 semantic model calls. The bound call logs record
+30,818 prompt tokens, 5,142 completion tokens,
+and 521.45 summed model-call seconds.
+
+The capability rerun completed 65 calls, with 160,470 prompt tokens,
+4,234 completion tokens, and 1,873.46 summed model-call seconds. See
+`reports/capability_diagnostics.json` for result hashes. These are local model
+wall times. GPU-active hours were not measured.

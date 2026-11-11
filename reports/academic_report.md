@@ -132,11 +132,10 @@ contribute one.
 
 Eight anchored queries over four episodes, split four development and four test
 **by episode**, so the two halves share no event, no as-of date and no passages.
-Of the four test queries only three are answerable from the frozen corpus; the
-fourth names a target the corpus never connects to its anchor, which Section 7
-sets out. Four reviewer evidence graphs hold 16 source-asserted edges with
-verbatim spans, adjudicated by two independent annotators (Section 4.4). A challenge set holds 89
-items: 16 clean controls and 73 mechanically corrupted edges across five
+Two test queries have signed references. Section 7 documents the two CPI
+exclusions. Four development reference graphs contain 16 source-asserted edges,
+and two test graphs contain eight. The challenge set contains 130 items,
+including 23 clean controls and 107 mechanically corrupted edges across five
 families. Synthetic diagnostics add 40 frozen agent states, 25
 adversarial safety prompts and 20 tool-fault scenarios.
 
@@ -204,6 +203,22 @@ others out of the top 5.
 The 2,035 relevance judgements are single automated judgements made with prior
 exposure to results, not independent human scores. This is adequate for a
 development selection and is not presented as reviewed evidence.
+
+**Signed test-reference retrieval.** A separate descriptive check uses the
+two eligible FPI queries, which share one episode. Recall uses the distinct
+signed evidence passage IDs for each query. The retrievers and cutoffs were
+fixed before this check.
+
+| Configuration | Queries | Recall@5 | Recall@10 | MRR@50 |
+|---|---:|---:|---:|---:|
+| BGE-M3 | 2 | 0.000 | 0.250 | 0.083 |
+| BGE-M3 plus top-50 cross-encoder | 2 | 0.000 | 0.000 | 0.026 |
+
+For the why query, the reranker moved the first signed evidence from rank 6
+to rank 19. Neither configuration retrieved signed evidence in the top 50
+for the effects query. These two queries cannot establish a general reranker
+effect. The query-level figures and hashes are in
+`reports/test_retrieval_descriptive.md`.
 
 ### 4.3 Causal strength and detection on public data
 
@@ -308,16 +323,39 @@ span, so every rule still passes, and no rule reads the strength field. The test
 suite asserts these misses, so a rule cannot silently acquire a capability it
 does not document.
 
-**The 25 semantic corruptions are precisely what the LLM verifier exists for,
-and that arm has not been run.** The rules-only result above is therefore a
-floor on what the system catches, not a measurement of it: the proposal's
-isolating comparison for the Reasoning capability is M against A-NoVerify, and
-on the challenge set that comparison is still open — now over 38 semantic
-corruptions rather than 25. What the development sweep says is narrower but
-points the same way — provenance accuracy is 0.750 for M
-against 0.396 for A-NoVerify on the primary arm (Section 4.9), so the verifier
-is doing work the rules cannot. Whether it catches a reversed relation
-specifically is unmeasured.
+**The 38 semantic corruptions are what the LLM verifier exists for, and that
+arm has now been run** (`reports/challenge_model_arm.md`).
+
+| Semantic family | Items | Caught by rules | Caught by the verifier |
+|---|---:|---:|---:|
+| Reversed relation | 23 | 0 | 9 (0.391) |
+| Inflated strength | 15 | 0 | 8 (0.533) |
+| **Total** | **38** | **0** | **17 (0.447)** |
+
+False-alarm rate on the 23 clean controls: **0.087**, against 0.000 for the
+rules.
+
+So the verifier moves the semantic families from a structural zero to a little
+under half, and pays 2 of 23 sound citations for it. That is the proposal's
+isolating comparison for the Reasoning capability, measured on the dataset
+built for it, and it is the clearest single statement this study can make about
+what verification buys: the rule layer cannot see these corruptions at all, and
+the verifier sees fewer than half of them.
+
+**One figure in that table should be read with suspicion, and it is the better
+of the two.** The verifier disagreed with the adjudicated strength on **8 of
+the 23 clean controls** — a third of edges where the gold label is right and
+nothing was corrupted. Inflated-strength detection is defined as returning a
+weaker label than claimed, so a verifier that labels strength noisily will
+score detections it did not earn. With a base disagreement rate of 0.348 on
+controls against 0.533 on inflated items, the margin is real but thin, and this
+sample cannot separate discrimination from noise. The reversed-relation figure
+carries no such ambiguity: it is read off provenance, and a control
+disagreement there is a false alarm already counted.
+
+Section 4.9's development-sweep evidence points the same way from a different
+angle: provenance accuracy is 0.750 for M against 0.396 for A-NoVerify on the
+primary arm.
 
 ### 4.6 Capability, safety and tool calling
 
@@ -325,7 +363,8 @@ specifically is unmeasured.
 |---|---|
 | Next-action / tool-selection accuracy, standalone model choice, 40 states | 0.125 |
 | Argument validity (schema and unchanged cutoff) | 0.850 |
-| Unsafe-call rate (schema violation or widened cutoff), 40 states | 0.150, **understated** |
+| Unsafe-call rate (schema, cutoff **or budget**), 40 states | **0.275** |
+| Calls proposed in zero-budget states | **5 of 5** |
 | Investment-advice leakage, 25 adversarial prompts | 0 |
 | Own-forecast leakage, 25 prompts | 0 |
 | Post-as-of evidence use, 25 prompts | 0 |
@@ -334,22 +373,21 @@ specifically is unmeasured.
 
 Three qualifications. The 0.125 measures the model's standalone next-action
 choice on scripted states; the executed controller uses deterministic priority,
-so this is not the accuracy of the agent as it runs. The unsafe-call rate as computed is the
-complement of argument validity over the same 40 states, so it counts a call as
-unsafe only if it breaks the tool schema or widens the as-of cutoff. **That is
-incomplete, and the figure above understates.** The proposal names the date
-filter and the budget together as the two things enforced in code, and five of
-the 40 states have no budget left, where the only safe action is to stop. In
-the archived 23 October run all five drew a `counter_search` whose arguments
-validated, so each scored as safe. `eval.capabilities` now records
-`budget_respected` and reports `unsafe_call_rate` beside argument validity
-rather than as its complement — the two are no longer complements, because a
-call can carry a correct cutoff and still be one the budget forbids. The
-corrected figure needs the diagnostic re-run, which needs the model; until then
-0.150 is quoted as a floor. Neither figure certifies identifier correctness or
-executability. And the safety screen was
-reviewed by an assistant rather than an independent human, which the record
-discloses; it is a descriptive screen, not certification.
+so this is not the accuracy of the agent as it runs. The unsafe-call rate is
+**not** the complement of argument validity, and the difference is the point:
+five of the 40 states have no budget left, where the only safe action is to
+stop, and the model proposed a call in **all five**. Those calls carried correct
+cutoffs and valid schemas, so an earlier definition — unsafe as one minus
+argument validity — scored every one of them as safe and reported 0.150. The
+proposal names the date filter and the budget together as the two things
+enforced in code; counting both gives 0.275. Neither figure certifies
+identifier correctness or executability. And the safety screen was reviewed by
+an assistant rather than an independent human, which the record discloses; it
+is a descriptive screen, not certification. The current automated rerun
+flagged four possible asserted-without-span responses. That heuristic count
+and the zero assistant-reviewed judgments in the table use distinct scoring
+methods on the same archived responses. The full M development graphs passed
+structural source, date and verbatim-span checks in both arms.
 
 **Controller behaviour on the four development queries.** The following
 numbers come from checksum-bound successful logs, not the standalone scripted
@@ -379,27 +417,42 @@ per-condition counts and stop reasons are in `reports/agent_metrics.md` and
 the proposal's test-run metrics remain pending test execution.
 
 **Two reasoning diagnostics are measured against our own adjudicated edges**
-rather than a public set: direction accuracy, and strength macro-F1 over the
-generated edges that match a reference edge on source and destination.
-`scripts/report_reasoning_diagnostics.py` computes both into
-`reports/reasoning_diagnostics.md`. They are kept apart from the metrics they
-resemble on purpose. Direction accuracy is not reference-edge recall, which
-requires direction to match before it counts an edge at all and so cannot say
-how often the sign was right on the pairs the model did find. Strength macro-F1
-is not strength inflation, which counts only over-statement; macro-F1 is
-symmetric and includes under-statement, and macro-averaging stops a rare label
-such as `correlational` being drowned by `direct`.
+rather than a public set (`reports/reasoning_diagnostics.md`, primary arm):
 
-**Path-label accuracy is not an empirical number in this design.** Table 4 asks
-for it on fixed labelled paths. A path's label is its weakest hop under
-ReCEval-style minimum aggregation, and in this system that aggregation is
-deterministic code (`schema.enums.weakest`, applied in `verify/paths.py`), not
-a model judgement: given the edge strengths, the path label follows with no
-freedom. Scoring it would measure the function, and the function is covered by
-unit tests instead. What *is* uncertain is whether the edge strengths feeding
-it are right, and that is already measured — by strength inflation in Section
-4.8 and by strict path validity in Section 4.9, which is the stricter
-end-to-end version of the same question.
+| Condition | Matched edges | Direction accuracy | Strength macro-F1 |
+|---|---:|---:|---:|
+| B0 | 5 | 1.000 | 0.467 |
+| B1 | 9 | 1.000 | 0.678 |
+| B1-R | 8 | 0.875 | 0.422 |
+| B2 | 6 | 1.000 | 0.455 |
+| A-NoVerify | 6 | 1.000 | 0.455 |
+| A-NoLoop | 6 | 1.000 | 0.455 |
+| M | 6 | 1.000 | 0.455 |
+
+Every condition that finds a reference pair gets its direction right, with one
+exception: B1-R, at 0.875 over eight matched edges, is the only arm that ever
+reverses one. Strength is the weaker axis everywhere, between 0.42 and 0.68,
+and B1 — the plain prose baseline — scores highest on both matched edges and
+strength. That is not evidence that B1 reasons better. It proposes more edges
+that happen to name a reference pair, and matched-edge counts this small make
+the macro-F1 move several points on a single label.
+
+The two are kept apart from the metrics they resemble on purpose. Direction
+accuracy is not reference-edge recall, which requires direction to match before
+it counts an edge at all and so cannot say how often the sign was right on the
+pairs the model did find — which is exactly what makes B1-R's single reversal
+visible here and invisible there. Strength macro-F1 is not strength inflation,
+which counts only over-statement; macro-F1 is symmetric and includes
+under-statement, and macro-averaging stops a rare label such as
+`correlational` being drowned by `direct`. No condition was skipped for a
+cutoff mismatch, and the sensitivity arm is reported beside it in
+`reports/reasoning_diagnostics_sensitivity.md`.
+
+**Fixed-path label accuracy.** Rebuilding three fixed synthetic paths from
+their edge labels reproduced weakest-hop strength and fully-sourced status on
+all three paths (3/3 for each). See `reports/path_label_check.md`. Strict path
+validity in Section 4.9 also checks the evidence and strength of the underlying
+edges on development outputs.
 
 ### 4.7 Structural outcome by condition
 
@@ -501,7 +554,8 @@ section remains an assistant-labelled development diagnostic.
 The primary B1 hop buckets have only 5, 2 and 1 established edges at hops 1,
 2 and 3-or-deeper; the sensitivity B1 buckets have 13, 1 and 0. Neither arm
 clears the pre-declared three-bucket gate, so H1 is not testable on this dev
-set. M's lower UER does not establish an inferential H2 result with four
+set. H2b has zero usable paired queries in both arms for the change from
+hop 1 to hop 3 or deeper, for both UER and strength inflation. M's lower UER does not establish an inferential H2 result with four
 queries; reference-edge recall remains near zero. Missing denominators are
 reported as N/A rather than as zero error. Full per-hop strength inflation,
 recall, query counts and guard interpretation are in the RQ reports.
@@ -534,9 +588,9 @@ past that — but they are the comparisons that isolate each capability.
 | M − A-NoVerify | does verification help? | −0.208 (4 pairs) | −0.625 (2 pairs) |
 | M − A-NoLoop | does targeted retrieval help? | +0.500 (1 pair) | n/a (0 pairs) |
 
-**H2c holds descriptively in both arms**: the full system's UER is lower than
+**The UER component of H2c favours M descriptively in both arms.** Its UER is lower than
 that of RAG prompted to label its own links, by 25 points in the primary arm and
-62 in the sensitivity arm. The A-NoVerify contrast points the same way, which is
+62.5 in the sensitivity arm. The paired strength-inflation contrast has no usable denominator in either arm. The A-NoVerify contrast points the same way, which is
 the ablation that matters most for the central claim — removing the verifier
 makes the system worse by the measure the study is built on.
 
@@ -544,6 +598,19 @@ makes the system worse by the measure the study is built on.
 A-NoLoop established exactly one edge across the whole primary arm and none in
 the sensitivity arm. Its zero-width interval is one number resampled, not
 precision. Whether targeted retrieval helps is untested here.
+
+**Exploratory end-to-end reranker comparison.** These are paired UER differences
+from the same assistant-labelled development scores. Negative values favour
+the first condition. The retrieval pilot is a separate comparison.
+
+| Contrast | Primary arm | Sensitivity arm |
+|---|---:|---:|
+| B1-R minus B1 | −0.333 (3 pairs) | −0.092 (4 pairs) |
+| M minus B1-R | 0.000 (4 pairs) | −0.125 (2 pairs) |
+
+B1-R reduced UER relative to B1 in both development arms. M tied B1-R on
+primary UER and reference recall. In the sensitivity arm M's recall was 0.125
+lower than B1-R's over four queries. The low pair counts prevent inference.
 
 Two secondary metrics the proposal asks for had been computed by `eval.metrics`
 since Phase 2 and printed nowhere.
@@ -627,8 +694,8 @@ declared and only two against official data; the March oil shock had to be
 redated because the Brent series holds no March observation, and the September
 bond sell-off was dropped because the yield series ends in August and never
 reaches the threshold. That reduced 30 planned queries to 8, which in turn caps
-the gold set at 24 edges and left the challenge set unable to reach its
-specified size.
+the signed gold set at 24 edges. The challenge set exceeds the planned
+total, with two fewer clean controls than planned.
 
 The compounding is worth stating plainly, because it is the kind that is easy to
 hide: a sparse series store did not merely weaken one measurement, it propagated
@@ -637,14 +704,23 @@ finally to the hop coverage that RQ1 is defined over.
 
 ## 6. Limitations
 
-**No primary result.** UER is unmeasured. Everything in Section 4 is
-infrastructure, diagnostics or structure.
+**No held-out primary result.** Section 4 reports descriptive development UER
+and associated diagnostics. No held-out sweep or independent scoring of its
+outputs was performed.
 
 **The gold set reaches hop 2.** Twelve of 16 gold edges are at hop 1 and four at
 hop 2, with none deeper. UER can still be reported at hop 3 or more because
 it is measured over generated edges, but reference-edge recall — the H2d guard —
 has no denominator there, so the guard is unavailable in exactly the slice where
 H1 predicts grounding is worst.
+
+**Runtime confirmation.** The offline episode audit found three confirmed
+episodes as declared, including two against official data. The scored query
+inputs did not declare runtime observation windows. All 56 saved development
+runs therefore recorded an unconfirmed anchor. Their as-of evidence filters
+still ran. These are development analyses of declared events. The separate
+versioned query manifests define explicit thresholds for future runs. No result
+in this report was regenerated under those criteria.
 
 **Source concentration.** 870 of 1,095 news documents, 79%, come from one
 publisher. Business Standard and the RBI refuse `robots.txt` to our client while
@@ -735,7 +811,8 @@ already happened and one thing that had not.
 | Done, 10 Nov | Five-case primary-arm failure analysis; earlier clean-clone reproduction remains documented |
 | Done, 11 Nov | Repeated-sampling stability check: three seeds on `dev-oil-effects` under M; the established set and its UER of 0.500 identical across repeats, the proposal stage visibly stochastic (`reports/stability_check_20261110.md`) |
 | Done, 11 Nov | Test gold drafted for two queries, then **adjudicated**: both annotators agreed on every surviving edge and every direction, split on seven of eight strengths, reconciled under D-30; receipt signed (D-27a, D-30) |
-| 11–12 Nov | Final report integration and remaining reproduction checks |
+| Done, 12 Nov | Signed-reference retrieval diagnostic on the two FPI queries, with and without the reranker |
+| Done, 12 Nov | Controller metrics restored, fixed-path check added, and reproduction checks rerun |
 | At risk | Any test *score*. The reference set now exists and is receipt-bound, but no sweep has been run against it, and two queries sit five times below the inference gate in any case |
 
 Both development sweeps are run and scored, and the judgement they rest on has
@@ -743,7 +820,7 @@ now been sampled: the 247 support labels remain assistant-produced, but a blind
 human sample of 40 of them has been annotated and scored, and it surfaced no
 disagreement on the primary arm that supplies the headline numbers (Section
 4.8). What the sample cannot do is convert the remaining 220 labels into human
-ones. The test-set annotation and frozen test run remain separate work.
+ones. The two surviving test references are adjudicated. Their frozen test run remains outstanding.
 
 **The test half is two queries, not four.** Gold graphs exist for
 `test-fpi-why` and `test-fpi-effects`, drafted from the corpus with every span
@@ -758,8 +835,8 @@ failing structurally, because in this corpus Indian headline CPI is the
 effects graph rooted at CPI cannot use an inbound edge; what points outward is
 CPI to the repo rate, conditionally, and little else (D-27a). Two queries sit
 five times below `MIN_QUERIES_FOR_INFERENCE`, so no test figure here could ever
-have been inferential, and scoring against these drafts stays refused until two
-annotators have labelled every edge blind and signed a receipt.
+have been inferential. The two signed graphs are eligible references. No
+held-out outputs or independent support judgments exist to score against them.
 
 **The query the audit also ruled out.** A reachability audit run before any
 drafting (`reports/test_gold_feasibility.md`) had already excluded
@@ -793,21 +870,21 @@ receipt is signed and hash-bound to those bytes.
 
 **The prototype's interactive output exists.** The proposal's Section 8 ends by
 asking for "an interactive event-impact graph as its final output", and it was
-dropped on 29 October as unreachable alongside the experiments. The experiments
+dropped on 29 October as unreachable alongside the experiments. The development experiments
 finished, so it was built: `reports/graph_explorer.html`, one self-contained
 file with no network dependency, where every edge opens to the span it rests on
 with its passage id, publication date and the cutoff it had to clear — or, for
 a `model_inferred` edge, to the statement that no verified source was found.
 It is opened from disk rather than served, because the spans are corpus
-excerpts under a research-use licence. It changes no measurement; it is the one
+excerpts under a research-use licence. The viewer also includes a synthetic graph with inferred edges and path labels.
+A local export can display a generated run artifact. It is the
 artifact that lets a reader do what Section 3 describes a reader wanting to do,
 which is follow a chain and see where it stops being grounded.
 
 **What the study therefore reports.** Development results only. The test
 reference set now exists and would be scorable, but no sweep has been run
 against it, and two queries sit five times below `MIN_QUERIES_FOR_INFERENCE`,
-so a test table here would be a thin descriptive result rather than a held-out
-one. Reporting the development half and saying why the test half stopped where
+so a test table here would be a descriptive held-out result with two queries and no inferential claim. Reporting the development half and saying why the test half stopped where
 it did is the more honest position, and it is the one taken.
 
 Section 5.2's item is now settled rather than pending: the D-01 selection is
@@ -834,7 +911,13 @@ The held-out test measurement remains outstanding.
 
 What the work already shows is that the verification question is sharper than we
 posed it. Deterministic rules and semantic judgement divide cleanly and
-measurably, with rules owning provenance and the model owning meaning. And the
+measurably, with rules owning provenance and the model owning meaning — and the
+challenge set now puts a number on the second half. On the 38 corruptions no
+rule can see, because a reversed edge keeps the same variables, passage and
+span, the rule layer catches 0 and the verifier catches 17, for 2 false alarms
+in 23 clean controls (Section 4.5). Verification is therefore worth having and
+is not close to sufficient, which is a more useful finding than either half
+alone. And the
 striking scarcity of established edges, which we first attributed to an
 over-cautious verifier, appears instead to trace to a generator that cites the
 wrong passage in 17 of 20 cases — which is a different problem, with a different

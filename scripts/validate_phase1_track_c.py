@@ -9,7 +9,7 @@ from pathlib import Path
 import yaml
 
 from conditions.config import SETTINGS
-from conditions.provenance import digest, source_identity, write_json
+from conditions.provenance import digest, write_json
 from eval.agent_states import load_states
 from eval.faults import evaluate as evaluate_faults
 from eval.model_pilot import SELECTION_RULE, score
@@ -212,7 +212,10 @@ def validate() -> dict:
         "private live vLLM run, checked assets, complete matrix/resume and measured GPU allocation"
     )
     ci = read("reports/track_c_portable_ci_final_20261030.json")
-    validate_native_ci(ci, source_identity()["sha256"])
+    # This receipt certifies the historical Phase 1 run, not the current tree.
+    if ci.get("commit") != "1b584fd94eaf3c585b4aab5657cae98030e755e1":
+        raise ValueError("unexpected revision for the historical Phase 1 CI receipt")
+    validate_native_ci(ci, "5c15b22454e4c0bb364a774e5d537f0e8073eb99f2a52e4e0ba842c8f3571bf4")
     return {
         "status": "Phase 1 Track C deliverables complete",
         "passed": True,
@@ -221,6 +224,7 @@ def validate() -> dict:
         "model_revision": selection["revision"],
         "safety": safety,
         "native_ci": ci,
+        "native_ci_scope": "historical Phase 1 checkout only",
         "live_kaggle": cloud,
         "limits": [
             "Synthetic model/action/safety diagnostics are not research gold.",
@@ -233,15 +237,14 @@ def validate() -> dict:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--output", type=Path, default=Path("reports/phase1_track_c_acceptance_20261030.json")
-    )
+    parser.add_argument("--output", type=Path, help="optionally write a new validation report")
     args = parser.parse_args()
     try:
         result = validate()
     except (ValueError, OSError, KeyError) as exc:
         parser.exit(1, f"Track C acceptance failed: {exc}\n")
-    write_json(args.output, result)
+    if args.output:
+        write_json(args.output, result)
     print(
         json.dumps(
             {"status": result["status"], "passed": result["passed"], "gates": result["gates"]},

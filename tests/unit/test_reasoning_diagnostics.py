@@ -127,7 +127,9 @@ def test_a_condition_matching_nothing_is_reported_as_zero_not_omitted(monkeypatc
     a finding about that condition."""
     from datetime import date
 
-    reference = {"q1": {"as_of": date(2026, 4, 20), "edges": {}}}
+    reference = {
+        "q1": {"as_of": date(2026, 4, 20), "anchor": ("BRENT", "up", date(2026, 1, 1)), "edges": {}}
+    }
     monkeypatch.setattr(module, "_reference_edges", lambda _: reference)
     monkeypatch.setattr(
         module,
@@ -149,6 +151,7 @@ def test_a_graph_at_a_different_cutoff_is_skipped_and_counted(monkeypatch, tmp_p
     reference = {
         "q1": {
             "as_of": date(2026, 4, 20),
+            "anchor": ("BRENT", "up", date(2026, 1, 1)),
             "edges": {
                 ("BRENT", "INR_USD"): {"direction": "up", "strength": "direct", "edge_id": "r1"}
             },
@@ -171,6 +174,7 @@ def test_a_graph_at_the_declared_cutoff_is_scored(monkeypatch, tmp_path):
     reference = {
         "q1": {
             "as_of": date(2026, 4, 20),
+            "anchor": ("BRENT", "up", date(2026, 1, 1)),
             "edges": {
                 ("BRENT", "INR_USD"): {"direction": "up", "strength": "direct", "edge_id": "r1"}
             },
@@ -186,3 +190,20 @@ def test_a_graph_at_the_declared_cutoff_is_scored(monkeypatch, tmp_path):
     assert report["M"]["matched_edges"] == 1
     assert report["M"]["direction_accuracy"] == 1.0
     assert report["M"]["graphs_at_a_different_cutoff"] == 0
+
+
+def test_wrong_anchor_at_same_cutoff_is_not_scored(monkeypatch, tmp_path, graph):
+    anchor = graph.anchor
+    reference = {
+        graph.query_id: {
+            "as_of": graph.as_of,
+            "anchor": (anchor.var, anchor.direction, graph.as_of),
+            "edges": {},
+        },
+    }
+    assert anchor.event_date != graph.as_of
+    monkeypatch.setattr(module, "_reference_edges", lambda _: reference)
+    monkeypatch.setattr(module, "_generated", lambda _: [("M", graph)])
+    row = module.summarise(tmp_path, tmp_path)["M"]
+    assert row["graphs_at_a_different_anchor"] == 1
+    assert row["matched_edges"] == 0

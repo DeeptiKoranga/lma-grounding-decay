@@ -15,6 +15,7 @@ RETRIEVER ?= bge_m3
 DENSE_INDEX ?= data/interim/corpus_v7_index_20261026/bge_m3_vectors.json
 MODEL_SELECTION ?= configs/model_selection.json
 MODEL_ARGS ?= --model-selection $(MODEL_SELECTION)
+CORPUS ?= data/processed/articles.jsonl
 GENERATOR_REVISION ?= 545dc4251c05440727734bcd94334791f6ab0192
 
 .PHONY: run-dev run-all-dev review-dev audit-dev synthetic-faults agent-metrics reasoning-diagnostics
@@ -50,7 +51,7 @@ ALT_MODEL_SELECTION ?= configs/model_selection_qwen35_9b.json
 
 define sweep_all_conditions
 HF_HOME="$(CURDIR)/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src $(LMA_PYTHON) \
-	-m conditions --queries $(GOLD_QUERIES) --model-selection $(1) \
+	-m conditions --queries $(GOLD_QUERIES) --corpus "$(CORPUS)" --model-selection $(1) $(3) \
 	--retriever $(RETRIEVER) --retrieval-python $(RETRIEVAL_PYTHON) \
 	--dense-index $(DENSE_INDEX) --reranker-python .venv/bin/python \
 	--output $(2) --resume
@@ -72,7 +73,7 @@ review-dev: ## Prepare a fresh local blinded support-review packet
 	PYTHONPATH=src $(PY) python -m eval.review prepare --runs $(DEV_OUTPUT) --output $(REVIEW_OUTPUT)
 
 reasoning-diagnostics: ## Direction accuracy and strength macro-F1 vs the adjudicated references
-	PYTHONPATH=src $(PY) python scripts/report_reasoning_diagnostics.py --runs $(ARM_PRIMARY_OUTPUT)
+	PYTHONPATH=src $(PY) python scripts/report_reasoning_diagnostics.py --runs $(ARM_PRIMARY_OUTPUT) --corpus "$(CORPUS)"
 
 agent-metrics: ## Agentic capability metrics (Table 4) from a sweep's run logs
 	PYTHONPATH=src $(PY) python scripts/report_agent_metrics.py --runs $(ARM_PRIMARY_OUTPUT)
@@ -97,10 +98,20 @@ kappa: ## Score two completed worksheets -> reports/adjudication_kappa.md
 
 # The test half (#38). Two of its four queries carry no graph: test-cpi-why by
 # D-27, and test-cpi-effects because this corpus treats Indian headline CPI as
-# the destination of the oil shock rather than its source. The drafts are NOT
-# adjudicated and must not be scored with --references until two annotators
-# have read every span and signed a receipt.
+# the destination of the oil shock rather than its source. The two FPI graphs are
+# adjudicated and receipt-bound (D-30). No held-out sweep has been run.
 .PHONY: test-gold test-gold-feasibility adjudicate-test kappa-test
+
+TEST_QUERIES ?= data/eval/queries_test_anchored_v2.jsonl
+TEST_OUTPUT ?= runs/test-descriptive-primary
+.PHONY: preflight-test sweep-test-descriptive
+
+preflight-test: ## Check the two eligible test queries against their signed references
+	PYTHONPATH=src $(PY) python scripts/validate_evaluation_queries.py --queries $(TEST_QUERIES) --references data/eval/gold/test --corpus "$(CORPUS)"
+
+sweep-test-descriptive: GOLD_QUERIES = $(TEST_QUERIES)
+sweep-test-descriptive: preflight-test ## Run the two-query descriptive test sweep (no inference)
+	$(call sweep_all_conditions,$(MODEL_SELECTION),$(TEST_OUTPUT),--require-confirmed-anchors)
 
 test-gold-feasibility: ## Which test queries could carry gold at all, before anyone drafts
 	PYTHONPATH=src $(PY) python scripts/audit_test_gold_feasibility.py
@@ -128,16 +139,17 @@ rq-from-packets: ## Re-evaluate from local review packets instead (needs the swe
 explorer: ## Build the interactive event-impact graph (open it from disk, do not serve it)
 	PYTHONPATH=src $(PY) python scripts/build_graph_explorer.py
 
+CHALLENGE_MODEL_OUTPUT ?= runs/challenge-model-arm-v2
+
 challenge-model-arm: ## The verifier arm: what it catches that the rules cannot (local model required)
 	HF_HOME="$(CURDIR)/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src $(LMA_PYTHON) \
 		scripts/run_challenge_model_arm.py --revision $(GENERATOR_REVISION) \
-		--output runs/challenge-model-arm --resume
+		--corpus "$(CORPUS)" --output $(CHALLENGE_MODEL_OUTPUT) --resume
 
 challenge: ## Build the challenge set and run the rules-only arm (no model needed)
 	# Needs a signed data/eval/gold/dev/review_receipt.json. Add --allow-unreviewed
 	# to build from unsigned gold; the manifest then records gold_adjudicated false
 	# and the false-alarm denominator is not quotable.
-	@rm -f data/eval/challenge.jsonl data/eval/challenge_manifest.json
 	PYTHONPATH=src $(PY) python -m eval.challenge --gold data/eval/gold/dev data/eval/gold/test \
 		--corpus data/processed/articles.jsonl --output data/eval/challenge.jsonl
 	PYTHONPATH=src $(PY) python scripts/run_challenge.py

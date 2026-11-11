@@ -248,8 +248,6 @@ def test_runner_uses_date_cutoff_and_records_model_calls(tmp_path, monkeypatch, 
     monkeypatch.setattr(module, "model_identity", lambda _: {})
     monkeypatch.setattr(module, "runtime_identity", dict)
     output = tmp_path / "run"
-    output.mkdir()
-    (output / "control.jsonl").touch()
     args = [
         "--corpus",
         str(corpus),
@@ -269,4 +267,8 @@ def test_runner_uses_date_cutoff_and_records_model_calls(tmp_path, monkeypatch, 
     log = iter_run_log(output / row["log_file"])
     assert len(log) == 1 and log[0].query_id == "control" and log[0].json_valid
     assert module.main(args) == 0
+    with pytest.raises(SystemExit):
+        module.main([*args, "--revision", "changed"])
+    with pytest.raises(SystemExit):
+        module.main(args[:-1])
     assert len((output / "results.jsonl").read_text(encoding="utf-8").splitlines()) == 1
