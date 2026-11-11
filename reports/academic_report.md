@@ -325,7 +325,7 @@ specifically is unmeasured.
 |---|---|
 | Next-action / tool-selection accuracy, standalone model choice, 40 states | 0.125 |
 | Argument validity (schema and unchanged cutoff) | 0.850 |
-| Unsafe-call rate (schema violation or widened cutoff), 40 states | 0.150 |
+| Unsafe-call rate (schema violation or widened cutoff), 40 states | 0.150, **understated** |
 | Investment-advice leakage, 25 adversarial prompts | 0 |
 | Own-forecast leakage, 25 prompts | 0 |
 | Post-as-of evidence use, 25 prompts | 0 |
@@ -334,11 +334,20 @@ specifically is unmeasured.
 
 Three qualifications. The 0.125 measures the model's standalone next-action
 choice on scripted states; the executed controller uses deterministic priority,
-so this is not the accuracy of the agent as it runs. The unsafe-call rate is the
-complement of argument validity over the same 40 states and inherits its
-definition — a call is unsafe here if it breaks the tool schema or widens the
-as-of cutoff, which is the boundary the safety design rests on; it does not
-certify identifier correctness or executability. And the safety screen was
+so this is not the accuracy of the agent as it runs. The unsafe-call rate as computed is the
+complement of argument validity over the same 40 states, so it counts a call as
+unsafe only if it breaks the tool schema or widens the as-of cutoff. **That is
+incomplete, and the figure above understates.** The proposal names the date
+filter and the budget together as the two things enforced in code, and five of
+the 40 states have no budget left, where the only safe action is to stop. In
+the archived 23 October run all five drew a `counter_search` whose arguments
+validated, so each scored as safe. `eval.capabilities` now records
+`budget_respected` and reports `unsafe_call_rate` beside argument validity
+rather than as its complement — the two are no longer complements, because a
+call can carry a correct cutoff and still be one the budget forbids. The
+corrected figure needs the diagnostic re-run, which needs the model; until then
+0.150 is quoted as a floor. Neither figure certifies identifier correctness or
+executability. And the safety screen was
 reviewed by an assistant rather than an independent human, which the record
 discloses; it is a descriptive screen, not certification.
 
@@ -736,12 +745,12 @@ disagreement on the primary arm that supplies the headline numbers (Section
 4.8). What the sample cannot do is convert the remaining 220 labels into human
 ones. The test-set annotation and frozen test run remain separate work.
 
-**The test half is two queries, not four.** Gold graphs are now drafted for
-`test-fpi-why` and `test-fpi-effects` — five edges each across hops 1 and 2,
-every span sliced verbatim from the corpus and passed through the rule layer,
-and both files marked `DRAFT, NOT ADJUDICATED` because no annotator has read
-them. The third query the feasibility audit called feasible did not survive
-reading. The audit counted variables co-occurring with `CPI_HEADLINE` and said
+**The test half is two queries, not four.** Gold graphs exist for
+`test-fpi-why` and `test-fpi-effects`, drafted from the corpus with every span
+sliced verbatim and passed through the rule layer, then adjudicated — four
+edges each after reconciliation, across hops 1 and 2. The adjudication itself
+is described below. The third query the feasibility audit called feasible did
+not survive reading. The audit counted variables co-occurring with `CPI_HEADLINE` and said
 plainly that it was counting co-occurrence; the passages show the condition
 failing structurally, because in this corpus Indian headline CPI is the
 *destination* of the oil shock rather than its source. `BRENT`,

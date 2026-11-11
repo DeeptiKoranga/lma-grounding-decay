@@ -82,7 +82,7 @@ audit-dev: ## Validate generated graphs, safety boundaries, logs and measured co
 synthetic-faults: ## Exercise the frozen synthetic tool-fault diagnostic
 	PYTHONPATH=src $(PY) python -m eval.faults --output reports/tool_faults_recheck.json
 
-.PHONY: gold adjudicate kappa rq challenge explorer
+.PHONY: gold adjudicate kappa rq rq-from-packets challenge explorer
 
 gold: ## Re-draft the dev gold graphs and check every span against the corpus
 	PYTHONPATH=src $(PY) python scripts/draft_gold_graphs.py
@@ -114,8 +114,15 @@ adjudicate-test: ## Write the two blind test worksheets (keeps started ones)
 kappa-test: ## Score two completed test worksheets
 	PYTHONPATH=src $(PY) python scripts/score_adjudication.py --set test
 
-rq: ## Write the RQ1/RQ2 findings from a reviewed run (needs #41, #42, #37 first)
-	PYTHONPATH=src $(PY) python scripts/report_rq.py --review-dir data/interim/support-review
+# --review-dir pointed at data/interim/support-review, which no longer exists
+# anywhere: the packets that were actually scored are the two named arms, and
+# data/interim/** is gitignored, so that target could only ever have worked on
+# one laptop. The committed scored JSON reproduces the same reports anywhere.
+rq: ## Write the RQ1/RQ2 findings from the committed scored results
+	PYTHONPATH=src $(PY) python scripts/report_rq.py --scores reports/dev_gold_primary_reviewed.json
+
+rq-from-packets: ## Re-evaluate from local review packets instead (needs the sweep's machine)
+	PYTHONPATH=src $(PY) python scripts/report_rq.py --review-dir $(REVIEW_OUTPUT)
 
 explorer: ## Build the interactive event-impact graph (open it from disk, do not serve it)
 	PYTHONPATH=src $(PY) python scripts/build_graph_explorer.py

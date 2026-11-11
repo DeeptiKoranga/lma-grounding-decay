@@ -45,20 +45,23 @@ REPO = Path(__file__).resolve().parent.parent
 STRENGTHS = ("direct", "conditional", "correlational")
 
 
-def _reference_edges(references: Path) -> dict[str, dict[tuple[str, str], dict]]:
-    """query_id -> (src, dst) -> the adjudicated edge's direction and strength."""
-    out: dict[str, dict[tuple[str, str], dict]] = {}
+def _reference_edges(references: Path) -> dict[str, dict]:
+    """query_id -> the reference's cutoff and its (src, dst) -> direction, strength."""
+    out: dict[str, dict] = {}
     for path in sorted(references.glob("*.json")):
         if path.name == "review_receipt.json":
             continue
         graph = load_gold_graph(path.stem, references)
         out[graph.query_id] = {
-            (e.src_var, e.dst_var): {
-                "direction": e.direction.value,
-                "strength": e.strength.value,
-                "edge_id": e.edge_id,
-            }
-            for e in graph.edges
+            "as_of": graph.as_of,
+            "edges": {
+                (e.src_var, e.dst_var): {
+                    "direction": e.direction.value,
+                    "strength": e.strength.value,
+                    "edge_id": e.edge_id,
+                }
+                for e in graph.edges
+            },
         }
     if not out:
         raise ValueError(f"no reference graphs under {references}")
@@ -106,19 +109,41 @@ def macro_f1(pairs: list[tuple[str, str]]) -> tuple[float | None, dict[str, dict
 
 def summarise(run_dir: Path, references: Path) -> dict:
     reference = _reference_edges(references)
-    by_condition: dict[str, dict] = defaultdict(
-        lambda: {"matched": 0, "direction_correct": 0, "strength_pairs": [], "no_reference": 0}
-    )
+
+    def blank() -> dict:
+        return {
+            "matched": 0,
+            "direction_correct": 0,
+            "strength_pairs": [],
+            "no_reference": 0,
+            "cutoff_mismatch": 0,
+            "graphs": 0,
+        }
+
+    by_condition: dict[str, dict] = defaultdict(blank)
     for condition, graph in _generated(run_dir):
+        # Every condition that produced a graph gets a row, even one that matched
+        # nothing. Creating the row only on a match made a condition with zero
+        # matched edges vanish from the report rather than read 0, which is the
+        # difference between "we measured nothing" and "we did not measure".
+        row = by_condition[condition]
+        row["graphs"] += 1
         gold = reference.get(graph.query_id)
         if gold is None:
-            by_condition[condition]["no_reference"] += 1
+            row["no_reference"] += 1
+            continue
+        if graph.as_of != gold["as_of"]:
+            # The same query id at a different cutoff is a different question:
+            # the reference was adjudicated under its own as-of discipline, and
+            # matching across cutoffs would score edges against evidence that
+            # was not yet visible, or withhold evidence that was. eval.references
+            # refuses this elsewhere; so does this.
+            row["cutoff_mismatch"] += 1
             continue
         for edge in graph.edges:
-            match = gold.get((edge.src_var, edge.dst_var))
+            match = gold["edges"].get((edge.src_var, edge.dst_var))
             if match is None:
                 continue
-            row = by_condition[condition]
             row["matched"] += 1
             if edge.direction.value == match["direction"]:
                 row["direction_correct"] += 1
@@ -135,7 +160,9 @@ def summarise(run_dir: Path, references: Path) -> dict:
             ),
             "strength_macro_f1": f1,
             "strength_per_class": per_class,
+            "graphs": row["graphs"],
             "graphs_without_a_reference": row["no_reference"],
+            "graphs_at_a_different_cutoff": row["cutoff_mismatch"],
         }
     return report
 
@@ -155,13 +182,21 @@ def render(report: dict, runs: Path, references: Path) -> str:
         "an edge at all. Strength macro-F1 is symmetric, unlike strength "
         "inflation, so it counts under-statement as well as over-statement.",
         "",
-        "| Condition | Matched edges | Direction accuracy | Strength macro-F1 |",
-        "|---|---:|---:|---:|",
+        "| Condition | Graphs | Matched edges | Direction accuracy | Strength macro-F1 | Skipped |",
+        "|---|---:|---:|---:|---:|---|",
     ]
     for condition, row in report.items():
         acc = "n/a" if row["direction_accuracy"] is None else f"{row['direction_accuracy']:.3f}"
         f1 = "n/a" if row["strength_macro_f1"] is None else f"{row['strength_macro_f1']:.3f}"
-        lines.append(f"| {condition} | {row['matched_edges']} | {acc} | {f1} |")
+        skipped = []
+        if row["graphs_without_a_reference"]:
+            skipped.append(f"{row['graphs_without_a_reference']} no reference")
+        if row["graphs_at_a_different_cutoff"]:
+            skipped.append(f"{row['graphs_at_a_different_cutoff']} cutoff mismatch")
+        lines.append(
+            f"| {condition} | {row['graphs']} | {row['matched_edges']} | {acc} | {f1} | "
+            f"{', '.join(skipped) or '--'} |"
+        )
     lines += ["", "## Strength, per class", ""]
     for condition, row in report.items():
         if not row["strength_per_class"]:
@@ -185,6 +220,17 @@ def render(report: dict, runs: Path, references: Path) -> str:
         "wrong drags the mean toward whichever labels happen to be missing from "
         "a small sample, which would make the figure move for reasons that have "
         "nothing to do with the model.",
+        "",
+        "A condition with 0 matched edges is shown with `n/a`, not omitted. A "
+        "row that disappears reads as a condition that was never run; a row of "
+        "zeros reads as a condition that produced nothing matching the "
+        "references, which is a finding about that condition.",
+        "",
+        "Graphs are skipped, with a count, when the query has no reference or "
+        "when the generated graph's cutoff differs from the reference's. The "
+        "second is not pedantry: the reference was adjudicated under its own "
+        "as-of discipline, so matching across cutoffs scores edges against "
+        "evidence that was not yet visible, or withholds evidence that was.",
         "",
         "Direction accuracy near 1.000 with low reference-edge recall means the "
         "model finds few of the reference pairs but gets the sign right on those "

@@ -76,7 +76,9 @@ def test_the_renderer_prints_n_a_rather_than_none():
             "direction_accuracy": None,
             "strength_macro_f1": None,
             "strength_per_class": {},
+            "graphs": 0,
             "graphs_without_a_reference": 0,
+            "graphs_at_a_different_cutoff": 0,
         }
     }
     text = module.render(report, Path("runs/x"), Path("data/eval/gold/dev"))
@@ -88,3 +90,99 @@ def test_the_declared_strength_labels_are_the_ontology_s_own():
     from schema.enums import Strength
 
     assert set(module.STRENGTHS) == {s.value for s in Strength}
+
+
+def _graph(query_id, as_of, edges):
+    from datetime import date
+
+    from schema import Anchor, Edge, Graph, GraphNode
+
+    anchor = Anchor(
+        var="BRENT", direction="up", event="a synthetic anchor event", event_date=date(2026, 1, 1)
+    )
+    variables = {"BRENT"} | {v for e in edges for v in (e["src"], e["dst"])}
+    return Graph(
+        query_id=query_id,
+        anchor=anchor,
+        as_of=as_of,
+        nodes=[GraphNode(var=v, direction="up", is_anchor=v == "BRENT") for v in sorted(variables)],
+        edges=[
+            Edge(
+                edge_id=f"g{i}",
+                src_var=e["src"],
+                dst_var=e["dst"],
+                direction=e.get("direction", "up"),
+                provenance="model_inferred",
+                strength=e.get("strength", "direct"),
+                hop=1,
+            )
+            for i, e in enumerate(edges)
+        ],
+    )
+
+
+def test_a_condition_matching_nothing_is_reported_as_zero_not_omitted(monkeypatch, tmp_path):
+    """A row that disappears reads as a condition that was never run. A row of
+    zeros reads as one that produced nothing matching the references, which is
+    a finding about that condition."""
+    from datetime import date
+
+    reference = {"q1": {"as_of": date(2026, 4, 20), "edges": {}}}
+    monkeypatch.setattr(module, "_reference_edges", lambda _: reference)
+    monkeypatch.setattr(
+        module,
+        "_generated",
+        lambda _: [("B0", _graph("q1", date(2026, 4, 20), [{"src": "BRENT", "dst": "NIFTY50"}]))],
+    )
+    report = module.summarise(tmp_path, tmp_path)
+    assert "B0" in report, "a condition with no matched edges vanished"
+    assert report["B0"]["matched_edges"] == 0
+    assert report["B0"]["direction_accuracy"] is None
+    assert report["B0"]["graphs"] == 1
+
+
+def test_a_graph_at_a_different_cutoff_is_skipped_and_counted(monkeypatch, tmp_path):
+    """The reference was adjudicated under its own as-of discipline. Matching
+    across cutoffs scores edges against evidence that was not yet visible."""
+    from datetime import date
+
+    reference = {
+        "q1": {
+            "as_of": date(2026, 4, 20),
+            "edges": {
+                ("BRENT", "INR_USD"): {"direction": "up", "strength": "direct", "edge_id": "r1"}
+            },
+        }
+    }
+    monkeypatch.setattr(module, "_reference_edges", lambda _: reference)
+    monkeypatch.setattr(
+        module,
+        "_generated",
+        lambda _: [("M", _graph("q1", date(2026, 9, 30), [{"src": "BRENT", "dst": "INR_USD"}]))],
+    )
+    report = module.summarise(tmp_path, tmp_path)
+    assert report["M"]["matched_edges"] == 0, "scored an edge across a cutoff mismatch"
+    assert report["M"]["graphs_at_a_different_cutoff"] == 1
+
+
+def test_a_graph_at_the_declared_cutoff_is_scored(monkeypatch, tmp_path):
+    from datetime import date
+
+    reference = {
+        "q1": {
+            "as_of": date(2026, 4, 20),
+            "edges": {
+                ("BRENT", "INR_USD"): {"direction": "up", "strength": "direct", "edge_id": "r1"}
+            },
+        }
+    }
+    monkeypatch.setattr(module, "_reference_edges", lambda _: reference)
+    monkeypatch.setattr(
+        module,
+        "_generated",
+        lambda _: [("M", _graph("q1", date(2026, 4, 20), [{"src": "BRENT", "dst": "INR_USD"}]))],
+    )
+    report = module.summarise(tmp_path, tmp_path)
+    assert report["M"]["matched_edges"] == 1
+    assert report["M"]["direction_accuracy"] == 1.0
+    assert report["M"]["graphs_at_a_different_cutoff"] == 0
