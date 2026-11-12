@@ -10,9 +10,12 @@ Deepti Koranga (2025204033).
 ## Final submission and working demos
 
 Use the [episode-confirmation submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation).
-The [final report](reports/academic_report.pdf) presents two development arms
-and the separate capability diagnostics. The dated sections below preserve
-earlier milestone records.
+The [final project report](reports/final_project_report.pdf) presents both
+development arms, the held-out evaluation and the capability diagnostics.
+It credits Varun Patil for the 30-case prose review and the 291 revised
+support judgments, with his attestations of blinding and independence.
+The [academic report snapshot](reports/academic_report.pdf) and dated
+milestone sections record earlier stages of the study.
 
 ### Open the demo
 
@@ -55,8 +58,9 @@ results use the pinned model and frozen corpus.
   the original proposal to code, tests, actual runs and remaining research
   gaps. The two signed FPI queries were used for the descriptive retrieval
   comparison and [seven-condition held-out generation](reports/heldout_generation_20261112.md).
-  The [independent review handoff](docs/independent_review.md) covers the
-  remaining human prose correction, blind output scoring and test expansion.
+  Section 7.8 of the final report gives the revised support scores. The
+  [independent review handoff](docs/independent_review.md) documents the
+  scoring procedure and the remaining test reference expansion.
 
 ## Phase 1 Track A and C review — 30 October 2026
 

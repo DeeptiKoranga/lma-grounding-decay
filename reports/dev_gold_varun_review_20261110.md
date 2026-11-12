@@ -1,5 +1,11 @@
 # Varun's reviewed development assessment — 10 November 2026
 
+This dated record documents Varun's account of the original assessment.
+The [contemporaneous audit](assistant_dev_support_review_20261110.md) records
+the original packet provenance. Section 7.8 of the
+[final project report](final_project_report.pdf) gives the later scores from
+the 291 revised judgments authored by Varun Patil.
+
 Varun attests that he created and reviewed the 24 prose corrections and the
 247 edge-support judgments for the two D-28 development arms. He attests that
 his edge judgments were independent and blinded to condition. An earlier
