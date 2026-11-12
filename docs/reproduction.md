@@ -683,6 +683,9 @@ With the matching frozen corpus, run `make preflight-test`.
 anchors. Use `TEST_OUTPUT` to choose a new run directory. See the
 [independent review handoff](independent_review.md) for human prose correction
 and blind support scoring. Two queries fall below the ten-query inference gate.
+Section 7.8 of the [final project report](../reports/final_project_report.pdf)
+reports the revised evaluation using Varun Patil's 291 reviewer-attested
+support judgments and the prose revisions he approved.
 
 The reasoning diagnostic CLI requires a complete checksum-bound sweep and a
 signed reference receipt. Pass `--corpus` to select the matching corpus outside

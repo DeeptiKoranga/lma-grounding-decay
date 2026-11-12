@@ -1,5 +1,9 @@
 # Development support assessment — attribution correction, 10 November 2026
 
+The [final project report](final_project_report.pdf) records the later
+30-case prose review and the 291 revised support judgments authored by Varun
+Patil. The records below concern the original development assessment.
+
 **Varun's correction:** Varun states that he created all of this review work
 himself and that the earlier Codex attribution was a mistake. He also confirmed
 that he checked and approved the prefilled files. This statement is recorded in

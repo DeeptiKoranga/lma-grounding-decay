@@ -46,12 +46,14 @@ and frozen assets described in [reproduction](../docs/reproduction.md). Use
 - Artifact receipts SHA-256 `189832f3af1c33ccd78a5b30194fd481158ead0d669f9c1ed864fed454c6ad2e`
 - Local audit SHA-256 `7c38652b9745ced0134b820745bc187c074282b6de0d2550170314f6ef42cddb`
 
-## Remaining review
+## Subsequent review and scoring
 
-Six held-out prose outputs and 24 development prose outputs have blank
-human correction forms. Condition-blind support scoring follows correction.
-This report records generation and structural checks. The two held-out
-queries are below the ten-query inference threshold.
+Varun Patil reviewed the six held-out and 24 development prose outputs,
+approved 27 revisions and authored all 291 support judgments for the revised
+evaluation. The returned files record his blinding and independence
+attestations. The 55 held-out judgments yield a UER tie and a 12.5-percentage-point
+reference-recall loss for M relative to B1 across two query pairs. The queries
+fall below the ten-query inference threshold. [Final project report](final_project_report.pdf)
 
 Fourteen unsigned expansion candidates across seven dated episodes were
 checked against the visible series and screened for corpus evidence. The

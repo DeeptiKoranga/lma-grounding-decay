@@ -1,8 +1,11 @@
 # Independent review handoff
 
-The original study calls for human correction of prose extractions and
-condition-blind edge support judgments. The previously published descriptive
-development scores and limited blind sample remain separate records.
+Varun Patil reviewed 30 prose outputs, approved 27 revisions and authored
+the 291 judgments on the revised graphs. The returned files record his
+attestations of blinding and independence. The descriptive scores appear in
+Section 7.8 of the [final project report](../reports/final_project_report.pdf).
+The procedures below cover scoring future runs and expanding the signed
+test references.
 
 ## 1. Prose correction
 
