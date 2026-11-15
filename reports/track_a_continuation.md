@@ -65,7 +65,7 @@ The broader run on the active corpus is recorded in
 is 0.4333 for plain BM25 and 0.6500 for hybrid RRF, versus the earlier March-only
 smoke comparison's 0.9000 and 0.9250. These are different question sets with
 incomplete seed labels; the numbers are not a controlled measure of deterioration.
-The change in development preference demonstrates why the March convenience
+The change in development preference shows why the March convenience
 sample could not settle D-02. **D-02 and D-03 remain open.**
 
 The candidate corpus comparison, index and blinded packet are prepared separately

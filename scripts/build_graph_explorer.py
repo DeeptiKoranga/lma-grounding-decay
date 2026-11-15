@@ -41,7 +41,7 @@ from schema import Graph
 REPO = Path(__file__).resolve().parent.parent
 GOLD_DIRS = (REPO / "data/eval/gold/dev", REPO / "data/eval/gold/test")
 OUTPUT = REPO / "reports/graph_explorer.html"
-DEMO = REPO / "tests/fixtures/graph_brent_hormuz.json"
+SYNTHETIC_GRAPH = REPO / "tests/fixtures/graph_brent_hormuz.json"
 
 
 def _load(directories) -> list[dict]:
@@ -341,10 +341,12 @@ select(0);
 """
 
 
-def build(directories=GOLD_DIRS, output: Path = OUTPUT, *, demo=False, run_artifacts=()) -> Path:
+def build(
+    directories=GOLD_DIRS, output: Path = OUTPUT, *, include_fixture=False, run_artifacts=()
+) -> Path:
     graphs = _load(directories)
-    if demo:
-        fixture = Graph.model_validate_json(DEMO.read_text(encoding="utf-8"))
+    if include_fixture:
+        fixture = Graph.model_validate_json(SYNTHETIC_GRAPH.read_text(encoding="utf-8"))
         graphs.append(
             {
                 **fixture.model_dump(mode="json"),
@@ -381,7 +383,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.run_artifact and args.output.resolve() == OUTPUT.resolve():
         parser.error("write generated run excerpts to a separate local --output")
-    path = build(args.gold, args.output, demo=True, run_artifacts=args.run_artifact)
+    path = build(args.gold, args.output, include_fixture=True, run_artifacts=args.run_artifact)
     print(f"wrote {path} ({path.stat().st_size // 1024} KB)")
     print("Open it from disk. It loads nothing and must not be served: the spans are")
     print("corpus excerpts, and the corpus is research-use, no redistribution.")

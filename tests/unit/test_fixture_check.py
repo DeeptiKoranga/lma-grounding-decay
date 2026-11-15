@@ -1,15 +1,15 @@
 import json
 from pathlib import Path
 
-from scripts.run_demo import run
+from scripts.run_fixture_check import run
 
 from schema import Condition, Graph, iter_run_log
 
 REPO = Path(__file__).resolve().parents[2]
 
 
-def test_submission_demo_runs_the_shared_pipeline_and_builds_the_checked_in_viewer(tmp_path):
-    output = tmp_path / "demo"
+def test_fixture_check_runs_the_shared_pipeline_and_builds_the_checked_in_viewer(tmp_path):
+    output = tmp_path / "fixture-check"
     summary = run(output)
     assert set(summary) == {str(condition) for condition in Condition}
     assert summary["M"]["tool_calls"] <= 12
@@ -26,5 +26,5 @@ def test_submission_demo_runs_the_shared_pipeline_and_builds_the_checked_in_view
     assert {event.backend for event in log if event.event == "model_call"} == {"fixture"}
     assert any(event.event == "model_call" and event.purpose == "verify" for event in log)
     assert (output / "graph_explorer.html").read_text() == (
-        REPO / "reports/demo_fixture.html"
+        REPO / "reports/fixture_graphs.html"
     ).read_text()

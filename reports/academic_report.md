@@ -207,7 +207,7 @@ paid API request was made.**
 | Public strength and detection | 400 frozen examples | Cue and pinned-model classifications |
 | Tool, action and safety diagnostics | 40 states, 20 faults, 25 prompts | Next-action, argument validity, unsafe proposals, recovery and leakage checks |
 | Repeated-sampling stability | 3 runs for one query | Same established edges under three seeds |
-| Submission engineering demo | 7 live graphs on one dev query | Bound run audit and confirmed anchors under the new manifest |
+| Single-query model run | 7 live graphs on one dev query | Bound run audit and confirmed anchors under the new manifest |
 
 RAG supplies dated passages. Reasoning extracts and verifies directed links and
 aggregates path strength. Agentic control prioritizes unresolved edges and
@@ -962,14 +962,11 @@ A local export displays the full-system graph from the one-query smoke run.
 The viewer lets a reader do what Section 3 describes a reader wanting to do,
 which is follow a chain and see where it stops being grounded.
 
-**Working demos.** The repository README links to a downloadable synthetic
-browser demo and its runnable seven-condition pipeline. It also provides a
-local-model command using the frozen assets and a dated dev query. The
-12 November live execution completed all seven conditions with bound
-logs and confirmed anchors. No retrieved passage exceeded its cutoff.
-B1-R produced two nonverbatim spans on this query. Those baseline failures
-remain visible and this demo adds no human-scored result.
-[Demo and reproduction instructions](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md)
+**Single-query model run.** The 12 November execution completed all seven
+conditions with bound logs and confirmed anchors. No retrieved passage exceeded
+its cutoff. B1-R produced two nonverbatim spans, which the run audit records.
+This engineering run did not add a human-scored result.
+[Reproducibility instructions](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md)
 
 The generation audit records completion, confirmed anchors and structural
 checks. Human review starts with six held-out and 24 development prose outputs.

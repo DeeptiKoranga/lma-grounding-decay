@@ -3,7 +3,7 @@
 Varun Patil reviewed 30 prose outputs, approved 27 revisions and authored
 the 291 judgments on the revised graphs. The returned files record his
 attestations of blinding and independence. The descriptive scores appear in
-Section 7.8 of the [final project report](../reports/final_project_report.pdf).
+Section 7.1 of the [final project report](../reports/final_project_report.pdf).
 The procedures below cover scoring future runs and expanding the signed
 test references.
 

@@ -1,9 +1,9 @@
-# Model-backed submission demo
+# Single-query model run audit
 
 12 November 2026. Fresh execution of all seven conditions on the signed development
 query `dev-oil-why`, with an 8 April cutoff and explicit Brent threshold. The run
 used the pinned Qwen3-8B MLX weights, frozen v7 passages, BGE-M3 FAISS index and
-the pinned top-50 cross-encoder in B1-R. The [reproduction instructions](../docs/reproduction.md#run-the-model-backed-demo)
+the pinned top-50 cross-encoder in B1-R. The [reproduction instructions](../docs/reproduction.md#reproduce-the-single-query-model-run)
 show the command and the required local assets.
 
 **7/7 graphs completed.** Input binding, artifact and log checks passed. Every
@@ -34,5 +34,5 @@ change the scored development arms or add a held-out support result.
 - Recorded runtime-source SHA-256 `18dd989cf153b9b64dcb644a6f59f330bfd463fd80db91502a5bd0dcb565fc32`.
 
 The live runner used the production source recorded above. The only subsequent
-source-package change for the submission demo was adding a fixture-only log
+source-package change for the synthetic check was adding a fixture-only log
 backend label. Raw traces and the licensed-corpus viewer remain local.

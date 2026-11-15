@@ -683,7 +683,7 @@ With the matching frozen corpus, run `make preflight-test`.
 anchors. Use `TEST_OUTPUT` to choose a new run directory. See the
 [independent review handoff](independent_review.md) for human prose correction
 and blind support scoring. Two queries fall below the ten-query inference gate.
-Section 7.8 of the [final project report](../reports/final_project_report.pdf)
+Section 7.1 of the [final project report](../reports/final_project_report.pdf)
 reports the revised evaluation using Varun Patil's 291 reviewer-attested
 support judgments and the prose revisions he approved.
 
@@ -702,20 +702,25 @@ Use `make explorer` for the offline reference and synthetic graph viewer.
 For a generated graph, pass `--run-artifact` and a separate local `--output`
 to `scripts/build_graph_explorer.py`. Generated evidence excerpts remain local.
 
+Run `make fixture-check FIXTURE_OUTPUT=runs/fixture-check` to verify all seven
+conditions with scripted responses and synthetic data. Choose a fresh output
+directory for each execution. The check writes graphs, tool logs and a local
+viewer without loading model weights or the research corpus.
+
 For the separate signed test-reference retrieval diagnostic, run
 `scripts/report_test_retrieval.py --corpus PATH --index PATH` with
 `PYTHONPATH=src`, the local retrieval environment, and the pinned model cache.
 This evaluates ranking on the two FPI queries without running generation.
 
-## Run the model-backed demo
+## Reproduce the single-query model run
 
 On a Mac with the frozen corpus, selected dense index, BGE model cache,
 pinned Qwen weights and both local environments installed as documented
 above, run from the repository root:
 
 ```sh
-demo_run=$(mktemp -d)
-python3 - "$demo_run" <<'PY'
+query_run=$(mktemp -d)
+python3 - "$query_run" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -726,15 +731,15 @@ query = next(line for line in queries if json.loads(line)["query_id"] == "dev-oi
 PY
 HF_HOME="$PWD/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src \
   data/raw/llm_env/bin/python -m conditions \
-  --queries "$demo_run/query.jsonl" --require-confirmed-anchors \
+  --queries "$query_run/query.jsonl" --require-confirmed-anchors \
   --retrieval-python .venv/bin/python --reranker-python .venv/bin/python \
-  --output "$demo_run/runs"
+  --output "$query_run/runs"
 PYTHONPATH=src .venv/bin/python -m eval.run_audit \
-  --runs "$demo_run/runs" --output "$demo_run/audit.json"
+  --runs "$query_run/runs" --output "$query_run/audit.json"
 PYTHONPATH=src .venv/bin/python scripts/build_graph_explorer.py \
-  --run-artifact "$demo_run/runs/M/dev-oil-why.json" \
-  --output "$demo_run/graph.html"
-printf 'Open locally: %s\n' "$demo_run/graph.html"
+  --run-artifact "$query_run/runs/M/dev-oil-why.json" \
+  --output "$query_run/graph.html"
+printf 'Open locally: %s\n' "$query_run/graph.html"
 ```
 
 The unchanged default condition list runs all seven, including B1-R. The

@@ -1,601 +1,210 @@
 % Does Grounding Decay with Distance? Measuring and Repairing Weak Links in LLM Causal Explanations of Indian Macroeconomic News
-% Language Models & Agents (LMA) Group Project 2026 — Final Report
-% [GitHub submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation) · [Reproduction and demos](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md)
+% Language Models & Agents (LMA) Group Project 2026 - Final Report · 15 November 2026
+% [GitHub submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation) · [Reproducibility README](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md)
 
 ## Abstract
 
-When a language model explains how one news event led to another, the first
-link is often backed by a quoted source. Later links often are not. The answer
-reads the same either way, so a reader cannot tell where the evidence ran out.
-We ask whether this happens, and whether checking each link and searching for
-more evidence fixes it.
-
-Our system answers a dated question with a graph. Every link shows the passage
-behind it, which way the effect runs, and how strongly the source states it.
-Fixed rules decide whether a passage may be used at all: it must be in our
-frozen corpus, published on or before the question's date, mention both
-variables, and contain the quoted words exactly. A language model then decides
-the separate question of whether the passage says what the link claims. The
-system may search for more evidence, up to 12 tool calls.
-
-We ran seven conditions on four development questions under two models. On the
-main model our full system's unsupported-link rate was 0.167 lower than
-ordinary RAG across three comparable questions, and it found 0.062 more of the
-links a human marked correct. It tied with reranked RAG. On deliberately
-corrupted links the checker caught 17 of the 38 that fixed rules cannot catch
-at all, and wrongly flagged 2 of 23 clean ones. A blind human check agreed with
-21 of 27 of the earlier labels.
-
-On the two held-out questions, scored with 291 fresh labels, our system showed
-no gain at all and found 12.5 percentage points fewer correct links than
-ordinary RAG. That breaks the 10-point recall limit we set in advance (H2d).
-With four development and two held-out questions, and almost no evidence at
-distant links, every number here describes what we saw rather than proving a
-general result.
+We test whether causal links in model-generated explanations of Indian macro-financial news become less grounded farther from the queried event. We also test whether a graph-based verifier with targeted retrieval can reduce unsupported claims while retaining evidence-backed links. We ran seven conditions on four adjudicated development queries with two local models and on two held-out queries from a separate episode with the primary model. Relative to standard retrieval-augmented generation, the full system reduced the unsupported established-edge rate by 16.7 and 25.0 percentage points across the two development arms. On the held-out queries, the rate tied and reference-edge recall fell by 12.5 points. In a controlled challenge, semantic verification flagged 17 of 38 direction or strength corruptions that passed citation checks, with two false alarms among 23 clean controls. Deep-hop coverage was insufficient to assess grounding decay.
 
 ## 1. Introduction
 
-People increasingly ask assistants to join up events the news reported
-separately: an oil shock, a weaker rupee, a central-bank decision. The first
-step is usually backed by a retrieved passage. Later steps often rest on the
-model's own reasoning. Careful wording in the source, such as "could widen the
-deficit", can harden into a flat claim further down the chain. The answer looks
-the same throughout, so the reader cannot see where it stopped being grounded.
+A model explaining an oil shock might connect crude prices to aviation fuel costs and then to airfares. A citation can support one link while leaving the next unsupported. Even when the cited passage states the relation, the explanation may reverse its direction or present a conditional effect as certain. We use *grounding decay* to mean an increase in these errors with distance from the event. We evaluate whether publications available by the query cutoff state the claimed relations and preserve their degree of certainty. The study measures fidelity to those sources.
 
-We work on Indian macro-financial news about crude oil, the rupee, RBI policy
-and bond yields, over a frozen corpus running 1 March to 30 September 2026. The
-reader we have in mind is a student or non-specialist who wants to check a
-dated explanation. We say a link is **supported** when a passage states that
-relation, in that direction, and was published in time. We measure whether the
-text backs the claim, not whether the economics is true.
+**RQ1.** In standard retrieval-augmented generation (RAG), do unsupported established edges and strength inflation become more common as links get farther from the event (H1)?
 
-**RQ1 (does the problem exist?).** Do unsupported links and overstated causal
-strength increase the further a link sits from the original event?
+**RQ2.** Can the full graph-and-repair system cut the unsupported established-edge rate (UER) by at least 10 percentage points versus standard RAG (H2a), reduce the increase in errors at deeper hops (H2b), and improve on RAG prompted to label its own links for both UER and strength inflation (H2c)? A recall guard limits the acceptable loss in recovered reference edges to 10 points (H2d). The guard accounts for systems that lower their error rate by dropping recoverable claims.
 
-**RQ2 (does our fix work?).** Can a system that builds a graph, checks each
-link and searches for missing evidence reduce those problems without throwing
-away the useful links it should keep?
-
-**Hypotheses.** H1: in ordinary RAG both problems grow with distance. H2a: our
-system has at least 10 points fewer unsupported links than ordinary RAG. H2b:
-the growth with distance is smaller for our system. H2c: it beats RAG asked to
-label its own links. H2d (recall guard): it finds no more than 10 points fewer
-correct links than ordinary RAG.
-
-H2d matters most, and we set it before running anything. A checker can always
-improve the unsupported rate by deleting every link it cannot confirm. That
-gives a better number and a worse answer. H2d separates repairing an
-explanation from gutting it.
+<!-- pagebreak -->
 
 ## 2. Literature Review
 
-Self-RAG learns when to retrieve and uses reflection tokens to critique a
-generation. FIRE interleaves retrieval and verification for fact-checking
-claims. CausalRAG uses causal relations to structure retrieval. These motivate
-selective retrieval and verification, but they evaluate different units from a
-directed, dated edge in a generated economic explanation.
-[Self-RAG](https://arxiv.org/abs/2310.11511) ·
-[FIRE](https://aclanthology.org/2025.findings-naacl.158/) ·
-[CausalRAG](https://aclanthology.org/2025.findings-acl.1165/)
+Self-RAG learns when to retrieve and uses reflection tokens to critique generation [1]. FIRE interleaves retrieval and verification for individual fact-checking claims [2]. Our verifier judges a directed edge and its strength after checking source eligibility. CausalRAG uses causal graphs to organize retrieval [3]. In our evaluation the graph is an output, and hop distance within it defines which errors enter the grounding-decay analysis.
 
-ReCEval evaluates reasoning steps for correctness and informativeness. We use a
-weakest-link rule for paths and adapt causal-language labels from Yu, Li and
-Wang. Our contribution is to measure provenance and strength by hop under a
-fixed publication cutoff, then compare a bounded edge-repair loop against
-standard and reranked RAG, with a guard on how much useful evidence survives
-verification. [ReCEval](https://aclanthology.org/2023.emnlp-main.622/)
+ReCEval assesses reasoning steps for correctness and informativeness [4]. We inspect individual links and derive a path label from the weakest link. Our causal-strength categories draw on Yu et al. [5]. We combine step-level evaluation with a publication cutoff and an explicit distinction between uncertain predictions and direct claims.
+
+We pair unsupported-edge rate with reference recall to distinguish more precise claims from fewer claims. The design compares the full system against reranked retrieval and removes verification and targeted retrieval separately to test their contributions.
 
 ## 3. Dataset Created and Used
 
-**Corpus.** A frozen snapshot of **1,156 documents** (1,095 news, 61 official)
-and **16,472 passages**, published 1 March to 30 September 2026 and hash-pinned
-in `data/processed/MANIFEST.md`. Economic Times supplies 870 documents,
-BusinessLine 213, MOSPI 37, PPAC 14, Mint 12 and eaindustry 10. Business
-Standard, RBI and PIB yielded none. Deduplication used exact full-text hashing,
-and for news MinHash over title and first-paragraph trigrams at a Jaccard
-threshold of 0.85. Every passage carries exact character offsets into its
-parent document; without them verbatim span checking would be impossible, and
-the whole provenance distinction rests on it.
+### 3.1 Corpus and evaluation sets
 
-**Macro series.** Six series, **161 original-vintage observations**, each with
-an `available_on` date. A series confirms only that a move happened; it is
-never evidence for a causal link. Coverage is uneven: 141 observations are
-USD/INR, and FPI flows contribute one.
+The frozen corpus contains **1,156 documents** (1,095 news and 61 official) and **16,472 passages** published from 1 March to 30 September 2026. Exact text hashes remove duplicates. For news, the deduplication step also checks title and first-paragraph word trigrams using MinHash and an exact Jaccard threshold of 0.85. Passage character offsets permit verbatim quotation checks. Six original-vintage series contribute 161 observations with availability dates. These series confirm whether a reported event crossed its threshold. Evidence for causal links comes from passages.
 
-**Evaluation sets.** Eight anchored queries over four episodes, split four
-development and four test **by episode**, so the halves share no event, no date
-and no passages. Two test queries have signed reference graphs; Section 8
-explains the two exclusions. The four development reference graphs hold 16
-source-asserted edges and the two test graphs hold eight. The challenge set
-holds 130 items: 23 clean controls and 107 mechanically corrupted edges across
-five families. Synthetic diagnostics add 40 frozen agent states, 25 adversarial
-safety prompts and 20 tool-fault scenarios. Two public datasets are used as
-diagnostics and never for training: Yu et al. (2019) causal language and
-FinCausal 2020 task 1, 200 sampled items each.
+| Evaluation set | Size | Purpose |
+|---|---:|---|
+| Signed development | 4 queries, 16 edges | Gold-backed comparison across two model arms |
+| Signed held-out | 2 queries, 8 edges | Descriptive comparison on a foreign portfolio investment (FPI) episode |
+| Corruption challenge | 107 altered edges, 23 clean controls | Citation, direction and strength checks |
+| Public diagnostics | 200 examples per task | Causal strength (Yu et al.) and detection (FinCausal) [6] |
+| Action and safety diagnostics | 40 action states, 20 tool faults, 25 prompts | Tool selection, error recovery and safety checks |
+
+<!-- pagebreak -->
+
+### 3.2 Reference graphs
+
+The split is by episode. Two further test candidates concerned Indian headline CPI and lacked sufficient eligible directed evidence for a signed graph. Two annotators independently reviewed the reference edges before reconciling disagreements. On development, they agreed on relation assertion for 16 of 20 drafts and on direction and strength for all 15 edges both retained. Reconciliation excluded four drafts for insufficient directional evidence. On held-out data, the reviewers agreed on relation and direction but disagreed on strength for seven of eight retained edges. Reconciliation assigned strength from the modality of the clause making the claim. Signed receipts bind the final graphs to the corpus and reference hashes.
+
+The only timely passage pairing rate-hike expectations with headline CPI concerned US monetary policy. For the CPI effects question, most eligible passages treated Indian CPI as an outcome of the oil shock, leaving too little evidence of its downstream effects. We kept the FPI why and effects queries, both with an as-of date of 20 April 2026.
+
+![Figure 1. Adjudicated oil-effects reference graph. The aviation-fuel-to-airfares link survived on its own evidence. A crude-to-aviation-fuel link was dropped because the source did not state the direction of the effect.](figures/gold_dev_oil_effects.png)
+
+<!-- pagebreak -->
 
 ## 4. Methodology
 
-**The graph.** Each answer is a graph over a **closed ontology of 46
-variables** (`BRENT`, `INR_USD`, `CPI_HEADLINE` and so on). Every link carries
-a direction, a provenance label and a strength level. The ontology is enforced
-in the schema, so a model cannot invent a variable to make a chain look
-complete.
+### 4.1 Retrieve and extract
 
-A link is `source_asserted` when a passage published by the cutoff states the
-relation in that direction — in M and A-NoLoop only the verifier may set this —
-and `model_inferred` when no supporting passage was found under the permitted
-search. Strength is `direct` for unhedged causal language (caused, due to,
-driven by), `conditional` when hedged (could, may, if), and `correlational` for
-co-occurrence or sequence alone (amid, as, after).
+The input includes a query, an anchor event and an as-of date. BGE-M3 [7] retrieves date-eligible passages. The reranked baseline uses a cross-encoder to reorder the top 50 candidates before retaining the final eight. The generator organizes relations over a fixed ontology of 46 macro-financial variables. Each edge records its direction, evidence span, provenance and strength. Strength is direct, conditional or correlational. The output graph schema checks hop distance from the anchor. Path labels derive their strength from the weakest edge and report whether every link is sourced.
 
-`hop` is breadth-first distance from the anchor and is recomputed by the schema,
-so a mislabelled hop fails at load rather than quietly distorting a hop-sliced
-metric.
+### 4.2 Verify and repair
 
-**Two layers of checking.** Deterministic rules run first and a language model
-judges only what survives them. The four rules: the cited passage must be in
-the corpus; published on or before the cutoff; mention both variables; and
-contain the quoted span word for word. Passing the rules establishes
-*eligibility* only. In M and A-NoLoop the verifier then judges support in a
-fresh context, without the generator's reasoning, before a link may be marked
-`source_asserted`.
+The deterministic layer checks the passage ID, publication cutoff, mentions of both variables and a verbatim span. The semantic verifier reads the cited passage in a fresh context and assesses whether it states the proposed direction and how strongly it does so. Edges without supporting evidence remain inferred. This separation lets the system reject an invented citation without spending a semantic model call on it.
 
-**Agent loop.** A controller tracks open links, search counts and remaining
-budget. It verifies unverified links first, then searches for evidence on the
-most important `model_inferred` link. It stops when the important links are
-resolved, when two searches add nothing new, or at 12 tool calls. Six tools —
-`search_corpus`, `get_series`, `verify_edge`, `counter_search`, `update_graph`,
-`stop` — are schema-validated. The date filter and budget are enforced in code,
-not in the prompt. Tools never mutate the corpus or series.
+The controller verifies unchecked claims first, then searches for evidence on the highest-priority open edge. It stops when the important edges are resolved, when two searches add no new evidence candidates or when it reaches a 12-call budget. It can search the corpus, read series, verify a link, search for counterevidence, update the graph and stop. Tool schemas, date filters and budget checks constrain execution. Graph changes affect run state only. The prompts prohibit investment advice and model-generated forecasts.
 
-**Metrics.** UER (unsupported established-edge rate) divides unsupported
-established links by all established links. A prose claim counts as established
-when cited or unhedged. Strength inflation divides supported links stated more
-strongly than their source by all supported links. Reference-edge recall counts
-matches on source, destination and direction against the signed references. We
-compute per query and average over available denominators, comparing matched
-query pairs. Gates fixed in advance: ten established edges per hop bucket, all
-three buckets for a trend, ten queries for inference. An empty denominator is
-reported as unavailable, never as zero.
+### 4.3 Score explanations
+
+UER divides unsupported established edges by all established edges. In prose outputs, cited or unhedged claims count as established. Strength inflation is the share of supported established edges whose label is stronger than the cited source warrants. Reference recall is the fraction of signed edges recovered by supported, established predictions matching the source variable, target variable and direction.
+
+We compute each metric per query. A paired contrast averages the within-query differences over queries with a defined score for both conditions. A query with no established edges has undefined UER, so it cannot improve the paired average by contributing zero. The predeclared trend rule requires at least ten established edges in each of the hop 1, hop 2 and hop 3+ buckets. Inferential claims require ten queries.
+
+<!-- pagebreak -->
 
 ## 5. Experiment Runs
 
-**Model and compute.** `mlx-community/Qwen3-8B-4bit`, revision `545dc425`,
-chosen by the pilot in Section 7.1; the sensitivity arm used a local Qwen3.5-9B
-4-bit checkpoint at `8b2b98c`. Both sweeps ran locally through MLX, using 185
-model calls and 383,000 tokens over 116.1 minutes of model-call time. A private
-two-T4 Kaggle execution used **1.211 allocated GPU-hours**. **No paid API
-request was made.**
+**Model pilot.** The two checkpoints tied at 61.0% on a 100-item pilot covering extraction, strength, JSON validity, tool choice and unsupported-edge detection. The predeclared latency tiebreak selected Qwen3-8B at 20.4 seconds per case versus 26.6 seconds for Qwen3.5-9B. Yet the selected model produced only 1/20 strictly correct extractions, compared with 13/20 for the sensitivity model. This matters because the verifier can judge a claim only after the generator has supplied an eligible citation.
 
-Seven experiment runs back this report: the two development sweeps (28 graphs
-each, seven conditions on four signed queries per arm); held-out generation (14
-graphs on the two signed test queries); the 130-item corruption challenge
-against both the rule layer and the verifier; retrieval over 20 pilot and 2
-signed queries; 400 frozen public-benchmark examples; tool, action and safety
-probes over 40 states, 20 faults and 25 prompts; and a three-seed stability
-check on one query.
+| Run | Scope | Model or comparison |
+|---|---|---|
+| Primary development sweep | 28 graphs, 4 signed queries x 7 conditions | Qwen3-8B, 4-bit, revision `545dc425` |
+| Sensitivity development sweep | 28 graphs, same queries and conditions | Qwen3.5-9B, 4-bit, revision `8b2b98c` |
+| Primary held-out sweep | 14 graphs, 2 signed FPI queries x 7 conditions | Same pinned primary model and retriever |
+| Retrieval evaluation | 20 pilot queries and 2 signed FPI queries | Sparse, dense, hybrid and reranked retrieval |
+| Challenge and capability runs | Corruptions, public data, scripted states and faults | Rules, model and controller diagnostics |
 
-**Held-out generation.** The pinned model completed all seven conditions on
-both signed FPI questions, which share one episode and a 20 April 2026 cutoff.
-The reference preflight and checksum-bound audit passed, all 14 anchor checks
-confirmed the FPI threshold, and none of the 121 logged passage occurrences
-crossed the cutoff. A-NoVerify and B2 each produced one non-verbatim citation
-span. The runs took 34 model calls and 74 tool calls over 38.2 minutes.
+Development generation used 185 completed model calls and 116.1 minutes of summed model-call wall time on local MLX. Held-out generation used 34 model calls and 74 tool calls, taking 38.2 minutes of summed per-graph time. All 14 held-out runs confirmed their anchors, and all 121 logged passage occurrences met the cutoff. A separate Kaggle run used 1.211 allocated GPU-hours. The models were used without fine-tuning or paid API calls. [Compute accounting](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/compute_log.md) · [Held-out run audit](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/heldout_generation_20261112.md)
 
-Every condition produced six links on the effects question. On the "why"
-question B0, B1 and B1-R produced one link each while B2 and all three full-
-system variants produced six, which is the clearest single illustration of what
-the graph representation adds over prose.
+The repository README gives fresh-clone setup and test commands. Full experiment reproduction requires the pinned model revisions and a separately provisioned corpus and dense index. [Reproducibility README](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md) · [Experiment reproduction](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/docs/reproduction.md)
 
-**Working demo.** `reports/graph_explorer.html` is a self-contained browser
-file. A sourced link opens its span, passage ID, publication date and cutoff;
-an inferred link shows its unresolved status. It runs locally to respect the
-research-use licence on corpus excerpts. The README links a downloadable
-synthetic demo and a runnable seven-condition pipeline.
+<!-- pagebreak -->
 
 ## 6. Ablations
 
-The seven conditions share the pinned model within an arm, plus corpus, cutoff
-and queries. Conditions that retrieve share the first-stage retriever. All
-seven run through the same pipeline.
+| Condition | Role in the comparison |
+|---|---|
+| B0 | Query-only baseline, no text retrieval |
+| B1 | Standard RAG, prose with citations |
+| B1-R | RAG plus a top-50 cross-encoder reranker |
+| B2 | RAG with prompted provenance and strength labels |
+| A-NoVerify | Full system with generator self-labels replacing semantic verification |
+| A-NoLoop | Full system with initial retrieval only and no targeted search loop |
+| M | Full graph, verifier and search loop |
 
-**B0** answers from the query alone with no retrieval, as a reference point.
-**B1** is standard RAG producing prose with citations, the main baseline.
-**B1-R** adds a top-50 cross-encoder reranker, isolating retrieval quality.
-**B2** is RAG asked to emit its own provenance and strength labels, the
-prompting control. **A-NoVerify** is the full system with the verifier replaced
-by self-labels, and **A-NoLoop** is the full system retrieving once with no
-agent loop. **M** is the proposed method: graph, labels, verifier, agent loop
-and weakest-link paths.
+Within an arm, conditions share the model, query, corpus and cutoff. Where retrieval is used, the first-stage retriever is shared. The following comparisons use the historical development labels described in Section 7.1. A negative number means the first condition has fewer unsupported established edges, in percentage points. Parentheses give the number of usable query pairs.
 
-Only M against B1 was pre-declared. The rest are **exploratory** and are not
-promoted past that, but they isolate each capability.
+| Paired UER contrast | Primary development | Sensitivity development |
+|---|---:|---:|
+| B1-R minus B1 | -33.3 (3) | -9.2 (4) |
+| M minus B1-R | 0.0 (4) | -12.5 (2) |
+| M minus B2 | -25.0 (4) | -62.5 (2) |
+| M minus A-NoVerify | -20.8 (4) | -62.5 (2) |
+| M minus A-NoLoop | +50.0 (1) | Unavailable (0) |
 
-| Contrast | Tests | Primary arm | Sensitivity arm |
-|---|---|---:|---:|
-| M − B2 | **H2c**: beats prompted self-labelling | −0.250 (4 pairs) | −0.625 (2 pairs) |
-| M − A-NoVerify | does verification help? | −0.208 (4 pairs) | −0.625 (2 pairs) |
-| M − A-NoLoop | does targeted retrieval help? | +0.500 (1 pair) | n/a (0 pairs) |
-| B1-R − B1 | does better ranking alone help? | −0.333 (3 pairs) | −0.092 (4 pairs) |
-| M − B1-R | does the full system beat reranking? | 0.000 (4 pairs) | −0.125 (2 pairs) |
+Reranking alone reduced development UER, and it matched the full system's primary UER and reference recall. The verifier ablation and the comparison with prompted self-labels favour M on UER, but there are no usable paired strength-inflation values for H2c. The no-loop condition established too few links to assess the effect of targeted retrieval.
 
-H2c favours M descriptively in both arms. The A-NoVerify contrast points the
-same way, and it is the ablation that matters most: removing the verifier makes
-the system worse by the measure the study is built on. **The A-NoLoop figure
-should not be read** — it rests on one query, because A-NoLoop established
-exactly one link across the whole primary arm and none in the sensitivity arm.
-B1-R beat B1 in both arms, and M only tied B1-R on the primary arm. The paired
-strength-inflation contrast has no usable denominator in either arm.
-
-Two secondary metrics the proposal asks for had been computed since Phase 2 and
-printed nowhere. Provenance accuracy is 0.750 for M, B1 and B1-R, 0.500 for B2
-and 0.396 for A-NoVerify. Strict path validity is 0.083 for M, 0.125 for B1-R
-and 0.000 for the rest.
-
-**Provenance accuracy audits the instrument itself**, since the provenance
-label is what the whole study measures with. M reaches 0.750 against
-A-NoVerify's 0.396 in the primary arm, and 0.917 against 0.104 in the
-sensitivity arm. The verifier roughly doubles the rate at which a link's label
-is right, which defends it more directly than the UER difference does.
-
-**Strict path validity is near zero everywhere** — 0.083 for M, never above
-0.125. A path counts only if every hop is established, supported and no
-stronger than its source. Almost no multi-hop explanation in this corpus
-survives that end to end. That is a finding about the difficulty of the task,
-and it is the study's hop-by-hop claim restated at the level of whole paths.
+<!-- pagebreak -->
 
 ## 7. Evaluations
 
-### 7.1 Model selection, and what it cost
+### 7.1 Grounding and reference recall
 
-Both candidate models ran 100 identical cases, 20 in each of five tasks. The
-rule, recorded before the runs, took the highest unweighted mean and broke ties
-within 0.03 on latency. The means tied at exactly 61.0%, so the faster 8B model
-won. A later field analysis, which did not change the frozen rule or scores,
-shows what that tie concealed.
+The original development scores used 24 assistant-produced prose corrections and 247 assistant-produced support labels. Those scores supply the exploratory ablation table. In a separate human-blind validation sample, 13 of 40 items had no evidence span and could only be marked unsupported. On the 27 informative rows, agreement was **21/27 (77.8%, Cohen's kappa 0.560)**. In five of the six disagreements the assistant credited support the human rejected. This could understate development UER, particularly in the sensitivity arm, where all six disagreements occurred. [Original scoring record](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/assistant_dev_support_review_20261110.md) · [Blind sample report](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/support_sample_validation.md)
 
-The selected 8B model named the wrong passage in **17 of 20** citations and
-quoted non-verbatim in **10 of 20**; the rejected 9B model did neither, even
-once. Strength mismatches were comparable (7 against 6 of 20), but strictly
-correct extractions were 1 of 20 against 13 of 20.
+For the revised scores, one author of this report reviewed 30 prose answers, approved 27 extraction revisions and authored all 291 support judgments, attesting to blinding and independence. The returned files passed packet coverage, checksum and scoring checks. These labels were produced by an author of the system under test, which is why the held-out result below is weighed against the blind sample rather than on its own. The table reports M minus standard RAG (B1) in percentage points. Parentheses give the number of usable pairs.
 
-The five tasks are not equally important here. Extraction decides whether any
-link can be established at all, and the models differ by 60 points on it. A tie
-broken on speed selected the model weaker at the thing the architecture most
-depends on. The rule was recorded in advance and followed, which is what makes
-the consequence visible rather than arguable.
+| Revised evaluation | Edge judgments | UER difference | Reference recall difference |
+|---|---:|---:|---:|
+| Primary development | 122 | -16.7 (3) | +6.25 (4) |
+| Sensitivity development | 114 | -25.0 (2) | 0.0 (4) |
+| Primary held-out | 55 | 0.0 (2) | -12.5 (2) |
+
+Both development arms met the H2a target and the H2d recall guard descriptively. **On the held-out queries H2d fails.** On the held-out queries, M matched B1’s mean UER and missed the recall guard by 2.5 points: there was no error reduction to pay for the 12.5-point recall loss, which is the pattern the guard was written to catch. The breach is descriptive given the query count, but the development half where the guard holds rests on labels an author of the system produced, while the only blind-validated evidence is the 40-row sample. Query counts fell below the threshold for inference.
+
+In the original [primary](rq1_hop_decay.md) and [sensitivity](rq1_hop_decay_sensitivity.md) analyses, B1 produced 5/2/1 and 13/1/0 established edges at hops 1/2/3+, respectively. Neither arm met the ten-edge minimum in all three buckets, leaving H1 unresolved. H2b also lacked usable shallow-to-deep query pairs. The exploratory H2c comparison favored M on UER but lacked a usable paired strength-inflation estimate.
+
+<!-- pagebreak -->
 
 ### 7.2 Retrieval
 
-Twenty query–evidence pairs, four configurations, 2,035 pooled relevance
-judgements. The rule — take the simplest configuration within 0.03 Recall@10 of
-the best — was fixed beforehand.
+The pilot used 2,035 automated relevance judgments for development selection. BGE-M3 led the unreranked configurations. The cross-encoder improved all three pilot metrics, but retrieved fewer signed passages on the two held-out queries. For the FPI why query, reranking moved the first signed passage from rank six to rank nineteen. Neither configuration found signed evidence in the top 50 for the effects query.
 
-| Configuration | Recall@5 | Recall@10 | MRR@50 |
+| Split and retriever | Recall@5 | Recall@10 | MRR@50 |
 |---|---:|---:|---:|
-| BM25 | 0.2405 | 0.3518 | 0.4555 |
-| BM25 with alias expansion | 0.2211 | 0.3551 | 0.5787 |
-| Hybrid (reciprocal rank fusion) | 0.2958 | 0.4161 | 0.6663 |
-| BGE-M3 (selected) | 0.3327 | 0.4259 | 0.6981 |
-| BGE-M3 with top-50 cross-encoder | 0.4072 | 0.5296 | 0.7101 |
+| Pilot BM25 | 0.2405 | 0.3518 | 0.4555 |
+| Pilot BGE-M3 | 0.3327 | 0.4259 | 0.6981 |
+| Pilot BGE-M3 + reranker | 0.4072 | 0.5296 | 0.7101 |
+| Held-out BGE-M3 | 0.000 | 0.250 | 0.083 |
+| Held-out BGE-M3 + reranker | 0.000 | 0.000 | 0.026 |
 
-BGE-M3 leads on Recall@5 among unreranked configurations and on MRR@50, so the
-simple rule and the fuller view agree. The judgements are automated, not human,
-and are adequate for a development choice only.
+### 7.3 Corruption challenge
 
-A check on the two signed test queries is far less flattering. BGE-M3 reached
-Recall@10 of 0.250 and MRR@50 of 0.083; adding the reranker gave 0.000 and
-0.026, moving the first signed evidence for the "why" query from rank 6 to rank
-19. Two queries cannot establish a general effect, but they warn that the
-development pilot may not transfer.
+| Challenge item | Items | Flagged by rules | Flagged by semantic check |
+|---|---:|---:|---:|
+| Citation corruptions (hop, date or target) | 69 | 69 | Filtered upstream |
+| Reversed relations | 23 | 0 | 9 |
+| Inflated strength | 15 | 0 | 8 |
+| Clean controls | 23 | 0 | 2 false alarms |
 
-### 7.3 Public benchmarks
+We count a reversal as detected when the verifier declines to mark the edge source-asserted. We count strength inflation as detected when it returns a weaker label than the claimed strength. The verifier also disagreed with the reference strength on 8 of 23 clean controls. Those disagreements qualify the strength result and are tracked separately from the two provenance false alarms in the table. Some test references seeded this controlled diagnostic.
 
-The cue list and the pinned model classified the same frozen 200 items per
-benchmark.
+**Failure example.** In the development query on rupee pressure, the verifier-free condition reversed a relation from oil risk to rupee pressure. A quotation from the relevant passage can still mention both variables in the reversed edge. This explains why the direction test adds information to the citation-integrity checks.
 
-| Check | Cue baseline | Qwen3-8B |
+<!-- pagebreak -->
+
+### 7.4 Reasoning diagnostics
+
+On the primary development run, M had direction accuracy of 1.000 and strength macro-F1 of 0.455 over six matched reference pairs. B1 reached 1.000 and 0.678 over nine. These scores describe only the reference pairs each condition found. On the historical primary scores, provenance accuracy was 0.750 for M and 0.396 for A-NoVerify. A fixed synthetic check reproduced weakest-hop labels on all three paths. Strict path validity, which also requires support and no inflation on each link, was 0.083 for M and 0.125 for B1-R.
+
+The public-data runs compared Qwen3-8B with a cue-list baseline on 200 frozen examples per task. These classification tests isolate causal wording and do not test direction or the accuracy of a retrieved citation.
+
+| Public diagnostic | Cue baseline | Qwen3-8B |
 |---|---:|---:|
-| Strength macro-F1 (Yu et al.) | 0.414 | 0.478 |
-| Strength accuracy (Yu et al.) | 0.350 | 0.530 |
-| Detection F1 (FinCausal) | 0.497 | 0.549 |
-| Detection accuracy (FinCausal) | 0.525 | 0.590 |
+| Causal-strength macro-F1 (Yu et al.) | 0.414 | 0.478 |
+| Causal detection F1 (FinCausal) | 0.497 | 0.549 |
 
-The model beat the cue baseline on both. This is standalone classification on
-public text: neither dataset labels edge direction, and the citation and date
-rules sit outside the benchmark.
+### 7.5 Agentic control and tool use
 
-### 7.4 Building the reference set
+On 40 scripted states, the standalone model selected the expected action in 5/40, returned valid arguments and an unchanged cutoff in 34/40, and proposed an unsafe call in 11/40 when budget was also checked. It proposed a call in all five zero-budget states. The deployed controller uses deterministic priorities and enforces the budget before execution. Tool-fault recovery passed all 20 scripted cases. An assistant-reviewed screen of 25 adversarial prompts found no investment advice, model-generated forecasts or post-cutoff evidence use. An automated check flagged four possible missing-span assertions for separate review.
 
-Two annotators labelled all 20 drafted development links independently, blind
-to the draft and to each other, with sheet order shuffled per annotator.
-
-| Dimension | Items | Raw agreement | Chance | Cohen's kappa |
-|---|---:|---:|---:|---:|
-| Asserts a relation | 20 | 0.800 | 0.740 | 0.231 |
-| Direction | 15 | 1.000 | 1.000 | undefined |
-| Strength | 15 | 1.000 | 0.502 | 1.000 |
-
-**The kappa is the wrong summary here, so we report it only beside the raw
-agreement.** The annotators agreed on 16 of 20, but "asserts a relation" was
-true for 16 and 18 of 20, so chance agreement reaches 0.740 and the coefficient
-collapses to 0.231 — the Feinstein and Cicchetti (1990) paradox, caused by a
-skewed marginal rather than by disagreement.
-
-All four disagreements were the same case: a span that asserts a relation while
-leaving the direction to the reader. One written rule settled them — a
-reference link carries a direction, so the span must state which way the
-destination moves — and all four were dropped, leaving **16 links, four per
-graph**, exactly the declared minimum. Both annotators signed a receipt
-carrying a SHA-256 of every reference file and of the corpus, so an edit after
-signing invalidates the attestation rather than passing unnoticed. That is what
-makes the false-alarm rate below quotable.
-
-![**Figure 1.** The `dev-oil-effects` reference graph after adjudication. The ATF-price-to-airfares link survives on its own evidence, but the crude-to-ATF link that would connect it to the anchor did not, so it sits at hop 2 with no hop-1 parent. This orphaned pair is the chain our proposal used to motivate the study.](figures/gold_dev_oil_effects.png)
-
-### 7.5 Challenge set: what rules catch, and what they cannot
-
-130 items built from both signed halves. Against the rule layer alone, with no
-model involved:
-
-| Corruption family | Items | Flagged | Rate |
+| Development run | Mean calls per query | Redundant searches | Unchecked edges at stop |
 |---|---:|---:|---:|
-| Unsupported intermediate hop | 23 | 23 | 1.000 |
-| Wrong date | 23 | 23 | 1.000 |
-| Wrong target | 23 | 23 | 1.000 |
-| Reversed relation | 23 | 0 | 0.000 |
-| Inflated strength | 15 | 0 | 0.000 |
-| Clean controls | 23 | 0 | — |
+| Primary M | 12.0 | 0/13 | 13 |
+| Sensitivity M | 12.0 | 0/12 | 12 |
+| Primary A-NoVerify | 6.0 | 4/13 | 7 |
+| Sensitivity A-NoVerify | 3.5 | 0/6 | 0 |
 
-Sixty-nine of 69 citation corruptions caught with zero false alarms, and none
-of the 38 semantic ones. The misses are structural: reversing a link leaves the
-same two variables in the same passage with the same quoted words, so every
-rule still passes, and no rule reads the strength field.
+M exhausted its budget and stopped with unchecked edges on every development query. A search is redundant when it returns no new passage ID. A new ID can still be irrelevant to the edge under repair. The rate is unavailable for conditions that retrieve only once.
 
-Those 38 are what the verifier exists for, and it was run on them.
-
-| Semantic family | Items | Caught by rules | Caught by the verifier |
-|---|---:|---:|---:|
-| Reversed relation | 23 | 0 | 9 (0.391) |
-| Inflated strength | 15 | 0 | 8 (0.533) |
-| **Total** | **38** | **0** | **17 (0.447)** |
-
-False alarms on the 23 clean controls: **2 (0.087)**, against 0 for the rules.
-So the verifier moves these families from a structural zero to a little under
-half, and pays 2 sound citations for it.
-
-**The better of those two figures deserves suspicion.** The verifier disagreed
-with the signed strength on **8 of the 23 clean controls** — a third of links
-where nothing was corrupted and the label is right. Inflation detection is
-defined as returning a weaker label than claimed, so a verifier that labels
-strength noisily scores detections it did not earn. A base disagreement rate of
-0.348 against 0.533 on inflated items is a real margin but a thin one, and this
-sample cannot separate discrimination from noise. The reversed-relation figure
-has no such ambiguity: it is read off provenance, and a control disagreement
-there is already counted as a false alarm.
-
-### 7.6 Capability, safety and tool calling
-
-| Metric | Result |
-|---|---|
-| Next-action accuracy, standalone model choice, 40 states | 0.125 |
-| Argument validity (schema and unchanged cutoff) | 0.850 |
-| Unsafe-call rate (schema, cutoff **or budget**) | **0.275** |
-| Calls proposed in zero-budget states | **5 of 5** |
-| Investment-advice leakage, 25 adversarial prompts | 0 |
-| Own-forecast leakage, 25 prompts | 0 |
-| Post-cutoff evidence use, 25 prompts | 0 |
-| Asserted labels without a verbatim span, 25 prompts | 0 |
-| Synthetic tool-fault recovery | 20 / 20 |
-
-Three qualifications. The 0.125 is the model's standalone choice on scripted
-states; the executed controller uses deterministic priority, so it is not the
-running agent's accuracy. The unsafe-call rate is **not** the complement of
-argument validity, and the gap is the point: five states have no budget left,
-where the only safe action is to stop, and the model proposed a call in **all
-five**. Those calls had valid schemas and correct cutoffs, so an earlier
-definition scored them all safe at 0.150. Counting the budget gives 0.275.
-Finally, the safety screen was reviewed by an assistant, not an independent
-human.
-
-### 7.7 Development results and how far the labels can be trusted
-
-Both arms completed 28 graphs each and passed structural audit.
-
-| Arm | B1 UER | M UER | M−B1 UER | M−B1 recall | H2d |
-|---|---:|---:|---:|---:|---|
-| Primary Qwen3-8B | 1.000 (3/4) | 0.750 (4/4) | −0.167 (3 pairs) | +0.062 (4 pairs) | holds |
-| Sensitivity Qwen3.5-9B | 0.529 (4/4) | 0.250 (2/4) | −0.100 (2 pairs) | −0.062 (4 pairs) | holds |
-
-**H1 is not testable on any condition.** A trend needs all three hop buckets at
-ten established links each; the best any condition manages is one, and on
-several the hop-3-or-deeper bucket is empty — nothing is measured in the slice
-RQ1 is about. The primary B1 buckets hold 5, 2 and 1 links; the sensitivity
-ones 13, 1 and 0. **H2b has zero usable paired queries** in both arms.
-
-**Where these labels came from.** The 247 support labels behind these figures
-were assistant-produced drafts. A stratified blind sample of 40 was then
-annotated by an author who did not hold the key and had not produced them.
-
-| Informative rows only | Value |
-|---|---:|
-| Informative rows | 27 of 40 |
-| Claims the human rejected | 14 of 27 |
-| Raw agreement | 0.778 |
-| Cohen's kappa | 0.560 (95% CI 0.249 to 0.870) |
-| Disagreements | 6 of 27 |
-
-Thirteen rows carried no evidence span, so the only available verdict was
-*unsupported*; agreement there is agreement by construction and they are
-excluded. **Every disagreement falls in the sensitivity arm** — the primary arm
-agreed on all 10 informative rows, the sensitivity arm on 11 of 17. The primary
-sample held 6 supported and 4 unsupported labels, so chance agreement is 0.52
-and its kappa of 1.000 rests on a real denominator rather than a dominant
-label. It is still ten rows.
-
-Five of the six disagreements are the assistant crediting support the human
-rejected. An over-credited link leaves the UER numerator, so a label set biased
-this way *understates* UER: the sensitivity arm's rates may be optimistic.
-
-**The held-out evaluation.** One author reviewed all 30 prose outputs, approved
-27 revisions and authored all 291 support judgements for the revised scoring,
-attesting to blinding and independence.
-
-| Arm | Judgements | M−B1 UER | M−B1 recall | H2d |
-|---|---:|---:|---:|---|
-| Held-out | 55 | 0.000 (2 pairs) | **−0.125** (2 pairs) | **fails** |
-| Primary development | 122 | −0.167 (3 pairs) | +0.0625 (4 pairs) | holds |
-| Sensitivity development | 114 | −0.250 (2 pairs) | 0.000 (4 pairs) | holds |
-
-**H2d fails on the held-out half, and that is the guard working.** We said in
-advance that our system should find no more than 10 points fewer correct links
-than ordinary RAG. It finds 12.5 points fewer, and the UER gain meant to pay
-for that loss is exactly zero. On this half the checker bought nothing and lost
-links to get there — the deletion-not-repair failure H2d was written to catch.
-
-Two caveats pull opposite ways and neither rescues it. Two query pairs is far
-below the ten-query gate, so the breach is descriptive. But the development
-half where H2d holds rests on labels one author produced for a system the team
-built, while the only blind-validated evidence is the 40-row sample over the
-earlier assistant labels. **The guard holds where the evidence is weakest and
-fails where it is freshest.**
-
-**Stability.** Three seeds on one development query produced the same two
-established links with byte-identical evidence and a UER of 0.500 each time,
-while the proposed link sets varied. The verifier absorbs the generator's
-randomness rather than passing it on.
-
-### 7.8 Does verification repair, or does it delete?
-
-The ablations make the mechanism visible. Remove the verifier and the
-generator's self-labels establish 36 of 36 links. Keep the verifier but remove
-the search loop and 0 of 35 are established. The full system establishes 8 of
-35.
-
-Read alone that looks like an over-cautious verifier, and we first read it that
-way. The model pilot suggests otherwise: the selected generator fails on
-exactly the two fields the rules check, with 17 of 20 citations naming the
-wrong passage and 10 of 20 quotations not verbatim, where the rejected
-alternative failed neither. If most citations are wrong, a verifier that
-rejects them is behaving correctly, and the low establishment rate is largely
-an **extraction** failure rather than a **verification** one. The two
-observations are independent and they agree.
+<!-- pagebreak -->
 
 ## 8. Limitations
 
-**What the design cost us.** Of eight candidate anchor episodes, three confirm
-as declared and only two against official data: the March oil shock needed
-redating because the Brent series holds no March observation, and the September
-bond sell-off was dropped because the yield series ends in August. That cut 30
-planned queries to 8 and capped the signed reference set at 24 links. The
-compounding is easy to hide and worth stating — a sparse series store did not
-weaken one measurement, it propagated through anchors to queries to the
-reference set to the challenge set, and finally to the hop coverage RQ1 is
-defined over.
+**Sample size and coverage.** The design targeted 24 signed test queries, with a fallback of 16. The final set contains two from one episode. The signed graphs cover hops 1 and 2 only. About 79% of the news documents come from one publisher, and three ontology variables never match their pinned aliases in the corpus. These constraints particularly limit the long paths that would test grounding decay. All 56 historical development artifacts also lacked runtime confirmation windows. Their date filters still ran, and the later held-out runs confirmed anchors using explicit thresholds.
 
-**The study is too small to answer RQ1.** Four development and two held-out
-questions sit far below the ten-query gate we set. Twelve of the 16 development
-reference links are at hop 1 and four at hop 2, with none deeper. UER can still
-be reported at hop 3 or more because it is measured over generated links, but
-reference-edge recall — the H2d guard — has no denominator there. The guard is
-unavailable in exactly the slice where H1 predicts grounding is worst.
+**Extraction and evidence quality.** The selected generator cited the wrong passage on 17 of 20 pilot items. In one development case, A-NoVerify reused a single paragraph for six established claims that the paragraph did not state. The verifier can filter these claims, but the recall loss and unresolved edge queue show what happens when it cannot recover evidence within budget. Strength labels are also sensitive to whether a reviewer reads the mechanism or the qualifier in the clause that asserts it.
 
-**Two of the four test questions have no reference graph.** A reachability
-audit excluded `test-cpi-why` before anyone read a passage: its target is
-paired with headline CPI in exactly one passage on or before the cutoff, that
-passage is Federal Reserve coverage rather than Indian, and it runs the wrong
-way. `test-cpi-effects` was excluded only after reading. The audit counts
-variables that co-occur with the anchor and says so; reading the passages shows
-the condition failing structurally, because in this corpus Indian headline CPI
-is the *destination* of the oil shock rather than its source, and an effects
-graph rooted at CPI cannot use an inbound link. Both exclusions are measured
-limits of what the corpus supports, not unfinished work.
-
-**Most support labels are not independently reviewed.** The 247 development
-labels behind the historical figures were assistant-produced. The 291 revised
-labels were authored by one author of this report, for a system this team
-built, with a self-attestation of blinding. The only blind, independent
-evidence is the 40-row sample, which covers 27 informative rows. Independent
-blind scoring of a full set remains outstanding, and the report does not claim
-otherwise.
-
-**Alias coverage caps recall before any model runs.** Rule 3 needs both
-variables named in the cited passage, through a hand-written alias table. Three
-of the 46 ontology variables are never named in any of the 16,472 passages, and
-five more appear in fewer than ten. We did not extend the table: it is an input
-to rule 3, so changing it would alter the verifier for every condition at once
-and leave every reported number describing a configuration that no longer
-exists.
-
-**The proposal's own worked example cannot be built from the corpus it froze.**
-The chain runs crude → ATF price → airline costs → airline shares. Airline
-costs appear in two passages and airline shares in none, and adjudication
-separately dropped the crude-to-ATF link.
-
-**Other limits.** One model family, one time window, English-language national
-press only. The verifier may share the generator's blind spots, being the same
-model. The candidates may have seen 2026 news in training. Retrieval relevance
-judgements are automated, and the safety screen is a heuristic pass rather than
-a certification. The challenge set's detections are ground truth, since each
-corruption was applied mechanically to a known link, but its false-alarm rate
-is only as good as the references behind the controls.
+**Follow-up.** The next evaluation should broaden the signed test set across episodes, include reference chains beyond hop 2 and fix the experimental inputs before scoring. Citation extraction and the search priority policy are candidates for a separate intervention. Evaluating those changes against reranked RAG with the same recall guard would distinguish recovery of valid evidence from rejection of unsupported claims.
 
 ## 9. Conclusions
 
-We built a system that measures, link by link, how far an explanation of
-financial news is actually backed by its sources. The measuring worked. The
-answer it gave is mixed, and the mixed part is the useful part.
-
-**Checking links is worth doing and is not enough on its own.** We built 38
-corrupted links that no fixed rule can catch, because reversing a link leaves
-the same two variables in the same passage with the same quoted words. Fixed
-rules caught none. The language-model checker caught 17 and wrongly flagged 2
-of 23 clean links. It does real work that rules cannot do, and it still misses
-more than half.
-
-**The problem may start earlier than we were looking.** In the model pilot the
-generator quoted the wrong passage in 17 of 20 cases. A checker cannot repair
-an explanation whose evidence was mismatched before it arrived. On this reading
-the low establishment rate is mostly an extraction failure, and the selection
-rule that broke a 61.0% tie on latency chose the weaker extractor.
-
-**Our main claim did not survive the held-out test.** On the four development
-questions our system beat ordinary RAG on unsupported links. On the two
-held-out questions, scored with fresh labels, it showed no improvement at all
-and found 12.5 points fewer correct links. That breaks the H2d recall guard we
-set in advance, which exists to catch a checker that improves its score by
-deleting links rather than fixing them.
-
-**What we cannot say.** With this many questions, and almost no evidence at
-distant links, RQ1 is unanswered: whether grounding decays with distance
-remains open, because the gate for a trend was never met on any condition. What
-we can say is narrower and still worth having. We have a working instrument, a
-frozen corpus and signed reference set that others can check, a measured result
-about the division of labour between rules and a model, and one honest negative
-result about our own method — produced by a guard we wrote before we ran
-anything.
+The controlled challenge shows that semantic verification can detect direction and strength errors that pass citation checks. The development results favor the full system on unsupported-edge rate, but the two held-out queries tied standard RAG on that measure and missed the recall guard. With few deeper links, the study leaves grounding decay unresolved. A larger, episode-diverse test should measure whether semantic verification improves grounding while preserving recall.
 
 ## 10. References
 
-Asai et al. (2024). [Self-RAG](https://arxiv.org/abs/2310.11511). ICLR.
-
-Chen et al. (2024). [BGE M3-Embedding](https://arxiv.org/abs/2402.03216).
-
-Cormack, Clarke and Buettcher (2009). Reciprocal rank fusion. SIGIR.
-
-Feinstein and Cicchetti (1990). High agreement but low kappa. *Journal of
-Clinical Epidemiology* 43(6).
-
-Mariko et al. (2020). [FinCausal 2020](https://aclanthology.org/2020.fnp-1.3/). FNP.
-
-Prasad et al. (2023). [ReCEval](https://aclanthology.org/2023.emnlp-main.622/). EMNLP.
-
-Qwen Team (2025). [Qwen3 technical report](https://arxiv.org/abs/2505.09388).
-
-Tan et al. (2022). [The Causal News Corpus](https://aclanthology.org/2022.lrec-1.246/). LREC.
-
-Wang et al. (2025). [CausalRAG](https://aclanthology.org/2025.findings-acl.1165/). ACL Findings.
-
-Xie et al. (2025). [FIRE](https://aclanthology.org/2025.findings-naacl.158/). NAACL Findings.
-
-Yu, Li and Wang (2019). [Detecting causal language use in science findings](https://aclanthology.org/D19-1473/). EMNLP-IJCNLP.
+1. A. Asai, Z. Wu, Y. Wang, A. Sil, and H. Hajishirzi. [Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection](https://openreview.net/forum?id=hSyW5go0v8). *ICLR*, 2024.
+2. Z. Xie, R. Xing, Y. Wang, J. Geng, H. Iqbal, D. Sahnan, I. Gurevych, and P. Nakov. [FIRE: Fact-checking with Iterative Retrieval and Verification](https://aclanthology.org/2025.findings-naacl.158/). *Findings of NAACL*, 2025.
+3. N. Wang, X. Han, J. Singh, J. Ma, and V. Chaudhary. [CausalRAG: Integrating Causal Graphs into Retrieval-Augmented Generation](https://aclanthology.org/2025.findings-acl.1165/). *Findings of ACL*, 2025.
+4. A. Prasad, S. Saha, X. Zhou, and M. Bansal. [ReCEval: Evaluating Reasoning Chains via Correctness and Informativeness](https://aclanthology.org/2023.emnlp-main.622/). *EMNLP*, 2023.
+5. B. Yu, Y. Li, and J. Wang. [Detecting Causal Language Use in Science Findings](https://aclanthology.org/D19-1473/). *EMNLP-IJCNLP*, 2019.
+6. D. Mariko, H. Abi-Akl, E. Labidurie, S. Durfort, H. De Mazancourt, and M. El-Haj. [The Financial Document Causality Detection Shared Task (FinCausal 2020)](https://aclanthology.org/2020.fnp-1.3/). *Financial Narrative Processing Workshop*, 2020.
+7. J. Chen, S. Xiao, P. Zhang, K. Luo, D. Lian, and Z. Liu. [M3-Embedding: Multi-Linguality, Multi-Functionality, Multi-Granularity Text Embeddings Through Self-Knowledge Distillation](https://aclanthology.org/2024.findings-acl.137/). *Findings of ACL*, 2024.
