@@ -394,3 +394,88 @@ def test_required_anchor_rejects_unconfirmed_event_before_model_calls(passages, 
     with pytest.raises(ValueError, match="anchor confirmation failed"):
         pipeline.run(query(), condition="B0", run_id="f", log_path=tmp_path / "run.jsonl")
     assert iter_run_log(tmp_path / "run.jsonl")[-1].reason == "error"
+
+
+@pytest.mark.parametrize(
+    "value, release_day, confirmed", [(105, 12, True), (95, 12, False), (105, 21, False)]
+)
+def test_anchor_threshold_requires_an_eligible_published_value(
+    passages, tmp_path, value, release_day, confirmed
+):
+    q = query(anchor_threshold={"episode_id": "fixture", "comparison": "at_or_above", "value": 100})
+    series = SeriesStore(
+        {
+            "brent_usd_bbl": [
+                Observation(
+                    on=q.anchor.event_date,
+                    value=value,
+                    available_on=date(2026, 3, release_day),
+                    source_url="https://example.org/fixture",
+                    unit="USD per barrel",
+                )
+            ]
+        }
+    )
+    pipeline = Pipeline(
+        generator=EmptyGenerator(), retriever=BM25Retriever(passages), series=series
+    )
+    result = pipeline.run(q, condition="B0", run_id="fixture", log_path=tmp_path / "run.jsonl")
+    assert result["anchor_check"]["confirmed"] == confirmed
+    assert result["graph"]["anchor"]["confirmed_by_series"] == confirmed
+
+
+def test_competing_cause_excludes_the_original_and_enters_the_graph(
+    passages, tmp_path, monkeypatch
+):
+    from schema.tools import CounterSearchResult
+    from tools.runtime import ToolRuntime
+
+    def candidate(src, dst, direction="up"):
+        return {
+            "src_var": src,
+            "dst_var": dst,
+            "direction": direction,
+            "strength": "conditional",
+            "provenance": "model_inferred",
+        }
+
+    initial = [candidate("BRENT", "INR_USD"), candidate("BRENT", "IMPORT_BILL")]
+    alternatives = [
+        candidate("IMPORT_BILL", "INR_USD"),
+        candidate("BRENT", "INR_USD"),
+        candidate("INDIAN_BASKET", "INR_USD", "down"),
+    ]
+
+    class Generator:
+        def generate(self, prompt, *, max_tokens=1500):
+            edges = alternatives if "Find a distinct competing cause" in prompt else initial
+            return Completion(json.dumps({"edges": edges}), "fixture", "vllm", 1, 1, 0)
+
+    real_execute = ToolRuntime._execute
+
+    def execute(runtime, call):
+        if call.tool == "counter_search":
+            assert call.args.exclude_src_vars == ["BRENT"]
+            assert call.args.direction == "up"
+            return CounterSearchResult(
+                call_id=call.call_id,
+                passages=passages[:1],
+                competing_src_vars=["IMPORT_BILL", "INDIAN_BASKET"],
+            )
+        return real_execute(runtime, call)
+
+    monkeypatch.setattr(ToolRuntime, "_execute", execute)
+    result = Pipeline(
+        generator=Generator(), retriever=BM25Retriever(passages), series=SeriesStore({})
+    ).run(
+        query(question_type="why", target_var="INR_USD"),
+        condition="A-NoVerify",
+        run_id="fixture",
+        log_path=tmp_path / "counter.jsonl",
+    )
+    assert [(e["src_var"], e["dst_var"]) for e in result["graph"]["edges"]] == [
+        ("BRENT", "INR_USD"),
+        ("BRENT", "IMPORT_BILL"),
+        ("IMPORT_BILL", "INR_USD"),
+    ]
+    assert result["tool_calls"] <= 12

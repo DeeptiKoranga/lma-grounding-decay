@@ -61,3 +61,46 @@ def predeclared_contrasts(scores: dict[str, dict[str, dict]], *, metric="uer", s
             samples=samples,
         ),
     }
+
+
+#: M is compared with these in the proposal's RQ2 analysis, but none of the
+#: three is a pre-declared test. B2 is the prompting control behind H2c;
+#: A-NoVerify isolates the verifier and A-NoLoop the agent loop (proposal
+#: Table 4).
+EXPLORATORY_BASELINES = ("B2", "A-NoVerify", "A-NoLoop")
+
+
+def exploratory_contrasts(scores: dict[str, dict[str, dict]], *, metric="uer", samples=10000):
+    """M against the prompting control and the two ablations.
+
+    Deliberately a separate function with a separate output key, rather than
+    more entries in `predeclared_contrasts`. The proposal declares exactly two
+    tests - B1 deep-minus-shallow for RQ1 and M-minus-B1 for RQ2 - and says
+    every other comparison, "including M versus B1-R", is exploratory. Putting
+    all of them in one dict would leave a reader to remember which two carry
+    that status, and that is the kind of thing nobody remembers at the point of
+    quoting a number.
+
+    A baseline that was not scored is omitted rather than reported as zero
+    difference, and one with no query where both sides have a denominator comes
+    back with `estimate: None` from the bootstrap, not a fabricated figure.
+    """
+    if metric not in {"uer", "strength_inflation"}:
+        raise ValueError("only UER and strength inflation contrasts are defined")
+    if "M" not in scores:
+        raise ValueError("exploratory contrasts require M")
+    full = scores["M"]
+    out = {}
+    for baseline in EXPLORATORY_BASELINES:
+        other = scores.get(baseline)
+        if not other:
+            continue
+        shared = sorted(set(full) & set(other))
+        if not shared:
+            continue
+        out[f"M_minus_{baseline}_overall"] = paired_bootstrap(
+            {qid: full[qid]["overall"][metric] for qid in shared},
+            {qid: other[qid]["overall"][metric] for qid in shared},
+            samples=samples,
+        )
+    return out

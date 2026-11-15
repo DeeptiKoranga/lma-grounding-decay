@@ -207,12 +207,16 @@ def test_each_dev_gold_graph_passes_the_structural_checks(query_id):
 
 
 @pytest.mark.parametrize("query_id", DEV_QUERIES)
-def test_each_dev_gold_graph_declares_that_it_is_not_adjudicated(query_id):
-    """The provenance line is load-bearing: it is what stops a draft being cited
-    as a human-annotated gold standard. If adjudication happens, this test is
-    the thing to change, deliberately."""
+def test_each_dev_gold_graph_declares_how_it_was_adjudicated(query_id):
+    """The provenance line is load-bearing: it is what stops the set being cited
+    with more authority than it has. It used to say MACHINE-DRAFTED, NOT YET
+    ADJUDICATED; two annotators labelled every edge independently on 8 Nov 2026
+    (D-26), so it now records that, the agreement figures and the fact that the
+    reviewers' attestation is signed separately in review_receipt.json."""
     notes = load_gold_graph(query_id).notes or ""
-    assert "MACHINE-DRAFTED, NOT YET ADJUDICATED" in notes
+    assert "ADJUDICATED 2026-11-08" in notes
+    assert "MACHINE-DRAFTED" not in notes
+    assert "review_receipt.json" in notes
 
 
 def test_the_dev_set_reaches_past_hop_one():
@@ -305,3 +309,43 @@ def test_the_gold_checker_accepts_a_relation_that_spans_a_paragraph_break():
     strict = check_against_corpus(_graph(edges), cited_only)
     assert not strict.ok
     assert all("BRENT" in issue.problem for issue in strict.issues)
+
+
+def test_the_gold_backed_sweep_targets_sweep_queries_that_have_gold():
+    """A sweep is only useful for H2d if every query it runs has a reference
+    graph. `run-dev` and `run-all-dev` sweep development_candidates.jsonl, whose
+    ids match no gold graph at all, so scoring that output with --references
+    raises "reference graph query/cutoff/anchor mismatch" after the whole sweep
+    has been paid for. D-28's targets exist to avoid that, and this asserts they
+    keep pointing somewhere the gold set actually covers.
+    """
+    import json
+    import re
+
+    repo = Path(__file__).parents[2]
+    makefile = (repo / "Makefile").read_text(encoding="utf-8")
+
+    match = re.search(r"^GOLD_QUERIES \?= (?P<path>\S+)$", makefile, re.MULTILINE)
+    assert match, "Makefile no longer defines GOLD_QUERIES"
+    queries = repo / match["path"]
+    assert queries.is_file(), f"GOLD_QUERIES points at {queries}, which does not exist"
+
+    swept = [
+        json.loads(line)["query_id"]
+        for line in queries.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    assert swept, f"{queries} is empty"
+
+    root = repo / "data/eval/gold/dev"
+    missing = missing_gold_graphs(swept, root=root)
+    assert missing == (), (
+        f"the gold-backed sweep would run {sorted(missing)}, which have no reference "
+        f"graph in {root}; scoring the run with --references would fail after the fact"
+    )
+
+    for target in ("sweep-dev-primary", "sweep-dev-sensitivity"):
+        assert f"\n{target}:" in makefile, f"{target} has gone from the Makefile"
+    assert (
+        "$(GOLD_QUERIES)" in makefile
+    ), "the sweep recipe no longer uses GOLD_QUERIES, so this check guards nothing"

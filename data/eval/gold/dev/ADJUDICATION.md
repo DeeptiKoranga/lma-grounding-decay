@@ -77,16 +77,6 @@ Anchor **BRENT up** - Brent crude at or above $100 a barrel (2026-04-01). As-of 
 |---|---|---|---|
 |  |  |  |  |
 
-### `ow4`  BRENT -> INR_USD (up, direct, hop 1)
-
-> The rupee and Government Securities (G-Secs) markets on Monday felt the impact of rising crude oil prices
-
-`businessline-469aabd081e5b5594ab2#p0` - 2026-03-09
-
-| asserts relation? | direction? | strength? | verdict |
-|---|---|---|---|
-|  |  |  |  |
-
 ### `ow5`  BRENT -> TRADE_DEFICIT (up, conditional, hop 1)
 
 > Higher oil prices linked to the conflict are adding to India’s import bill and could widen the trade deficit if the trend persists.
@@ -121,18 +111,6 @@ Anchor **BRENT up** - Brent crude at or above $100 a barrel (2026-04-01). As-of 
 |---|---|---|---|
 |  |  |  |  |
 
-### `oe3`  BRENT -> OMC_MARGINS (down, direct, hop 1)
-
-> Retail auto fuel prices in India have remained unchanged for around 2.5 years, with fluctuating marketing margins of oil marketing companies absorbing price shocks.
-
-`economic_times-24ec1e6a8dff7543b074#p6` - 2026-03-02
-
-**Drafter's note.** ADJUDICATE: the span asserts margins absorb price shocks without naming a direction. 'down' is read off the anchor (crude up). Reject the edge if you think the direction has to be stated in the span itself.
-
-| asserts relation? | direction? | strength? | verdict |
-|---|---|---|---|
-|  |  |  |  |
-
 ### `oe4`  BRENT -> FISCAL_DEFICIT (up, conditional, hop 1)
 
 > A $10 per barrel increase could have a 20 to 25 basis point impact on CPI inflation if passed on to consumers, or on the fiscal deficit if the government opts to cut taxes.
@@ -145,23 +123,13 @@ Anchor **BRENT up** - Brent crude at or above $100 a barrel (2026-04-01). As-of 
 |---|---|---|---|
 |  |  |  |  |
 
-### `oe5`  BRENT -> ATF_PRICE (up, direct, hop 1)
-
-> Indian OMCs revise ATF prices on the first of every month, based on a weighted average of international benchmarks like crude oil prices and the crack spread component, plus logistics costs.
-
-`economic_times-015f8f79fd464ee060d8#p6` - 2026-03-31
-
-**Drafter's note.** ADJUDICATE: the span states the ATF pricing formula rather than an observed move. Mechanical, unhedged, hence 'direct'.
-
-| asserts relation? | direction? | strength? | verdict |
-|---|---|---|---|
-|  |  |  |  |
-
 ### `oe10`  ATF_PRICE -> AIRFARES (up, conditional, hop 2)
 
 > Airfares are expected to rise with the steep increase in jet fuel prices amid the ongoing West Asia conflict.
 
 `economic_times-4a678f4564789fcceb8e#p0` - 2026-04-01
+
+**Drafter's note.** Kept at hop 2 although adjudication dropped its first link (oe5, BRENT->ATF_PRICE): no passage in the corpus asserts a direction for crude -> ATF, only the monthly pricing formula. So AIRFARES is no longer reachable from the anchor inside this graph and the hop number records the chain the source describes, not a path through gold edges. A model producing crude -> ATF -> airfares is marked wrong on the first link and right on the second; say so when reporting hop-2 figures.
 
 | asserts relation? | direction? | strength? | verdict |
 |---|---|---|---|
@@ -244,18 +212,6 @@ Anchor **INR_USD up** - USD/INR at 96.84, the weakest level of the window (2026-
 `economic_times-1b2732b34ee05b32bf50#p1` - 2026-04-30
 
 **Drafter's note.** Same edge and span as rw1 in dev-rupee-why. The two questions share one mechanism over one episode; that overlap is expected, not a duplicate.
-
-| asserts relation? | direction? | strength? | verdict |
-|---|---|---|---|
-|  |  |  |  |
-
-### `re4`  IMPORT_BILL -> FISCAL_DEFICIT (up, correlational, hop 2)
-
-> rising import bill were fuelling worries about inflation and the fiscal deficit
-
-`economic_times-4b42a45c8f9ff3e13586#p0` - 2026-05-20
-
-**Drafter's note.** 'were fuelling worries about' is reported concern, not an asserted move, hence correlational.
 
 | asserts relation? | direction? | strength? | verdict |
 |---|---|---|---|

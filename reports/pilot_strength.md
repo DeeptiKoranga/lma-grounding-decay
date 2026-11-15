@@ -74,18 +74,12 @@ fine-tuned BERT. The floor below and that ceiling are the range the verifier sho
 be judged in: well above the word list, and not expected to reach a supervised model
 trained on the same distribution.
 
-**Still outstanding.** The model arm is wired but not run: it needs the pinned
-Qwen3-8B 4-bit weights, which are not on the Track B machine.
+**Model arm completed 12 November.** The pinned model results and predictions
+are in `reports/pilot_strength_model.md` and
+`reports/pilot_strength_model_predictions.json`. The cue results above are
+unchanged.
 
-```bash
-python scripts/run_strength_pilot.py --classifier llm \
-    --model-path data/raw/generator/qwen3-8b-4bit --revision <pinned>
-```
-
-Until that runs there is no comparison, and **the project cannot yet claim the
-verifier earns its place on strength.**
-
-Two limits on what that arm will show, both of which belong in the report rather
+Two limits on what the model arm shows, both of which belong in the report rather
 than in a footnote. It is **not `verify.Verifier` end to end**: the verifier checks
 a span against a corpus passage under an as-of date first, and these sentences are
 not in our corpus, so three of the four rules have nothing to check. What is

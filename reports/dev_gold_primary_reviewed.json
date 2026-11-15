@@ -1,0 +1,2037 @@
+{
+  "status": "reviewed development results; directional only",
+  "reviewer": "Varun",
+  "reviewed_on": "2026-11-10",
+  "judgments_sha256": "3fb920c1a42a8cc2630ac89dd9e98265b056dcf4cc3492aadbe6031fd0cbd1f9",
+  "reference_review_receipt_sha256": "9304a6ec34312f5a43e8d45303779f00689fe8568833ba3825dd5f181d726100",
+  "per_query": {
+    "A-NoLoop": {
+      "dev-oil-effects": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 3,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 2,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 1,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-oil-why": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 1,
+          "supported_established_edges": 1,
+          "uer": 0.0,
+          "strength_inflation": 0.0,
+          "reference_edge_recall": 0.25,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 1,
+          "supported_established_edges": 1,
+          "uer": 0.0,
+          "strength_inflation": 0.0,
+          "reference_edge_recall": 0.3333333333333333,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 3,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 1,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-rupee-effects": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 6,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      },
+      "dev-rupee-why": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 2,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 2,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      }
+    },
+    "A-NoVerify": {
+      "dev-oil-effects": {
+        "overall": {
+          "edges": 4,
+          "established_edges": 4,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.75,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-oil-why": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 6,
+          "supported_established_edges": 1,
+          "uer": 0.8333333333333334,
+          "strength_inflation": 0.0,
+          "reference_edge_recall": 0.25,
+          "provenance_accuracy": 0.8333333333333334,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 1,
+          "uer": 0.5,
+          "strength_inflation": 0.0,
+          "reference_edge_recall": 0.3333333333333333,
+          "provenance_accuracy": 0.5,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 3,
+          "established_edges": 3,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-rupee-effects": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 6,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 6,
+          "established_edges": 6,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      },
+      "dev-rupee-why": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 6,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        }
+      }
+    },
+    "B0": {
+      "dev-oil-effects": {
+        "overall": {
+          "edges": 3,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 1,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 1,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 1,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-oil-why": {
+        "overall": {
+          "edges": 4,
+          "established_edges": 4,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-rupee-effects": {
+        "overall": {
+          "edges": 3,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 1,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      },
+      "dev-rupee-why": {
+        "overall": {
+          "edges": 3,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 1,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      }
+    },
+    "B1": {
+      "dev-oil-effects": {
+        "overall": {
+          "edges": 2,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      },
+      "dev-oil-why": {
+        "overall": {
+          "edges": 4,
+          "established_edges": 4,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-rupee-effects": {
+        "overall": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      },
+      "dev-rupee-why": {
+        "overall": {
+          "edges": 4,
+          "established_edges": 3,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 3,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      }
+    },
+    "B1-R": {
+      "dev-oil-effects": {
+        "overall": {
+          "edges": 5,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 5,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      },
+      "dev-oil-why": {
+        "overall": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 2,
+          "uer": 0.0,
+          "strength_inflation": 0.5,
+          "reference_edge_recall": 0.25,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.5
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 2,
+          "uer": 0.0,
+          "strength_inflation": 0.5,
+          "reference_edge_recall": 0.3333333333333333,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.5
+        },
+        "2": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      },
+      "dev-rupee-effects": {
+        "overall": {
+          "edges": 3,
+          "established_edges": 3,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 3,
+          "established_edges": 3,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      },
+      "dev-rupee-why": {
+        "overall": {
+          "edges": 2,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      }
+    },
+    "B2": {
+      "dev-oil-effects": {
+        "overall": {
+          "edges": 4,
+          "established_edges": 4,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-oil-why": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 6,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 3,
+          "established_edges": 3,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 1,
+          "established_edges": 1,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-rupee-effects": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 6,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 6,
+          "established_edges": 6,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      },
+      "dev-rupee-why": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 6,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": 0.0
+        }
+      }
+    },
+    "M": {
+      "dev-oil-effects": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 2,
+          "supported_established_edges": 1,
+          "uer": 0.5,
+          "strength_inflation": 0.0,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.8333333333333334,
+          "strict_path_validity": 0.3333333333333333
+        },
+        "1": {
+          "edges": 3,
+          "established_edges": 2,
+          "supported_established_edges": 1,
+          "uer": 0.5,
+          "strength_inflation": 0.0,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.6666666666666666,
+          "strict_path_validity": 1.0
+        },
+        "2": {
+          "edges": 2,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 1,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-oil-why": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 2,
+          "supported_established_edges": 1,
+          "uer": 0.5,
+          "strength_inflation": 0.0,
+          "reference_edge_recall": 0.25,
+          "provenance_accuracy": 0.8333333333333334,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 1,
+          "uer": 0.5,
+          "strength_inflation": 0.0,
+          "reference_edge_recall": 0.3333333333333333,
+          "provenance_accuracy": 0.5,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 3,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        },
+        "3+": {
+          "edges": 1,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      },
+      "dev-rupee-effects": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.6666666666666666,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 6,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.6666666666666666,
+          "strict_path_validity": 0.0
+        },
+        "2": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 0,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": null,
+          "strict_path_validity": null
+        }
+      },
+      "dev-rupee-why": {
+        "overall": {
+          "edges": 6,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.6666666666666666,
+          "strict_path_validity": 0.0
+        },
+        "1": {
+          "edges": 2,
+          "established_edges": 2,
+          "supported_established_edges": 0,
+          "uer": 1.0,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 0.0,
+          "strict_path_validity": null
+        },
+        "2": {
+          "edges": 2,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": 0.0,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": null
+        },
+        "3+": {
+          "edges": 2,
+          "established_edges": 0,
+          "supported_established_edges": 0,
+          "uer": null,
+          "strength_inflation": null,
+          "reference_edge_recall": null,
+          "provenance_accuracy": 1.0,
+          "strict_path_validity": 0.0
+        }
+      }
+    }
+  },
+  "aggregate": {
+    "A-NoLoop": {
+      "overall": {
+        "uer": {
+          "mean": 0.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "strength_inflation": {
+          "mean": 0.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "reference_edge_recall": {
+          "mean": 0.0625,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        }
+      },
+      "1": {
+        "uer": {
+          "mean": 0.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "strength_inflation": {
+          "mean": 0.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "reference_edge_recall": {
+          "mean": 0.08333333333333333,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        }
+      },
+      "2": {
+        "uer": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        }
+      },
+      "3+": {
+        "uer": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        }
+      }
+    },
+    "A-NoVerify": {
+      "overall": {
+        "uer": {
+          "mean": 0.9583333333333334,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strength_inflation": {
+          "mean": 0.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "reference_edge_recall": {
+          "mean": 0.0625,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 0.39583333333333337,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        }
+      },
+      "1": {
+        "uer": {
+          "mean": 0.875,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strength_inflation": {
+          "mean": 0.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "reference_edge_recall": {
+          "mean": 0.08333333333333333,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 0.125,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        }
+      },
+      "2": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "provenance_accuracy": {
+          "mean": 0.6666666666666666,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        }
+      },
+      "3+": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "provenance_accuracy": {
+          "mean": 0.6666666666666666,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        }
+      }
+    },
+    "B0": {
+      "overall": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        }
+      },
+      "1": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        }
+      },
+      "2": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        }
+      },
+      "3+": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        }
+      }
+    },
+    "B1": {
+      "overall": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 0.75,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        }
+      },
+      "1": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 0.75,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        }
+      },
+      "2": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        }
+      },
+      "3+": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        }
+      }
+    },
+    "B1-R": {
+      "overall": {
+        "uer": {
+          "mean": 0.75,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strength_inflation": {
+          "mean": 0.5,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "reference_edge_recall": {
+          "mean": 0.0625,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 0.75,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.125,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        }
+      },
+      "1": {
+        "uer": {
+          "mean": 0.75,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strength_inflation": {
+          "mean": 0.5,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        },
+        "reference_edge_recall": {
+          "mean": 0.08333333333333333,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 0.75,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.125,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        }
+      },
+      "2": {
+        "uer": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "provenance_accuracy": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "strict_path_validity": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        }
+      },
+      "3+": {
+        "uer": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "provenance_accuracy": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "strict_path_validity": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        }
+      }
+    },
+    "B2": {
+      "overall": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 0.5,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        }
+      },
+      "1": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 0.5,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 1,
+          "queries_without_denominator": 3
+        }
+      },
+      "2": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "provenance_accuracy": {
+          "mean": 0.6666666666666666,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        }
+      },
+      "3+": {
+        "uer": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "provenance_accuracy": {
+          "mean": 0.6666666666666666,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        }
+      }
+    },
+    "M": {
+      "overall": {
+        "uer": {
+          "mean": 0.75,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strength_inflation": {
+          "mean": 0.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        },
+        "reference_edge_recall": {
+          "mean": 0.0625,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 0.75,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.08333333333333333,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        }
+      },
+      "1": {
+        "uer": {
+          "mean": 0.75,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strength_inflation": {
+          "mean": 0.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        },
+        "reference_edge_recall": {
+          "mean": 0.08333333333333333,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "provenance_accuracy": {
+          "mean": 0.4583333333333333,
+          "queries_with_denominator": 4,
+          "queries_without_denominator": 0
+        },
+        "strict_path_validity": {
+          "mean": 0.5,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        }
+      },
+      "2": {
+        "uer": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 2,
+          "queries_without_denominator": 2
+        }
+      },
+      "3+": {
+        "uer": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "strength_inflation": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "reference_edge_recall": {
+          "mean": null,
+          "queries_with_denominator": 0,
+          "queries_without_denominator": 4
+        },
+        "provenance_accuracy": {
+          "mean": 1.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        },
+        "strict_path_validity": {
+          "mean": 0.0,
+          "queries_with_denominator": 3,
+          "queries_without_denominator": 1
+        }
+      }
+    }
+  },
+  "contrasts": {
+    "uer": {
+      "B1_deep_minus_shallow": {
+        "estimate": 0.0,
+        "ci95": [
+          0.0,
+          0.0
+        ],
+        "paired_queries": 1,
+        "excluded_queries": [
+          "dev-oil-effects",
+          "dev-rupee-effects",
+          "dev-rupee-why"
+        ],
+        "samples": 10000,
+        "seed": 2026,
+        "resampling_unit": "query"
+      },
+      "M_minus_B1_overall": {
+        "estimate": -0.16666666666666666,
+        "ci95": [
+          -0.5,
+          0.0
+        ],
+        "paired_queries": 3,
+        "excluded_queries": [
+          "dev-oil-effects"
+        ],
+        "samples": 10000,
+        "seed": 2026,
+        "resampling_unit": "query"
+      }
+    },
+    "strength_inflation": {
+      "B1_deep_minus_shallow": {
+        "estimate": null,
+        "ci95": null,
+        "paired_queries": 0,
+        "excluded_queries": [
+          "dev-oil-effects",
+          "dev-oil-why",
+          "dev-rupee-effects",
+          "dev-rupee-why"
+        ]
+      },
+      "M_minus_B1_overall": {
+        "estimate": null,
+        "ci95": null,
+        "paired_queries": 0,
+        "excluded_queries": [
+          "dev-oil-effects",
+          "dev-oil-why",
+          "dev-rupee-effects",
+          "dev-rupee-why"
+        ]
+      }
+    }
+  },
+  "recall_guard": {
+    "minimum_M_minus_B1": -0.1,
+    "M_minus_B1": 0.0625,
+    "paired_queries": 4,
+    "passes_descriptively": true,
+    "status": "complete paired reference recall; assess alongside UER and strength",
+    "scope": "development guard only; not a confirmatory hypothesis result"
+  }
+}

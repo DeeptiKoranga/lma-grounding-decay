@@ -10,6 +10,7 @@ blind spot - would be resting on nothing.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -17,6 +18,7 @@ from scripts.run_challenge import RULE_VISIBLE, score
 
 from eval.challenge import CORRUPTIONS, MIN_INFLATABLE_SEEDS, MIN_SEEDS, build
 from eval.gold import load_gold_graph
+from eval.references import prepare
 from schema import Passage
 
 REPO = Path(__file__).parents[2]
@@ -72,10 +74,17 @@ def test_every_corruption_family_is_present_with_its_own_denominator(items):
 
 
 @needs_items
-def test_the_set_records_that_the_gold_behind_it_is_not_adjudicated(items):
-    """When this flips to True the false-alarm rate becomes trustworthy, and
-    that is a change worth noticing in a diff."""
-    assert all(row["gold_adjudicated"] is False for row in items)
+def test_the_set_records_the_adjudicated_gold_it_was_built_from(items):
+    """The false-alarm rate over controls is only trustworthy when the gold set
+    behind it was signed for, so every row carries that status and the receipt
+    hash it was built against. This flipped False -> True on 8 Nov 2026 when the
+    reviewers signed (D-26); it is a change worth noticing in a diff either way."""
+    assert all(row["gold_adjudicated"] is True for row in items)
+    receipts = {row["reference_review_receipt_sha256"] for row in items}
+    assert len(receipts) == 1, "one build, one receipt"
+    assert re.fullmatch(
+        r"[0-9a-f]{64}", receipts.pop()
+    ), "an adjudicated set must name the receipt its controls rest on"
 
 
 @needs_corpus
@@ -94,14 +103,66 @@ def test_building_refuses_a_gold_set_too_small_to_be_worth_quoting(tmp_path):
 
 
 @needs_corpus
-def test_unreviewed_gold_needs_the_flag(tmp_path):
-    """Without it the receipt gate applies, and the dev receipt is unsigned."""
+def test_unsigned_gold_needs_the_flag(tmp_path):
+    """The receipt gate is what stops an unsigned gold set producing a quotable
+    false-alarm rate. The real dev receipt is signed now, so this builds the
+    unsigned case rather than relying on the repository being in that state -
+    otherwise signing the receipt would have quietly deleted the test.
+    """
+    folder = tmp_path / "gold"
+    folder.mkdir()
+    for query_id in DEV_QUERIES:
+        graph = load_gold_graph(query_id)
+        (folder / f"{query_id}.json").write_text(graph.model_dump_json(indent=2, exclude_none=True))
+    prepare(references=folder, corpus=CORPUS)  # writes a blank, unsigned receipt
+    receipt = json.loads((folder / "review_receipt.json").read_text())
+    assert receipt["reviewer"] == "" and receipt["independent_review"] is False
+
     with pytest.raises(ValueError, match="attestation"):
-        build(
-            gold=REPO / "data/eval/gold/dev",
-            corpus=CORPUS,
-            output=tmp_path / "challenge.jsonl",
-        )
+        build(gold=folder, corpus=CORPUS, output=tmp_path / "challenge.jsonl")
+
+    # ...and with the flag it builds, but says what it is standing on.
+    manifest = build(
+        gold=folder,
+        corpus=CORPUS,
+        output=tmp_path / "unsigned.jsonl",
+        allow_unreviewed=True,
+    )
+    assert manifest["gold_adjudicated"] is False
+    assert manifest["reference_review_receipt_sha256"] is None
+    assert (
+        "do not quote it" in manifest["reading"]
+    ), "an unsigned build must say so where the rates are read, not only in a flag"
+
+
+@needs_corpus
+def test_a_signed_receipt_stops_matching_once_gold_changes(tmp_path):
+    """The receipt binds to the gold bytes, so an edit after signing invalidates
+    it. Without this a reviewer could sign, then the set could drift underneath
+    the signature."""
+    folder = tmp_path / "gold"
+    folder.mkdir()
+    for query_id in DEV_QUERIES:
+        graph = load_gold_graph(query_id)
+        (folder / f"{query_id}.json").write_text(graph.model_dump_json(indent=2, exclude_none=True))
+    prepare(references=folder, corpus=CORPUS)
+    path = folder / "review_receipt.json"
+    receipt = json.loads(path.read_text())
+    receipt.update(
+        reviewer="A Reviewer",
+        reviewed_on="2026-11-08",
+        independent_review=True,
+        all_relations_and_strengths_reviewed=True,
+    )
+    path.write_text(json.dumps(receipt, indent=2) + "\n")
+    build(gold=folder, corpus=CORPUS, output=tmp_path / "signed.jsonl")  # accepted
+
+    changed = folder / f"{DEV_QUERIES[0]}.json"
+    graph = json.loads(changed.read_text())
+    graph["notes"] = (graph.get("notes") or "") + " edited after signing"
+    changed.write_text(json.dumps(graph, indent=2) + "\n")
+    with pytest.raises(ValueError, match="changed after their review receipt"):
+        build(gold=folder, corpus=CORPUS, output=tmp_path / "after.jsonl")
 
 
 # ---------------------------------------------------------------------------
@@ -155,3 +216,56 @@ def test_a_third_of_the_corruptions_need_a_model(items, passages):
     blind = sum(results[k]["total"] for k in CORRUPTIONS if k not in RULE_VISIBLE and k in results)
     total = sum(results[k]["total"] for k in CORRUPTIONS if k in results)
     assert 0.2 < blind / total < 0.5
+
+
+def test_several_gold_directories_still_bind_to_one_receipt_hash():
+    """The manifest's receipt field is what makes the false-alarm rate quotable,
+    and several callers read it as a single hash. Building from both halves must
+    not empty it; it becomes a digest over the receipts, which still changes if
+    any one of them does."""
+    import hashlib
+    import json
+    from pathlib import Path
+
+    repo = Path(__file__).resolve().parents[2]
+    manifest = json.loads((repo / "data/eval/challenge_manifest.json").read_text(encoding="utf-8"))
+    receipts = manifest["reference_review_receipts"]
+    assert len(receipts) > 1, "this set is built from both halves"
+    joined = "\n".join(f"{name}:{value}" for name, value in sorted(receipts.items()))
+    assert (
+        manifest["reference_review_receipt_sha256"]
+        == hashlib.sha256(joined.encode("utf-8")).hexdigest()
+    )
+
+
+def test_the_set_reaches_the_size_the_proposal_specifies():
+    """89 items from the dev half alone fell short of the proposal's 125. Both
+    halves clear it. A drop below 125 means a gold directory stopped being
+    included, which would be silent otherwise."""
+    import json
+    from pathlib import Path
+
+    repo = Path(__file__).resolve().parents[2]
+    manifest = json.loads((repo / "data/eval/challenge_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["items"] >= 125
+    assert len(manifest["gold_directories"]) == 2
+
+
+def test_a_query_id_in_two_gold_directories_is_refused(fixture_dir, tmp_path):
+    """Silently overwriting one half's graph with another's would change the
+    seed set without changing the item count."""
+    from pathlib import Path
+    from unittest.mock import patch
+
+    from eval import challenge
+
+    clash = ({"q1": object()}, "aa" * 32)
+    with (
+        patch.object(challenge, "validate", return_value=clash),
+        pytest.raises(ValueError, match="more than one gold directory"),
+    ):
+        challenge.build(
+            gold=[Path("a"), Path("b")],
+            corpus=fixture_dir / "passages.jsonl",
+            output=tmp_path / "challenge.jsonl",
+        )

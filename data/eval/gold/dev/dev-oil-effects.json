@@ -46,12 +46,6 @@
       "direction": "up",
       "is_anchor": false,
       "confirmed_by_series": false
-    },
-    {
-      "var": "OMC_MARGINS",
-      "direction": "down",
-      "is_anchor": false,
-      "confirmed_by_series": false
     }
   ],
   "edges": [
@@ -84,21 +78,6 @@
       "candidate_evidence": []
     },
     {
-      "edge_id": "oe3",
-      "src_var": "BRENT",
-      "dst_var": "OMC_MARGINS",
-      "direction": "down",
-      "provenance": "source_asserted",
-      "strength": "direct",
-      "hop": 1,
-      "evidence_span": "Retail auto fuel prices in India have remained unchanged for around 2.5 years, with fluctuating marketing margins of oil marketing companies absorbing price shocks.",
-      "evidence_doc_id": "economic_times-24ec1e6a8dff7543b074",
-      "evidence_passage_id": "economic_times-24ec1e6a8dff7543b074#p6",
-      "evidence_published_at": "2026-03-02T12:33:00+05:30",
-      "candidate_evidence": [],
-      "note": "ADJUDICATE: the span asserts margins absorb price shocks without naming a direction. 'down' is read off the anchor (crude up). Reject the edge if you think the direction has to be stated in the span itself."
-    },
-    {
       "edge_id": "oe4",
       "src_var": "BRENT",
       "dst_var": "FISCAL_DEFICIT",
@@ -114,21 +93,6 @@
       "note": "Span contains oe2's. One sentence offers CPI or the fiscal deficit as alternatives; both are asserted, conditionally."
     },
     {
-      "edge_id": "oe5",
-      "src_var": "BRENT",
-      "dst_var": "ATF_PRICE",
-      "direction": "up",
-      "provenance": "source_asserted",
-      "strength": "direct",
-      "hop": 1,
-      "evidence_span": "Indian OMCs revise ATF prices on the first of every month, based on a weighted average of international benchmarks like crude oil prices and the crack spread component, plus logistics costs.",
-      "evidence_doc_id": "economic_times-015f8f79fd464ee060d8",
-      "evidence_passage_id": "economic_times-015f8f79fd464ee060d8#p6",
-      "evidence_published_at": "2026-03-31T00:58:00+05:30",
-      "candidate_evidence": [],
-      "note": "ADJUDICATE: the span states the ATF pricing formula rather than an observed move. Mechanical, unhedged, hence 'direct'."
-    },
-    {
       "edge_id": "oe10",
       "src_var": "ATF_PRICE",
       "dst_var": "AIRFARES",
@@ -140,10 +104,11 @@
       "evidence_doc_id": "economic_times-4a678f4564789fcceb8e",
       "evidence_passage_id": "economic_times-4a678f4564789fcceb8e#p0",
       "evidence_published_at": "2026-04-01T09:03:00+05:30",
-      "candidate_evidence": []
+      "candidate_evidence": [],
+      "note": "Kept at hop 2 although adjudication dropped its first link (oe5, BRENT->ATF_PRICE): no passage in the corpus asserts a direction for crude -> ATF, only the monthly pricing formula. So AIRFARES is no longer reachable from the anchor inside this graph and the hop number records the chain the source describes, not a path through gold edges. A model producing crude -> ATF -> airfares is marked wrong on the first link and right on the second; say so when reporting hop-2 figures."
     }
   ],
   "paths": [],
   "schema_version": "1.0.0",
-  "notes": "MACHINE-DRAFTED, NOT YET ADJUDICATED. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge passes the B6 rule layer. Edge selection, direction and strength have not been confirmed by a human reviewer, and issue #37's Cohen's kappa still requires two independent annotators. Treat every number measured against this as provisional until data/eval/gold/dev/ADJUDICATION.md records sign-off."
+  "notes": "ADJUDICATED 2026-11-08. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge passes the B6 rule layer. Two annotators then labelled every drafted edge independently, blind to the draft and to each other: raw agreement 0.800 on whether the span asserts the relation, Cohen's kappa 0.231 under a dominant label, with direction and strength agreeing on every edge both kept (reports/adjudication_kappa.md). Reconciliation dropped four drafted edges under one rule, D-26: a span that states a relation or a pricing mechanism without stating which way the destination moves cannot back a gold edge that carries a direction. The reviewers' own attestation lives in data/eval/gold/dev/review_receipt.json and is signed separately."
 }

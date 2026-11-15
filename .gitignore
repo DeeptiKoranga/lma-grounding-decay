@@ -90,6 +90,11 @@ uv.lock.bak
 !data/series/*.csv
 !tests/fixtures/**
 
+# ...but the explicit keeps above re-admit OS cruft under those trees, so
+# sweep it back out. A bare .DS_Store rule earlier in this file loses to
+# the later negations.
+**/.DS_Store
+
 # --- B10: third-party benchmark text is not ours to redistribute ---
 # The manifest (sources, SHA-256, selected ids) is tracked; the text is not.
 # Regenerate with scripts/build_strength_benchmark.py.
