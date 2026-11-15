@@ -37,7 +37,7 @@
 }
 
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{7pt plus 1pt}
+\setlength{\parskip}{9pt plus 1pt}
 \setlength{\emergencystretch}{1em}
 \widowpenalty=10000
 \clubpenalty=10000
@@ -61,33 +61,34 @@
 \titleformat{\subsection}
   {\color{Navy}\rmfamily\bfseries\fontsize{12}{16}\selectfont}
   {\textcolor{Blue}{\thesubsection}}{0.7em}{}
-\titlespacing*{\section}{0pt}{15pt}{7pt}
-\titlespacing*{\subsection}{0pt}{12pt}{4pt}
+\titlespacing*{\section}{0pt}{19pt}{11pt}
+\titlespacing*{\subsection}{0pt}{18pt}{3pt}
 
 \newcolumntype{L}[1]{>{\hsize=#1\hsize\linewidth=\hsize\raggedright\arraybackslash}X}
 \newcommand{\tablehead}[1]{\textbf{#1}}
 \newcounter{reporttable}
 \newenvironment{reporttable}[1]{%
-  \par\addvspace{9pt}\noindent\begin{minipage}{\linewidth}
+  \par\addvspace{14pt}\noindent\begin{minipage}{\linewidth}
   \refstepcounter{reporttable}%
   {\rmfamily\fontsize{10.5}{13.5}\selectfont
-    \textcolor{Navy}{\bfseries Table \thereporttable.}\enspace #1}\par\vspace{5pt}%
+    \textcolor{Navy}{\bfseries Table \thereporttable.}\enspace #1}\par\vspace{8pt}%
   \rmfamily\fontsize{10.2}{13.5}\selectfont
-  \renewcommand{\arraystretch}{1.15}%
+  \renewcommand{\arraystretch}{1.26}%
   \setlength{\tabcolsep}{9pt}%
   \arrayrulecolor{Rule}%
 }{%
-  \end{minipage}\par\addvspace{8pt}%
+  \end{minipage}\par\addvspace{13pt}%
 }
 \newcommand{\tablenote}[1]{%
-  \par\vspace{4pt}{\fontsize{9}{12}\selectfont\color{Muted}#1\par}%
+  \par\vspace{7pt}{\fontsize{9}{12}\selectfont\color{Muted}#1\par}%
 }
 \newcommand{\figurecaption}[2]{%
+  \refstepcounter{figure}\label{#1}%
   {\sffamily\fontsize{9.5}{13}\selectfont
-   \textcolor{Blue}{\bfseries Figure #1}\enspace\textcolor{Muted}{#2}\par}%
+   \textcolor{Blue}{\bfseries Figure \thefigure.}\enspace\textcolor{Muted}{#2}\par}%
 }
 \newcommand{\evidencelinks}[2]{%
-  \par\nopagebreak\vspace{-2pt}%
+  \par\nopagebreak\vspace{1pt}%
   {\sffamily\fontsize{9.5}{13}\selectfont
    #1\quad\textcolor{Rule}{\textbar}\quad#2\par}%
 }
@@ -119,37 +120,38 @@
  \textbf{Deepti Koranga} \textcolor{Muted}{(2025204033)}\par
  \href{https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation}{GitHub submission branch}
  \quad\textcolor{Rule}{\textbar}\quad
- \href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md}{Reproducibility README and demos}\par}
+ \href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md}{Reproducibility README}\par}
 \vspace{5pt}
 \pdfbookmark[1]{Abstract}{abstract}
 \noindent\textcolor{Navy}{\bfseries Abstract}\par
 \begingroup\fontsize{10.7}{14.2}\selectfont
-We study whether evidence support declines along causal chains generated
-from Indian macro-financial news, and whether an edge verifier and
-targeted retrieval improve those explanations. The prototype builds
-dated graphs and checks each link for citation eligibility, direction
-and causal strength. We compared seven conditions on four signed
-development queries with two local models, and on two signed held-out
-queries with the primary model. Using revised support judgments, the
+We test whether causal links in model-generated explanations of Indian
+macro-financial news become less grounded farther from the queried event.
+We also test whether a graph-based verifier with targeted retrieval can
+reduce unsupported claims while retaining evidence-backed links. We ran
+seven conditions on four adjudicated development queries with two local
+models and on two held-out queries from a separate episode with the
+primary model. Relative to standard retrieval-augmented generation, the
 full system reduced the unsupported established-edge rate by 16.7 and
-25.0 percentage points on development across the two arms. On the
-held-out queries it tied standard RAG on that rate and lost 12.5 points
-of reference-edge recall. In a controlled diagnostic, the semantic
-verifier flagged 17 of 38 reversed or overstated links that all passed
-citation rules. Sparse deep-hop coverage leaves the grounding-decay
-hypothesis unresolved.
+25.0 percentage points across the two development arms. On the held-out
+queries, the rate tied and reference-edge recall fell by 12.5 points.
+In a controlled challenge, semantic verification flagged 17 of 38
+direction or strength corruptions that passed citation checks, with two
+false alarms among 23 clean controls. Deep-hop coverage was insufficient
+to assess grounding decay.
 \par\endgroup
 
 \section{Introduction}\label{introduction}
 
 A model explaining an oil shock might connect crude prices to aviation
-fuel costs and then to airfares. A passage can support one link in that
-chain while offering no support for the next. A model can also turn a
-forecast or conditional statement into a claim that an effect actually
-occurred. We evaluate explanations against passages available as of a
-specified date. A supported link means a source states the directed
-relation. This measures fidelity to reported evidence and leaves
-economic causal identification outside the study.
+fuel costs and then to airfares. A citation can support one link while
+leaving the next unsupported. Even when the cited passage states the
+relation, the explanation may reverse its direction or present a
+conditional effect as certain. We use \emph{grounding decay} to mean an
+increase in these errors with distance from the event. We evaluate
+whether publications available by the query cutoff state the claimed
+relations and preserve their degree of certainty. The study measures
+fidelity to those sources.
 
 \textbf{RQ1.} In standard retrieval-augmented generation (RAG), do
 unsupported established edges and strength inflation become more common
@@ -160,29 +162,31 @@ established-edge rate (UER) by at least 10 percentage points versus
 standard RAG (H2a), reduce the increase in errors at deeper hops (H2b),
 and improve on RAG prompted to label its own links for both UER and
 strength inflation (H2c)? A recall guard limits the acceptable loss in
-recovered reference edges to 10 points (H2d). This guard penalizes
-systems that lower error rates by establishing very few claims.
+recovered reference edges to 10 points (H2d). The guard accounts for
+systems that lower their error rate by dropping recoverable claims.
 
 \reportpage{Background and Data}
 
 \section{Literature Review}\label{literature-review}
 
 Self-RAG learns when to retrieve and uses reflection tokens to critique
-generation~\cite{asai2024}. FIRE interleaves search and verification
-for fact-checking claims~\cite{xie2025}. CausalRAG uses causal
-structure to retrieve and preserve context~\cite{wang2025}. We apply
-these ideas to a different unit of evaluation: an individual directed
-link in a time-bounded economic explanation. A link can have a valid
-quotation while overstating what the speaker said or reversing the cause
-and effect.
+generation~\cite{asai2024}. FIRE interleaves retrieval and verification for
+individual fact-checking claims~\cite{xie2025}. Our verifier
+judges a directed edge and its strength after checking source eligibility.
+CausalRAG uses causal graphs to organize retrieval~\cite{wang2025}. In
+our evaluation the graph is an output, and hop distance within it defines
+which errors enter the grounding-decay analysis.
 
 ReCEval assesses reasoning steps for correctness and informativeness~\cite{prasad2023}.
 We inspect individual links and derive a path label from the weakest
 link. Our causal-strength categories draw on Yu et al.~\cite{yu2019}.
-The contribution is a hop-level evaluation of citation
-support and strength, together with a bounded search-and-verification
-loop tested against standard RAG, reranked RAG and removal of individual
-components.
+We combine step-level evaluation with a publication cutoff and an
+explicit distinction between uncertain predictions and direct claims.
+
+We pair unsupported-edge rate with reference recall to distinguish
+more precise claims from fewer claims. The design compares the full
+system against reranked retrieval and removes verification and targeted
+retrieval separately to test their contributions.
 
 \section{Dataset Created and Used}\label{dataset-created-and-used}
 
@@ -205,7 +209,7 @@ causal links comes from passages.
 \tablehead{Evaluation set} & \tablehead{Size} & \tablehead{Purpose} \\
 \midrule
 Signed development & 4 queries, 16 edges & Gold-backed comparison across two model arms \\
-Signed held-out & 2 FPI queries, 8 edges & Descriptive comparison on a separate portfolio-flow episode \\
+Signed held-out & 2 queries, 8 edges & Descriptive comparison on a foreign portfolio investment (FPI) episode \\
 Corruption challenge & 107 altered edges, 23 clean controls & Citation, direction and strength checks \\
 Public diagnostics & 200 examples per task & Causal strength~\cite{yu2019} and detection~\cite{mariko2020} \\
 Action and safety diagnostics & 40 action states, 20 tool faults, 25 prompts & Tool selection, error recovery and safety checks \\
@@ -213,7 +217,7 @@ Action and safety diagnostics & 40 action states, 20 tool faults, 25 prompts & T
 \end{tabularx}
 \end{reporttable}
 
-\reportpage{Reference Graphs}
+\reportpage{Reference Graphs and Methodology}
 
 \subsection{Reference graphs}\label{reference-graphs}
 
@@ -264,13 +268,11 @@ why and effects queries, both with an as-of date of 20 April 2026.
 \end{tikzpicture}
 \par\vspace{10pt}
 \raggedright
-\figurecaption{1}{Adjudicated oil-effects reference graph, cutoff 8 April 2026.
+\figurecaption{fig:oil-reference}{Adjudicated oil-effects reference graph, cutoff 8 April 2026.
 The aviation-fuel-to-airfares link survived on its own evidence. The
 crude-to-aviation-fuel link was dropped because the source did not state
 the direction of the effect.}
 \end{minipage}
-
-\reportpage{Methodology}
 
 \section{Methodology}\label{methodology}
 
@@ -294,9 +296,11 @@ the direction of the effect.}
 \end{tikzpicture}
 \par\vspace{7pt}
 \raggedright
-\figurecaption{2}{The full system checks candidate links before targeting open edges for further evidence.}
+\figurecaption{fig:pipeline}{The full system checks candidate links before targeting open edges for further evidence.}
 \end{minipage}
 \par\addvspace{4pt}
+
+\reportpage{Methodology}
 
 \subsection{Retrieve and extract}\label{retrieve-and-extract}
 
@@ -331,16 +335,19 @@ and model-generated forecasts.
 
 \subsection{Score explanations}\label{score-explanations}
 
-UER is unsupported established edges divided by established edges. A
-prose claim counts as established when cited or stated without
-qualification. Strength inflation counts supported established edges
-stated more strongly than their sources, divided by all supported
-established edges. Reference recall is the fraction of signed links
-matched by supported established edges in the correct direction. We
-calculate rates per query and compare matched query pairs with usable
-denominators. A missing denominator is recorded as unavailable. The
-predeclared analysis requires at least ten established edges in each of
-the three hop buckets for the decay trend and ten queries for inference.
+UER divides unsupported established edges by all established edges. In
+prose outputs, cited or unhedged claims count as established. Strength
+inflation is the share of supported established edges whose label is
+stronger than the cited source warrants. Reference recall is the fraction
+of signed edges recovered by supported, established predictions matching
+the source variable, target variable and direction.
+
+We compute each metric per query. A paired contrast averages the
+within-query differences over queries with a defined score for both
+conditions. A query with no established edges has undefined UER, so it
+cannot improve the paired average by contributing zero. The predeclared
+trend rule requires at least ten established edges in each of the hop
+1, hop 2 and hop 3+ buckets. Inferential claims require ten queries.
 
 \reportpage{Experiments}
 
@@ -380,13 +387,11 @@ API calls.
   {\href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/compute_log.md}{Compute accounting}}
   {\href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/heldout_generation_20261112.md}{Held-out run audit}}
 
-The repository README gives fresh-clone commands for the seven-condition
-fixture demo, the test suite and the model-backed demo. The browser demo
-exposes each edge's evidence, date and path label. Full experiment
-reproduction requires the pinned model revisions and a separately
-provisioned corpus and dense index.
+The repository README gives fresh-clone setup and test commands. Full
+experiment reproduction requires the pinned model revisions and a
+separately provisioned corpus and dense index.
 \evidencelinks
-  {\href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md}{README and demos}}
+  {\href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md}{Reproducibility README}}
   {\href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/docs/reproduction.md}{Experiment reproduction}}
 
 \reportpage{Ablations}
@@ -462,7 +467,7 @@ For the revised scores, Varun Patil reviewed 30 prose answers, approved
 to blinding and independence, and the returned files passed packet
 coverage, checksum and scoring checks.
 
-\begin{reporttable}{Revised evaluation of M against standard RAG (B1)}
+\begin{reporttable}{Revised evaluation of M against standard RAG (B1)}\label{tab:revised}
 \begin{tabularx}{\linewidth}{@{}L{1}rrrrr@{}}
 \toprule
  & & \multicolumn{2}{c}{\tablehead{Unsupported-edge rate}} &
@@ -481,12 +486,52 @@ Primary held-out & 55 & 0.0 & 2 & −12.5\phantom{0} & 2 \\
 are metric-specific because some queries lack a usable denominator.}
 \end{reporttable}
 
-Both development arms met the H2a UER target and H2d recall guard
-descriptively. The two held-out queries missed both. Neither split
-reaches the inference threshold. Primary B1 had 5, 2 and 1 established
-edges at hops 1, 2 and 3 or deeper, respectively. Sensitivity B1 had 13,
-1 and 0. These development counts leave H1 unresolved. There are also
-zero usable paired queries for the shallow-to-deep comparison in H2b.
+Table~\ref{tab:revised} separates error reduction from evidence
+retention. Both development arms met the H2a target and H2d recall
+guard descriptively. On the held-out queries, M matched B1's mean UER
+and missed the recall guard by 2.5
+points. Query counts fell below the threshold for inference.
+
+\noindent\begin{minipage}{\linewidth}
+\centering
+\begin{tikzpicture}[x=0.75cm,y=0.72cm,
+  chartlabel/.style={font=\sffamily\fontsize{8.8}{11}\selectfont,text=Ink},
+  ticklabel/.style={font=\sffamily\fontsize{8}{10}\selectfont,text=Muted}]
+\foreach \tick in {0,5,15} {
+  \draw[Rule,thin] (\tick,0) -- (\tick,3);
+  \node[ticklabel,below] at (\tick,0) {\tick};
+}
+\fill[Blue] (0,2.52) rectangle (5,2.76);
+\fill[Rule] (0,2.22) rectangle (13,2.46);
+\fill[Blue] (0,1.52) rectangle (2,1.76);
+\fill[Rule] (0,1.22) rectangle (1,1.46);
+\fill[Blue] (0,0.52) rectangle (1,0.76);
+\draw[Muted,densely dashed] (10,0) -- (10,3.02);
+\draw[Rule] (0,0) -- (15,0);
+\node[ticklabel,below] at (10,0) {10};
+\node[ticklabel,above] at (10,3.02) {Minimum per bucket};
+\foreach \hop/\height in {1/2.49,2/1.49,3+/0.49} {
+  \node[chartlabel,anchor=east] at (-0.20,\height) {Hop \hop};
+}
+\foreach \count/\height in {5/2.64,13/2.34,2/1.64,1/1.34,1/0.64,0/0.34} {
+  \node[chartlabel,anchor=west,inner sep=3pt] at (\count,\height) {\count};
+}
+\fill[Blue] (0,3.34) rectangle (0.33,3.58);
+\node[chartlabel,anchor=west] at (0.46,3.46) {Primary};
+\fill[Rule] (3,3.34) rectangle (3.33,3.58);
+\node[chartlabel,anchor=west] at (3.46,3.46) {Sensitivity};
+\end{tikzpicture}\par\vspace{6pt}
+\raggedright
+\figurecaption{fig:hop-coverage}{Counts of established B1 edges by hop in the original
+\href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/rq1_hop_decay.md}{primary} and
+\href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/rq1_hop_decay_sensitivity.md}{sensitivity}
+development analyses. A trend requires ten established edges in each bucket.}
+\end{minipage}\par
+
+Figure~\ref{fig:hop-coverage} shows why H1 remains unresolved. H2b
+also lacked usable shallow-to-deep query pairs. The exploratory H2c
+comparison favored M over prompted self-labeling on UER, but lacked
+a usable paired strength-inflation estimate.
 
 \reportpage{Evaluation: Retrieval and Verification}
 
@@ -517,7 +562,7 @@ Held-out & BGE-M3 & 0.000\phantom{0} & 0.250\phantom{0} & 0.083\phantom{0} \\
 
 \subsection{Corruption challenge}\label{corruption-challenge}
 
-\begin{reporttable}{Citation rules and semantic verifier outcomes}
+\begin{reporttable}{Citation rules and semantic verifier outcomes}\label{tab:challenge}
 \begin{tabularx}{\linewidth}{@{}L{1}rrr@{}}
 \toprule
 \tablehead{Challenge item} & \tablehead{Items} & \tablehead{Rule flags} & \tablehead{Semantic flags} \\
@@ -532,13 +577,19 @@ Clean controls & 23 & 0 & 2 \\
 Flags on clean controls are false alarms.}
 \end{reporttable}
 
-A reversed edge can cite a real and timely passage that mentions both
-variables and contains the exact quote. The verifier must read which
-variable affects the other. On strength, the semantic verifier also
-disagreed with the reference label on 8 of 23 clean controls, so the
-8/15 inflation detections should be read alongside that label
-disagreement. Some test references seeded the challenge, which is a
-separate diagnostic from the end-to-end held-out sweep.
+We count a reversal as detected when the verifier declines to mark the
+edge source-asserted. We count strength inflation as detected when it
+returns a weaker label than the claimed strength. The verifier also
+disagreed with the reference strength on 8 of 23 clean controls. Those
+disagreements qualify the strength result and are tracked separately
+from the two provenance false alarms in Table~\ref{tab:challenge}.
+Some test references seeded this controlled diagnostic.
+
+\textbf{Failure example.} In the development query on rupee pressure,
+the verifier-free condition reversed a relation from oil risk to rupee
+pressure. A quotation from the relevant passage can still mention both
+variables in the reversed edge. This explains why the direction test
+adds information to the citation-integrity checks.
 
 \reportpage{Evaluation: Reasoning and Tools}
 
@@ -626,13 +677,13 @@ changes recover valid links.
 
 \section{Conclusions}\label{conclusions}
 
-Grounding decay remains unresolved. The full system reduced unsupported
-claims on development. On the two held-out queries, it matched standard
-RAG's mean UER and missed the recall guard. In the controlled challenge, the semantic
-verifier flagged 17 of 38 corruptions that passed citation checks, with
-two false alarms on 23 clean controls. This isolates a benefit of
-semantic verification on the challenge set. The end-to-end benefit
-remains unestablished.
+The controlled challenge shows that semantic verification can detect
+direction and strength errors that pass citation checks. The
+development results favor the full system on unsupported-edge rate, but
+the two held-out queries tied standard RAG on that measure and missed the
+recall guard. With few deeper links, the study leaves grounding decay
+unresolved. A larger, episode-diverse test should measure whether
+semantic verification improves grounding while preserving recall.
 
 \begin{thebibliography}{9}
 \raggedright
