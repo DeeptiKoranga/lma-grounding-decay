@@ -163,7 +163,7 @@ setup: ## Create .venv (Python 3.12) and install the project + dev tools
 		echo "or:  python3 -m pip install --user uv"; exit 1; }
 	$(UV) python install 3.12
 	$(UV) sync --python 3.12 --extra dev
-	@echo "env ready -> .venv (python 3.12). Run 'make hooks' once to enable pre-commit."
+	@echo "env ready -> .venv (python 3.12). Run 'make hooks' to install the repository hooks."
 
 FIXTURE_OUTPUT ?= runs/fixture-check
 fixture-check: ## Validate all seven conditions with synthetic inputs
@@ -186,8 +186,12 @@ schemas: ## Regenerate docs/schemas/*.schema.json from the Pydantic models
 fixtures: ## Regenerate tests/fixtures/ (offsets are computed, never hand-written)
 	$(PY) python scripts/build_fixtures.py
 
-hooks: ## Install the git pre-commit hooks
+hooks: ## Install the git hooks (pre-commit + the main-branch guard)
 	$(PY) pre-commit install
+	@hooks_dir=$$(git rev-parse --path-format=absolute --git-path hooks) && \
+		mkdir -p "$$hooks_dir" && \
+		install -m 755 scripts/git-hooks/pre-push "$$hooks_dir/pre-push"
+	@echo "pre-push guard installed: direct pushes to main are refused."
 
 clean: ## Remove caches and the virtualenv
 	rm -rf .venv .pytest_cache .ruff_cache **/__pycache__
