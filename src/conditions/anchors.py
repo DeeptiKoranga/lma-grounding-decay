@@ -1,6 +1,7 @@
 """Check a declared numerical move without treating it as causal evidence."""
 
 from datetime import date, timedelta
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
@@ -24,6 +25,20 @@ class AnchorWindow(BaseModel):
         return self
 
 
+class AnchorThreshold(BaseModel):
+    """A published observation on the anchor date must meet this threshold."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    episode_id: str = Field(min_length=1)
+    comparison: Literal["at_or_above", "at_or_below"]
+    value: float = Field(allow_inf_nan=False)
+
+    def matches(self, value: float) -> bool:
+        if self.comparison == "at_or_above":
+            return value >= self.value
+        return value <= self.value
+
+
 def confirm_anchor(runtime, query):
     """Always discard input confirmation flags; only visible exact endpoints can confirm."""
     anchor = Anchor.model_validate(
@@ -31,10 +46,15 @@ def confirm_anchor(runtime, query):
     )
     series_id = load_ontology()[anchor.var].series_id
     window = query.anchor_window
+    threshold = query.anchor_threshold
     evidence = {"confirmed": False, "status": "no_series_mapping", "observations": []}
     if series_id:
         # An undeclared window is diagnostic only. It never establishes an event.
-        start = window.start if window else anchor.event_date - timedelta(days=7)
+        start = anchor.event_date
+        if window:
+            start = window.start
+        elif threshold is None:
+            start -= timedelta(days=7)
         end = window.end if window else anchor.event_date
         args = GetSeriesArgs(series_id=series_id, start=start, end=end, as_of=query.as_of)
         result = runtime.call("get_series", **args.model_dump())
@@ -49,6 +69,17 @@ def confirm_anchor(runtime, query):
         )
         if not result.ok:
             evidence["status"] = result.error.kind
+        elif threshold:
+            confirmed = any(
+                row.on == anchor.event_date and threshold.matches(row.value) for row in rows
+            )
+            evidence.update(
+                confirmed=confirmed,
+                status="confirmed_threshold" if confirmed else "threshold_not_confirmed",
+                criteria=threshold.model_dump(mode="json"),
+            )
+            anchor.confirmed_by_series = confirmed
+            anchor.series_id = series_id if confirmed else None
         elif window and len(rows) >= 2 and rows[0].on == start and rows[-1].on == end:
             change = rows[-1].value - rows[0].value
             percent = abs(change / rows[0].value) * 100 if rows[0].value else None

@@ -1,0 +1,14 @@
+digraph explanation {
+rankdir=LR;
+graph [bgcolor="white", pad="0.3", fontname="Helvetica", fontsize=10];
+node [shape=box, style="rounded,filled", fillcolor="#edf4ef", fontname="Helvetica"];
+edge [fontname="Helvetica", fontsize=10];
+"FUEL_PRICES" [label="FUEL PRICES (up)"];
+"IMPORTED_INFLATION" [label="IMPORTED INFLATION (up)"];
+"IMPORT_BILL" [label="IMPORT BILL (up)"];
+"INR_USD" [label="INR USD (up)"];
+"INR_USD" -> "IMPORTED_INFLATION" [label="up | direct | hop 1", style="solid"];
+"INR_USD" -> "IMPORT_BILL" [label="up | direct | hop 1", style="solid"];
+"IMPORT_BILL" -> "IMPORTED_INFLATION" [label="up | direct | hop 2", style="solid"];
+"IMPORT_BILL" -> "FUEL_PRICES" [label="up | conditional | hop 2", style="solid"];
+label="dev-rupee-why | cutoff 2026-05-25\nReference graph: human-adjudicated source citations (D-26)\nSolid: source_asserted; dashed: model_inferred"; labelloc=b; }

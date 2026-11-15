@@ -1,0 +1,110 @@
+{
+  "query_id": "test-fpi-why",
+  "anchor": {
+    "var": "FPI_FLOWS",
+    "direction": "down",
+    "event": "Net FPI flows of -13,600 USD million for March",
+    "event_date": "2026-03-31",
+    "confirmed_by_series": true,
+    "series_id": "fpi_flows_usd_mn"
+  },
+  "as_of": "2026-04-20",
+  "nodes": [
+    {
+      "var": "CURRENT_ACCOUNT_DEFICIT",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "FISCAL_DEFICIT",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "FPI_FLOWS",
+      "direction": "down",
+      "is_anchor": true,
+      "confirmed_by_series": true,
+      "series_id": "fpi_flows_usd_mn"
+    },
+    {
+      "var": "IMPORT_BILL",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    },
+    {
+      "var": "INR_USD",
+      "direction": "up",
+      "is_anchor": false,
+      "confirmed_by_series": false
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "tw1",
+      "src_var": "FPI_FLOWS",
+      "dst_var": "INR_USD",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "direct",
+      "hop": 1,
+      "evidence_span": "the rupee is under pressure as exporter payments are not materialising, dollar outflows on account of FPI selling in domestic equity markets continuing",
+      "evidence_doc_id": "businessline-469aabd081e5b5594ab2",
+      "evidence_passage_id": "businessline-469aabd081e5b5594ab2#p4",
+      "evidence_published_at": "2026-03-09T20:55:04+05:30",
+      "candidate_evidence": [],
+      "note": "Three causes are listed together and FPI selling is one of them. A reviewer must decide whether 'on account of' attributes the pressure to FPI selling directly or only lists it alongside two others."
+    },
+    {
+      "edge_id": "tw3",
+      "src_var": "INR_USD",
+      "dst_var": "IMPORT_BILL",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "conditional",
+      "hop": 2,
+      "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill",
+      "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6",
+      "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5",
+      "evidence_published_at": "2026-03-05T09:53:00+05:30",
+      "candidate_evidence": [],
+      "note": "Hypothetical ('would'), so drafted conditional. Do not upgrade it."
+    },
+    {
+      "edge_id": "tw4",
+      "src_var": "INR_USD",
+      "dst_var": "CURRENT_ACCOUNT_DEFICIT",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "conditional",
+      "hop": 2,
+      "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill, widen both the current account deficit",
+      "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6",
+      "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5",
+      "evidence_published_at": "2026-03-05T09:53:00+05:30",
+      "candidate_evidence": [],
+      "note": "Same sentence as tw3 and tw5. One span, three destinations: check that each destination's move is stated, not just listed."
+    },
+    {
+      "edge_id": "tw5",
+      "src_var": "INR_USD",
+      "dst_var": "FISCAL_DEFICIT",
+      "direction": "up",
+      "provenance": "source_asserted",
+      "strength": "conditional",
+      "hop": 2,
+      "evidence_span": "A sustained depreciation in the rupee would directly inflate the import bill, widen both the current account deficit and fiscal deficit",
+      "evidence_doc_id": "economic_times-6a4582bc53bfe30b98f6",
+      "evidence_passage_id": "economic_times-6a4582bc53bfe30b98f6#p5",
+      "evidence_published_at": "2026-03-05T09:53:00+05:30",
+      "candidate_evidence": [],
+      "note": "'widen both the current account deficit and fiscal deficit' - the verb is shared. A reviewer may read the fiscal leg as weaker than the current-account leg."
+    }
+  ],
+  "paths": [],
+  "schema_version": "1.0.0",
+  "notes": "ADJUDICATED 2026-11-11. Spans are sliced verbatim from data/processed/articles.jsonl by scripts/draft_test_gold_graphs.py and each edge passes the B6 rule layer. Two annotators then labelled every drafted edge independently, blind to the draft and to each other: raw agreement 1.000 on whether the span asserts the relation (Cohen's kappa 1.000) and 1.000 on direction, with kappa undefined there because one label was used throughout. Strength agreed on 1 of 8 (raw 0.125, kappa 0.000), and the pre-declared direct-versus-hedged collapse did not rescue it because that is the axis of the split (reports/adjudication_kappa_test.md). Reconciliation applied one rule, D-30: strength is read off the modality of the clause carrying the causal claim, not off the manner in which the mechanism is described, so a claim under 'would' is conditional however firmly the mechanism inside it is worded. Both annotators independently rejected the same two FPI_FLOWS -> GSEC_10Y edges, which are dropped, leaving four edges per graph at exactly MIN_EDGES. The reviewers' attestation lives in data/eval/gold/test/review_receipt.json and is signed separately. Two of the four test queries carry no graph at all: test-cpi-why by D-27, and test-cpi-effects by D-27a."
+}

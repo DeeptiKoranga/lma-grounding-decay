@@ -1,0 +1,16 @@
+digraph explanation {
+rankdir=LR;
+graph [bgcolor="white", pad="0.3", fontname="Helvetica", fontsize=10];
+node [shape=box, style="rounded,filled", fillcolor="#edf4ef", fontname="Helvetica"];
+edge [fontname="Helvetica", fontsize=10];
+"AIRFARES" [label="AIRFARES (up)"];
+"ATF_PRICE" [label="ATF PRICE (up)"];
+"BRENT" [label="BRENT (up)"];
+"CPI_HEADLINE" [label="CPI HEADLINE (up)"];
+"FISCAL_DEFICIT" [label="FISCAL DEFICIT (up)"];
+"FUEL_PRICES" [label="FUEL PRICES (up)"];
+"BRENT" -> "FUEL_PRICES" [label="up | conditional | hop 1", style="solid"];
+"BRENT" -> "CPI_HEADLINE" [label="up | conditional | hop 1", style="solid"];
+"BRENT" -> "FISCAL_DEFICIT" [label="up | conditional | hop 1", style="solid"];
+"ATF_PRICE" -> "AIRFARES" [label="up | conditional | hop 2", style="solid"];
+label="dev-oil-effects | cutoff 2026-04-08\nReference graph: human-adjudicated source citations (D-26)\nSolid: source_asserted; dashed: model_inferred"; labelloc=b; }

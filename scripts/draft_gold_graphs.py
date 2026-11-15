@@ -83,18 +83,6 @@ DRAFTS: dict[str, tuple[tuple, ...]] = {
             None,
         ),
         (
-            "ow4",
-            "BRENT",
-            "INR_USD",
-            "up",
-            "direct",
-            1,
-            "businessline-469aabd081e5b5594ab2#p0",
-            "The rupee and Government Securities",
-            "rising crude oil prices",
-            None,
-        ),
-        (
             "ow5",
             "BRENT",
             "TRADE_DEFICIT",
@@ -133,20 +121,6 @@ DRAFTS: dict[str, tuple[tuple, ...]] = {
             None,
         ),
         (
-            "oe3",
-            "BRENT",
-            "OMC_MARGINS",
-            "down",
-            "direct",
-            1,
-            "economic_times-24ec1e6a8dff7543b074#p6",
-            "Retail auto fuel prices",
-            "absorbing price shocks.",
-            "ADJUDICATE: the span asserts margins absorb price shocks without naming a "
-            "direction. 'down' is read off the anchor (crude up). Reject the edge if you "
-            "think the direction has to be stated in the span itself.",
-        ),
-        (
             "oe4",
             "BRENT",
             "FISCAL_DEFICIT",
@@ -160,19 +134,6 @@ DRAFTS: dict[str, tuple[tuple, ...]] = {
             "alternatives; both are asserted, conditionally.",
         ),
         (
-            "oe5",
-            "BRENT",
-            "ATF_PRICE",
-            "up",
-            "direct",
-            1,
-            "economic_times-015f8f79fd464ee060d8#p6",
-            "Indian OMCs revise ATF prices",
-            "plus logistics costs.",
-            "ADJUDICATE: the span states the ATF pricing formula rather than an observed "
-            "move. Mechanical, unhedged, hence 'direct'.",
-        ),
-        (
             "oe10",
             "ATF_PRICE",
             "AIRFARES",
@@ -182,7 +143,13 @@ DRAFTS: dict[str, tuple[tuple, ...]] = {
             "economic_times-4a678f4564789fcceb8e#p0",
             "Airfares are expected to rise",
             "West Asia conflict.",
-            None,
+            "Kept at hop 2 although adjudication dropped its first link (oe5, "
+            "BRENT->ATF_PRICE): no passage in the corpus asserts a direction for "
+            "crude -> ATF, only the monthly pricing formula. So AIRFARES is no longer "
+            "reachable from the anchor inside this graph and the hop number records "
+            "the chain the source describes, not a path through gold edges. A model "
+            "producing crude -> ATF -> airfares is marked wrong on the first link and "
+            "right on the second; say so when reporting hop-2 figures.",
         ),
     ),
     "dev-rupee-why": (
@@ -275,19 +242,6 @@ DRAFTS: dict[str, tuple[tuple, ...]] = {
             "mechanism over one episode; that overlap is expected, not a duplicate.",
         ),
         (
-            "re4",
-            "IMPORT_BILL",
-            "FISCAL_DEFICIT",
-            "up",
-            "correlational",
-            2,
-            "economic_times-4b42a45c8f9ff3e13586#p0",
-            "rising import bill were fuelling",
-            "the fiscal deficit",
-            "'were fuelling worries about' is reported concern, not an asserted move, "
-            "hence correlational.",
-        ),
-        (
             "re11",
             "INR_USD",
             "FUEL_PRICES",
@@ -302,13 +256,28 @@ DRAFTS: dict[str, tuple[tuple, ...]] = {
     ),
 }
 
+#: A variable with no inbound edge left after adjudication still needs a node
+#: direction, and it must come from a span rather than from inference. ATF_PRICE
+#: lost its inbound edge when D-26 dropped oe5 (the crude -> ATF pricing formula,
+#: which states no direction). Its move is asserted verbatim inside oe10's own
+#: span: "Airfares are expected to rise with the steep increase in jet fuel
+#: prices" - so ATF up is read off that passage, not off the anchor.
+SRC_ONLY_DIRECTIONS: dict[tuple[str, str], Direction] = {
+    ("dev-oil-effects", "ATF_PRICE"): Direction.UP,
+}
+
 PROVENANCE = (
-    "MACHINE-DRAFTED, NOT YET ADJUDICATED. Spans are sliced verbatim from "
+    "ADJUDICATED 2026-11-08. Spans are sliced verbatim from "
     "data/processed/articles.jsonl by scripts/draft_gold_graphs.py and each edge "
-    "passes the B6 rule layer. Edge selection, direction and strength have not been "
-    "confirmed by a human reviewer, and issue #37's Cohen's kappa still requires two "
-    "independent annotators. Treat every number measured against this as provisional "
-    "until data/eval/gold/dev/ADJUDICATION.md records sign-off."
+    "passes the B6 rule layer. Two annotators then labelled every drafted edge "
+    "independently, blind to the draft and to each other: raw agreement 0.800 on "
+    "whether the span asserts the relation, Cohen's kappa 0.231 under a dominant "
+    "label, with direction and strength agreeing on every edge both kept "
+    "(reports/adjudication_kappa.md). Reconciliation dropped four drafted edges "
+    "under one rule, D-26: a span that states a relation or a pricing mechanism "
+    "without stating which way the destination moves cannot back a gold edge that "
+    "carries a direction. The reviewers' own attestation lives in "
+    "data/eval/gold/dev/review_receipt.json and is signed separately."
 )
 
 
@@ -458,10 +427,29 @@ def _build(query_id: str, query: dict, by_id: dict[str, Passage]) -> Graph:
     # the edge that points at it; the anchor keeps the anchor's own direction.
     into: dict[str, Direction] = {e.dst_var: e.direction for e in edges}
     variables = {anchor.var} | {e.src_var for e in edges} | {e.dst_var for e in edges}
+
+    def direction_of(var: str) -> Direction:
+        if var == anchor.var:
+            return anchor.direction
+        if var in into:
+            return into[var]
+        # A variable that is only ever a source, because adjudication (D-26)
+        # dropped the edge that pointed at it. Nothing infers the move here: it
+        # has to be stated in a span already in this graph, so look it up.
+        try:
+            return SRC_ONLY_DIRECTIONS[(query_id, var)]
+        except KeyError:  # pragma: no cover - a drafting error, not a data case
+            raise AssertionError(
+                f"{query_id}: {var} has no inbound edge and no entry in "
+                "SRC_ONLY_DIRECTIONS, so its node direction would be a guess. Add "
+                "the variable with the span that states its move, or drop the edges "
+                "that leave it."
+            ) from None
+
     nodes = [
         GraphNode(
             var=var,
-            direction=anchor.direction if var == anchor.var else into[var],
+            direction=direction_of(var),
             is_anchor=var == anchor.var,
             confirmed_by_series=anchor.confirmed_by_series if var == anchor.var else False,
             series_id=anchor.series_id if var == anchor.var else None,

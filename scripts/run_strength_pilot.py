@@ -82,7 +82,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--model", default="mlx-community/Qwen3-8B-4bit")
     parser.add_argument("--revision", help="pinned model revision; required for --classifier llm")
     parser.add_argument("--report", type=Path, default=REPORT)
+    parser.add_argument("--predictions", type=Path, help="write item IDs and predicted labels")
     args = parser.parse_args(argv)
+    if args.classifier == "llm" and args.report == REPORT:
+        parser.error("supply a separate --report to preserve the cue baseline")
 
     classify, generator = cue_strength, None
     if args.classifier == "llm":
@@ -120,7 +123,8 @@ def main(argv: list[str] | None = None) -> int:
 
     detection_items = [i for i in items if i["task"] == "detection"]
     det_gold = [i["gold"] for i in detection_items]
-    det_pred = [CAUSAL if classify(i["text"]) is not None else NOT_CAUSAL for i in detection_items]
+    detection_labels = [classify(i["text"]) for i in detection_items]
+    det_pred = [CAUSAL if label is not None else NOT_CAUSAL for label in detection_labels]
     tp = sum(1 for g, p in zip(det_gold, det_pred, strict=True) if g == p == CAUSAL)
     fp = sum(1 for g, p in zip(det_gold, det_pred, strict=True) if g != p == CAUSAL)
     fn = sum(1 for g, p in zip(det_gold, det_pred, strict=True) if p != g == CAUSAL)
@@ -154,30 +158,24 @@ def main(argv: list[str] | None = None) -> int:
         "Source SHA-256 values and the selected row ids are in",
         "`data/eval/strength_benchmark_manifest.json`; the text itself is not redistributed.",
         "",
-        "## The classifier under test: a word list",
-        "",
-        "`eval.strength_bench.cue_strength` is a deterministic classifier built from the",
-        'cue lists in proposal Table 2 — "caused, due to, driven by" for direct, "could,',
-        'may, if" for conditional, "associated with, amid, after" for correlational, with',
-        'hedging tried first so "may have been caused by" scores conditional rather than',
-        "direct.",
-        "",
-        "It exists so the LLM verifier has something to beat. **A verifier that cannot beat",
-        "a word list on strength is not doing the work the design credits it with**, and",
-        "that would be a finding worth reporting rather than hiding.",
+        (
+            f"Classifier: {args.model} at revision `{args.revision}`."
+            if generator
+            else "Classifier: deterministic cue list."
+        ),
         "",
         "## Strength, 3-class (Yu et al.)",
         "",
         *_table(strength_report),
         "",
         f"Accuracy {strength_report.accuracy:.3f}, macro-F1 {strength_report.macro_f1:.3f}, ",
-        f"{strength_report.abstentions} abstentions (no cue fired; scored as wrong, never as correct).",
+        f"{strength_report.abstentions} abstentions (scored as wrong).",
         "",
         *_confusion(strength_report),
         "",
         "## Detection, binary (FinCausal 2020 task 1)",
         "",
-        "The cue baseline reports *causal* when any cue class fires.",
+        "Detection counts a returned strength label as causal.",
         "",
         "| metric | value |",
         "|---|---:|",
@@ -188,36 +186,23 @@ def main(argv: list[str] | None = None) -> int:
         "",
         "## Reading this",
         "",
-        "These are out-of-domain numbers: PubMed findings and US financial news, not Indian",
-        "macro reporting. They bound what cue matching alone achieves on the label scheme",
-        "the project uses; they are not an estimate of verifier accuracy on our corpus.",
-        "",
-        "For scale, Yu et al. report macro-F1 about 0.86 on their own four-class task with a",
-        "fine-tuned BERT. The floor below and that ceiling are the range the verifier should",
-        "be judged in: well above the word list, and not expected to reach a supervised model",
-        "trained on the same distribution.",
-        "",
-        "**Still outstanding.** The model arm is wired but not run: it needs the pinned",
-        "Qwen3-8B 4-bit weights, which are not on the Track B machine.",
-        "",
-        "```bash",
-        "python scripts/run_strength_pilot.py --classifier llm \\",
-        "    --model-path data/raw/generator/qwen3-8b-4bit --revision <pinned>",
-        "```",
-        "",
-        "Until that runs there is no comparison, and **the project cannot yet claim the",
-        "verifier earns its place on strength.**",
-        "",
-        "Two limits on what that arm will show, both of which belong in the report rather",
-        "than in a footnote. It is **not `verify.Verifier` end to end**: the verifier checks",
-        "a span against a corpus passage under an as-of date first, and these sentences are",
-        "not in our corpus, so three of the four rules have nothing to check. What is",
-        "compared is the model's strength judgement against the word list's, on the taxonomy",
-        "wording lifted from the verifier's own prompt so the two arms share one definition.",
-        "And **neither dataset labels edge direction**, so the direction third of this check",
-        "is uncovered by either arm - that gap is a property of the public data, not",
-        "something a model run closes.",
+        "The benchmark measures standalone taxonomy classification on public text. "
+        "It does not run the corpus verifier's citation and date checks. "
+        "Neither benchmark supplies edge-direction labels.",
     ]
+
+    if args.predictions:
+        rows = [
+            {"id": item["id"], "gold": item["gold"], "predicted": label}
+            for item, label in zip(items, [*predicted, *det_pred], strict=True)
+        ]
+        args.predictions.write_text(
+            json.dumps(
+                {"classifier": args.classifier, "revision": args.revision, "rows": rows}, indent=2
+            )
+            + "\n",
+            encoding="utf-8",
+        )
 
     # Strip trailing whitespace per line: the pre-commit hook would otherwise
     # rewrite a generated file and fight the generator on every commit.

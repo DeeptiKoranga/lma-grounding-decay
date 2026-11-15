@@ -30,7 +30,7 @@ private Kaggle execution. See `reports/phase1_track_c_closeout_20261030.md`.
 
 ## Decisions from the proposal
 
-### D-01 — Which model? `[needs pilot]`
+### D-01 — Which model?
 
 | | |
 |---|---|
@@ -41,9 +41,10 @@ private Kaggle execution. See `reports/phase1_track_c_closeout_20261030.md`.
 | **Owner / due** | C · by Sat 24 Oct |
 | **Evidence** | `reports/pilot_model_project_20261030.md`; `reports/project_model_pilot_20261030.json`; `configs/model_selection.json` |
 | **Blocks** | Everything downstream of `src/llm/`. One model is used for *all seven* conditions, so this cannot be split per condition. |
+| **Locked** | 8 Nov 2026 (#36) as the recorded selection, **but the tie-break is under active challenge in #57 and the switch is still cheap**. #57 and §5.2 show the selected model fails on exactly the two fields the rule layer checks: 17/20 wrong passage IDs and 10/20 nonverbatim quotes, against 0 and 0 for Qwen3.5-9B. The usual reason to refuse a late swap — that it changes the instrument mid-experiment — **does not apply yet**: `runs/` is empty, no sweep has been run, and no reported number depends on the choice. The real cost of switching is 30% more latency per generation (26.6 s against 20.4 s) across seven conditions. The real cost of not switching is that UER may measure extraction failure rather than grounding decay, which is RQ1's validity. This row is deliberately not written as settled; see #57. |
 | **Resolution** | `mlx-community/Qwen3-8B-4bit` at `545dc4251c05440727734bcd94334791f6ab0192`, MLX affine 4-bit. Both models completed the same 100 project-schema cases. Highest mean task accuracy; within 0.03, choose lower mean generation latency. Selected mean 61.0%. This is synthetic development selection; weak extraction/tool outputs remain limitations. All seven conditions must use the same pinned model within a sweep. Different backend weight formats are recorded separately. |
 
-### D-02 — Which first-stage retriever? `[needs pilot]`
+### D-02 — Which first-stage retriever?
 
 | | |
 |---|---|
@@ -57,7 +58,7 @@ private Kaggle execution. See `reports/phase1_track_c_closeout_20261030.md`.
 | **Development selection — 26 Oct** | BGE-M3: Recall@10 0.4259 versus 0.3518 plain BM25, 0.3551 alias BM25 and 0.4161 hybrid. Selected by the declared 0.03 rule on 20 queries/2,035 pooled judgments (195 relevant). Single Codex review with previous results exposure; no independent receipt. See `reports/track_a_retrieval_selection_20261026.json`. Archived v1 run settings stay unchanged. |
 | **Resolution** | BGE-M3 selected; the 27 October receipt-bound pilot reproduces Recall@10 0.4259. Track A review records pass on Varun's independent/blinded review attestations. Original label provenance and limits of self-reported procedure remain disclosed. See `reports/track_a_retrieval_selection_20261027.json`. Record validation does not accept experiment outcomes. |
 
-### D-03 — Does the cross-encoder reranker earn its place? `[needs pilot]`
+### D-03 — Does the cross-encoder reranker earn its place?
 
 | | |
 |---|---|
@@ -71,18 +72,18 @@ private Kaggle execution. See `reports/phase1_track_c_closeout_20261030.md`.
 | **Development selection — 26 Oct** | Retain the pinned top-50 cross-encoder for B1-R development: Recall@10 0.5296 versus dense 0.4259, a 0.1037 gain. Same complete development pool as D-02; no independent receipt or end-to-end benefit established. |
 | **Resolution** | Receipt-bound retrieval comparison reproduces Recall@10 0.5296, a 0.1037 gain; retain the reranker for B1-R. Review records pass on Varun's declared conditions. Full end-to-end comparison remains deferred as planned; no end-to-end benefit is claimed. |
 
-### D-04 — Are the eight anchor episodes real? `[needs pilot]`
+### D-04 — Are the eight anchor episodes real?
 
 | | |
 |---|---|
-| **Status** | `open` |
+| **Status** | `resolved` · answered by D-18 on 27 Oct 2026; closed 8 Nov 2026 (#36) |
 | **Question** | Do the eight episodes found in news reports (March oil shock, April ATF increase, May rupee low, June and August RBI meetings, September bond sell-off, …) show up in the official series? |
 | **Where** | Proposal §10, "Custom evaluation set" |
 | **How it gets decided** | B2, against the macro series from A10. An episode that the series does not confirm is dropped or re-dated. |
 | **Owner / due** | B · depends on A10 · by Sat 24 Oct |
 | **Evidence** | `data/eval/episodes.md` |
 | **Blocks** | All 30 anchored queries hang off these episodes. |
-| **Resolution** | *(unresolved)* |
+| **Resolution** | **Answered by D-18** · 27 Oct 2026, and closed here on 8 Nov (#36). The answer is no, not as declared: `scripts/confirm_episodes.py` confirms **3 of 8 as declared, and only 2 against official data**. The September bond sell-off is dropped, the March oil shock is redated to an as-of of 1 April or later, and the April ATF increase and both RBI meetings are retained as document-confirmed only. Four anchors survive, which is what D-19's eight-query set is built on. The question was not closed earlier because D-18 was written as its own row; it is the same question and this is its answer. |
 
 ### D-05 — May we use the Claude Haiku 4.5 API fallback? `[needs TA decision]`
 
@@ -258,11 +259,11 @@ blocks anything today.
 
 | | |
 |---|---|
-| **Status** | `open` — drafted 28 Oct 2026, awaiting adjudication |
+| **Status** | `resolved` · 8 Nov 2026 — adjudicated, see D-26 |
 | **Decision** | The four dev gold graphs exist and are span-exact, but they are **machine-drafted, not human-annotated**, and each file says so in its `notes` field. `scripts/draft_gold_graphs.py` slices every span out of the real passage text between two markers, so no span is retyped, and runs the B6 rule layer on every edge before writing — a draft that cannot be confirmed verbatim never reaches disk. `data/eval/gold/dev/ADJUDICATION.md` is the reviewer's sheet, generated from the graphs so it cannot drift. Until a sign-off row is filled in, every Phase 3 number measured against these is provisional and the mid report says so. |
 | **Why** | The corpus arrived on 28 October, two days before the submission, and B4 blocks #42, #43, #44, #37, #38 and #40 — the whole remaining research result. The alternative to drafting was six issues left untouched. The alternative to **labelling** the drafts honestly was presenting a generated standard as reviewed evidence, which would make every UER number unfalsifiable. Doing the mechanical half and naming it is the only version of this that is both useful and true. |
 | **Consequence** | The rule layer is not a substitute for judgment and must not be read as one: it confirms a span is verbatim and that the passage mentions both variables, and that is all. Three candidates passed every rule and were dropped by hand — two cited passages that mention both variables while asserting no relation between them, and one whose causation ran backwards (portfolio outflows pressuring the rupee, read as the rupee driving outflows). A reviewer should expect to find more. Twenty edges across four graphs, reaching hop 2; the dropped September anchor (D-18) is still why nothing reaches hop 3, so RQ1's deepest slice stays empty. **Cohen's κ (#37) is not addressable by drafting at all** — it needs two people who have not compared notes. |
-| **Revisit if** | Adjudication happens. The `MACHINE-DRAFTED, NOT YET ADJUDICATED` string is asserted by a test, so removing it is a deliberate act with a diff, not a quiet edit. |
+| **Outcome** | Adjudication happened on 8 Nov 2026 (D-26). The `MACHINE-DRAFTED, NOT YET ADJUDICATED` string is gone from all four files and the test that asserted it now asserts the adjudication line instead, so the change is a deliberate act with a diff. Four of the twenty drafted edges did not survive. |
 
 ### D-21 — The 125-item challenge set is unreachable; rescope B9
 
@@ -295,16 +296,105 @@ blocks anything today.
 | **Consequence** | Two claims the mid report can make, in opposite directions. **For the verifier:** 28 of 85 corruptions — a third, and the two families a careless graph is most likely to contain — cannot be caught by matching text, which is the project's clearest evidence that the semantic step earns its budget. **Against spending budget badly:** the other three families are caught deterministically, for free, with no model, so a verifier re-checking citations is spending calls where a regex already wins. The per-type denominators are uneven (D-21) so every rate is quoted with its own; a macro average over families would be meaningless. |
 | **Caveat** | Corruption detection is sound on un-adjudicated gold because each corruption is applied mechanically and known by construction. **The 0.000 false-alarm rate is not**: a control is clean only if its gold edge was right, so that figure inherits whatever adjudication changes. `gold_adjudicated: false` is recorded on every row. |
 
+### D-24 — `main` is protected client-side, not server-side
+
+| | |
+|---|---|
+| **Status** | `resolved` · 19 Oct 2026 |
+| **Decision** | A tracked `pre-push` hook (`scripts/git-hooks/pre-push`, installed by `make hooks`) refuses direct pushes to `main`. Override with `PUSH_TO_MAIN=1` for a genuine emergency. |
+| **Why** | GitHub requires Pro for branch protection and rulesets on a *private* repository, and the repo stays private until submission. The hook catches the accidental push, which is the failure that actually happens; it is not a security boundary and anyone can bypass it. |
+| **Revisit if** | The repo moves to GitHub Pro — free via the Student Developer Pack. Then add real branch protection (PR + 1 approval, no force-push, no deletion) and keep the hook as a local fast-fail. |
+| **Renumbered** | Taken as D-13 on this branch on 19 Oct, the same number `b/verifier-rules` took that day for the span-tolerance row. That branch has since merged into the Track B line, so this row moves to **D-24**. Nothing else referred to it by number. |
+
+---
+
 ### D-25 — Alias coverage caps reference-edge recall, and we are not widening the table to fit
 
 | | |
 |---|---|
-| **Status** | `open` — evidence gathered 3 Nov 2026; the fix is Track A's call (D-16) |
+| **Status** | `resolved` · superseded by **D-29**, 10 Nov 2026 — Track A's review is `reports/alias_review_20261110.md`; the table stays frozen for this submission |
 | **Decision** | Do **not** extend `data/aliases.yaml` to make gold edges pass. Measure the coverage, report it as a bound on reference-edge recall, and put the evidence in an issue for the file's owner. |
 | **Why** | Rule 3 requires both variables named in the cited passage via the alias table, so a variable the corpus never names **cannot carry a source-asserted edge at all**. `scripts/audit_alias_coverage.py` over all 16,472 passages finds **3 of 46 variables never named** (`AIRLINE_SHARES`, `CORPORATE_BOND_SPREAD`, `CPI_FUEL_LIGHT`) and 5 more under ten passages. This was found while drafting the test gold graphs: candidate edges kept failing rule 3 on wording the sources plainly use — "an immediate rate hike" where the table lists "rate hike expectations", "fuel inflation" where it lists "fuel and light". |
 | **Consequence** | The proposal's own worked example — crude → ATF price → airline costs → airline shares — has two unevidenceable links at its deep end: `AIRLINE_COSTS` appears in 2 passages, `AIRLINE_SHARES` in none. **The chain used to motivate the study cannot be built from the corpus it froze**, and since it is the deep-hop chain this compounds the hop-2 ceiling rather than being separate from it. `test-cpi-why` targets `RATE_HIKE_EXPECTATIONS`, for which no India-scoped passage carries a recognised surface form, so that query's target may be unreachable as written. |
 | **Why not just widen it** | Two causes need opposite fixes. If the corpus does not discuss a quantity, queries touching it must be rescoped; if the sources use wording the table lacks, the table is incomplete and extending it is a correctness fix. Telling them apart means reading the corpus. Widening the table while holding a specific failing gold edge is fitting the instrument to the data, and it would silently change the verifier for every condition, the dev results and the challenge set alike. |
 | **Revisit if** | Track A reviews the absent and thin forms against the corpus and extends the table on that evidence, recorded as its own row. Re-run the audit afterwards; `reports/alias_coverage.md` is generated. |
+
+### D-26 — A span must state the direction, not just the relation, to back a gold edge
+
+| | |
+|---|---|
+| **Status** | `resolved` · 8 Nov 2026 — applied; gold set is 16 edges and the review receipt is signed |
+| **Decision** | A gold edge carries a `direction`, so the cited span has to **state which way the destination moves**. A span that asserts a relation, or describes a pricing mechanism, while leaving the sign to the reader does not back a gold edge and is dropped. Four of the twenty drafted dev edges go: `re4` IMPORT_BILL→FISCAL_DEFICIT ("fuelling worries about" the deficit), `oe5` BRENT→ATF_PRICE (the monthly ATF revision formula), `oe3` BRENT→OMC_MARGINS ("fluctuating margins absorbing price shocks"), `ow4` BRENT→INR_USD ("the rupee ... felt the impact of rising crude oil prices"). |
+| **Why** | Two annotators labelled all twenty edges independently, blind to the draft and to each other. They agreed on 16 of 20 (`reports/adjudication_kappa.md`), and **all four disagreements were the same case**: a span with a relation but no sign. The reconciliation rule is not a compromise between two readings, it is the one `docs/reproduction.md` already states — reference graphs hold "exact eligible source citations" and gold provenance is `source_asserted` only, with no `model_inferred` edge permitted in a reference graph. Supplying the sign from the anchor's direction is inference, which is the very thing the reference set exists to measure against. Applying the rule drops three edges on one annotator's reading and one on the other's, so neither annotator "won". |
+| **Consequence** | Gold falls **20 → 16 edges, exactly 4 per graph**, which is `MIN_EDGES`: one further drop breaks a graph and forces re-drafting. Hop distribution 12 hop-1, 4 hop-2; still nothing at hop 3 (D-18). The **only `correlational` edge is gone**, so strength-inflation corruptions can now only go conditional→direct and the challenge set falls 104 → **89 items** (16 controls, 16 each for four corruption types, 9 inflated_strength). Dropping `oe5` orphans the head of the one crude→ATF→airfares chain: `oe10` (ATF_PRICE→AIRFARES) is kept, because both annotators kept it, but **AIRFARES is no longer reachable from the anchor through gold edges** and its `hop: 2` now records the chain the source describes rather than a path through the gold set. A model producing crude→ATF→airfares is therefore marked wrong on the first link and right on the second; hop-2 figures must say so. This is the **second independent reason** that same chain fails — D-25 already found its deep end unevidenceable on alias coverage — and it is the chain the proposal used to motivate the study. `ATF_PRICE` keeps a node with no inbound edge, so its direction is read from `oe10`'s own span ("the steep increase in jet fuel prices") via `SRC_ONLY_DIRECTIONS` in the drafting script rather than inferred from the anchor. |
+| **Also settled** | The duplicate one annotator flagged, INR_USD→IMPORTED_INFLATION on the same passage twice, is **not** a defect: the two copies sit in `dev-rupee-why` and `dev-rupee-effects`, which are separate query graphs that may legitimately cite the same passage. |
+| **Receipt** | Both annotators signed `data/eval/gold/dev/review_receipt.json` the same day, which is a separate attestation from the labelling: it binds a SHA-256 of every reference file and of the corpus, so editing a gold graph afterwards invalidates the signature instead of passing under it. `make challenge` no longer passes `--allow-unreviewed`, so the manifest now records `gold_adjudicated: true` with the receipt hash and **the challenge set's false-alarm rate becomes quotable** — a clean control is only clean if its gold edge was right. The guard is still tested: `test_unsigned_gold_needs_the_flag` builds an unsigned set in a temp directory rather than relying on the repository being unsigned, so signing could not quietly delete the test. |
+| **Revisit if** | Someone argues the rule is too strict. It is the strictest defensible reading and it costs 4 of 20 edges; the looser reading would have to say where a direction may come from if not the span, and that answer is `model_inferred`, which a reference graph cannot hold. If re-drafting adds edges, prefer candidates whose spans state a sign, and note that the dev set's hop-2 slice is down to four edges. |
+
+### D-27 — "Annotate 10 of the 24 test queries" is unreachable; rescope B-2.6
+
+| | |
+|---|---|
+| **Status** | `resolved` · 8 Nov 2026 — rescoped to 4 queries; the drafting half is not started |
+| **Decision** | #38 asks for 10 annotated queries out of 24 on the test half. **There are four.** `data/eval/queries_test.jsonl` holds `test-cpi-why`, `test-cpi-effects`, `test-fpi-why`, `test-fpi-effects`, and no more are expressible. Annotate **all four**, and report the test figures as descriptive with no confidence intervals, exactly as D-19 already requires. |
+| **Why** | The same stale premise that D-21 found in B9. "10 of 24" was written against the original 30-query design; D-18 cut eight candidate anchors to four confirmed, and D-19 split those four by anchor into four dev and four test queries. Neither issue was re-costed afterwards, so two task specs still quote numbers from a design that no longer exists. Finding the second one is a reason to distrust any remaining headline count in `PLAN_MIDSUB.md` that predates 27 October. |
+| **Consequence** | No test gold graphs exist at all: `data/eval/gold/` holds `dev` only. Drafting them is the prerequisite for annotating them, and D-25 already found that half-finished attempt failing — `test-cpi-why` targets `RATE_HIKE_EXPECTATIONS`, for which no India-scoped passage carries a recognised surface form, so that query's target may be unreachable as written and its gold graph may not reach `MIN_EDGES` at all. Budget for the test half being thinner than the dev half, or for one of its four queries having no usable gold. |
+| **Audited 9 Nov** | `scripts/audit_test_gold_feasibility.py` answers the cheap question before anyone drafts: does the corpus contain passages that *could* carry each query's edges under rule 3 and as-of discipline, counting D-17's preceding paragraph. Result in `reports/test_gold_feasibility.md`. **Three of the four are feasible; `test-cpi-why` is not.** Its target `RATE_HIKE_EXPECTATIONS` is paired with `CPI_HEADLINE` in **exactly one** passage on or before the as-of date, that passage belongs to a Federal Reserve article rather than Indian coverage, and it runs the wrong way — "following the softer-than-expected CPI report, financial markets significantly reduced expectations of an imminent rate increase", where the anchor is CPI **up**. So the query cannot be answered from this corpus as written. The other three have 12 and 28 co-occurring partner variables, comfortably above `MIN_EDGES`. |
+| **Correction to D-25** | D-25 says no India-scoped passage carries a recognised surface form for `RATE_HIKE_EXPECTATIONS`. That is too strong: the table's forms match **33 passages**. The real constraint is narrower and worse for this query — the variable is named, but never alongside `CPI_HEADLINE` in Indian coverage. Widening the alias table would therefore not fix `test-cpi-why`, so D-25's "revisit if Track A extends the table" does not apply to it. |
+| **Revisit if** | Someone rewrites `test-cpi-why` to a target the corpus connects to CPI — `REPO_RATE` (17 passages), `GDP_GROWTH` (29) and `CPI_FOOD` (36) are all reachable. That is a change to the frozen test set and needs its own row. Otherwise the test half is **three queries, not four**, and the report says so. |
+
+### D-27a — Reading the passages cuts the test half from three queries to two
+
+| | |
+|---|---|
+| **Status** | `resolved` · 11 Nov 2026 — drafted, then adjudicated the same day under D-30 |
+| **Decision** | Draft gold graphs for **`test-fpi-why` and `test-fpi-effects` only**. `test-cpi-effects` joins `test-cpi-why` as undraftable. Both drafted graphs carry five edges across hops 1 and 2, pass the B6 rule layer, and are written by `scripts/draft_test_gold_graphs.py` into `data/eval/gold/test`. |
+| **Why** | The feasibility audit (D-27) reported 28 variables co-occurring with `CPI_HEADLINE` and concluded there were "enough distinct partners to reach 4 edges, **if the passages assert relations**". That audit counts co-occurrence and says so. Reading the passages shows the condition fails, and fails structurally rather than marginally: in this corpus Indian headline CPI is almost always the **destination** of the oil shock, not its source. `BRENT`, `FUEL_PRICES`, `CPI_FOOD`, `CPI_CORE` and `WPI` all run *into* CPI, and an effects graph rooted at CPI cannot use an inbound edge. What survives pointing outward is CPI → `REPO_RATE` up, stated conditionally in `mint-74467ebbc52e72308935#p5` and `businessline-eb43f44f9ee97cd0dd7b#p1`, plus a possible hop-2 `REPO_RATE` → `GDP_GROWTH` whose destination the alias table does not match on the bare word "growth". One or two edges against `MIN_EDGES` of 4. |
+| **Consequence** | The test half is **two** queries, both anchored on `FPI_FLOWS`. That is below `MIN_QUERIES_FOR_INFERENCE` (10) by a factor of five, so the test half was never going to produce an inferential result and nothing is lost by its size — but it is now small enough that a test table would also be a thin *descriptive* result, and the two graphs overlap heavily because they share an anchor and cutoff. Four of five edges in each cite the same two passages. |
+| **Why draft it at all** | A drafted, rule-checked, honestly-labelled test set is worth more than an empty directory even when it cannot be scored: it makes the adjudication step cheap for whoever picks this up, and it converts "the test half does not exist" into a measured statement about what this corpus can and cannot support. `scripts/draft_test_gold_graphs.py` is a separate file from the dev drafter on purpose — the dev gold is receipt-bound and nothing regenerating the test half should be able to touch it. |
+| **Guarded** | `tests/unit/test_test_gold.py` fails if a graph appears for either undraftable query, if a drafted graph loses its `DRAFT, NOT ADJUDICATED` provenance, if a `review_receipt.json` appears in `gold/test`, or if the drafted set stops reaching past hop 1. |
+| **Revisit if** | A reader wants a test number. The answer is adjudication first: `make adjudicate-test`, two annotators blind under D-26, then a signed receipt. Until then `--references` against `gold/test` must stay refused. |
+
+### D-28 — Run the dev sweep on both models as a declared sensitivity check
+
+| | |
+|---|---|
+| **Status** | `resolved` · 9 Nov 2026 — pre-registered; neither arm has been run |
+| **Decision** | Run the dev sweep twice, once per model, changing **only the generator weights**. `configs/model_selection.json` (Qwen3-8B-4bit) is the **primary arm and supplies every headline number**; `configs/model_selection_qwen35_9b.json` (Qwen3.5-9B-4bit) is a **sensitivity arm reported beside it, never in place of it**. The comparison, and what each outcome is allowed to mean, are written down in `docs/preregistration_model_sensitivity.md` **before any sweep has been run**. D-01 is not reopened and no model is re-selected. |
+| **Why** | #57. The C2 pilot tied the two models at 61.0% mean accuracy and the pre-declared rule broke the tie on latency, but the error analysis shows they fail in different places: Qwen3-8B names the wrong passage in 17/20 extractions and quotes nonverbatim in 10/20, where Qwen3.5-9B does neither. Those are the two fields `in_corpus` and `span_verbatim` check. A UER rise with hop therefore has two possible sources — grounding genuinely decaying, or a generator that cites worse where evidence is thinner — and **one arm cannot separate them**. Switching models instead would not remove the problem: Qwen3.5-9B is 20 points worse at strength labelling and 35 points worse at rejecting unsupported edges, which feed strength inflation and the verifier's own job. |
+| **Consequence** | Two sweeps, roughly 2.3× the single-arm wall-clock. **Both must finish before either is read**, so neither is interpreted alone. The claim under test is a *shape* claim: a level difference between arms is expected and is not evidence against H1; only a shape difference is. With `MIN_QUERIES_FOR_INFERENCE` at 10 and four dev queries, that gate fires in both arms by construction, so nothing here is inferential, and with no gold edge at hop 3 the `3+` bucket may leave `MIN_BUCKETS_FOR_TREND` unmet — in which case the declared output is `insufficient_data` and a rejection-rate diagnostic, not a trend. That outcome is accepted in advance. |
+| **Found while implementing** | `run-dev` and `run-all-dev` sweep `data/eval/development_candidates.jsonl`, whose six ids (`dev-candidate-01..06`) match **no gold graph**. Scoring that output with `--references` raises `reference graph query/cutoff/anchor mismatch` — after the entire sweep has been paid for. No target swept `data/eval/queries_dev.jsonl`, the four queries the gold set is actually built for, so **the sweep as configured could never have produced reference-edge recall or answered H2d**. The new `sweep-dev-primary` / `sweep-dev-sensitivity` / `sweep-dev-both` targets sweep the gold-backed queries, and `test_the_gold_backed_sweep_targets_sweep_queries_that_have_gold` fails if that link is ever broken again. |
+| **Revisit if** | The arms disagree on shape. The pre-registered table already says what that means and the answer is to report the confound, not to pick the nicer arm. |
+
+---
+
+### D-29 — Keep the frozen alias table for this submission, and report the ceiling with its cause
+
+| | |
+|---|---|
+| **Status** | `resolved` · 10 Nov 2026 — closes #58 and the open branch of D-25 |
+| **Decision** | Retain `data/aliases.yaml` exactly as pinned for the reported runs (SHA-256 `826f0e59…`). Do **not** apply the two correctness candidates before the 15 November submission. Report reference-edge recall as bounded by a **measured** alias ceiling, naming the two forms that would have been added and the three variables the corpus never names. |
+| **Why** | D-25 left the fix to Track A on the condition that the absent and thin forms be read against the corpus. `reports/alias_review_20261110.md` is that review. It finds exactly two forms that genuinely name ontology variables and are missing — "IndiGo and SpiceJet shares" for `AIRLINE_SHARES` (`economic_times-889e909048d7632ba919#p4`) and "fuel component of CPI" for `CPI_FUEL_LIGHT` (`businessline-9109f06a4b23de7ed137#p4`) — and rejects the rest on evidence: "fuel inflation" and "airline stocks" overmatch generic and European coverage, "InterGlobe Aviation" can name a company or a financing, and every corporate-bond-spread candidate turned out to be a sovereign or repo spread. |
+| **Why not apply the two** | The alias table is an input to the verifier, so changing it changes rule 3 for every condition at once. The 56-graph development sweep, its 247 support judgements, the challenge set and every score in Section 4 were produced under the pinned table. Applying two forms now would require a fresh versioned sweep **and** a fresh review of any edge whose eligibility changed, inside two days, and would leave the reported numbers describing a configuration that no longer exists. The instrument stays fixed and the limitation is stated. |
+| **Consequence** | 3 of 46 variables remain unnameable from this corpus and reference-edge recall keeps its measured ceiling. This is now a known, located bound rather than an unexplained floor: the proposal's worked chain still breaks at `AIRLINE_SHARES`, and `test-cpi-why` stays unanswerable for the separate reason recorded in D-27 — its target is never paired with headline CPI in Indian coverage, which no alias change would repair. |
+| **Revisit if** | Any work continues past this submission. The two forms are correctness fixes and belong in the next versioned table, applied together with a re-run and a re-review, not retrofitted to these results. |
+
+---
+
+### D-30 — Modality sets strength; a manner adverb inside a hedge does not lift it
+
+| | |
+|---|---|
+| **Status** | `resolved` · 11 Nov 2026 — agreed and applied. Gold rebuilt at four edges per graph; `data/eval/gold/test/review_receipt.json` signed. |
+| **The problem** | Test adjudication (#38) agreed perfectly on which edges survive (`asserts` kappa 1.000) and on every direction, and split on **seven of eight strengths** (`strength` raw 0.125, kappa 0.000). The pre-declared direct-versus-hedged collapse does not rescue it, because that is exactly the axis of the split (`reports/adjudication_kappa_test.md`). |
+| **Proposed rule** | **Strength is read off the modality of the clause that carries the causal claim, not off the manner in which the mechanism is described.** A claim stated under a hypothetical, forecast, contingent or risk frame — "would", "could", "may", "if", "risk of" — is `conditional`, however firmly the mechanism inside that frame is worded. An adverb such as "directly", "sharply" or "substantially" describes *how* a cause is said to operate; it does not assert *that* the effect occurred. Where the source states only co-occurrence or sequence — "amid", "alongside", "after" — the label is `correlational`, as the guide's own table already says. |
+| **Why this rule and not the other reading** | The alternative is that "directly inflate the import bill" is a direct causal assertion with "would" as scene-setting. That reading makes the strength label depend on an adverb a sub-editor could delete without changing the claim, and it would collapse `conditional` into `direct` for most forecast language in this corpus — which is most of the corpus, since RBI and brokerage commentary is deliberately conditional. The guide anticipates this: *"Attribution to an economist does not remove their hedge."* |
+| **Provenance of the rule** | `docs/annotation_guide.md` is dated **23 October 2026**, before any gold drafting. Its strength table already lists "could, may, if" under conditional and "amid, alongside, after" under correlational. This rule is an application of that table to a case it did not spell out, not a new standard invented after seeing the disagreement. |
+| **What it decides** | All eight kept edges take the hedged reading on seven of them. `a75831a92a` (`FPI_FLOWS -> INR_USD`, *"the rupee is under pressure **as** ... dollar outflows **on account of** FPI selling ... continuing"*) stays `direct`: the pressure is asserted as occurring, not forecast. `7870e25658` (*"**amid** ... FPI-related outflows"*) is `correlational`. The six edges off *"A sustained depreciation in the rupee **would** directly inflate the import bill, widen both the current account deficit and fiscal deficit"* are `conditional`. |
+| **Consequence** | Two edges drop — both `FPI_FLOWS -> GSEC_10Y`, which both annotators rejected independently. Each graph falls from five edges to **four**, which is exactly `MIN_EDGES`; both survive with nothing to spare. |
+| **An honest caution** | Under this rule the adjudicated strengths come out **identical to the machine draft's**. That is not evidence the rule is right, and it would be a bad reason to adopt it. The rule's justification is the guide's table and its date; the agreement with the draft is a coincidence worth stating rather than a result worth citing. It does mean the draft's strength cues happened to track modality on these eight spans, which the dev set's experience suggests will not generalise. |
+| **If the annotators disagree with it** | Replace it. The requirement is one written rule applied to all seven, recorded here, not this particular rule. What cannot happen is settling the seven edge by edge, which is how a reconciliation becomes unauditable. |
+| **Revisit if** | The same split appears on a later set. A second occurrence would mean the guide's strength table needs the rule written into it directly rather than derived each time. |
 
 ---
 
@@ -326,10 +416,35 @@ is **15 November** with work winding up **12 November**, so it splits in two.
 **Dropped for the 15 November date**, and reported as limitations rather than
 left to look like oversights:
 
-- **The interactive event-impact graph.** Static SVG/PNG rendering exists
-  (`src/eval/figures.py`, `reports/figures/`) and is what ships. Interactivity is not reachable in
-  12 days alongside the experiments, and neither research question needs it.
+- ~~**The interactive event-impact graph.**~~ **Built on 11 November** and no
+  longer dropped. The judgement on 29 October was that interactivity was not
+  reachable "alongside the experiments"; the experiments finished, and the
+  graphs were already structured data, so `scripts/build_graph_explorer.py`
+  emits `reports/graph_explorer.html` — one self-contained file, no network,
+  every edge clickable through to its span, passage id, publication date and
+  cutoff. Static SVG/PNG still ships in the report (`src/eval/figures.py`).
+  It is **opened from disk and never served**: the spans are corpus excerpts
+  under a research-use, no-redistribution licence, which is why
+  `data/processed/articles.jsonl` is gitignored in the first place. Neither
+  research question needs it; the proposal's section 8 asks for it as the
+  prototype's final output.
 - **Blind scoring at scale** beyond the 4 dev and 4 test queries.
 - **B1-R end-to-end benefit**, deferred since D-03. The retrieval-side
   comparison stands (Recall@10 0.5296 against 0.4259); the end-to-end claim is
   not made.
+
+## 12 November audit follow-up
+
+- The four-query development runs retain their original inputs and measured
+  anchor status. Versioned dev and two-query test manifests provide explicit
+  episode thresholds for new runs. The original held-out study remains below
+  its planned sample and has no independently scored outputs.
+- D-03's larger test comparison remains deferred. The final report now
+  includes exploratory paired B1-R versus B1 and M versus B1-R UER on the
+  existing assistant-labelled development scores.
+- D-21 records the earlier 89-item set. Both signed gold splits now seed the
+  130-item challenge, with 107 corruptions and 23 controls. Both rule and
+  semantic arms ran. The fixed-path check uses three synthetic fixture paths.
+- D-05 and D-06 were unused under the local-model decision. D-07 still
+  requires a TA decision and judge calibration. Neither the development
+  sample nor a closed issue supplies that approval.

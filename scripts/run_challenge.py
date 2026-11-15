@@ -133,6 +133,12 @@ def main(argv: list[str] | None = None) -> int:
     visible = [k for k in RULE_VISIBLE if k in results]
     detected = sum(results[k]["flagged"] for k in visible)
     denominator = sum(results[k]["total"] for k in visible)
+    # Read off the built set rather than restated by hand: one control per gold
+    # edge, and inflated_strength can only seed from a hedged edge, so these two
+    # counts cannot drift from the set they describe.
+    seed_count = control["total"]
+    inflatable_count = results.get("inflated_strength", {}).get("total", 0)
+    gold_adjudicated = bool(manifest.get("gold_adjudicated", False))
 
     lines = [
         "# Challenge set, rules-only arm (B9, #40)",
@@ -183,15 +189,32 @@ def main(argv: list[str] | None = None) -> int:
         "",
         "## Reading the numbers",
         "",
-        "Per-type counts are **uneven by construction** (D-21): the gold set supplies 19 "
-        "seeds but only 9 hedged links, so `inflated_strength` has a denominator of 9. "
+        "Per-type counts are **uneven by construction** (D-21): the gold set supplies "
+        f"{seed_count} seeds but only {inflatable_count} hedged links, so "
+        f"`inflated_strength` has a denominator of {inflatable_count}. "
         "Quote every rate with its denominator; a macro average over families is not "
         "meaningful here.",
         "",
-        "Corruption detection is sound even though the gold graphs are not yet adjudicated, "
-        "because each corruption was applied mechanically and is known by construction. "
-        "**The false-alarm rate is not**: a control is only clean if its gold edge was "
-        "right, so that figure inherits whatever adjudication changes.",
+        "The two rates do not rest on the same thing. **Corruption detection** is sound "
+        "either way, because each corruption was applied mechanically to a known edge. "
+        "**The false-alarm rate** is different: a control is only clean if its gold edge "
+        "was right, so it rests on the state of the gold set.",
+        "",
+        (
+            "Here the gold set is **adjudicated and signed** - two annotators labelled "
+            "every edge independently on 8 Nov 2026 (D-26), and "
+            "`review_receipt.json` carries their attestation bound to these exact gold "
+            "bytes. **So both rates above are quotable**, each with its denominator. The "
+            "controls are as clean as that reconciliation left them, which is the "
+            "strongest claim available: 16 edges is a small reference set and 4 of the "
+            "20 drafted edges did not survive it."
+            if gold_adjudicated
+            else "Here the gold set is **not signed for**, so `gold_adjudicated` above "
+            "is False and **the false-alarm rate must not be quoted**. Labelling and "
+            "attestation are separate steps: two annotators may have labelled every "
+            "edge, but until they fill `review_receipt.json` nothing binds that review "
+            "to these gold bytes."
+        ),
         "",
     ]
 
@@ -206,7 +229,7 @@ def main(argv: list[str] | None = None) -> int:
     args.report.write_text(
         "\n".join(line.rstrip() for line in lines).rstrip() + "\n", encoding="utf-8"
     )
-    print(f"wrote {args.report.relative_to(REPO)}")
+    print(f"wrote {args.report}")
     print(
         json.dumps(
             {

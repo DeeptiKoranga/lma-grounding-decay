@@ -37,7 +37,8 @@ Both the model change and the regenerated schema go in the **same** commit.
 
 ## 2. Branches and PRs
 
-- `main` is protected. **Nobody pushes to `main`.**
+- `main` is PR-only. Run `make hooks` to install the local `pre-push`
+  guard against accidental direct pushes. See [D-24](docs/decisions.md).
 - Branch names are `a/<slug>`, `b/<slug>`, `c/<slug>` — `a/bm25-index`,
   `b/verifier-rules`, `c/conditions-runner`. The letter is your track.
 - Everything goes through a PR with **one review**.

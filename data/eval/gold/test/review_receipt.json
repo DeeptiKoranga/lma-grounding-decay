@@ -1,0 +1,11 @@
+{
+  "corpus_sha256": "25ad7ad94d4e657195bdb83d0ff95b43335e6613ad3a18e0657b1da2dce38496",
+  "reference_sha256": {
+    "test-fpi-effects.json": "45ebabad6b5f2737f1ba4b635ee6e4b7289d44b115f547de8e7bbcb2eccf7043",
+    "test-fpi-why.json": "8334516aa26a4efbaaea62811110b7b64be1f9da5996c48f9c67711351541208"
+  },
+  "reviewer": "Deepti Koranga, Harshal Bhansali",
+  "reviewed_on": "2026-11-11",
+  "independent_review": true,
+  "all_relations_and_strengths_reviewed": true
+}

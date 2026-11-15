@@ -352,3 +352,33 @@ This completes local software reproduction, not independent edge support,
 reviewed UER/recall, model selection or an all-machine check. Detailed source,
 stage, input, graph and log hashes:
 `reports/fresh_checkout_reproduction_20261028.json`.
+
+## 10 November repeated-sampling stability check (#61)
+
+Three additional M runs on `dev-oil-effects` used the pinned primary model and
+selected v7 retriever, with temperature 0.7 and separate seeds 1101–1103.
+They produced three complete graphs with 12 model calls, 19,809 prompt tokens,
+2,982 completion tokens, 36 tool calls and **287.46 measured model-call wall
+seconds** (97.72, 89.94 and 99.80 seconds by seed). These times exclude model
+loading, retrieval and idle time. See `reports/stability_check_20261110.md` for
+the edge-set comparison and artifact hashes.
+
+## November scored development and final diagnostics
+
+The two 28-graph development sweeps used 185 completed model calls, with
+333,141 prompt tokens, 49,849 completion tokens, and 6,964.4 summed model-call
+seconds. See `reports/dev_gold_sweeps_20261110.md` for the per-arm accounting.
+
+The 130-item challenge evaluated 69 items through deterministic rules and
+made 61 semantic model calls. The bound call logs record
+30,818 prompt tokens, 5,142 completion tokens,
+and 521.45 summed model-call seconds.
+
+The capability rerun completed 65 calls, with 160,470 prompt tokens,
+4,234 completion tokens, and 1,873.46 summed model-call seconds. See
+`reports/capability_diagnostics.json` for result hashes. These are local model
+wall times. GPU-active hours were not measured.
+
+The public-data strength and detection benchmark evaluated 400 frozen items
+with the pinned local 4-bit model. It retains item-level labels and aggregate
+scores. Per-call timings and tokens were not recorded for this benchmark.

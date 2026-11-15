@@ -667,3 +667,83 @@ uses the provenance, completeness and anchor checks documented above.
 See `reports/integration_fixes_20261027.md` and its JSON evidence. The original
 641-test audit and earlier reproduction reports retain their historical scope;
 they are not current implementation instructions or reviewed research results.
+
+## Final development evidence and descriptive test preflight
+
+The November sweeps and their scores are pinned to the original query manifests.
+The files `data/eval/queries_dev_anchored_v2.jsonl` and
+`data/eval/queries_test_anchored_v2.jsonl` are for new runs. Their thresholds
+come from the declared episode checks. The series observation must match the
+anchor date and be published by the query cutoff. The test manifest covers the
+two signed FPI references. The four-candidate test file retains the excluded
+CPI queries for the study record.
+
+With the matching frozen corpus, run `make preflight-test`.
+`make sweep-test-descriptive` preflights the references and requires confirmed
+anchors. Use `TEST_OUTPUT` to choose a new run directory. See the
+[independent review handoff](independent_review.md) for human prose correction
+and blind support scoring. Two queries fall below the ten-query inference gate.
+Section 7.1 of the [final project report](../reports/final_project_report.pdf)
+reports the revised evaluation using Varun Patil's 291 reviewer-attested
+support judgments and the prose revisions he approved.
+
+The reasoning diagnostic CLI requires a complete checksum-bound sweep and a
+signed reference receipt. Pass `--corpus` to select the matching corpus outside
+the checkout. For the model challenge use a fresh `CHALLENGE_MODEL_OUTPUT`.
+The stricter resume format rejects old run directories and changed inputs.
+Historical results remain available in the published reports and local logs.
+
+`make validate-track-c` checks the historical Phase 1 evidence, including the
+CI receipt for the revision it tested. Use current CI and local tests to
+validate later code. The validator prints by default and writes an additional
+JSON file only with an explicit `--output`.
+
+Use `make explorer` for the offline reference and synthetic graph viewer.
+For a generated graph, pass `--run-artifact` and a separate local `--output`
+to `scripts/build_graph_explorer.py`. Generated evidence excerpts remain local.
+
+Run `make fixture-check FIXTURE_OUTPUT=runs/fixture-check` to verify all seven
+conditions with scripted responses and synthetic data. Choose a fresh output
+directory for each execution. The check writes graphs, tool logs and a local
+viewer without loading model weights or the research corpus.
+
+For the separate signed test-reference retrieval diagnostic, run
+`scripts/report_test_retrieval.py --corpus PATH --index PATH` with
+`PYTHONPATH=src`, the local retrieval environment, and the pinned model cache.
+This evaluates ranking on the two FPI queries without running generation.
+
+## Reproduce the single-query model run
+
+On a Mac with the frozen corpus, selected dense index, BGE model cache,
+pinned Qwen weights and both local environments installed as documented
+above, run from the repository root:
+
+```sh
+query_run=$(mktemp -d)
+python3 - "$query_run" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+queries = Path("data/eval/queries_dev_anchored_v2.jsonl").read_text().splitlines()
+query = next(line for line in queries if json.loads(line)["query_id"] == "dev-oil-why")
+(Path(sys.argv[1]) / "query.jsonl").write_text(query + "\n")
+PY
+HF_HOME="$PWD/data/raw/model_cache" HF_HUB_OFFLINE=1 PYTHONPATH=src \
+  data/raw/llm_env/bin/python -m conditions \
+  --queries "$query_run/query.jsonl" --require-confirmed-anchors \
+  --retrieval-python .venv/bin/python --reranker-python .venv/bin/python \
+  --output "$query_run/runs"
+PYTHONPATH=src .venv/bin/python -m eval.run_audit \
+  --runs "$query_run/runs" --output "$query_run/audit.json"
+PYTHONPATH=src .venv/bin/python scripts/build_graph_explorer.py \
+  --run-artifact "$query_run/runs/M/dev-oil-why.json" \
+  --output "$query_run/graph.html"
+printf 'Open locally: %s\n' "$query_run/graph.html"
+```
+
+The unchanged default condition list runs all seven, including B1-R. The
+audit checks the bound input, graph and log artifacts. Open the generated HTML
+locally because it can contain corpus excerpts. This is a single-query
+engineering run under the new anchor criteria. It does not replace the two
+frozen research sweeps or add an independently scored result.

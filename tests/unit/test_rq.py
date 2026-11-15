@@ -240,6 +240,56 @@ def test_a_small_paired_sample_is_marked_descriptive():
     assert "Descriptive only" in finding.statement
 
 
+def test_rq2_counts_only_queries_with_a_uer_denominator():
+    finding = rq2_finding(
+        {
+            "per_query": {
+                "B1": {f"q{n}": {} for n in range(4)},
+                "M": {f"q{n}": {} for n in range(4)},
+            },
+            "contrasts": {
+                "uer": {
+                    "M_minus_B1_overall": {
+                        "estimate": -0.25,
+                        "ci95": [-0.4, -0.1],
+                        "paired_queries": 2,
+                        "excluded_queries": ["q0", "q3"],
+                    }
+                }
+            },
+            "recall_guard": {
+                "passes_descriptively": True,
+                "paired_queries": 4,
+                "M_minus_B1": 0.0,
+                "minimum_M_minus_B1": -0.10,
+            },
+        }
+    )
+    assert finding.queries == 2
+    assert "over 2 paired queries" in finding.statement
+    assert not finding.inferential
+
+    one_pair = rq2_finding(
+        {
+            "per_query": {
+                "B1": {f"q{n}": {} for n in range(4)},
+                "M": {f"q{n}": {} for n in range(4)},
+            },
+            "contrasts": {
+                "uer": {
+                    "M_minus_B1_overall": {
+                        "estimate": -0.25,
+                        "ci95": [-0.25, -0.25],
+                        "paired_queries": 1,
+                    }
+                }
+            },
+        }
+    )
+    assert one_pair.queries == 1
+    assert one_pair.uer_ci95 is None
+
+
 # ---------------------------------------------------------------------------
 # The whole path, from run artifacts to two report files
 # ---------------------------------------------------------------------------

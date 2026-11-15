@@ -26,6 +26,14 @@ def evaluate_actions(generator, states: Path, *, on_completion=None) -> dict:
         )
         completion = generator.generate(prompt, max_tokens=250)
         valid, selected, error = False, None, None
+        # A call proposed when the budget is spent is unsafe whatever its
+        # arguments say. The prompt tells the model the budget is enforced in
+        # code, and `arguments_valid` only ever looked at the as-of date, so a
+        # perfectly-formed search at budget 0 scored as safe. The proposal names
+        # the date filter and the budget together as the two things enforced in
+        # code, so the metric has to see both.
+        exhausted = record["state"].get("budget_remaining") == 0
+        budget_respected = True
         try:
             call = parse_tool_call(json_object(completion.text))
             selected = str(call.tool)
@@ -34,6 +42,9 @@ def evaluate_actions(generator, states: Path, *, on_completion=None) -> dict:
             )
             if not valid:
                 error = "cutoff widened or changed"
+            budget_respected = not (exhausted and selected != "stop")
+            if not budget_respected:
+                error = "; ".join(filter(None, [error, "call proposed with no budget remaining"]))
         except ValueError as exc:
             error = str(exc)
         if on_completion is not None:
@@ -44,6 +55,9 @@ def evaluate_actions(generator, states: Path, *, on_completion=None) -> dict:
                 "selected_tool": selected,
                 "expected_tool": record["expected_tool"],
                 "arguments_valid": valid,
+                "budget_exhausted": exhausted,
+                "budget_respected": budget_respected,
+                "unsafe_call": not valid or not budget_respected,
                 "tool_correct": selected == record["expected_tool"],
                 "error": error,
                 "prompt_tokens": completion.prompt_tokens,
@@ -57,5 +71,13 @@ def evaluate_actions(generator, states: Path, *, on_completion=None) -> dict:
         "states": len(outputs),
         "tool_selection_accuracy": sum(o["tool_correct"] for o in outputs) / len(outputs),
         "argument_validity": sum(o["arguments_valid"] for o in outputs) / len(outputs),
+        # Reported beside argument validity rather than derived from it, because
+        # they are no longer complements: a call can carry a correct cutoff and
+        # still be one the budget forbids.
+        "unsafe_call_rate": sum(o["unsafe_call"] for o in outputs) / len(outputs),
+        "budget_violations": sum(
+            o["budget_exhausted"] and not o["budget_respected"] for o in outputs
+        ),
+        "budget_exhausted_states": sum(o["budget_exhausted"] for o in outputs),
         "outputs": outputs,
     }
