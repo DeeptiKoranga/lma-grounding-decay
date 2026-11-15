@@ -1,5 +1,4 @@
 % Does Grounding Decay with Distance? Measuring and Repairing Weak Links in LLM Causal Explanations of Indian Macroeconomic News
-% Varun Patil (2025204013) · Harshal Bhansali (2026909007) · Deepti Koranga (2025204033)
 % Language Models & Agents (LMA) Group Project 2026 - Final Report · 15 November 2026
 % [GitHub submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation) · [Reproducibility README](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md)
 
@@ -121,7 +120,7 @@ Reranking alone reduced development UER, and it matched the full system's primar
 
 The original development scores used 24 assistant-produced prose corrections and 247 assistant-produced support labels. Those scores supply the exploratory ablation table. In a separate human-blind validation sample, 13 of 40 items had no evidence span and could only be marked unsupported. On the 27 informative rows, agreement was **21/27 (77.8%, Cohen's kappa 0.560)**. In five of the six disagreements the assistant credited support the human rejected. This could understate development UER, particularly in the sensitivity arm, where all six disagreements occurred. [Original scoring record](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/assistant_dev_support_review_20261110.md) · [Blind sample report](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/support_sample_validation.md)
 
-For the revised scores, Varun Patil reviewed 30 prose answers, approved 27 extraction revisions and authored 291 support judgments. He attested to blinding and independence, and the returned files passed packet coverage, checksum and scoring checks. The table reports M minus standard RAG (B1) in percentage points. Parentheses give the number of usable pairs.
+For the revised scores, one author of this report reviewed 30 prose answers, approved 27 extraction revisions and authored all 291 support judgments, attesting to blinding and independence. The returned files passed packet coverage, checksum and scoring checks. These labels were produced by an author of the system under test, which is why the held-out result below is weighed against the blind sample rather than on its own. The table reports M minus standard RAG (B1) in percentage points. Parentheses give the number of usable pairs.
 
 | Revised evaluation | Edge judgments | UER difference | Reference recall difference |
 |---|---:|---:|---:|
@@ -129,7 +128,7 @@ For the revised scores, Varun Patil reviewed 30 prose answers, approved 27 extra
 | Sensitivity development | 114 | -25.0 (2) | 0.0 (4) |
 | Primary held-out | 55 | 0.0 (2) | -12.5 (2) |
 
-Both development arms met the H2a target and H2d recall guard descriptively. On the held-out queries, M matched B1’s mean UER and missed the recall guard by 2.5 points. Query counts fell below the threshold for inference.
+Both development arms met the H2a target and the H2d recall guard descriptively. **On the held-out queries H2d fails.** On the held-out queries, M matched B1’s mean UER and missed the recall guard by 2.5 points: there was no error reduction to pay for the 12.5-point recall loss, which is the pattern the guard was written to catch. The breach is descriptive given the query count, but the development half where the guard holds rests on labels an author of the system produced, while the only blind-validated evidence is the 40-row sample. Query counts fell below the threshold for inference.
 
 In the original [primary](rq1_hop_decay.md) and [sensitivity](rq1_hop_decay_sensitivity.md) analyses, B1 produced 5/2/1 and 13/1/0 established edges at hops 1/2/3+, respectively. Neither arm met the ten-edge minimum in all three buckets, leaving H1 unresolved. H2b also lacked usable shallow-to-deep query pairs. The exploratory H2c comparison favored M on UER but lacked a usable paired strength-inflation estimate.
 

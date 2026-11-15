@@ -30,7 +30,7 @@
 
 \hypersetup{
   pdftitle={Does Grounding Decay with Distance?},
-  pdfauthor={Varun Patil, Harshal Bhansali, Deepti Koranga},
+  pdfauthor={},
   pdfsubject={Causal explanations of Indian macroeconomic news},
   colorlinks=true, urlcolor=Blue, linkcolor=Blue, citecolor=Blue,
   bookmarksnumbered=true
@@ -45,6 +45,8 @@
 
 \newcommand{\runninglabel}{}
 \newcommand{\reportpage}[1]{\newpage\renewcommand{\runninglabel}{#1}}
+% Same running label, no forced break: used where a break would strand a float.
+\newcommand{\reportflow}[1]{\renewcommand{\runninglabel}{#1}}
 \newcommand{\smalllabel}[1]{{\sffamily\bfseries\fontsize{8.5}{11}\selectfont\addfontfeatures{LetterSpace=6}\MakeUppercase{#1}}}
 \pagestyle{fancy}
 \fancyhf{}
@@ -115,9 +117,6 @@
 \vspace{6pt}
 
 {\sffamily\fontsize{10}{14}\selectfont
- \textbf{Varun Patil} \textcolor{Muted}{(2025204013)}\hfill
- \textbf{Harshal Bhansali} \textcolor{Muted}{(2026909007)}\hfill
- \textbf{Deepti Koranga} \textcolor{Muted}{(2025204033)}\par
  \href{https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation}{GitHub submission branch}
  \quad\textcolor{Rule}{\textbar}\quad
  \href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md}{Reproducibility README}\par}
@@ -462,10 +461,12 @@ the assistant credited support the human rejected, which could understate UER.
   {\href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/assistant_dev_support_review_20261110.md}{Original scoring record}}
   {\href{https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/support_sample_validation.md}{Blind sample report}}
 
-For the revised scores, Varun Patil reviewed 30 prose answers, approved
-27 extraction revisions and authored 291 support judgments. He attested
-to blinding and independence, and the returned files passed packet
-coverage, checksum and scoring checks.
+For the revised scores, one author of this report reviewed 30 prose answers,
+approved 27 extraction revisions and authored all 291 support judgments,
+attesting to blinding and independence. The returned files passed packet
+coverage, checksum and scoring checks. These labels were produced by an author
+of the system under test, which is why the held-out result below is weighed
+against the blind sample rather than on its own.
 
 \begin{reporttable}{Revised evaluation of M against standard RAG (B1)}\label{tab:revised}
 \begin{tabularx}{\linewidth}{@{}L{1}rrrrr@{}}
@@ -487,10 +488,14 @@ are metric-specific because some queries lack a usable denominator.}
 \end{reporttable}
 
 Table~\ref{tab:revised} separates error reduction from evidence
-retention. Both development arms met the H2a target and H2d recall
-guard descriptively. On the held-out queries, M matched B1's mean UER
-and missed the recall guard by 2.5
-points. Query counts fell below the threshold for inference.
+retention. Both development arms met the H2a target and the H2d recall
+guard descriptively. \textbf{On the held-out queries H2d fails.} M matched
+B1's mean UER exactly, so nothing paid for the 12.5-point recall loss,
+2.5 points past the declared floor -- the pattern the guard was written
+to catch. The breach is descriptive at this query count, but the
+development half where the guard holds rests on labels an author of the
+system produced, while the only blind-validated evidence is the 40-row
+sample.
 
 \noindent\begin{minipage}{\linewidth}
 \centering
@@ -533,7 +538,7 @@ also lacked usable shallow-to-deep query pairs. The exploratory H2c
 comparison favored M over prompted self-labeling on UER, but lacked
 a usable paired strength-inflation estimate.
 
-\reportpage{Evaluation: Retrieval and Verification}
+\reportflow{Evaluation: Retrieval and Verification}
 
 \subsection{Retrieval}\label{retrieval}
 
@@ -585,13 +590,12 @@ disagreements qualify the strength result and are tracked separately
 from the two provenance false alarms in Table~\ref{tab:challenge}.
 Some test references seeded this controlled diagnostic.
 
-\textbf{Failure example.} In the development query on rupee pressure,
-the verifier-free condition reversed a relation from oil risk to rupee
-pressure. A quotation from the relevant passage can still mention both
-variables in the reversed edge. This explains why the direction test
-adds information to the citation-integrity checks.
+\textbf{Failure example.} On the rupee-pressure query the verifier-free
+condition reversed the relation between oil risk and rupee pressure. The
+cited passage still mentions both variables, so citation checks pass and
+only the direction test catches it.
 
-\reportpage{Evaluation: Reasoning and Tools}
+\reportflow{Evaluation: Reasoning and Tools}
 
 \subsection{Reasoning diagnostics}\label{reasoning-diagnostics}
 
@@ -652,7 +656,7 @@ development query. A search is redundant when it returns no new passage
 ID. A new ID can still be irrelevant to the edge under repair. The rate
 is unavailable for conditions that retrieve only once.
 
-\reportpage{Limitations and Conclusions}
+\reportflow{Limitations and Conclusions}
 
 \section{Limitations}\label{limitations}
 
