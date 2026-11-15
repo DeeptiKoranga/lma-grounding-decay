@@ -5,62 +5,83 @@
 
 ## Abstract
 
-We study whether evidence support decays with causal distance in explanations
-of Indian macro-financial news and whether edge verification and targeted
-retrieval repair weak links. The prototype turns a dated query into a graph
-whose edges expose evidence, direction and causal strength. Its controller
-separates passage eligibility from semantic judgment and searches for
-additional evidence within a 12-call budget. Two model arms each ran seven
-conditions on four adjudicated development queries, including standard RAG,
-RAG with a cross-encoder reranker and two mechanism ablations. On the primary
-arm, the full system's paired unsupported established-edge rate was 0.167
-lower than standard RAG over three usable queries, with a 0.062 increase in
-reference-edge recall over four. It tied reranked RAG on UER. The verifier
-flagged 17 of 38 semantic challenge corruptions with 2 false alarms in 23
-controls. A blind human sample agreed with the historical development labels
-on 21 of 27 informative rows. Varun Patil authored the 291 judgments for the
-revised evaluation and attested to blinding and independence. On the two
-held-out queries, those judgments yield a UER tie and a 12.5-percentage-point
-reference-recall loss for the full system versus standard RAG, which breaches
-the pre-declared 10-point recall guard (H2d) on that half. The limited
-query count and deep-hop coverage constrain the results to descriptive
-comparisons.
+When a language model explains how one news event led to another, the first
+link in the chain is often backed by a quoted source. Later links often are
+not. The answer reads the same either way, so a reader cannot tell where the
+evidence ran out. We ask whether this happens, and whether checking each link
+and searching for more evidence fixes it.
+
+Our system answers a dated question with a graph. Every link in that graph
+shows the passage behind it, which way the effect runs, and how strongly the
+source states it. Fixed rules decide whether a passage is allowed to be used
+at all: it must be in our frozen news corpus, published on or before the
+question's date, mention both variables, and contain the quoted words exactly.
+A language model then decides the separate question of whether the passage
+actually says what the link claims. The system may search for more evidence,
+up to a budget of 12 tool calls.
+
+We ran seven conditions on four development questions, under two different
+models. The conditions include ordinary retrieval-augmented generation (RAG),
+RAG with a reranker, and two versions of our system with a part removed.
+
+On the main model, our full system's rate of unsupported links was 0.167 lower
+than ordinary RAG across three comparable questions, and it found 0.062 more
+of the links a human had marked as correct. It tied with reranked RAG. On a
+set of deliberately corrupted links, the verifier caught 17 of the 38 that
+fixed rules cannot catch at all, and wrongly flagged 2 of 23 clean ones. A
+blind human check agreed with 21 of 27 of the earlier labels. Varun Patil then
+wrote all 291 labels for the revised scoring and attested that he worked blind
+and independently.
+
+On the two held-out questions, those labels show no gain in the unsupported
+rate at all, and our system found 12.5 percentage points fewer correct links
+than ordinary RAG. That breaks the 10-point recall limit we set in advance
+(H2d). With so few questions, and little evidence at deeper links, every number
+here describes what we saw rather than proving a general result.
 
 ## 1. Introduction
 
-Readers increasingly ask assistants to connect events reported separately in the
-news: an oil shock, a weaker rupee, a central-bank decision. Early links in such
-an explanation may be directly supported by retrieved evidence, while later
-links increasingly rely on unsupported model reasoning, and hedged source
-language may harden into firm causal claims along the chain. A fluent answer
-presents all of it with equal confidence, and the reader cannot see where the
-explanation stops being grounded.
+People increasingly ask assistants to join up events that the news reported
+separately: an oil shock, a weaker rupee, a central-bank decision. The first
+step in such an answer is usually backed by a passage the model retrieved. The
+later steps often rest on the model's own reasoning instead. Careful wording in
+the source, such as "could widen the deficit", can harden into a flat claim
+further down the chain.
 
-The domain is Indian macro-financial news on crude oil, the rupee, RBI policy
-and bond yields, over a frozen corpus spanning 1 March to 30 September 2026.
-The intended reader is a student or non-specialist who wants to inspect a
-dated explanation. Support means that a passage states the directed relation.
-The study does not establish the underlying economic causal effect.
+The problem is that the answer looks the same throughout. Everything is stated
+with the same confidence, so the reader cannot see the point where the
+explanation stopped being grounded in anything.
 
-**RQ1 (phenomenon).** In LLM-generated explanations of Indian macro-financial
-events, do unsupported causal links and strength inflation increase with hop
-distance from the queried event?
+We work on Indian macro-financial news about crude oil, the rupee, RBI policy
+and bond yields. The corpus is frozen and runs from 1 March to 30 September
+2026. The reader we have in mind is a student or non-specialist who wants to
+check a dated explanation for themselves.
 
-**RQ2 (intervention).** Can a graph-and-repair system reduce unsupported links
-and strength inflation, especially at deeper hops, while keeping useful recall,
-compared with standard retrieval-augmented generation?
+One definition matters throughout. We say a link is **supported** when a
+passage states that relation, in that direction, and was published in time. We
+are measuring whether the text backs the claim. We are not measuring whether
+the economics is true.
 
-**Hypotheses.** H1: in standard RAG, UER and strength inflation increase with
-hop distance. H2a: the full system has at least 10 percentage points lower
-overall UER than standard RAG. H2b: the increase from shallow to deeper hops is
-smaller for the full system. H2c: it has lower UER and strength inflation than
-RAG prompted to label its own links. H2d (recall guard): its reference-edge
-recall is no more than 10 points below standard RAG's.
+**RQ1 (does the problem exist?).** In model-written explanations of Indian
+macro-financial events, do unsupported links and overstated causal strength
+increase the further a link sits from the original event?
 
-H2d is not decoration. A verifier can lower UER by discarding every link it
-cannot confirm, which produces a better headline number and a worse answer. The
-guard is what separates repair from deletion, and Section 7.10 explains why that
-distinction has already become the central question of the project.
+**RQ2 (does our fix work?).** Can a system that builds a graph, checks each
+link and searches for missing evidence reduce those problems, especially at
+distant links, without throwing away the useful links it should keep?
+
+**Hypotheses.** H1: in ordinary RAG, both problems grow with distance. H2a: our
+full system has at least 10 percentage points fewer unsupported links than
+ordinary RAG. H2b: the growth with distance is smaller for our system. H2c: our
+system beats RAG that is simply asked to label its own links. H2d (the recall
+guard): our system finds no more than 10 points fewer correct links than
+ordinary RAG does.
+
+H2d is the one that matters most, and we set it before running anything. A
+checker can always make the unsupported rate look good by deleting every link
+it cannot confirm. That gives a better number and a worse answer. H2d is what
+separates repairing an explanation from gutting it. Section 7.10 explains why
+that distinction turned out to be the central question of this project.
 
 ## 2. Literature Review
 
@@ -545,11 +566,10 @@ False-alarm rate on the 23 clean controls: **0.087**, against 0.000 for the
 rules.
 
 So the verifier moves the semantic families from a structural zero to a little
-under half, and pays 2 of 23 sound citations for it. That is the proposal's
-isolating comparison for the Reasoning capability, measured on the dataset
-built for it, and it is the clearest single statement this study can make about
-what verification buys: the rule layer cannot see these corruptions at all, and
-the verifier sees fewer than half of them.
+under half, and pays 2 of 23 sound citations for it. This is the comparison our proposal set out for
+the reasoning capability, measured on the data built for it. It is also the
+clearest thing this study can say about what checking buys: fixed rules catch
+none of these, and the checker catches fewer than half.
 
 **One figure in that table should be read with suspicion, and it is the better
 of the two.** The verifier disagreed with the adjudicated strength on **8 of
@@ -650,10 +670,9 @@ The two are kept apart from the metrics they resemble on purpose. Direction
 accuracy is not reference-edge recall, which requires direction to match before
 it counts an edge at all and so cannot say how often the sign was right on the
 pairs the model did find - which is exactly what makes B1-R's single reversal
-visible here and invisible there. Strength macro-F1 is not strength inflation,
-which counts only over-statement; macro-F1 is symmetric and includes
-under-statement, and macro-averaging stops a rare label such as
-`correlational` being drowned by `direct`. No condition was skipped for a
+visible here and invisible there. Strength macro-F1 is not strength inflation either. Inflation counts only
+labels that are too strong. Macro-F1 counts both directions. Averaging per
+label stops a rare one such as `correlational` being drowned by `direct`. No condition was skipped for a
 cutoff mismatch, and the sensitivity arm is reported beside it in
 `reports/reasoning_diagnostics_sensitivity.md`.
 
@@ -721,11 +740,11 @@ better-agreeing half of the sample. That is the favourable reading and it is
 reported with its limit: ten rows cannot establish reliability. The key's label
 balance is now available: the primary informative sample contained six supported
 and four unsupported labels, and the human agreed on all ten. It is therefore
-not a constant-label comparison. That distinction is quantitative rather than
-rhetorical: a 6/4 split on both sides puts chance agreement at 0.52, so the
-primary arm's kappa is **1.000 against a real denominator**, where a dominant
-label would have driven chance agreement toward 1 and left the coefficient
-undefined - the failure mode the dev adjudication actually hit (Section 7.4).
+not a constant-label comparison. The difference is a real one, not a turn of
+phrase. With 6 yes and 4 no on both sides, agreement by chance alone would be
+0.52, so the primary arm's kappa is **1.000 against a real denominator**. Had
+one label dominated, chance agreement would approach 1 and the kappa would mean
+nothing. That is what happened in the development adjudication (Section 7.4).
 It remains a small stratified sample rather than proof that the primary labels
 are correct.
 
@@ -814,13 +833,13 @@ judgments on the revised extractions.
 | Sensitivity development | 114 | -0.250 (2 pairs) | 0.000 (4 pairs) | holds |
 
 **H2d fails on the held-out half, and that is the guard working rather than an
-anomaly to explain away.** The hypothesis declared in advance was that M's
-reference-edge recall would sit no more than 10 points below B1's; on the two
-signed test queries it sits 12.5 points below, while the UER difference that
-was supposed to justify the trade is exactly zero. On this half the verifier
-bought nothing on the headline metric and lost reference edges to get there,
-which is precisely the repair-versus-deletion failure the guard was written to
-catch, and the reason it was written before any sweep had run.
+anomaly to explain away.** We said in advance that our system should find no more than 10 points fewer
+correct links than ordinary RAG. On the two held-out questions it finds 12.5
+points fewer. The gain that was meant to pay for that loss is exactly zero.
+
+So on this half the checker bought nothing and lost links to get there. That is
+the failure H2d was written to catch, and it was written before any run
+happened.
 
 Two caveats pull in opposite directions and neither rescues the result. Two
 query pairs is far below the ten-query inference gate, so this is a descriptive
@@ -1036,10 +1055,10 @@ undefined there, because one label was used throughout, which is a property of
 the sample rather than a failure to agree. They split on **seven of eight
 strengths** (raw 0.125, kappa 0.000), and the pre-declared direct-versus-hedged
 collapse did not rescue it, because that is precisely the axis of the split
-(`reports/adjudication_kappa_test.md`). Reconciliation applied one rule, D-30:
-strength is read off the modality of the clause carrying the causal claim, not
-off the manner in which the mechanism is described, so a claim under "would" is
-`conditional` however firmly the mechanism inside it is worded. Both annotators
+(`reports/adjudication_kappa_test.md`). Reconciliation used one rule, D-30.
+Strength comes from how hedged the claim is, not from how the mechanism inside
+it is worded. A claim under "would" is `conditional`, even if it says the cause
+acts "directly". Both annotators
 had independently rejected the same two `FPI_FLOWS -> GSEC_10Y` edges, which
 are dropped, leaving **four edges per graph at exactly `MIN_EDGES`**. The
 receipt is signed and hash-bound to those bytes.
@@ -1070,19 +1089,37 @@ Status as of 12 November 2026.
 
 ## 9. Conclusions
 
-The prototype measures evidential support and causal strength hop by hop in
-dated financial-news explanations. The verifier caught 17 of 38 semantic
-corruptions where citation rules caught zero, with two false alarms on 23
-controls. The model pilot also identified an upstream constraint: the
-generator cited the wrong passage in 17 of 20 cases.
+We built a system that measures, link by link, how far an explanation of
+financial news is actually backed by its sources. The measuring worked. The
+answer it gave is mixed, and the mixed part is the useful part.
 
-The original assistant-labelled development scores favour M over B1 on paired
-UER. The blind sample agreed on 21 of 27 informative judgments, and five of
-the six disagreements could understate sensitivity-arm UER. The revised
-held-out labels yield a UER tie across two query pairs and a recall difference
-of -0.125, breaching the pre-declared H2d guard on that half: no UER gain, and
-reference edges lost to obtain it. Sparse deep-hop denominators and the limited signed query set
-leave the grounding-decay hypothesis unresolved.
+**Checking links is worth doing, and is not enough on its own.** We built 38
+corrupted links that no fixed rule can catch, because reversing a link leaves
+the same two variables in the same passage with the same quoted words. Fixed
+rules caught none of them. The language-model checker caught 17, and wrongly
+flagged 2 of 23 clean links. So the checker does real work that rules cannot
+do, and it still misses more than half.
+
+**The problem may start earlier than we were looking.** In our model pilot the
+generator quoted the wrong passage in 17 of 20 cases. A checker cannot repair
+an explanation whose evidence was mismatched before it arrived.
+
+**Our main claim did not survive the held-out test.** On the four development
+questions, using the earlier labels, our full system beat ordinary RAG on
+unsupported links. A blind human check agreed with 21 of 27 of those labels,
+and five of the six disagreements point the same way: the real rate may be
+worse than reported. On the two held-out questions, scored with fresh labels,
+our system showed no improvement at all and found 12.5 percentage points fewer
+correct links. That breaks the H2d recall guard we set in advance. The guard
+exists to catch a checker that improves its score by deleting links rather than
+fixing them, and on this half that is what the numbers look like.
+
+**What we cannot say.** With four development and two held-out questions, and
+very little evidence at the more distant links, we cannot answer RQ1 either
+way. Whether grounding decays with distance remains open. What we can say is
+narrower and still worth having: we have a working instrument for measuring it,
+a corpus and reference set others can check, and one honest negative result
+about our own method.
 
 ## 10. References
 
