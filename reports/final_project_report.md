@@ -1,27 +1,29 @@
 % Does Grounding Decay with Distance? Measuring and Repairing Weak Links in LLM Causal Explanations of Indian Macroeconomic News
 % Varun Patil (2025204013) · Harshal Bhansali (2026909007) · Deepti Koranga (2025204033)
 % Language Models & Agents (LMA) Group Project 2026 - Final Report · 15 November 2026
-% [GitHub submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation) · [Reproducibility README and demos](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md)
+% [GitHub submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation) · [Reproducibility README](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md)
 
 ## Abstract
 
-We study whether evidence support declines along causal chains generated from Indian macro-financial news, and whether an edge verifier and targeted retrieval improve those explanations. The prototype builds dated graphs and checks each link for citation eligibility, direction and causal strength. We compared seven conditions on four signed development queries with two local models, and on two signed held-out queries with the primary model. Using revised support judgments, the full system reduced the unsupported established-edge rate by 16.7 and 25.0 percentage points on development across the two arms. On the held-out queries it tied standard RAG on that rate and lost 12.5 points of reference-edge recall. In a controlled diagnostic, the semantic verifier flagged 17 of 38 reversed or overstated links that all passed citation rules. Sparse deep-hop coverage leaves the grounding-decay hypothesis unresolved.
+We test whether causal links in model-generated explanations of Indian macro-financial news become less grounded farther from the queried event. We also test whether a graph-based verifier with targeted retrieval can reduce unsupported claims while retaining evidence-backed links. We ran seven conditions on four adjudicated development queries with two local models and on two held-out queries from a separate episode with the primary model. Relative to standard retrieval-augmented generation, the full system reduced the unsupported established-edge rate by 16.7 and 25.0 percentage points across the two development arms. On the held-out queries, the rate tied and reference-edge recall fell by 12.5 points. In a controlled challenge, semantic verification flagged 17 of 38 direction or strength corruptions that passed citation checks, with two false alarms among 23 clean controls. Deep-hop coverage was insufficient to assess grounding decay.
 
 ## 1. Introduction
 
-A model explaining an oil shock might connect crude prices to aviation fuel costs and then to airfares. A passage can support one link in that chain while offering no support for the next. A model can also turn a forecast or conditional statement into a claim that an effect actually occurred. We evaluate explanations against passages available as of a specified date. A supported link means a source states the directed relation. This measures fidelity to reported evidence and leaves economic causal identification outside the study.
+A model explaining an oil shock might connect crude prices to aviation fuel costs and then to airfares. A citation can support one link while leaving the next unsupported. Even when the cited passage states the relation, the explanation may reverse its direction or present a conditional effect as certain. We use *grounding decay* to mean an increase in these errors with distance from the event. We evaluate whether publications available by the query cutoff state the claimed relations and preserve their degree of certainty. The study measures fidelity to those sources.
 
 **RQ1.** In standard retrieval-augmented generation (RAG), do unsupported established edges and strength inflation become more common as links get farther from the event (H1)?
 
-**RQ2.** Can the full graph-and-repair system cut the unsupported established-edge rate (UER) by at least 10 percentage points versus standard RAG (H2a), reduce the increase in errors at deeper hops (H2b), and improve on RAG prompted to label its own links for both UER and strength inflation (H2c)? A recall guard limits the acceptable loss in recovered reference edges to 10 points (H2d). This guard penalizes systems that lower error rates by establishing very few claims.
+**RQ2.** Can the full graph-and-repair system cut the unsupported established-edge rate (UER) by at least 10 percentage points versus standard RAG (H2a), reduce the increase in errors at deeper hops (H2b), and improve on RAG prompted to label its own links for both UER and strength inflation (H2c)? A recall guard limits the acceptable loss in recovered reference edges to 10 points (H2d). The guard accounts for systems that lower their error rate by dropping recoverable claims.
 
 <!-- pagebreak -->
 
 ## 2. Literature Review
 
-Self-RAG learns when to retrieve and uses reflection tokens to critique generation [1]. FIRE interleaves search and verification for fact-checking claims [2]. CausalRAG uses causal structure to retrieve and preserve context [3]. We apply these ideas to a different unit of evaluation: an individual directed link in a time-bounded economic explanation. A link can have a valid quotation while overstating what the speaker said or reversing the cause and effect.
+Self-RAG learns when to retrieve and uses reflection tokens to critique generation [1]. FIRE interleaves retrieval and verification for individual fact-checking claims [2]. Our verifier judges a directed edge and its strength after checking source eligibility. CausalRAG uses causal graphs to organize retrieval [3]. In our evaluation the graph is an output, and hop distance within it defines which errors enter the grounding-decay analysis.
 
-ReCEval assesses reasoning steps for correctness and informativeness [4]. We inspect individual links and derive a path label from the weakest link. Our causal-strength categories draw on Yu et al. [5]. The contribution is a hop-level evaluation of citation support and strength, together with a bounded search-and-verification loop tested against standard RAG, reranked RAG and removal of individual components.
+ReCEval assesses reasoning steps for correctness and informativeness [4]. We inspect individual links and derive a path label from the weakest link. Our causal-strength categories draw on Yu et al. [5]. We combine step-level evaluation with a publication cutoff and an explicit distinction between uncertain predictions and direct claims.
+
+We pair unsupported-edge rate with reference recall to distinguish more precise claims from fewer claims. The design compares the full system against reranked retrieval and removes verification and targeted retrieval separately to test their contributions.
 
 ## 3. Dataset Created and Used
 
@@ -32,7 +34,7 @@ The frozen corpus contains **1,156 documents** (1,095 news and 61 official) and 
 | Evaluation set | Size | Purpose |
 |---|---:|---|
 | Signed development | 4 queries, 16 edges | Gold-backed comparison across two model arms |
-| Signed held-out | 2 FPI queries, 8 edges | Descriptive comparison on a separate portfolio-flow episode |
+| Signed held-out | 2 queries, 8 edges | Descriptive comparison on a foreign portfolio investment (FPI) episode |
 | Corruption challenge | 107 altered edges, 23 clean controls | Citation, direction and strength checks |
 | Public diagnostics | 200 examples per task | Causal strength (Yu et al.) and detection (FinCausal) [6] |
 | Action and safety diagnostics | 40 action states, 20 tool faults, 25 prompts | Tool selection, error recovery and safety checks |
@@ -63,7 +65,9 @@ The controller verifies unchecked claims first, then searches for evidence on th
 
 ### 4.3 Score explanations
 
-UER is unsupported established edges divided by established edges. A prose claim counts as established when cited or stated without qualification. Strength inflation counts supported established edges stated more strongly than their sources, divided by all supported established edges. Reference recall is the fraction of signed links matched by supported established edges in the correct direction. We calculate rates per query and compare matched query pairs with usable denominators. A missing denominator is recorded as unavailable. The predeclared analysis requires at least ten established edges in each of the three hop buckets for the decay trend and ten queries for inference.
+UER divides unsupported established edges by all established edges. In prose outputs, cited or unhedged claims count as established. Strength inflation is the share of supported established edges whose label is stronger than the cited source warrants. Reference recall is the fraction of signed edges recovered by supported, established predictions matching the source variable, target variable and direction.
+
+We compute each metric per query. A paired contrast averages the within-query differences over queries with a defined score for both conditions. A query with no established edges has undefined UER, so it cannot improve the paired average by contributing zero. The predeclared trend rule requires at least ten established edges in each of the hop 1, hop 2 and hop 3+ buckets. Inferential claims require ten queries.
 
 <!-- pagebreak -->
 
@@ -81,7 +85,7 @@ UER is unsupported established edges divided by established edges. A prose claim
 
 Development generation used 185 completed model calls and 116.1 minutes of summed model-call wall time on local MLX. Held-out generation used 34 model calls and 74 tool calls, taking 38.2 minutes of summed per-graph time. All 14 held-out runs confirmed their anchors, and all 121 logged passage occurrences met the cutoff. A separate Kaggle run used 1.211 allocated GPU-hours. The models were used without fine-tuning or paid API calls. [Compute accounting](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/compute_log.md) · [Held-out run audit](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/reports/heldout_generation_20261112.md)
 
-The repository README gives fresh-clone commands for the seven-condition fixture demo, the test suite and the model-backed demo. The browser demo exposes each edge's evidence, date and path label. Full experiment reproduction requires the pinned model revisions and a separately provisioned corpus and dense index. [README and demos](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md) · [Experiment reproduction](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/docs/reproduction.md)
+The repository README gives fresh-clone setup and test commands. Full experiment reproduction requires the pinned model revisions and a separately provisioned corpus and dense index. [Reproducibility README](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/README.md) · [Experiment reproduction](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/b/episode-confirmation/docs/reproduction.md)
 
 <!-- pagebreak -->
 
@@ -125,7 +129,9 @@ For the revised scores, Varun Patil reviewed 30 prose answers, approved 27 extra
 | Sensitivity development | 114 | -25.0 (2) | 0.0 (4) |
 | Primary held-out | 55 | 0.0 (2) | -12.5 (2) |
 
-Both development arms met the H2a UER target and H2d recall guard descriptively. The two held-out queries missed both. Neither split reaches the inference threshold. Primary B1 had 5, 2 and 1 established edges at hops 1, 2 and 3 or deeper, respectively. Sensitivity B1 had 13, 1 and 0. These development counts leave H1 unresolved. There are also zero usable paired queries for the shallow-to-deep comparison in H2b.
+Both development arms met the H2a target and H2d recall guard descriptively. On the held-out queries, M matched B1’s mean UER and missed the recall guard by 2.5 points. Query counts fell below the threshold for inference.
+
+In the original [primary](rq1_hop_decay.md) and [sensitivity](rq1_hop_decay_sensitivity.md) analyses, B1 produced 5/2/1 and 13/1/0 established edges at hops 1/2/3+, respectively. Neither arm met the ten-edge minimum in all three buckets, leaving H1 unresolved. H2b also lacked usable shallow-to-deep query pairs. The exploratory H2c comparison favored M on UER but lacked a usable paired strength-inflation estimate.
 
 <!-- pagebreak -->
 
@@ -150,7 +156,9 @@ The pilot used 2,035 automated relevance judgments for development selection. BG
 | Inflated strength | 15 | 0 | 8 |
 | Clean controls | 23 | 0 | 2 false alarms |
 
-A reversed edge can cite a real and timely passage that mentions both variables and contains the exact quote. The verifier must read which variable affects the other. On strength, the semantic verifier also disagreed with the reference label on 8 of 23 clean controls, so the 8/15 inflation detections should be read alongside that label disagreement. Some test references seeded the challenge, which is a separate diagnostic from the end-to-end held-out sweep.
+We count a reversal as detected when the verifier declines to mark the edge source-asserted. We count strength inflation as detected when it returns a weaker label than the claimed strength. The verifier also disagreed with the reference strength on 8 of 23 clean controls. Those disagreements qualify the strength result and are tracked separately from the two provenance false alarms in the table. Some test references seeded this controlled diagnostic.
+
+**Failure example.** In the development query on rupee pressure, the verifier-free condition reversed a relation from oil risk to rupee pressure. A quotation from the relevant passage can still mention both variables in the reversed edge. This explains why the direction test adds information to the citation-integrity checks.
 
 <!-- pagebreak -->
 
@@ -190,7 +198,7 @@ M exhausted its budget and stopped with unchecked edges on every development que
 
 ## 9. Conclusions
 
-The study does not establish that grounding decays with hop distance. The full system reduced unsupported claims on the development set but tied standard RAG on the two held-out queries and missed the recall guard. The controlled challenge isolates a narrower result: the semantic verifier flagged 17 of 38 corruptions that passed all citation checks, with two false alarms on 23 clean controls. Together, the results identify where semantic checking adds information and where retrieval quality, lost recall and limited coverage constrain its end-to-end benefit.
+The controlled challenge shows that semantic verification can detect direction and strength errors that pass citation checks. The development results favor the full system on unsupported-edge rate, but the two held-out queries tied standard RAG on that measure and missed the recall guard. With few deeper links, the study leaves grounding decay unresolved. A larger, episode-diverse test should measure whether semantic verification improves grounding while preserving recall.
 
 ## 10. References
 

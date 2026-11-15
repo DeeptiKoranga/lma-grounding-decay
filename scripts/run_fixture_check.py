@@ -143,9 +143,11 @@ def run(output: Path) -> dict:
     artifacts, summary = [], {}
     for condition in Condition:
         log = output / f"{condition}.jsonl"
-        result = pipeline.run(query, condition=condition, run_id=f"demo-{condition}", log_path=log)
+        result = pipeline.run(
+            query, condition=condition, run_id=f"fixture-{condition}", log_path=log
+        )
         graph = Graph.model_validate(result["graph"])
-        graph.notes = "Synthetic demonstration using scripted model and reranker responses."
+        graph.notes = "Synthetic pipeline check using scripted model and reranker responses."
         safety = inspect_graph(graph, passages)
         events = iter_run_log(log)
         for event in events:
@@ -154,9 +156,9 @@ def run(output: Path) -> dict:
                 and event.result.tool in ("search_corpus", "counter_search")
                 and any(not passage.visible_at(query.as_of) for passage in event.result.passages)
             ):
-                raise RuntimeError("demo retrieval violated the as-of boundary")
+                raise RuntimeError("fixture retrieval violated the as-of boundary")
         if not safety["passed"] or not result["anchor_check"]["confirmed"]:
-            raise RuntimeError(f"{condition} demo output failed structural validation")
+            raise RuntimeError(f"{condition} fixture output failed structural validation")
         path = output / f"{condition}.json"
         write_json(path, {**result, "graph": graph.model_dump(mode="json")})
         artifacts.append(path)
@@ -169,12 +171,14 @@ def run(output: Path) -> dict:
 
     full = summary["M"]
     if not full["asserted_edges"] or not full["inferred_edges"] or scorer.calls != 1:
-        raise RuntimeError("demo did not exercise verification, inference and the reranker")
+        raise RuntimeError(
+            "fixture check did not exercise verification, inference and the reranker"
+        )
     build((), output / "graph_explorer.html", run_artifacts=artifacts)
     write_json(
         output / "summary.json",
         {
-            "scope": "synthetic scripted engineering demo",
+            "scope": "synthetic scripted pipeline check",
             "fixture_reranker_calls": scorer.calls,
             "conditions": summary,
         },
@@ -184,7 +188,7 @@ def run(output: Path) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path("runs/demo"))
+    parser.add_argument("--output", type=Path, default=Path("runs/fixture-check"))
     args = parser.parse_args()
     try:
         summary = run(args.output)

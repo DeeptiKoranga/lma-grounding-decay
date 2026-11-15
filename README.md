@@ -7,7 +7,7 @@ Deepti Koranga (2025204033).
 
 ---
 
-## Final submission and working demos
+## Final submission
 
 Use the [episode-confirmation submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation).
 The [10-page final project report](reports/final_project_report.pdf) presents both
@@ -15,48 +15,24 @@ development arms, the held-out evaluation and the capability diagnostics.
 It credits Varun Patil for the 30-case prose review and the 291 revised
 support judgments, with his attestations of blinding and independence.
 The [academic report snapshot](reports/academic_report.pdf) and dated
-milestone sections record earlier stages of the study. The
-[long-form final report](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/f90ae604d3a4d2882ec8842b611e7947023a6c27/reports/final_project_report.pdf)
-contains the detailed experiment tables and audit notes.
+milestone sections record earlier stages of the study.
 
 Build the PDF from its [LaTeX source](reports/final_project_report.tex)
 with Tectonic from the repository root.
 
 `tectonic reports/final_project_report.tex`
 
-### Open the demo
-
-Download [the synthetic graph demo](reports/demo_fixture.html) and open it
-locally in a browser. Select **M** and click a solid edge to see its evidence,
-verification method, publication date and cutoff. Click a dashed edge to see
-the inferred claim. The footer shows the path's weakest link. The page is
-self-contained and uses synthetic passages.
-
-### Reproduce the demo from a fresh clone
+### Set up and test from a fresh clone
 
 ```sh
 git clone --branch b/episode-confirmation https://github.com/DeeptiKoranga/lma-grounding-decay.git
 cd lma-grounding-decay
 uv sync --frozen --extra dev
-uv run --no-sync python -m scripts.run_demo --output runs/demo
 uv run --no-sync pytest
 ```
 
-The same command is available as `make demo` on systems with Make. It runs
-all seven conditions through the shared pipeline using fixture passages,
-a scripted model and a deterministic fixture reranker. It checks the cutoff,
-anchor confirmation, structural evidence and verifier path, then writes the
-browser page, graphs and tool logs under `runs/demo`. Choose a fresh output
-directory on repeat runs. Demo outputs are engineering checks; research
-results use the pinned model and frozen corpus.
-
 ### Reproduce the experiments
 
-- [Model-backed demo](docs/reproduction.md#run-the-model-backed-demo) runs one
-  signed dev query through all seven conditions with the real model, BGE-M3
-  and cross-encoder. It needs the separately provisioned model cache, corpus
-  and index. See the [7/7 live run audit](reports/submission_live_demo.md).
-  The raw traces and corpus text stay local.
 - [Full reproduction](docs/reproduction.md) documents the exact model
   revisions, corpus and index hashes, dev sweeps, independent scoring
   requirements, and platform-specific backends. `make rq` regenerates the
