@@ -1,303 +1,101 @@
 # Does Grounding Decay with Distance?
 
-Measuring and repairing weak links in LLM causal explanations of Indian macroeconomic news.
+**Can a language model explain a chain of economic effects without overstating what its sources say?** We study that question using Indian macro-financial news. The full system answers a dated question with an **event-impact graph**. Each link records the direction of the effect, its strength, and the source passage when one supports it.
 
-LMA Group Project 2026 — Varun Patil (2025204013), Harshal Bhansali (2026909007),
-Deepti Koranga (2025204033).
+Language Models & Agents group project, 2026 · Varun Patil, Harshal Bhansali and Deepti Koranga
 
----
+[Final report (PDF)](reports/final_project_report.pdf) · [Reproduction guide](docs/reproduction.md) · [Implementation and evidence map](docs/submission_verification.md) · [Original proposal](proposal_lma.pdf)
 
-## Final submission
+## What the project does
 
-Use the [episode-confirmation submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation).
-The [10-page final project report](reports/final_project_report.pdf) presents both
-development arms, the held-out evaluation and the capability diagnostics.
-It credits Varun Patil for the 30-case prose review and the 291 revised
-support judgments, with his attestations of blinding and independence.
-The [academic report snapshot](reports/academic_report.pdf) and dated
-milestone sections record earlier stages of the study.
+Consider the question “After Brent crossed $100 in March 2026, what effects on India did sources discuss?” A passage might support a link from crude prices to fuel costs while leaving the next link to airfares unsupported. The system keeps those links distinct so a reader can inspect where the evidence ends.
 
-Build the PDF from its [LaTeX source](reports/final_project_report.tex)
-with Tectonic from the repository root.
+```mermaid
+flowchart LR
+  Q["Dated question"] --> R["Retrieve eligible passages"]
+  R --> G["Extract directed links"]
+  G --> V["Check citations and verify claims"]
+  V --> C["Prioritize unresolved links"]
+  C -->|"Targeted search"| R
+  C -->|"Stop"| O["Graph with evidence and paths"]
+```
 
-`tectonic reports/final_project_report.tex`
+- **Retrieval.** BGE-M3 searches a frozen corpus using the query's publication cutoff. A baseline adds a cross-encoder over the top 50 candidates to test how much better ranking alone helps.
+- **Verification.** Rules check the passage ID, date, variable mentions, and verbatim quote. A semantic verifier then checks whether the source supports the claimed direction and strength.
+- **Controller.** The controller searches for evidence on unresolved links within a 12-call budget. The graph labels supported and inferred links separately and records each path's weakest link.
+- **Evaluation.** The study measures unsupported established-edge rate (UER), strength inflation, and recall of adjudicated reference edges. It compares conditions on the same queries and inspects errors at hops 1, 2, and 3+ from the event.
 
-### Set up and test from a fresh clone
+## Data and experiments
+
+The frozen corpus spans **March–September 2026** and contains **1,156 documents and 16,472 passages**. Six dated macro series supply 161 observations to check whether an event occurred. The causal evidence comes from passages. The signed reference set covers four development queries and two held-out queries from one foreign portfolio investment episode. The study also includes a 130-item corruption challenge and public causal-language benchmarks.
+
+| Condition | What it tests |
+| --- | --- |
+| `B0` | Query-only baseline without text retrieval |
+| `B1` | Standard RAG with cited prose |
+| `B1-R` | Standard RAG with a cross-encoder reranker |
+| `B2` | RAG prompted to supply provenance and strength labels |
+| `A-NoVerify` | Full system with generator self-labels in place of semantic verification |
+| `A-NoLoop` | Full system with initial retrieval and no targeted search loop |
+| `M` | Full graph, semantic verifier, and bounded search loop |
+
+All seven conditions ran on four development queries with **Qwen3-8B** and again with **Qwen3.5-9B** for sensitivity. The primary model also ran all seven conditions on both held-out queries. See the [development sweep audit](reports/dev_gold_sweeps_20261110.md) and [held-out audit](reports/heldout_generation_20261112.md).
+
+## What we found
+
+These are paired results for the full system **M** minus standard RAG **B1**, using the revised support judgments. Each metric uses the query pairs with a defined score for both systems.
+
+| Split | UER change | Reference-edge recall change |
+| --- | ---: | ---: |
+| Primary development | −16.7 pp (3 pairs) | +6.25 pp (4 pairs) |
+| Sensitivity development | −25.0 pp (2 pairs) | 0.0 pp (4 pairs) |
+| Primary held-out | 0.0 pp (2 pairs) | −12.5 pp (2 pairs) |
+
+The held-out recall loss exceeded the prespecified 10-point limit. In the separate corruption challenge, the semantic verifier caught **17 of 38** direction or strength corruptions that passed the citation rules and flagged **2 of 23** clean controls. The held-out sample covers one episode, and the development runs yielded too few deep-hop links to assess grounding decay. [Final report, §§7–9](reports/final_project_report.pdf) · [Verifier challenge results](reports/challenge_model_arm.md)
+
+## Run locally
+
+### Install and test
+
+The core suite and synthetic pipeline check run with Python 3.12 and [uv](https://docs.astral.sh/uv/). They require no model weights, research corpus, or GPU.
 
 ```sh
 git clone --branch b/episode-confirmation https://github.com/DeeptiKoranga/lma-grounding-decay.git
 cd lma-grounding-decay
 uv sync --frozen --extra dev
 uv run --no-sync pytest
+PYTHONPATH=src uv run --no-sync python -m scripts.run_fixture_check --output runs/fixture-check
 ```
 
-### Reproduce the experiments
+The fixture check runs all seven conditions and writes graphs, tool logs, and a local viewer. Choose a fresh output directory for each run.
 
-- [Full reproduction](docs/reproduction.md) documents the exact model
-  revisions, corpus and index hashes, dev sweeps, independent scoring
-  requirements, and platform-specific backends. `make rq` regenerates the
-  primary RQ reports from the committed development scores.
-- [Implementation and evidence map](docs/submission_verification.md) links
-  the original proposal to code, tests, actual runs and remaining research
-  gaps. The two signed FPI queries were used for the descriptive retrieval
-  comparison and [seven-condition held-out generation](reports/heldout_generation_20261112.md).
-  Section 7.1 of the final report gives the revised support scores. The
-  [independent review handoff](docs/independent_review.md) documents the
-  scoring procedure and the remaining test reference expansion.
+### Reproduce the research
 
-## What this is
+The research sweeps need the **frozen corpus, matching dense index, pinned model weights, and backend environment**. Follow the [reproduction guide](docs/reproduction.md) and check the corpus against its [manifest](data/processed/MANIFEST.md). The article payload, model caches, and raw run outputs are kept outside Git.
 
-Given a question like *"Brent crossed $100 on 12 March 2026; what effects on India were
-sources discussing?"*, the system answers with an **event-impact graph** rather than prose.
-Every edge in that graph carries two labels:
+| Goal | Entry point |
+| --- | --- |
+| Regenerate the original development RQ summaries from saved scores | `make rq` |
+| Run both signed development sweeps | `make sweep-dev-both` |
+| Check signed held-out inputs and run the two-query sweep | `make sweep-test-descriptive` |
+| Rerun the semantic verifier challenge | `make challenge-model-arm` |
+| Review and score generated graphs | [Prose correction and blind support scoring](docs/independent_review.md) |
 
-- **provenance** — `source_asserted` (a passage published on or before the as-of date states
-  this relation, and we hold the verbatim span) or `model_inferred` (no supporting passage was
-  found; the link is the model's own reasoning);
-- **strength** — `direct`, `conditional` or `correlational`.
+`make rq` uses the committed historical development scores. The revised judgments and contrasts are described in Section 7.1 of the [final report](reports/final_project_report.pdf). Build the PDF with `tectonic reports/final_project_report.tex`.
 
-A path is scored by its **weakest hop**. That makes it visible where a fluent explanation stops
-being grounded, which is the thing we measure: does the unsupported-edge rate rise with hop
-distance from the anchor event, and can edge-targeted verification and retrieval repair it?
+## Repository map
 
-Primary metric is **UER** (unsupported established-edge rate), always sliced by hop 1 / 2 / ≥3.
+| Path | Contents |
+| --- | --- |
+| [`src/corpus/`](src/corpus), [`src/retrieval/`](src/retrieval) | Corpus processing, date filters, dense retrieval, and reranking |
+| [`src/schema/`](src/schema), [`src/extract/`](src/extract), [`src/verify/`](src/verify) | Graph and evidence schemas, edge extraction, verification, and path labels |
+| [`src/conditions/`](src/conditions), [`src/agent/`](src/agent), [`src/tools/`](src/tools), [`src/llm/`](src/llm) | Shared runner, control policies, tool calls, and model backends |
+| [`src/eval/`](src/eval), [`data/eval/`](data/eval), [`data/series/`](data/series) | Scoring, signed reference graphs, challenge inputs, and dated macro observations |
+| [`configs/`](configs), [`scripts/`](scripts), [`notebooks/`](notebooks), [`tests/`](tests) | Pinned settings, commands, recorded compute workflows, and regression checks |
+| [`docs/`](docs), [`reports/`](reports) | Reproduction details, design decisions, experiment audits, and report sources |
 
-## Status
+## Project records
 
-**Development pipeline integrated; research acceptance is incomplete.** The local
-development snapshot contains 1,156 documents and 16,472 passages. Retrieval, constrained
-extraction, independent rule/LLM verification, six bounded read-only tools, the
-controller and all seven conditions are implemented. B0/B1/B1-R produce prose
-before mechanical edge extraction. Human correction and blinded support review
-remain required. All six macro series are populated; basket, Brent, benchmark yield and FPI
-coverage remain partial and do not confirm the planned anchor episodes.
-
-The 23 October local integration completed all 42 graphs across six unreviewed
-v1 candidates. The archived synthetic tool-choice probe succeeded on only 5/40
-expected actions. The separate two-model project pilot now resolves D-01;
-execution, model selection and structural validity do not establish research performance. See
-[the validation and remaining gates](reports/integration_status.md).
-
-Current local runs read the pinned D-01 selection from
-`configs/model_selection.json`. Historical Qwen3-8B integration runs keep their
-original model identity; no paid API was used.
-The six source-backed queries in `data/eval/development_candidates.jsonl` are
-unreviewed candidates, not the frozen development gold set. See
-[docs/reproduction.md](docs/reproduction.md), [PLAN_MIDSUB.md](PLAN_MIDSUB.md),
-and [docs/decisions.md](docs/decisions.md).
-
-```mermaid
-flowchart LR
-  Q[Question and pinned cutoff] --> R[Shared date-safe retrieval]
-  R --> G[Prose or constrained graph generation]
-  G --> V[Corpus, date, variable and quotation checks]
-  V --> J[Fresh-context semantic verifier]
-  J --> A[Bounded edge repair and targeted retrieval]
-  A --> O[Graph with BFS hops and weakest-link paths]
-  A --> R
-  O --> H[Blinded human support review]
-  H --> E[Hop metrics and paired query bootstrap]
-```
-
-## Quick start
-
-```bash
-make setup     # .venv on Python 3.12, project + dev tools, via uv
-make test      # pytest: round-trips every model, validates every fixture
-make lint      # ruff + black --check
-make hooks     # one-off: install the pre-commit hooks
-```
-
-`make setup` needs [uv](https://docs.astral.sh/uv/). If you do not have it:
-`python3 -m pip install --user uv`, or `curl -LsSf https://astral.sh/uv/install.sh | sh`.
-uv fetches Python 3.12 itself, so you do not need it installed system-wide.
-
-## Directory map
-
-One owner per directory for the whole 11 days — that is the merge-conflict map, not a
-suggestion. Do not edit another track's directory; open an issue instead.
-
-| Path | Track | What lives there |
-|---|---|---|
-| `scripts/fetch/` | A | Collectors for the four publications and the official documents |
-| `src/corpus/` | A | Parsing, normalising, near-dup removal, chunking with char offsets |
-| `src/retrieval/` | A | BM25, embeddings, hybrid RRF, the reranker |
-| `data/raw/`, `data/processed/`, `data/series/` | A | Corpus payload, manifest, macro series |
-| `src/schema/` | B | **This package.** Frozen records + the closed ontology |
-| `src/extract/` | B | Event and candidate-edge extraction, JSON-constrained |
-| `src/verify/` | B | Rule layer, LLM verifier, weakest-link path labelling |
-| `data/eval/` | B | Queries, gold graphs, challenge set, agent states, safety prompts |
-| `src/llm/` | C | One `generate()` over MLX / llama.cpp / vLLM / API |
-| `src/tools/` | C | The six read-only tools |
-| `src/agent/` | C | Controller, state, priority policy, budget |
-| `src/conditions/` | C | Seven conditions as config flags over one code path |
-| `src/eval/` | C | Metrics, bootstrap, safety eval |
-| `configs/`, `notebooks/`, repo infra | C | |
-
-## The frozen records
-
-All five live in `src/schema/` and are exported as JSON Schema to `docs/schemas/`
-(regenerate with `make schemas`; a test fails if they drift from the models).
-
-| Record | Module | Notes |
-|---|---|---|
-| `Passage` | `schema.models` | Paragraph + char offsets into the document text |
-| `Edge` | `schema.models` | provenance, strength, direction, evidence span, hop |
-| `Graph` | `schema.models` | query_id, anchor, as_of, nodes, edges, paths |
-| `ToolCall` / `ToolResult` | `schema.tools` | Discriminated unions, one variant per tool |
-| `RunLogLine` | `schema.runlog` | One JSONL line per model call / tool call / state |
-
-```python
-from schema import Edge, Graph, Passage, load_ontology, parse_tool_call
-
-load_ontology().ids()          # the closed list of 46 macro variables
-Edge(...)                      # rejects an asserted edge with no evidence span
-```
-
-Three invariants the models enforce, because the metrics depend on them:
-
-1. A `Passage`'s char offsets must match its own text, or verbatim-span checking drifts.
-2. A `source_asserted` `Edge` must carry an evidence span and a document id.
-3. A `Graph`'s `hop` labels must match breadth-first distance from the anchor, and a `Path`'s
-   `weakest_strength` must equal minimum aggregation over its edges.
-
-## Experimental conditions
-
-Seven conditions, **one code path**, config flags only (`src/conditions/`, `configs/*.yaml`):
-`B0` closed-book · `B1` standard RAG · `B1-R` RAG + reranker · `B2` RAG + self-labels ·
-`A-NoVerify` · `A-NoLoop` · `M` full system.
-
-## Corpus
-
-Indian macro-financial news (BusinessLine, Economic Times, Business Standard, Mint) plus
-RBI / MOSPI / PPAC / PIB documents are the planned sources, **1 March – 30 September
-2026**. The current development snapshot contains ET, BusinessLine, Mint, MoSPI,
-PPAC and OEA; Business Standard and RBI remain absent. The window is
-enforced in the `Passage` model. Macro series only confirm that a move happened; they are
-never evidence for an edge.
-
-The corpus payload is not in git — see `.gitignore` and `data/processed/MANIFEST.md`.
-
-## Contributing
-
-Branch and PR rules are in [CONTRIBUTING.md](CONTRIBUTING.md). Short version: `main` is
-protected, branch as `a/`, `b/` or `c/<slug>`, one review, merge the same day, commit daily.
----
-
-## Project history
-
-The sections below are dated snapshots kept for the record. They describe
-earlier stages and do **not** describe the submitted system. For what was
-actually built and how to run it, see the sections above.
-
-## Phase 1 Track A and C review — 30 October 2026
-
-All 22 A1–A11/C1–C11 implementation deliverables and their artifacts are present.
-The full review repaired malformed model/publisher input handling, review-gate
-validation and A10 source replay. **742 tests pass on native Windows, Ubuntu
-and macOS**, with no skips, plus lint and notebook formatting.
-
-The entire corpus and all six canonical series reproduce byte for byte from
-retained originals. A fresh 20-query retrieval comparison reproduces the
-selection and reranker results. The current local model completed all 14 smoke
-graphs across seven conditions and reused all 14 on unchanged resume.
-
-Track A retains the accepted source-mix and sparse-history deviations: Business
-Standard/RBI/PIB corpus coverage is absent, and four historical series remain
-sparse. Model quality is also limited (5% strict extraction, 10% tool choice in
-the selected model's small pilot). These checks do not establish human-reviewed
-research results or completion of the entire mid-submission.
-
-See [the full 22-deliverable review](reports/phase1_tracks_a_c_review_20261030.md)
-for findings, exact plan comparison, execution evidence and reproduction limits.
-
-## Track A handoff snapshot — 28 October 2026
-
-**Fresh-checkout update — 28 October:** Track A / Varun task 4.3 is complete
-for the local development configuration. A clean GitHub checkout passed setup,
-Ruff/Black and **663 tests with no skips**, then generated **24/24 new graphs**
-(B0/B1/B2/M × six current-v7 candidates). Full audit, independent trace checks
-and unchanged resume (24 cached, no new model calls) passed. Cached model weights,
-native inference environments and the verified PDF distribution were reused;
-other laptops/Kaggle remain unverified. See
-[fresh-checkout evidence](reports/fresh_checkout_reproduction_20261028.md).
-
-**Integration fixes:** all five audited code gaps are repaired: new runs use the
-selected BGE-M3 retriever, anchor checks call the series store, resume binds all
-participating code/data/settings, run validation requires the declared sweep,
-and installed verifier aliases are included. See
-[the fix validation](reports/integration_fixes_20261027.md).
-Shared annotation, model selection, result figures and other-machine/Kaggle
-verification remain separate prerequisites. The
-[original audit](reports/whole_project_audit_20261027.md) is preserved as history.
-
-The scoped Track A mid-submission development handoff is complete. The
-[closeout](reports/track_a_mid_submission_scope_20261027.md) records the reduced
-source/PDF scope and sparse historical-series coverage as delivery deviations.
-Varun's 27 October review and explicit independence/blinding attestations are
-now recorded. Both sampled-corpus and retrieval acceptance exports pass; these
-validate the records and declarations, not the unobserved review procedure.
-
-The active **v7 narrative development** corpus contains **1,156 documents and
-16,472 passages**. Missing article text, author biographies, embedded related
-links and scope false positives have been addressed. Official PDFs contribute
-949 coherent narrative paragraphs; table/chart fragments stay outside the text
-index with their originals and layout provenance preserved.
-
-The dense index is rebuilt. All **2,035 pooled relevance judgments** are complete
-within the new pool: **195 relevant, 1,840 irrelevant**, with no unresolved labels.
-The 20-question development comparison selects BGE-M3 under the declared rule;
-Recall@10 is 0.4259, rising to 0.5296 with top-50 reranking. The original
-comparison uses automated development judgments. Their origin is preserved
-alongside Varun's subsequent user-attested review; no item decision or evidence
-span has changed.
-
-All six macro series retain their 161 dated original observations. A separate
-317-observation retrospective snapshot remains excluded at historical cutoffs.
-Source gaps, permissions and anchor limitations are explicitly documented.
-That snapshot’s suite passed **663 tests** after optional PDF/extraction dependencies
-are installed; committed-source reparse reproduces the archive hash.
-
-The new independent-review workspace is
-`data/interim/track_a_review_delivery_v7_20261026/START_HERE.md`; its judgments and
-attestations are blank in the saved delivery. Separate completed records now
-name Varun, dated 27 October, with user-declared independence and blinding.
-Schemas, packet bindings, complete coverage and exact spans pass both exporters.
-The original supplied files and development-label provenance remain preserved;
-identity, review conduct and timing of blinding are not independently verified.
-See `reports/track_a_reviewer_identity_20261027.json`. No experiment-result
-review or main hypothesis conclusion is claimed. Earlier v1 runs and
-the v3 review retain their original corpus bindings. See
-[Track A delivery](reports/track_a_progress.md) and
-[reproduction instructions](docs/reproduction.md).
-
-
-The follow-up audit checks every retained official PDF version and seven SEBI
-annexures. Five total-FPI candidates remain separate because their asset coverage
-differs from the current series. Dated primary announcements now support the
-April ATF announcement and August RBI meeting; final anchor acceptance remains
-with Track B. See [the follow-up record](reports/track_a_followup_20261026.json).
-
-## Track C Phase 1 — completed 30 October 2026
-
-**All eleven C1–C11 deliverables are complete on `varun`.** The agent-controller
-work is merged; Claude logging, verified-strength relabelling, `verify_edge`,
-Windows worker and resume/checksum portability defects are fixed.
-
-- **Model decision:** `mlx-community/Qwen3-8B-4bit` at `545dc4251c05440727734bcd94334791f6ab0192`. Both models completed the
-  same 100 project-schema pilot cases; all 200 raw scores reproduce.
-- **Safety:** 25 new selected-model responses reviewed across all four risks,
-  with assistant reviewer provenance and per-response reasons.
-- **Kaggle:** the private two-T4 vLLM run completed all 14 graphs and cached
-  all 14 on resume; measured allocation including setup was 1.211103 GPU-hours.
-- **Checks:** 742 passing tests on each native Windows, Ubuntu and macOS
-  runner, with no skips; Ruff and notebook-inclusive Black pass.
-- **Data handoff:** the exact v7 dense index and passages are supplied in a
-  separately checksummed frozen-data archive and private Kaggle dataset.
-
-See [the C1–C11 closeout](reports/phase1_track_c_closeout_20261030.md),
-[model pilot](reports/pilot_model_project_20261030.md) and
-[Kaggle/Windows handoff](docs/track_c_kaggle_handoff.md).
-`make validate-track-c` rechecks the saved completion evidence. Synthetic
-diagnostics and assistant safety review do not establish human-reviewed research
-results; full gold sweeps and headline UER remain later-phase work.
+- [Research decisions](docs/decisions.md), [mid-submission plan](PLAN_MIDSUB.md), and [academic report snapshot](reports/academic_report.pdf)
+- [Track A corpus and retrieval handoff](reports/track_a_progress.md), [Track C closeout](reports/phase1_track_c_closeout_20261030.md), and [Phase 1 joint review](reports/phase1_tracks_a_c_review_20261030.md)
+- [Contributing and branch review workflow](CONTRIBUTING.md)
