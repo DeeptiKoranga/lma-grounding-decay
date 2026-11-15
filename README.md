@@ -10,12 +10,19 @@ Deepti Koranga (2025204033).
 ## Final submission and working demos
 
 Use the [episode-confirmation submission branch](https://github.com/DeeptiKoranga/lma-grounding-decay/tree/b/episode-confirmation).
-The [final project report](reports/final_project_report.pdf) presents both
+The [10-page final project report](reports/final_project_report.pdf) presents both
 development arms, the held-out evaluation and the capability diagnostics.
 It credits Varun Patil for the 30-case prose review and the 291 revised
 support judgments, with his attestations of blinding and independence.
 The [academic report snapshot](reports/academic_report.pdf) and dated
-milestone sections record earlier stages of the study.
+milestone sections record earlier stages of the study. The
+[long-form final report](https://github.com/DeeptiKoranga/lma-grounding-decay/blob/f90ae604d3a4d2882ec8842b611e7947023a6c27/reports/final_project_report.pdf)
+contains the detailed experiment tables and audit notes.
+
+Build the PDF from its [LaTeX source](reports/final_project_report.tex)
+with Tectonic from the repository root.
+
+`tectonic reports/final_project_report.tex`
 
 ### Open the demo
 
@@ -58,7 +65,7 @@ results use the pinned model and frozen corpus.
   the original proposal to code, tests, actual runs and remaining research
   gaps. The two signed FPI queries were used for the descriptive retrieval
   comparison and [seven-condition held-out generation](reports/heldout_generation_20261112.md).
-  Section 7.8 of the final report gives the revised support scores. The
+  Section 7.1 of the final report gives the revised support scores. The
   [independent review handoff](docs/independent_review.md) documents the
   scoring procedure and the remaining test reference expansion.
 
