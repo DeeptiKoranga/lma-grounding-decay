@@ -21,7 +21,8 @@ controls. A blind human sample agreed with the historical development labels
 on 21 of 27 informative rows. Varun Patil authored the 291 judgments for the
 revised evaluation and attested to blinding and independence. On the two
 held-out queries, those judgments yield a UER tie and a 12.5-percentage-point
-reference-recall loss for the full system versus standard RAG. The limited
+reference-recall loss for the full system versus standard RAG, which breaches
+the pre-declared 10-point recall guard (H2d) on that half. The limited
 query count and deep-hop coverage constrain the results to descriptive
 comparisons.
 
@@ -750,6 +751,11 @@ section remains an assistant-labelled development diagnostic.
 | Primary Qwen3-8B | 1.000 (3/4 queries) | 0.750 (4/4) | -0.167 (3 usable pairs) | +0.062 (4 pairs) | holds descriptively |
 | Sensitivity Qwen3.5-9B | 0.529 (4/4) | 0.250 (2/4) | -0.100 (2 usable pairs) | -0.062 (4 pairs) | holds descriptively |
 
+H2d holds on **both development arms and fails on the held-out half**, where
+the same guard reads -0.125 against a declared floor of -0.10 (Section 7.8).
+These two tables must be read together; either alone gives the wrong
+impression of the guard.
+
 The primary B1 hop buckets have only 5, 2 and 1 established edges at hops 1,
 2 and 3-or-deeper; the sensitivity B1 buckets have 13, 1 and 0. Neither arm
 clears the pre-declared three-bucket gate, so H1 is not testable on this dev
@@ -801,14 +807,28 @@ returned files record his attestations of blinding and independence. Packet
 validation confirms coverage and integrity. The following contrasts use his
 judgments on the revised extractions.
 
-| Arm | Edge judgments | M minus B1 UER | M minus B1 reference recall |
-|---|---:|---:|---:|
-| Held-out primary | 55 | 0.000 (2 pairs) | -0.125 (2 pairs) |
-| Primary development | 122 | -0.167 (3 pairs) | +0.0625 (4 pairs) |
-| Sensitivity development | 114 | -0.250 (2 pairs) | 0.000 (4 pairs) |
+| Arm | Edge judgments | M minus B1 UER | M minus B1 reference recall | H2d |
+|---|---:|---:|---:|---|
+| Held-out primary | 55 | 0.000 (2 pairs) | **-0.125** (2 pairs) | **fails** |
+| Primary development | 122 | -0.167 (3 pairs) | +0.0625 (4 pairs) | holds |
+| Sensitivity development | 114 | -0.250 (2 pairs) | 0.000 (4 pairs) | holds |
 
-The held-out pair count falls below the ten-query inference gate. Its recall
-difference falls below the -0.10 guard descriptively.
+**H2d fails on the held-out half, and that is the guard working rather than an
+anomaly to explain away.** The hypothesis declared in advance was that M's
+reference-edge recall would sit no more than 10 points below B1's; on the two
+signed test queries it sits 12.5 points below, while the UER difference that
+was supposed to justify the trade is exactly zero. On this half the verifier
+bought nothing on the headline metric and lost reference edges to get there,
+which is precisely the repair-versus-deletion failure the guard was written to
+catch, and the reason it was written before any sweep had run.
+
+Two caveats pull in opposite directions and neither rescues the result. Two
+query pairs is far below the ten-query inference gate, so this is a descriptive
+breach, not a refutation. But the development half, where H2d holds, rests on
+labels one person authored for a system they built, while the only
+blind-validated evidence in the project is the 40-row sample over the earlier
+assistant-produced labels. The honest summary is that the guard holds where the
+evidence is weakest and fails where it is freshest.
 
 ### 7.9 Where deterministic checking ends and judgement begins
 
@@ -1060,7 +1080,8 @@ The original assistant-labelled development scores favour M over B1 on paired
 UER. The blind sample agreed on 21 of 27 informative judgments, and five of
 the six disagreements could understate sensitivity-arm UER. The revised
 held-out labels yield a UER tie across two query pairs and a recall difference
-of -0.125. Sparse deep-hop denominators and the limited signed query set
+of -0.125, breaching the pre-declared H2d guard on that half: no UER gain, and
+reference edges lost to obtain it. Sparse deep-hop denominators and the limited signed query set
 leave the grounding-decay hypothesis unresolved.
 
 ## 10. References
